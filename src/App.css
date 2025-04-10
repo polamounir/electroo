@@ -1,5 +1,35 @@
-button{
+button {
   display: flex;
   align-items: center;
   cursor: pointer;
+}
+.landing-section {
+  background-image: url("./assets/images/landing.webp");
+  background-size: cover;
+  background-position: bottom right;
+}
+
+.navlink {
+  font-family: "Marhey", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: #000000;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    right: 0;
+    display: block;
+    width: 0px;
+    height: 2px;
+    background-color: #000000;
+    transition: all 0.3s ease-in-out;
+  }
+  &:hover::after {
+    width: 100%;
+  }
 }

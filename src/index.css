@@ -31,3 +31,38 @@ input {
     background: #ffffff;
   }
 }
+
+.slide-item{
+  direction: rtl;
+}
+
+.show-more-box a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--color-accent);
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+.show-more-box a span{
+  position: absolute; 
+  top: 50%;
+  left: 30%;
+  transform: translate(-50%, -40%);
+  transition: all 0.3s ease-in-out;
+}
+
+.show-more-box a:hover {
+  color: var(--color-primary);
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+}
+.show-more-box a:hover span {
+  left: -50%;
+  transition: all 0.3s ease-in-out;
+}

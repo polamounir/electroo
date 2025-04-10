@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { loginUserFn, registerNewUser } from "../../api/user";
+import { getUserDataFn, loginUserFn, registerNewUser } from "../../api/user";
 import Cookies from "js-cookie";
 
 const initialState = {
@@ -46,9 +46,8 @@ export const loginUser = createAsyncThunk(
       const response = await loginUserFn(userData);
       console.log(response);
       const { accessToken, email } = response.data;
-      
+    
       saveAuthData(accessToken, email);
-
       console.log(response.status);
       return response.status
     } catch (error) {
@@ -56,6 +55,16 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
+export const getUserData = createAsyncThunk("auth/getUserData", async () => {
+  try {
+    const response = await getUserDataFn();
+    // console.log(response);
+
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+});
 
 const authSlice = createSlice({
   name: "auth",
@@ -72,7 +81,31 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state) => {
         state.loading = false;
-      });
+      })
+     .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+      }) 
+    .addCase(loginUser.fulfilled, (state) => {
+        state.loading = false;
+        state.isAuthenticated = true;
+      })
+   .addCase(loginUser.rejected, (state) => {
+        state.loading = false;
+      })
+    .addCase(getUserData.pending, (state) => {
+        state.loading = true;
+      })
+   .addCase(getUserData.fulfilled, (state, action) => {
+        state.loading = false;
+
+        state.user = action.payload;
+        // console.log(state.user);
+        state.isAuthenticated = true;
+      })
+   .addCase(getUserData.rejected, (state) => {
+        state.loading = false; 
+   })
+     
   },
 });
 

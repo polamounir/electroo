@@ -85,11 +85,11 @@ export default function Register() {
     }
   };
   return (
-    <div>
+    <div className="w-full md:w-[85%] mx-auto">
       <div className="min-h-[70dvh] px-10 flex justify-center items-center">
-        <div className="flex items-end gap-10">
+        <div className="flex items-center gap-10">
           <div className="hidden lg:block">
-            <img src={image} alt="Register Image" width={650} height={650} />
+            <img src={image} alt="Register Image" width={550} height={550} />
           </div>
           <div>
             <div className="min-w-xs md:min-w-sm p-2">

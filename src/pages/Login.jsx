@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import image from "../assets/images/loginImg.webp";
+import image from "../assets/images/login.webp";
 import { loginUser } from "../app/slices/authSlice";
 export default function Login() {
   const dispatch = useDispatch();
@@ -52,11 +52,11 @@ export default function Login() {
     }
   };
   return (
-    <div>
+    <div className="w-full md:w-[85%] mx-auto">
       <div className="min-h-[70dvh] px-10 flex justify-center items-center">
         <div className="flex items-center gap-10 ">
           <div className="hidden lg:block">
-            <img src={image} alt="Register Image" width={500} height={650} />
+            <img src={image} alt="Register Image" width={550} height={550} />
           </div>
           <div className=" flex justify-center">
             <div className="min-w-xs md:min-w-sm">
