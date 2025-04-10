@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+:root {
+  direction: rtl;
+  --color-primary: #03a18e;
+  --color-light-bg: #f5ecd5;
+  --color-white: #ffffff;
+  --color-light-gray: #f1efec;
+  --color-medium-gray: #d4c9be;
+  --color-black: #030303;
+  --color-accent: #b31312;
+}
+
+.ar-font-m {
+  font-family: "Marhey", sans-serif;
+  font-optical-sizing: auto;
+}
+.ar-font-s {
+  font-family: "Lalezar", system-ui;
+  font-optical-sizing: auto;
+}
+
+input {
+  /* font-family: "Marhey", sans-serif; */
+  outline: none;
+  & ::placeholder {
+    /* font-family: "Marhey", sans-serif; */
+    
+  }
+  &:focus {
+    background: #ffffff;
+  }
+}
