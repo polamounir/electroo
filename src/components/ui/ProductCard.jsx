@@ -8,12 +8,12 @@ export default function ProductCard({ product }) {
       <div className="absolute top-4 end-4 bg-red-500 text-white text-sm px-2 py-1 rounded">
         %30
       </div>
-      <div className="flex justify-center items-center">
-        <div className="w-full max-w-[200px] overflow-hidden rounded-lg ">
+      <div className="flex justify-center items-center min-h-60">
+        <div className="w-full h-full overflow-hidden rounded-lg flex justify-center ">
           <img
             src={images[0]}
             alt={title}
-            className="w-full h-full aspect-square"
+            className="h-full aspect-square"
             width={100}
             height={100}
           />

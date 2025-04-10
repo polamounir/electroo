@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [userType, setUserType] = useState("user");
   const { loading } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
     fullName: "",
@@ -81,102 +82,303 @@ export default function Register() {
       }
       console.log(res);
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
   };
+
+  const toggleUserType = (type) => {
+    console.log(type);
+    setUserType(type);
+  };
+  const [supplierFormData, setSupplierFormData] = useState();
+
   return (
     <div className="w-full md:w-[85%] mx-auto">
-      <div className="min-h-[70dvh] px-10 flex justify-center items-center">
+      <div className="min-h-[90dvh] px-10 flex justify-center items-center">
         <div className="flex items-center gap-10">
           <div className="hidden lg:block">
             <img src={image} alt="Register Image" width={550} height={550} />
           </div>
           <div>
             <div className="min-w-xs md:min-w-sm p-2">
-              <div className="flex flex-col gap-2 mb-10">
+              <div className="flex flex-col gap-1 mb-5">
                 <h2 className="text-3xl font-bold">أنشاء حساب</h2>
-                <p className="text-md text-gray-700">مرحبا بك 👋</p>
+                {/* <p className="text-md text-gray-700">مرحبا بك 👋</p> */}
+                <div className="flex gap-3">
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleUserType("user");
+                    }}
+                  >
+                    مستخدم
+                  </button>
+                  /
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleUserType("supplier");
+                    }}
+                  >
+                    مورد
+                  </button>
+                </div>
               </div>
 
-              <form onSubmit={handleSubmit}>
-                <div className="flex flex-col gap-5 ">
-                  <div className="flex flex-col sm:flex-row gap-5">
-                    <div className="flex flex-col gap-1">
-                      <label
-                        htmlFor="fullName"
-                        className="text-lg font-semibold"
-                      >
-                        الأسم كامل
-                      </label>
-                      <input
-                        type="text"
-                        name="fullName"
-                        id="fullName"
-                        className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-                        onChange={handleChange}
-                        placeholder="أحمد محمد"
-                      />
+              {userType === "supplier" ? (
+                <form>
+                  <div className="flex flex-col gap-5 ">
+                    <div className="flex flex-col sm:flex-row gap-5">
+                      <div className="flex flex-col gap-1">
+                        <label
+                          htmlFor="fullName"
+                          className="text-lg font-semibold"
+                        >
+                          الأسم كامل
+                        </label>
+                        <input
+                          type="text"
+                          name="fullName"
+                          id="fullName"
+                          className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                          onChange={handleChange}
+                          placeholder="أحمد محمد"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label
+                          htmlFor="email"
+                          className="text-lg font-semibold"
+                        >
+                          البريد الالكتروني
+                        </label>
+                        <input
+                          type="email"
+                          name="email"
+                          id="email"
+                          className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                          onChange={handleChange}
+                          placeholder="email@email.com"
+                        />
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-1">
-                      <label htmlFor="email" className="text-lg font-semibold">
-                        البريد الالكتروني
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-                        onChange={handleChange}
-                        placeholder="email@email.com"
-                      />
+                    <div className="flex flex-col sm:flex-row gap-5">
+                      <div className="flex flex-col gap-1">
+                        <label
+                          htmlFor="password"
+                          className="text-lg font-semibold"
+                        >
+                          كلمةالمرور
+                        </label>
+                        <input
+                          type="password"
+                          name="password"
+                          id="password"
+                          className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                          onChange={handleChange}
+                          placeholder="********"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label
+                          htmlFor="confirmPassword"
+                          className="text-lg font-semibold"
+                        >
+                          تاكيد كلمة المرور
+                        </label>
+                        <input
+                          type="password"
+                          name="confirmPassword"
+                          id="confirmPassword"
+                          className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          placeholder="********"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-5">
+                      <div className="flex flex-col gap-1">
+                        <label
+                          htmlFor="phoneNumber"
+                          className="text-lg font-semibold"
+                        >
+                          رقم الهاتف
+                        </label>
+                        <input
+                          type="text"
+                          name="phoneNumber"
+                          id="phoneNumber"
+                          className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                          onChange={handleChange}
+                          placeholder="01*********"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label
+                          htmlFor="businessName"
+                          className="text-lg font-semibold"
+                        >
+                          اسم الشركة
+                        </label>
+                        <input
+                          type="text"
+                          name="businessName"
+                          id="businessName"
+                          className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          placeholder="اسم شركتك"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-5">
+                      <div className="flex flex-col gap-1">
+                        <label
+                          htmlFor="storeName"
+                          className="text-lg font-semibold"
+                        >
+                          اسم المتجر
+                        </label>
+                        <input
+                          type="text"
+                          name="storeName"
+                          id="storeName"
+                          className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                          onChange={handleChange}
+                          placeholder="اسم متجرك"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label
+                          htmlFor="taxNumber"
+                          className="text-lg font-semibold"
+                        >
+                          الرقم الضريبي
+                        </label>
+                        <input
+                          type="text"
+                          name="taxNumber"
+                          id="taxNumber"
+                          className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                          onChange={handleChange}
+                          placeholder="الرقم الضريبي"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-5">
+                      <div className="w-full flex flex-col gap-1">
+                        <label
+                          htmlFor="nationalId"
+                          className="text-lg font-semibold"
+                        >
+                          الرقم القومي
+                        </label>
+                        <input
+                          type="text"
+                          name="nationalId"
+                          id="nationalId"
+                          className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                          onChange={handleChange}
+                          placeholder="مكون من 14 رقم"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <button
+                        className={`mt-2 w-full  justify-center px-3 py-2 rounded-md text-white font-semibold ${
+                          loading ? "bg-gray-400" : "bg-[var(--color-primary)]"
+                        }`}
+                        disabled={loading}
+                      >
+                        {loading ? "جاري انشاء حساب" : "انشاء حساب"}
+                      </button>
                     </div>
                   </div>
-                  <div className="flex flex-col sm:flex-row gap-5">
-                    <div className="flex flex-col gap-1">
-                      <label
-                        htmlFor="password"
-                        className="text-lg font-semibold"
-                      >
-                        كلمةالمرور
-                      </label>
-                      <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-                        onChange={handleChange}
-                        placeholder="********"
-                      />
+                </form>
+              ) : (
+                <form onSubmit={handleSubmit}>
+                  <div className="flex flex-col gap-5 ">
+                    <div className="flex flex-col sm:flex-row gap-5">
+                      <div className="flex flex-col gap-1">
+                        <label
+                          htmlFor="fullName"
+                          className="text-lg font-semibold"
+                        >
+                          الأسم كامل
+                        </label>
+                        <input
+                          type="text"
+                          name="fullName"
+                          id="fullName"
+                          className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                          onChange={handleChange}
+                          placeholder="أحمد محمد"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label
+                          htmlFor="email"
+                          className="text-lg font-semibold"
+                        >
+                          البريد الالكتروني
+                        </label>
+                        <input
+                          type="email"
+                          name="email"
+                          id="email"
+                          className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                          onChange={handleChange}
+                          placeholder="email@email.com"
+                        />
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-1">
-                      <label
-                        htmlFor="confirmPassword"
-                        className="text-lg font-semibold"
+                    <div className="flex flex-col sm:flex-row gap-5">
+                      <div className="flex flex-col gap-1">
+                        <label
+                          htmlFor="password"
+                          className="text-lg font-semibold"
+                        >
+                          كلمةالمرور
+                        </label>
+                        <input
+                          type="password"
+                          name="password"
+                          id="password"
+                          className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                          onChange={handleChange}
+                          placeholder="********"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label
+                          htmlFor="confirmPassword"
+                          className="text-lg font-semibold"
+                        >
+                          تاكيد كلمة المرور
+                        </label>
+                        <input
+                          type="password"
+                          name="confirmPassword"
+                          id="confirmPassword"
+                          className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          placeholder="********"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <button
+                        className={`mt-2 w-full  justify-center px-3 py-2 rounded-md text-white font-semibold ${
+                          loading ? "bg-gray-400" : "bg-[var(--color-primary)]"
+                        }`}
+                        disabled={loading}
                       >
-                        تاكيد كلمة المرور
-                      </label>
-                      <input
-                        type="password"
-                        name="confirmPassword"
-                        id="confirmPassword"
-                        className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        placeholder="********"
-                      />
+                        {loading ? "جاري انشاء حساب" : "انشاء حساب"}
+                      </button>
                     </div>
                   </div>
-                  <div>
-                    <button
-                      className={`mt-2 w-full  justify-center px-3 py-2 rounded-md text-white font-semibold ${
-                        loading ? "bg-gray-400" : "bg-[var(--color-primary)]"
-                      }`}
-                      disabled={loading}
-                    >
-                      {loading ? "جاري انشاء حساب" : "انشاء حساب"}
-                    </button>
-                  </div>
-                </div>
-              </form>
+                </form>
+              )}
+
               <div>
                 <p className="text-sm text-center mt-5">
                   لديك حساب بالفعل؟{"  "}

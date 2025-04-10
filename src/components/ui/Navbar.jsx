@@ -15,10 +15,6 @@ export default function Navbar() {
 
   const links = [
     {
-      name: "الرئيسية",
-      link: "/",
-    },
-    {
       name: "الفئات",
       link: "/categories",
     },
@@ -40,7 +36,9 @@ export default function Navbar() {
       <div className="p-5 w-full md:w-[85%] mx-auto">
         <div className="flex justify-between gap-10">
           <div className="flex items-center gap-5">
-            <h1 className="ar-font-s text-4xl">إلكـــــــتروو</h1>
+            <h1 className="ar-font-s text-4xl">
+              <Link to="/">إلكـــــــتروو</Link>
+            </h1>
             <ul className="hidden lg:flex gap-5 text-lg font-semibold ">
               {links.map((link, index) => (
                 <li key={index} className="navlink">
@@ -65,7 +63,7 @@ export default function Navbar() {
                     </div>
                   </Link>
                 ) : (
-                  <Link className="flex items-center gap-3 bg-teal-500 text-white px-4 py-2 rounded-full">
+                  <Link to="/login" className="flex items-center gap-3 bg-teal-500 text-white px-4 py-2 rounded-full">
                     <FaRegUser />
                     تسجيل دخول
                   </Link>
