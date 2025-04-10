@@ -6,7 +6,8 @@ import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
 import { IoArrowBack } from "react-icons/io5";
 
-export default function DailyDeals({ title }) {
+export default function DailyDeals({ title , products }) {
+  console.log(products);
   const settings = {
     dots: false,
     infinite: true,
@@ -86,7 +87,7 @@ export default function DailyDeals({ title }) {
               aria-label="Daily Deals Carousel"
               className="shadow-none"
             >
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((product, index) => (
+              {products?.data?.items.map((product, index) => (
                 <div key={index} className="px-1 sm:px-5 slide-item">
                   <ProductCard key={index} product={product} />
                 </div>
