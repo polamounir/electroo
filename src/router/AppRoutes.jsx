@@ -5,6 +5,7 @@ import Navbar from "../components/ui/Navbar";
 import Loader from "../components/ui/Loader";
 import { Toaster } from "sonner";
 import AppInit from "../components/ui/AppInit";
+import Footer from "../components/ui/Footer";
 const AccountConfirmation = lazy(() => import("../pages/AccountConfirmation"));
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -28,7 +29,7 @@ const AppRoutes = () => {
             <Route path="/confirm-account" element={<AccountConfirmation />} />
           </Routes>
         </Suspense>
-
+      <Footer />
     </Router>
   );
 };
