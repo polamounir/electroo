@@ -64,7 +64,7 @@ export default function BasicData() {
   };
   const handleSubmit = () => {
     dispatch(setSupplierBasicData(formData));
-    console.log(formData);
+    // console.log(formData);
   };
   const handleNext = () => {
     if (!validateForm()) {

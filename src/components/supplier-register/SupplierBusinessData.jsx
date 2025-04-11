@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import image from "../../assets/images/supplierBusiness.svg";
-import { useDispatch } from "react-redux";
-import { updatesupplierRegisterationProgress } from "../../app/slices/supplierSLice";
+import { useDispatch, useSelector } from "react-redux";
+import { setSupplierBusinessData, updatesupplierRegisterationProgress } from "../../app/slices/supplierSLice";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 export default function BusinessData() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -10,8 +11,53 @@ export default function BusinessData() {
     dispatch(updatesupplierRegisterationProgress(30));
   }, []);
 
+  const supplierdata = useSelector(
+    (state) => state.supplier.supplierRegisterationData
+  );
+
+  console.log(supplierdata);
+  const [formData, setFormData] = useState({
+    businessName: supplierdata.businessName || "",
+    storeName: supplierdata.storeName || "",
+    taxNumber: supplierdata.taxNumber || "",
+    nationalId: supplierdata.nationalId || "",
+
+  });
+const validateForm = () => {
+  if (formData.businessName.trim() === "") {
+    toast.error("يرجى إدخال اسم النشاط التجاري");
+    return false; 
+  }
+  if (formData.storeName.trim() === "") {
+    toast.error("يرجى إدخال اسم المتجر");
+    return false; 
+  }
+
+  if (formData.taxNumber.trim() === "") {
+    toast.error("يرجى إدخال رقم الضريبي");
+    return false;
+  }
+  return true;
+}
+
+  const handleChange = (e) => {
+     e.preventDefault();
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));  
+  }
+
+  const handleSubmit = () => {
+    dispatch(setSupplierBusinessData(formData));
+  };
   const handleNext = () => {
-    navigate("/supplier-register/national-data");
+    if (!validateForm()) {
+      return; 
+    }
+    handleSubmit();
+    navigate("/supplier-register/nidf");
   };
   const handleBack = () => {
     navigate("/supplier-register/base");
@@ -40,6 +86,8 @@ export default function BusinessData() {
                     type="text"
                     name="businessName"
                     id="businessName"
+                    value={formData.businessName}
+                    onChange={handleChange}
                     placeholder="اسم النشاط التجاري "
                     className="w-full bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
                   />
@@ -50,6 +98,8 @@ export default function BusinessData() {
                     type="text"
                     name="storeName"
                     id="storeName"
+                    value={formData.storeName}
+                    onChange={handleChange}
                     placeholder="اسم المتجر "
                     className="w-full bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
                   />
@@ -57,11 +107,25 @@ export default function BusinessData() {
               </div>
               <div className="flex flex-col gap-3 md:flex-row justify-between md:gap-5">
                 <div className="w-full">
-                  <label htmlFor="texNumber"> الرقم الضريبي</label>
+                  <label htmlFor="taxNumber"> الرقم الضريبي</label>
                   <input
                     type="text"
-                    name="texNumber"
-                    id="texNumber"
+                    name="taxNumber"
+                    id="taxNumber"
+                    value={formData.taxNumber}
+                    onChange={handleChange}
+                    placeholder="xxxxxxxxxxxx"
+                    className="w-full bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                  />
+                </div>
+                <div className="w-full">
+                  <label htmlFor="nationalId"> الرقم القومي</label>
+                  <input
+                    type="text"
+                    name="nationalId"
+                    id="nationalId"
+                    value={formData.nationalId}
+                    onChange={handleChange}
                     placeholder="xxxxxxxxxxxx"
                     className="w-full bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
                   />

@@ -7,9 +7,9 @@ const store = configureStore({
     auth: authReducer,
     supplier: supplierReducer,
   },
-  middleware: (getDefaultMiddleware) =>
+   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      //   serializableCheck: false,
+      serializableCheck: false,  
     }),
 });
 

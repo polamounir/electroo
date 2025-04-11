@@ -10,7 +10,11 @@ import SupplierRegisteration from "../pages/SupplierRegisteration";
 import Suppliers from "../pages/Suppliers";
 import BasicData from "../components/supplier-register/SupplierBasicData";
 import BusinessData from "../components/supplier-register/SupplierBusinessData";
-import SupplierNationalId from "../components/supplier-register/SupplierNationalId";
+import SupplierNationalId from "../components/supplier-register/SupplierNationalIdBack";
+import SupplierNationalIdBack from "../components/supplier-register/SupplierNationalIdBack";
+import SupplierTexCard from "../components/supplier-register/SupplierTexCard";
+import SupplierNationalIdFront from "../components/supplier-register/SupplierNationalIdFront";
+import SupplierDataSummary from "../components/supplier-register/SupplierDataSummary";
 const AccountConfirmation = lazy(() => import("../pages/AccountConfirmation"));
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -36,7 +40,10 @@ const AppRoutes = () => {
             <Route index element={<BasicData />} />
             <Route path="base" element={<BasicData />} />
             <Route path="business" element={<BusinessData />} />
-            <Route path="national-data" element={<SupplierNationalId />} />
+            <Route path="nidf" element={<SupplierNationalIdFront />} />
+            <Route path="nidb" element={<SupplierNationalIdBack />} />
+            <Route path="texcard" element={<SupplierTexCard />} />
+            <Route path="supplier-summary" element={<SupplierDataSummary />} />
           </Route>
           <Route path="/confirm-account" element={<AccountConfirmation />} />
         </Routes>
