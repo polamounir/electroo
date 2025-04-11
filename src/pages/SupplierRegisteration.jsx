@@ -8,7 +8,7 @@ export default function SupplierRegisteration() {
     <div className="min-h-[70vh]  p-10">
       <div className="w-full md:w-[85%] m-auto">
         <strong>رجاء التاكد من البيانات !!</strong>
-        <h2>{progress}</h2>
+        {/* <h2>{progress}</h2> */}
         <div className="pe-3">
           <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700">
             <div

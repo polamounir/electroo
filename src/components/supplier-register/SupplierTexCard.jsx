@@ -216,7 +216,7 @@ export default function SupplierTexCard() {
   useEffect(() => {
     setImageFile(null);
     setImagePreview(null);
-    dispatch(updatesupplierRegisterationProgress(90));
+    dispatch(updatesupplierRegisterationProgress(75));
   }, [dispatch]);
 
 

@@ -20,12 +20,28 @@ export const getUserDataFn = async () => {
   return response.data;
 };
 // ---------------------------------------
+export const checkUserExistance = async (email , phoneNumber) => {
+
+  const {data} = await api.post("/auth/validate-data", {
+    email: email,
+    phoneNumber: phoneNumber,
+  });
+  console.log(data.data);
+  const {emailRegisterd, phoneRegisterd} = data.data;
+  if (emailRegisterd || phoneRegisterd) {
+    console.log("User already exists");
+    return true;
+  }else {
+    console.log("User does not exist");
+    return false;
+  }
+};
+
 const reformSupplierData = (userData) => {
-  console.log("Reformatted user data:", userData); // Check all data
+  console.log("Reformatted user data:", userData); 
 
   const formData = new FormData();
 
-  // Only append if the data exists to avoid appending undefined or null values
   if (userData.businessName)
     formData.append("businessName", userData.businessName);
   if (userData.email) formData.append("email", userData.email);
@@ -37,7 +53,6 @@ const reformSupplierData = (userData) => {
   if (userData.taxNumber) formData.append("taxNumber", userData.taxNumber);
   if (userData.nationalId) formData.append("nationalId", userData.nationalId);
 
-  // Append files, checking that they exist and are File objects
   if (userData.nationalIdBack instanceof File) {
     formData.append("nationalIdBack", userData.nationalIdBack);
   }
@@ -48,9 +63,9 @@ const reformSupplierData = (userData) => {
     formData.append("taxCard", userData.taxCard);
   }
 
-  // Confirm the file appending
+
   for (let pair of formData.entries()) {
-    console.log(pair[0] + ": " + pair[1]); // This will log each key-value pair in FormData
+    console.log(pair[0] + ": " + pair[1]); 
   }
 
   return formData;

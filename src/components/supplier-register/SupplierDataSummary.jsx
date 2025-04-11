@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { registerNewSupplier } from "../../api/user";
+import { updatesupplierRegisterationProgress } from "../../app/slices/supplierSLice";
 
 export default function SupplierDataSummary() {
   const navigate = useNavigate();
@@ -10,9 +11,9 @@ export default function SupplierDataSummary() {
   const supplierdata = useSelector(
     (state) => state.supplier.supplierRegisterationData
   );
-//   const { isLoading, isError, isSuccess } = useSelector(
-//     (state) => state.supplier
-//   );
+  //   const { isLoading, isError, isSuccess } = useSelector(
+  //     (state) => state.supplier
+  //   );
 
   const {
     fullName,
@@ -24,7 +25,7 @@ export default function SupplierDataSummary() {
     nationalId,
     nationalIdFront,
     nationalIdBack,
-
+    password,
     taxCard,
   } = supplierdata;
 
@@ -36,12 +37,22 @@ export default function SupplierDataSummary() {
   });
 
   useEffect(() => {
-    if (!nationalIdFront || !nationalIdBack || !taxCard) {
-      toast.error("Some required documents are missing.");
-    navigate("/supplier-register/base");
-
+    // Check if all required documents are uploaded
+    if (!fullName || !email || !phoneNumber || !password) {
+      toast.error("3رجاء إكمال بيانات المورد");
+      navigate("/supplier-register/base");
+      return;
+    } else if (!businessName || !storeName || !taxNumber || !nationalId) {
+      toast.error("2 رجال إكمال بيانات المورد");
+      navigate("/supplier-register/business");
+      return;
+    } else if (!nationalIdFront || !nationalIdBack || !taxCard) {
+      toast.error("1رجاء إكمال بيانات المورد");
+      navigate("/supplier-register/nidf");
+      return;
     }
-
+  } ,[]);
+  useEffect(() => {
     if (nationalIdFront) {
       setImageUrls((prev) => ({
         ...prev,
@@ -77,12 +88,15 @@ export default function SupplierDataSummary() {
   }, [nationalIdFront, nationalIdBack, taxCard]);
 
   const handleConfirm = async () => {
-   dispatch(registerNewSupplier(supplierdata))
+    dispatch(registerNewSupplier(supplierdata));
   };
   const handleEdit = () => {
     navigate("/supplier-register/base");
   };
 
+  useEffect(() => {
+    dispatch(updatesupplierRegisterationProgress(90));
+  }, [dispatch]);
   return (
     <div className=" mt-8 p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg border border-gray-200">
       {/* Header Section */}

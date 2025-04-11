@@ -8,6 +8,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { checkUserExistance } from "../../api/user";
 export default function BasicData() {
   const dispatch = useDispatch();
   const supplierdata = useSelector(
@@ -23,7 +24,7 @@ export default function BasicData() {
     fullName: supplierdata.fullName || "",
     phoneNumber: supplierdata.phoneNumber || "",
     email: supplierdata.email || "",
-    password:  "",
+    password: "",
   });
   const handleChange = (e) => {
     e.preventDefault();
@@ -40,14 +41,15 @@ export default function BasicData() {
       toast.error("يرجى ملئ جميع الحقول");
       return false;
     }
-    if (!/^[a-zA-Z\s]+$/.test(fullName)) {
-      toast.error("الاسم يجب ان يكون حروف فقط");
+  if (!/^[\u0600-\u06FF\s]+$/.test(fullName)) {
+    toast.error("الاسم يجب أن يكون باللغة العربية فقط");
+    return false;
+  }
+    if (!/^01\d{9}$/.test(phoneNumber)) {
+      toast.error("الرقم يجب ان يبدأ بـ 01 ويكون مكون من 11 رقمًا");
       return false;
     }
-    if (!/^\d{11}$/.test(phoneNumber)) {
-      toast.error("الرقم يجب ان يكون 11 ارقام");
-      return false;
-    }
+
     if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
       toast.error("الرجاء ادخال بريد الكتروني صالح");
       return false;
@@ -62,18 +64,29 @@ export default function BasicData() {
     }
     return true;
   };
-  const handleSubmit = () => {
+
+  const handleSubmit = async () => {
+    const isDataVaild = await validateForm();
+    if (!isDataVaild) {
+      return;
+    }
+    const response =await checkUserExistance(formData.email, formData.phoneNumber);
+    console.log(response);
+    if (response) {
+      toast.error("هذا البريد الالكتروني او الرقم مسجل من قبل");
+      return;
+    }
     dispatch(setSupplierBasicData(formData));
+    navigate("/supplier-register/business");
     // console.log(formData);
   };
-  const handleNext = () => {
-    if (!validateForm()) {
-      return;
-    } else {
-      handleSubmit();
-      navigate("/supplier-register/business");
-    }
-  };
+  // const handleNext = () => {
+  //   if (!validateForm()) {
+  //     return;
+  //   } else {
+  //     handleSubmit();
+  //   }
+  // };
   return (
     <div className="">
       <div className="flex flex-col-reverse items-center lg:flex-row justify-center gap-10 lg:gap-20 p-3 lg:p-5">
@@ -149,7 +162,7 @@ export default function BasicData() {
             <div className="px-3 flex justify-between mt-5">
               <button
                 className="bg-black text-white  px-10 py-2 rounded-lg"
-                onClick={handleNext}
+                onClick={handleSubmit}
               >
                 التالي
               </button>

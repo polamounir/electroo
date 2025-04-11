@@ -37,6 +37,19 @@ const validateForm = () => {
     toast.error("يرجى إدخال رقم الضريبي");
     return false;
   }
+  if (!/^\d{10,15}$/.test(formData.taxNumber)) {
+    toast.error("الرقم الضريبي يجب أن يتكون من 10 إلى 15 رقمًا");
+    return false;
+  }
+  if (formData.nationalId.trim() === "") {
+    toast.error("يرجى إدخال رقم الهوية ");
+    return false; 
+  }
+  if (!/^\d{14}$/.test(formData.nationalId)) {
+    toast.error("الرقم القومي يجب أن يتكون من 14 رقمًا");
+    return false; 
+  }
+
   return true;
 }
 

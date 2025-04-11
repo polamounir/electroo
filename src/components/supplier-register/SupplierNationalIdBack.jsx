@@ -63,7 +63,7 @@ export default function SupplierNationalIdBack() {
   useEffect(() => {
     setImageFile(null);
     setImagePreview(null);
-    dispatch(updatesupplierRegisterationProgress(70));
+    dispatch(updatesupplierRegisterationProgress(60));
   }, [dispatch]);
 
   return (
