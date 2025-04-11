@@ -29,16 +29,16 @@ export const checkUserExistance = async (email , phoneNumber) => {
   console.log(data.data);
   const {emailRegisterd, phoneRegisterd} = data.data;
   if (emailRegisterd || phoneRegisterd) {
-    console.log("User already exists");
+    // console.log("User already exists");
     return true;
   }else {
-    console.log("User does not exist");
+    // console.log("User does not exist");
     return false;
   }
 };
 
 const reformSupplierData = (userData) => {
-  console.log("Reformatted user data:", userData); 
+  // console.log("Reformatted user data:", userData); 
 
   const formData = new FormData();
 
@@ -64,17 +64,17 @@ const reformSupplierData = (userData) => {
   }
 
 
-  for (let pair of formData.entries()) {
-    console.log(pair[0] + ": " + pair[1]); 
-  }
+  // for (let pair of formData.entries()) {
+  //   console.log(pair[0] + ": " + pair[1]); 
+  // }
 
   return formData;
 };
 
 export const registerNewSupplier = async (userData) => {
   try {
-    const reformattedData = reformSupplierData(userData); // No need to await here
-    console.log(reformattedData); // This will now show each field (including file data)
+    const reformattedData = reformSupplierData(userData); 
+    // console.log(reformattedData); 
 
     const response = await api.post(
       "/auth/register-supplier",
@@ -86,9 +86,10 @@ export const registerNewSupplier = async (userData) => {
       }
     );
 
-    return response.data;
+    console.log("Registration response:", response);
+    return response;
   } catch (error) {
-    console.error("Error registering new supplier:", error);
-    throw error; // Rethrow error to handle it where the function is called
+    console.log("Error registering new supplier:", error);
+    throw error;
   }
 };

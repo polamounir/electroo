@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaTimes } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -17,6 +17,31 @@ export default function SupplierNationalIdFront() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const supplierdata = useSelector(
+    (state) => state.supplier.supplierRegisterationData
+  );
+  const {
+    fullName,
+    email,
+    phoneNumber,
+    businessName,
+    storeName,
+    taxNumber,
+    nationalId,
+
+    password,
+  } = supplierdata;
+  useEffect(() => {
+    if (!fullName || !email || !phoneNumber || !password) {
+      toast.error("رجاء إكمال بيانات المورد");
+      navigate("/supplier-register/base");
+      return;
+    } else if (!businessName || !storeName || !taxNumber || !nationalId) {
+      toast.error("رجال إكمال بيانات المورد");
+      navigate("/supplier-register/business");
+      return;
+    }
+  }, []);
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 
@@ -33,9 +58,7 @@ export default function SupplierNationalIdFront() {
       const previewUrl = URL.createObjectURL(image);
       setImagePreview(previewUrl);
 
-      dispatch(
-        setSuppllierIdFront(image)
-      );
+      dispatch(setSuppllierIdFront(image));
     },
     [dispatch]
   );
@@ -79,7 +102,7 @@ export default function SupplierNationalIdFront() {
         </div>
 
         <div className="w-full flex flex-col gap-2">
-          <h1>برجاء ارسال بطاقة تحقيق الشخصية</h1>
+          <h1>برجاء ارسال بطاقة تحقيق الشخصية  ( الامام )</h1>
 
           <div
             {...getRootProps()}

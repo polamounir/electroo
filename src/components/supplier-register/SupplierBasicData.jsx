@@ -14,7 +14,7 @@ export default function BasicData() {
   const supplierdata = useSelector(
     (state) => state.supplier.supplierRegisterationData
   );
-  console.log(supplierdata);
+  // console.log(supplierdata);
   useEffect(() => {
     dispatch(updatesupplierRegisterationProgress(5));
   }, []);
@@ -41,11 +41,11 @@ export default function BasicData() {
       toast.error("يرجى ملئ جميع الحقول");
       return false;
     }
-  if (!/^[\u0600-\u06FF\s]+$/.test(fullName)) {
-    toast.error("الاسم يجب أن يكون باللغة العربية فقط");
-    return false;
-  }
-    if (!/^01\d{9}$/.test(phoneNumber)) {
+    if (!/^[\u0600-\u06FF\s]+$/.test(fullName)) {
+      toast.error("الاسم يجب أن يكون باللغة العربية فقط");
+      return false;
+    }
+    if (!/^01\d{9,}$/.test(phoneNumber)) {
       toast.error("الرقم يجب ان يبدأ بـ 01 ويكون مكون من 11 رقمًا");
       return false;
     }
@@ -70,8 +70,11 @@ export default function BasicData() {
     if (!isDataVaild) {
       return;
     }
-    const response =await checkUserExistance(formData.email, formData.phoneNumber);
-    console.log(response);
+    const response = await checkUserExistance(
+      formData.email,
+      formData.phoneNumber
+    );
+    // console.log(response);
     if (response) {
       toast.error("هذا البريد الالكتروني او الرقم مسجل من قبل");
       return;

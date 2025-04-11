@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import image from "../../assets/images/supplierBusiness.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { setSupplierBusinessData, updatesupplierRegisterationProgress } from "../../app/slices/supplierSLice";
+import {
+  setSupplierBusinessData,
+  updatesupplierRegisterationProgress,
+} from "../../app/slices/supplierSLice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 export default function BusinessData() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(updatesupplierRegisterationProgress(30));
   }, []);
@@ -15,59 +19,76 @@ export default function BusinessData() {
     (state) => state.supplier.supplierRegisterationData
   );
 
-  console.log(supplierdata);
+  const {
+    fullName,
+    email,
+    phoneNumber,
+    businessName,
+    storeName,
+    taxNumber,
+    nationalId,
+    password,
+  } = supplierdata;
+
+  useEffect(() => {
+    if (!fullName || !email || !phoneNumber || !password) {
+      toast.error("رجاء إكمال بيانات المورد");
+      navigate("/supplier-register/base");
+      return;
+    }
+  }, []);
+
+  // console.log(supplierdata);
   const [formData, setFormData] = useState({
-    businessName: supplierdata.businessName || "",
-    storeName: supplierdata.storeName || "",
-    taxNumber: supplierdata.taxNumber || "",
-    nationalId: supplierdata.nationalId || "",
-
+    businessName: businessName || "",
+    storeName: storeName || "",
+    taxNumber: taxNumber || "",
+    nationalId: nationalId || "",
   });
-const validateForm = () => {
-  if (formData.businessName.trim() === "") {
-    toast.error("يرجى إدخال اسم النشاط التجاري");
-    return false; 
-  }
-  if (formData.storeName.trim() === "") {
-    toast.error("يرجى إدخال اسم المتجر");
-    return false; 
-  }
+  const validateForm = () => {
+    if (formData.businessName.trim() === "") {
+      toast.error("يرجى إدخال اسم النشاط التجاري");
+      return false;
+    }
+    if (formData.storeName.trim() === "") {
+      toast.error("يرجى إدخال اسم المتجر");
+      return false;
+    }
 
-  if (formData.taxNumber.trim() === "") {
-    toast.error("يرجى إدخال رقم الضريبي");
-    return false;
-  }
-  if (!/^\d{10,15}$/.test(formData.taxNumber)) {
-    toast.error("الرقم الضريبي يجب أن يتكون من 10 إلى 15 رقمًا");
-    return false;
-  }
-  if (formData.nationalId.trim() === "") {
-    toast.error("يرجى إدخال رقم الهوية ");
-    return false; 
-  }
-  if (!/^\d{14}$/.test(formData.nationalId)) {
-    toast.error("الرقم القومي يجب أن يتكون من 14 رقمًا");
-    return false; 
-  }
-
-  return true;
-}
+    if (formData.taxNumber.trim() === "") {
+      toast.error("يرجى إدخال رقم الضريبي");
+      return false;
+    }
+    if (!/^\d{10,15}$/.test(formData.taxNumber)) {
+      toast.error("الرقم الضريبي يجب أن يتكون من 10 إلى 15 رقمًا");
+      return false;
+    }
+    if (formData.nationalId.trim() === "") {
+      toast.error("يرجى إدخال رقم الهوية ");
+      return false;
+    }
+    if (!/^\d{14}$/.test(formData.nationalId)) {
+      toast.error("الرقم القومي يجب أن يتكون من 14 رقمًا");
+      return false;
+    }
+    return true;
+  };
 
   const handleChange = (e) => {
-     e.preventDefault();
+    e.preventDefault();
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
-    }));  
-  }
+    }));
+  };
 
   const handleSubmit = () => {
     dispatch(setSupplierBusinessData(formData));
   };
   const handleNext = () => {
     if (!validateForm()) {
-      return; 
+      return;
     }
     handleSubmit();
     navigate("/supplier-register/nidf");

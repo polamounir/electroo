@@ -149,7 +149,7 @@
 import { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaTimes } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -160,28 +160,56 @@ import {
   updatesupplierRegisterationProgress,
 } from "../../app/slices/supplierSLice";
 
-
 export default function SupplierTexCard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const supplierdata = useSelector(
+    (state) => state.supplier.supplierRegisterationData
+  );
+  const {
+    fullName,
+    email,
+    phoneNumber,
+    businessName,
+    storeName,
+    taxNumber,
+    nationalId,
+    nationalIdFront,
+    nationalIdBack,
+    password,
+    
+  } = supplierdata;
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  useEffect(() => {
+    if (!fullName || !email || !phoneNumber || !password) {
+      toast.error("رجاء إكمال بيانات المورد");
+      navigate("/supplier-register/base");
+      return;
+    } else if (!businessName || !storeName || !taxNumber || !nationalId) {
+      toast.error("رجال إكمال بيانات المورد");
+      navigate("/supplier-register/business");
+      return;
+    } else if (!nationalIdFront || !nationalIdBack) {
+      toast.error("رجاء إكمال بيانات المورد");
+      navigate("/supplier-register/nidf");
+      return;
+    }
+
+  }, []);
 
   const onDrop = useCallback(
     (acceptedFiles) => {
       const image = acceptedFiles[0];
-
       if (!image || !image.type.startsWith("image/")) {
         alert("الرجاء اختيار صورة فقط");
         return;
       }
-
       setImageFile(image);
       const previewUrl = URL.createObjectURL(image);
       setImagePreview(previewUrl);
 
-      // Store just metadata in Redux
       dispatch(setSupplierTexCard(image));
     },
     [dispatch]
@@ -190,7 +218,7 @@ export default function SupplierTexCard() {
   const handleDelete = () => {
     setImageFile(null);
     setImagePreview(null);
-    dispatch(setSupplierTexCard(null)); // Clear from Redux too
+    dispatch(setSupplierTexCard(null)); 
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -204,13 +232,11 @@ export default function SupplierTexCard() {
       toast.error(" يجب تحميل صورة لبطاقة الشخصية من الامام");
       return;
     }
-
-    // Proceed to next step — you can use `imageFile` here for API submission
     navigate("/supplier-register/supplier-summary");
   };
 
   const handleBack = () => {
-    navigate("/supplier-register/business");
+    navigate("/supplier-register/nidb");
   };
 
   useEffect(() => {
@@ -218,7 +244,6 @@ export default function SupplierTexCard() {
     setImagePreview(null);
     dispatch(updatesupplierRegisterationProgress(75));
   }, [dispatch]);
-
 
   return (
     <div>

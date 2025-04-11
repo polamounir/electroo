@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { registerNewSupplier } from "../../api/user";
+// import {  } from "../../api/user";
 const initialState = {
   supplierRegisterationData: {
     fullName: "",
@@ -21,10 +22,11 @@ const initialState = {
 };
 
 export const registerSupplier = createAsyncThunk(
-  "supplier/registerSupplier",
+  "auth/registerUser",
   async (userData) => {
     try {
       const response = await registerNewSupplier(userData);
+
       return response;
     } catch (error) {
       return error.response.data;
@@ -90,13 +92,9 @@ const supplierSlice = createSlice({
       })
       .addCase(registerSupplier.fulfilled, (state) => {
         state.isLoading = false;
-        state.isSuccess = true;
-        state.isError = false;
       })
       .addCase(registerSupplier.rejected, (state) => {
         state.isLoading = false;
-        state.isError = true;
-        state.isSuccess = false;
       });
   },
 });

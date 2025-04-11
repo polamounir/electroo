@@ -1,18 +1,49 @@
 import { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaTimes } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import uploadImage from "../../assets/images/upload.svg";
 import cam from "../../assets/images/cam.svg";
 import { useNavigate } from "react-router-dom";
-import { setSupplierIdBack, updatesupplierRegisterationProgress } from "../../app/slices/supplierSLice";
+import {
+  setSupplierIdBack,
+  updatesupplierRegisterationProgress,
+} from "../../app/slices/supplierSLice";
 import { toast } from "sonner";
 
 export default function SupplierNationalIdBack() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const supplierdata = useSelector(
+    (state) => state.supplier.supplierRegisterationData
+  );
+  const {
+    fullName,
+    email,
+    phoneNumber,
+    businessName,
+    storeName,
+    taxNumber,
+    nationalId,
+    nationalIdFront,
+    password,
+  } = supplierdata;
+  useEffect(() => {
+    if (!fullName || !email || !phoneNumber || !password) {
+      toast.error("رجاء إكمال بيانات المورد");
+      navigate("/supplier-register/base");
+      return;
+    } else if (!businessName || !storeName || !taxNumber || !nationalId) {
+      toast.error("رجال إكمال بيانات المورد");
+      navigate("/supplier-register/business");
+      return;
+    } else if (!nationalIdFront) {
+      toast.error("رجاء إكمال بيانات المورد");
+      navigate("/supplier-register/nidf");
+      return;
+    }
+  }, []);
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 
@@ -29,7 +60,6 @@ export default function SupplierNationalIdBack() {
       const previewUrl = URL.createObjectURL(image);
       setImagePreview(previewUrl);
 
-   
       dispatch(setSupplierIdBack(image));
     },
     [dispatch]
@@ -38,7 +68,7 @@ export default function SupplierNationalIdBack() {
   const handleDelete = () => {
     setImageFile(null);
     setImagePreview(null);
-    dispatch(setSupplierIdBack(null)); 
+    dispatch(setSupplierIdBack(null));
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -57,7 +87,7 @@ export default function SupplierNationalIdBack() {
   };
 
   const handleBack = () => {
-    navigate("/supplier-register/nidb");
+    navigate("/supplier-register/nidf");
   };
 
   useEffect(() => {
@@ -138,4 +168,3 @@ export default function SupplierNationalIdBack() {
     </div>
   );
 }
-

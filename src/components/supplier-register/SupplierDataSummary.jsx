@@ -1,9 +1,13 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { registerNewSupplier } from "../../api/user";
-import { updatesupplierRegisterationProgress } from "../../app/slices/supplierSLice";
+// import { registerNewSupplier } from "../../api/user";
+import {
+  registerSupplier,
+  updatesupplierRegisterationProgress,
+} from "../../app/slices/supplierSLice";
+// import { registerNewSupplier } from "../../api/user";
 
 export default function SupplierDataSummary() {
   const navigate = useNavigate();
@@ -11,9 +15,9 @@ export default function SupplierDataSummary() {
   const supplierdata = useSelector(
     (state) => state.supplier.supplierRegisterationData
   );
-  //   const { isLoading, isError, isSuccess } = useSelector(
-  //     (state) => state.supplier
-  //   );
+  const { isLoading } = useSelector(
+    (state) => state.supplier
+  );
 
   const {
     fullName,
@@ -29,29 +33,28 @@ export default function SupplierDataSummary() {
     taxCard,
   } = supplierdata;
 
-  // State to hold the generated image URLs
+  useEffect(() => {
+    if (!fullName || !email || !phoneNumber || !password) {
+      toast.error("رجاء إكمال بيانات المورد");
+      navigate("/supplier-register/base");
+      return;
+    } else if (!businessName || !storeName || !taxNumber || !nationalId) {
+      toast.error("رجال إكمال بيانات المورد");
+      navigate("/supplier-register/business");
+      return;
+    } else if (!nationalIdFront || !nationalIdBack || !taxCard) {
+      toast.error("رجاء إكمال بيانات المورد");
+      navigate("/supplier-register/nidf");
+      return;
+    }
+  }, []);
+
   const [imageUrls, setImageUrls] = useState({
     nationalIdFrontUrl: null,
     nationalIdBackUrl: null,
     taxCardUrl: null,
   });
 
-  useEffect(() => {
-    // Check if all required documents are uploaded
-    if (!fullName || !email || !phoneNumber || !password) {
-      toast.error("3رجاء إكمال بيانات المورد");
-      navigate("/supplier-register/base");
-      return;
-    } else if (!businessName || !storeName || !taxNumber || !nationalId) {
-      toast.error("2 رجال إكمال بيانات المورد");
-      navigate("/supplier-register/business");
-      return;
-    } else if (!nationalIdFront || !nationalIdBack || !taxCard) {
-      toast.error("1رجاء إكمال بيانات المورد");
-      navigate("/supplier-register/nidf");
-      return;
-    }
-  } ,[]);
   useEffect(() => {
     if (nationalIdFront) {
       setImageUrls((prev) => ({
@@ -88,7 +91,25 @@ export default function SupplierDataSummary() {
   }, [nationalIdFront, nationalIdBack, taxCard]);
 
   const handleConfirm = async () => {
-    dispatch(registerNewSupplier(supplierdata));
+    try {
+      const res = await dispatch(registerSupplier(supplierdata)).unwrap();
+      console.log(res);
+      if (res.data.status === "Successful") {
+        toast.success("تم تسجيل حسابك بنجاح");
+        navigate("/confirm-account");
+        return
+      }
+      if (res.title == "UserAlreadyExistsException") {
+        toast.error(
+          "البريد الإلكتروني مستخدم بالفعل. يمكنك إعادة تعيين كلمة المرور."
+        );
+      }
+
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+      toast.error("برجاء المحاولة في وقت لاحف");
+    }
   };
   const handleEdit = () => {
     navigate("/supplier-register/base");
@@ -98,7 +119,7 @@ export default function SupplierDataSummary() {
     dispatch(updatesupplierRegisterationProgress(90));
   }, [dispatch]);
   return (
-    <div className=" mt-8 p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg border border-gray-200">
+    <div className=" mt-8 md:p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg border border-gray-200">
       {/* Header Section */}
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-teal-600 mb-2">{fullName}</h1>
@@ -193,16 +214,24 @@ export default function SupplierDataSummary() {
       </div>
 
       {/*  confirm all data */}
-      <div className="text-center mt-8 flex justify-between">
+      <div className="p-2 sm:p-0 gap-3 text-center mt-8 flex flex-col sm:flex-row justify-between">
         <button
-          className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition duration-300"
+          className="bg-teal-600 disabled:bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition duration-300"
           onClick={handleConfirm}
+          disabled={isLoading}
         >
-          تأكيد البيانات
+          {isLoading ? (
+            <div className="flex items-center justify-center h-full">
+             "جاري التسجيل"
+            </div>
+          ) : (
+            "تأكيد البيانات"
+          )}
         </button>
         <button
-          className="bg-white text-black px-6 py-3 rounded-lg hover:bg-teal-700 transition duration-300"
+          className="bg-white shadow text-black px-6 py-3 rounded-lg hover:bg-gray-300 transition duration-300"
           onClick={handleEdit}
+          disabled={isLoading}
         >
           تعديل البيانات
         </button>
