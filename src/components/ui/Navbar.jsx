@@ -32,7 +32,7 @@ export default function Navbar() {
     },
   ];
   return (
-    <div>
+    <div className=" border-b border-gray-400 shadow-md">
       <div className="p-5 w-full md:w-[85%] mx-auto">
         <div className="flex justify-between gap-10">
           <div className="flex items-center gap-5">
