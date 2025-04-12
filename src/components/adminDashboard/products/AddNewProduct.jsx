@@ -73,7 +73,14 @@ export default function AddNewProduct() {
 
   const handleTagAdd = (e) => {
     const tag = formData.tagsInput;
-    if ((e.key === "Enter" || e.key === ",") && tag) {
+    if (
+      (e.key === "Enter" ||
+        e.key === "," ||
+        e.key == " " ||
+        e.code == "Space" ||
+        e.keyCode == 32) &&
+      tag
+    ) {
       e.preventDefault();
       setFormData((prev) => ({
         ...prev,
