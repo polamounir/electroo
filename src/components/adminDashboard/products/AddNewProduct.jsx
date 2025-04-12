@@ -40,6 +40,7 @@ export default function AddNewProduct() {
     },
   });
 
+  console.log(categories);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -243,7 +244,7 @@ export default function AddNewProduct() {
           onChange={handleChange}
           value={formData.categoryId}
           className="w-full border outline-none border-gray-300 rounded-md shadow p-3"
-          // required
+          required
         >
           <option value="">أختار فئة المنتج </option>
           {categories && categories.length > 0 ? (
