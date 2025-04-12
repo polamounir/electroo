@@ -21,12 +21,17 @@ const initialState = {
   isSuccess: false,
 };
 
+const saveUserData = (userId, userName) => {
+  localStorage.setItem("userId", userId);
+  localStorage.setItem("email", userName);
+};
 export const registerSupplier = createAsyncThunk(
   "auth/registerUser",
   async (userData) => {
     try {
       const response = await registerNewSupplier(userData);
-
+      const { userId, userName } = response.data.data;
+      saveUserData(userId, userName);
       return response;
     } catch (error) {
       return error.response.data;

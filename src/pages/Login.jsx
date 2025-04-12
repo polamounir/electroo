@@ -9,7 +9,7 @@ export default function Login() {
   const navigate = useNavigate();
   const { loading } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const handleChange = (e) => {
@@ -21,8 +21,8 @@ export default function Login() {
   };
 
   const formValidation = () => {
-    const { username, password } = formData;
-    if (!username || !password) {
+    const { email, password } = formData;
+    if (!email || !password) {
       toast.error("يرجى ملئ جميع الحقول");
       return false;
     }
@@ -41,8 +41,11 @@ export default function Login() {
       if (res === "Successful") {
         toast.success("تم تسجيل حسابك بنجاح");
         navigate("/");
-      } else if (res.detail === "Wrong username or password") {
+      } else if (res.detail === "Wrong email or password") {
         toast.error("اسم المستخدم أو كلمة المرور غير صحيحة");
+      } else if (res.title === "EmailNotConfirmedException") {
+        
+        navigate("/confirm-account");
       } else {
         toast.error(" برجاء المحاولة في وقت لاحق");
       }
@@ -69,16 +72,13 @@ export default function Login() {
                 <div className="flex flex-col gap-5">
                   <div className="flex gap-5">
                     <div className="w-full flex flex-col gap-1 ">
-                      <label
-                        htmlFor="username"
-                        className="text-lg font-semibold"
-                      >
+                      <label htmlFor="email" className="text-lg font-semibold">
                         البريد الالكتروني
                       </label>
                       <input
                         type="email"
-                        name="username"
-                        id="username"
+                        name="email"
+                        id="email"
                         className="w-full bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
                         onChange={handleChange}
                         placeholder="email@email.com"

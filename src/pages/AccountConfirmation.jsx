@@ -19,10 +19,10 @@ export default function AccountConfirmation() {
       if (response.isSuccess) {
         toast.success("تم تأكيد الحساب بنجاح");
         navigate("/login");
-        console.log(response.data.data);
+        // console.log(response.data.data);
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       if (error.response.data.detail === "User email is already confirmed") {
         toast.info("تم تأكيد الحساب بالفعل. يمكنك تسجيل الدخول");
         navigate("/login");
@@ -45,9 +45,9 @@ export default function AccountConfirmation() {
               stroke="currentColor"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>

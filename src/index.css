@@ -11,11 +11,11 @@
   --color-accent: #b31312;
 }
 
-.ar-font-m {
+.ar-font-m  {
   font-family: "Marhey", sans-serif;
   font-optical-sizing: auto;
 }
-.ar-font-s {
+.ar-font-s , .title {
   font-family: "Lalezar", system-ui;
   font-optical-sizing: auto;
 }
