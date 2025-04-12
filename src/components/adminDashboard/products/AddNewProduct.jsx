@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+
 import { uploadProduct } from "../../../api/admin";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { toast } from "sonner";
 
 export default function AddNewProduct() {
   const [formData, setFormData] = useState({
@@ -14,10 +15,12 @@ export default function AddNewProduct() {
     tags: [],
     brand: "",
     description: "",
-    categoryId: uuidv4(),
+    categoryId: "",
     images: [],
-    productOptions: [{ name: "", value: "" }],
+    productOptions: [{ optionGroupName: "", optionName: "", optionPrice: 1 }],
   });
+
+  const [imagesPreview, setImagesPreview] = useState([]);
 
   const { data: categories } = useQuery({
     queryKey: ["addcategories"],
@@ -29,7 +32,6 @@ export default function AddNewProduct() {
 
       try {
         const { data } = await axios.request(options);
-        // console.log(data);
         return data.data.items || [];
       } catch (error) {
         console.error(error);
@@ -38,7 +40,6 @@ export default function AddNewProduct() {
     },
   });
 
-  const [imagesPreview, setImagesPreview] = useState([]);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -48,19 +49,17 @@ export default function AddNewProduct() {
   };
 
   const handleImageChange = (e) => {
-    const { files } = e.target;
-    const fileArray = Array.from(files).map(
-      (file) =>
-        // URL.createObjectURL(file)
-        file
-    );
-    const previewArray = Array.from(files).map((file) =>
-      URL.createObjectURL(file)
-    );
-    setImagesPreview(previewArray);
+    const newFiles = Array.from(e.target.files || e.dataTransfer.files);
+    const updatedImages = [...formData.images, ...newFiles].slice(0, 5);
+    const updatedPreviews = [
+      ...imagesPreview,
+      ...newFiles.map((file) => URL.createObjectURL(file)),
+    ].slice(0, 5);
+
+    setImagesPreview(updatedPreviews);
     setFormData((prev) => ({
       ...prev,
-      images: fileArray,
+      images: updatedImages,
     }));
   };
 
@@ -100,7 +99,10 @@ export default function AddNewProduct() {
   const addProductOption = () => {
     setFormData((prev) => ({
       ...prev,
-      productOptions: [...prev.productOptions, { name: "", value: "" }],
+      productOptions: [
+        ...prev.productOptions,
+        { optionGroupName: "", optionName: "", optionPrice: 1 },
+      ],
     }));
   };
 
@@ -119,15 +121,21 @@ export default function AddNewProduct() {
     try {
       const res = await uploadProduct(finalData);
       console.log(res);
+      if (res.data.isSuccess) {
+        toast.success("تم إضافة المنتج");
+      } else {
+        toast.error("تحقق من بيانات المنتج و حاول مجددا");
+      }
     } catch (error) {
       console.log(error);
+      toast.error("فشل اضافة المنتج");
     }
 
     console.log("Submitted Data:", finalData);
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-8">
+    <div className="p-0">
       <h2 className="text-2xl font-semibold mb-6">اضافة منتج جديد</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
@@ -141,7 +149,7 @@ export default function AddNewProduct() {
         <input
           name="price"
           type="number"
-          step="0.01"
+          min={1}
           placeholder="سعر المنتح"
           value={formData.price}
           onChange={handleChange}
@@ -151,6 +159,7 @@ export default function AddNewProduct() {
         <input
           name="discountPercentage"
           type="number"
+          min={0}
           placeholder="خصم % "
           value={formData.discountPercentage}
           onChange={handleChange}
@@ -160,6 +169,7 @@ export default function AddNewProduct() {
         <input
           name="stock"
           type="number"
+          min={1}
           placeholder="الكمية"
           value={formData.stock}
           onChange={handleChange}
@@ -224,8 +234,9 @@ export default function AddNewProduct() {
           onChange={handleChange}
           value={formData.categoryId}
           className="w-full border outline-none border-gray-300 rounded-md shadow p-3"
-          required
+          // required
         >
+          <option value="">أختار فئة المنتج </option>
           {categories && categories.length > 0 ? (
             categories.map((category) => (
               <option key={category.id} value={category.id}>
@@ -237,16 +248,33 @@ export default function AddNewProduct() {
           )}
         </select>
 
-        <div className="border border-gray-300 rounded-md shadow p-3">
+        <div
+          className="border border-gray-300 rounded-md shadow p-3"
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={(e) => {
+            e.preventDefault();
+            handleImageChange(e);
+          }}
+        >
           <label className="block mb-2 font-medium">صور للمنتج :</label>
           <input
             type="file"
             multiple
             accept="image/*"
             onChange={handleImageChange}
+            disabled={formData.images.length >= 5}
             className="block w-full"
             required
           />
+          <p className="text-sm text-gray-500 mt-1">
+            أو قم بسحب وإفلات الصور هنا (بحد أقصى 5 صور)
+          </p>
+          {formData.images.length >= 5 && (
+            <p className="text-red-500 text-sm mt-1">
+              لا يمكنك رفع أكثر من 5 صور.
+            </p>
+          )}
+
           <div className="flex gap-3 mt-4 flex-wrap">
             {imagesPreview.map((src, i) => (
               <div key={i} className="relative">
@@ -257,12 +285,15 @@ export default function AddNewProduct() {
                 />
                 <button
                   type="button"
-                  onClick={() =>
+                  onClick={() => {
                     setFormData((prev) => ({
                       ...prev,
                       images: prev.images.filter((_, idx) => idx !== i),
-                    }))
-                  }
+                    }));
+                    setImagesPreview((prev) =>
+                      prev.filter((_, idx) => idx !== i)
+                    );
+                  }}
                   className="absolute top-0 right-0 text-red-500 text-xl"
                 >
                   ×
@@ -272,24 +303,43 @@ export default function AddNewProduct() {
           </div>
         </div>
 
-        {/* Product Options */}
         <div>
           <h4 className="text-lg font-semibold mt-6 mb-2">خصائص المنتج</h4>
           {formData.productOptions.map((option, index) => (
-            <div key={index} className="flex flex-col border-b py-2 lg:border-0 lg:flex-row gap-4 mb-2">
+            <div
+              key={index}
+              className="flex flex-col border-b py-2 lg:border-0 lg:flex-row gap-4 mb-2"
+            >
               <input
-                placeholder="اسم الخاصية"
-                value={option.name}
+                placeholder="اسم المجموعة"
+                value={option.optionGroupName}
                 onChange={(e) =>
-                  handleProductOptionChange(index, "name", e.target.value)
+                  handleProductOptionChange(
+                    index,
+                    "optionGroupName",
+                    e.target.value
+                  )
                 }
                 className="flex-1 border border-gray-300 rounded-md shadow p-2"
               />
               <input
-                placeholder="تفاصيل الخاصية"
-                value={option.value}
+                placeholder="اسم الخاصية"
+                value={option.optionName}
                 onChange={(e) =>
-                  handleProductOptionChange(index, "value", e.target.value)
+                  handleProductOptionChange(index, "optionName", e.target.value)
+                }
+                className="flex-1 border border-gray-300 rounded-md shadow p-2"
+              />
+              <input
+                type="number"
+                placeholder="قيمة الخاصية"
+                value={option.optionPrice}
+                onChange={(e) =>
+                  handleProductOptionChange(
+                    index,
+                    "optionPrice",
+                    e.target.value
+                  )
                 }
                 className="flex-1 border border-gray-300 rounded-md shadow p-2"
               />

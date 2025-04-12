@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const uploadProduct = async (productData) => {
-  console.log(productData);
+  console.log(productData.productOptions);
 
   const formData = new FormData();
 
@@ -15,8 +15,21 @@ export const uploadProduct = async (productData) => {
   formData.append("tags", productData.tags);
   formData.append("title", productData.title);
 
-  productData.productOptions.forEach((option) => {
-    formData.append("productOptions[]", JSON.stringify(option));
+  productData.productOptions.forEach((option , index) => {
+    formData.append(
+      `productOptions[${index}].optionGroupName`,
+      option.optionGroupName
+    );
+    
+    formData.append(
+      `productOptions[${index}].optionName`,
+      option.optionName
+    );
+    formData.append(
+      `productOptions[${index}].optionPrice`,
+      option.optionPrice
+    );
+
   });
 
   productData.images.forEach((image, index) => {
@@ -40,9 +53,11 @@ export const uploadProduct = async (productData) => {
   try {
     const { data } = await axios.request(options);
     console.log(data);
+    return data
   } catch (error) {
     if (error.response) {
       console.error("Error response:", error.response.data);
+
     } else if (error.request) {
       console.error("Error request:", error.request);
     } else {

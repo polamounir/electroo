@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 
 export default function ProductsLayout() {
   return (
-    <div className="border border-gray-300 p-10 rounded-xl shadow-xl">
+    <div className="border border-gray-300 p-2 md:p-10  rounded-xl shadow-xl">
       <Outlet />
     </div>
   );
