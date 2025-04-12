@@ -78,7 +78,7 @@ export default function AddNewProduct() {
         e.key === "," ||
         e.key == " " ||
         e.code == "Space" ||
-        e.keyCode == 32) &&
+        e.keyCode == 32 || e.keyCode == 9|| e.code =="Tab" ) &&
       tag
     ) {
       e.preventDefault();
