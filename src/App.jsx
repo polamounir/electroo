@@ -3,6 +3,7 @@ import "./App.css";
 import AppRoutes from "./router/AppRoutes";
 import store from "./app/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ChatBot from "./components/ChatBot";
 
 const queryClient = new QueryClient();
 function App() {
@@ -10,6 +11,7 @@ function App() {
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <AppRoutes />
+        <ChatBot />
       </QueryClientProvider>
     </Provider>
   );
