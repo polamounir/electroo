@@ -1,28 +1,62 @@
 import { useState, useRef, useEffect } from "react";
+import {
+  onMessageReceived,
+  sendMessage,
+  startConnection,
+  stopConnection,
+} from "../services/signalr";
 
 export default function Contactus() {
   const [messages, setMessages] = useState([
     { text: "مرحبًا! كيف يمكنني مساعدتك اليوم؟", fromMe: false },
   ]);
   const [message, setMessage] = useState("");
+  const [rId, setRId] = useState("");
+  const chatContainerRef = useRef(null);
   const chatEndRef = useRef(null);
 
-  const handleSend = () => {
+  useEffect(() => {
+    const init = async () => {
+      await startConnection();
+      onMessageReceived((id, message) => {
+        console.log(id, message);
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { text: message, fromMe: false },
+        ]);
+      });
+    };
+
+    init();
+    return () => {
+      stopConnection();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      const container = chatContainerRef.current;
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [messages]);
+
+  const handleSend = async () => {
     if (message.trim()) {
+      const res = await sendMessage(message, rId);
+      console.log(res);
       setMessages([...messages, { text: message, fromMe: true }]);
       setMessage("");
     }
   };
 
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
   return (
-    <div className=" w-full flex items-center justify-center">
-      <div className="w-full min-h-[75dvh] h-full bg-white shadow-lg rounded-lg flex flex-col overflow-hidden border border-gray-200">
+    <div className="w-full py-10 flex items-center justify-center">
+      <div className="w-md  bg-white shadow-lg rounded-lg flex flex-col overflow-hidden border border-gray-200">
         {/* Header */}
-        {/* <div className="flex items-center p-4 border-b border-gray-400 bg-teal-500 text-white">
+        <div className="flex items-center p-4 border-b border-gray-400 bg-teal-500 text-white">
           <img
             src="https://cdn-icons-png.flaticon.com/512/4017/4017991.png"
             alt="Agent"
@@ -32,10 +66,13 @@ export default function Contactus() {
             <div className="font-semibold">خدمة العملاء</div>
             <div className="text-sm text-white/80">متصل الآن</div>
           </div>
-        </div> */}
+        </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50 text-right">
+        <div
+          ref={chatContainerRef}
+          className="flex-1  overflow-y-auto p-4 space-y-3 bg-blue-50 text-right scroll-smooth"
+        >
           {messages.map((msg, idx) => (
             <div
               key={idx}
@@ -71,6 +108,17 @@ export default function Contactus() {
           >
             إرسال
           </button>
+        </div>
+
+        {/* Receiver ID Input */}
+        <div className="p-4 border-t border-gray-400 bg-white">
+          <input
+            type="text"
+            value={rId}
+            onChange={(e) => setRId(e.target.value)}
+            placeholder="Enter Receiver ID..."
+            className="w-full px-4 py-2 border border-gray-400 rounded-full focus:outline-none focus:ring-2 focus:ring-teal-400"
+          />
         </div>
       </div>
     </div>

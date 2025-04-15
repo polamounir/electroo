@@ -3,15 +3,16 @@ import "./App.css";
 import AppRoutes from "./router/AppRoutes";
 import store from "./app/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import ChatBot from "./components/ChatBot";
+import FloatingChatMenu from "./components/ui/FloatingChatMenu";
 
 const queryClient = new QueryClient();
+
 function App() {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <AppRoutes />
-        <ChatBot />
+        <FloatingChatMenu />
       </QueryClientProvider>
     </Provider>
   );
