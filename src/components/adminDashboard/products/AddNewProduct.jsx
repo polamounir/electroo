@@ -255,6 +255,7 @@ export default function AddNewProduct() {
             ))
           ) : (
             <option disabled>No categories available.</option>
+            
           )}
         </select>
 

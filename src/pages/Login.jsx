@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -12,6 +12,15 @@ export default function Login() {
     email: "",
     password: "",
   });
+
+    const user = useSelector((state) => state.auth.user);
+    useEffect(() => {
+      if (user) {
+        toast.error("تم تسجيل الدخول بالفعل");
+        navigate("/");
+      }
+    }, [navigate]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({

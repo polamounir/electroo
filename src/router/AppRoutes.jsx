@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import Loader from "../components/ui/Loader";
 
 import AppInit from "../components/ui/AppInit";
@@ -25,6 +26,11 @@ import ProductsOverview from "../components/adminDashboard/products/ProductsOver
 import Cart from "../pages/Cart";
 import ProductsLayout from "../components/adminDashboard/products/ProductsLayout";
 import AddNewProduct from "../components/adminDashboard/products/AddNewProduct";
+import ProtectedRoutes from "./ProtectedRoutes";
+import Checkout from "../pages/Checkout";
+import Profile from "../pages/Profile";
+import PageNotFound from "../pages/PageNotFound";
+import Contactus from "../pages/Contactus";
 
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
@@ -36,19 +42,31 @@ const AppRoutes = () => {
   return (
     <Router>
       <AppInit />
-      <Toaster position="top-left" richColors={true} />
+      <Toaster
+        position="top-left"
+        richColors={true}
+        closeButton={true}
+        visibleToasts={2}
+      />
       <Suspense fallback={<Loader />}>
         <Routes>
-          {/* Public / Main App Layout */}
+          {/* Main App Layout */}
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="supplier" element={<Suppliers />} />
-            <Route path="upload" element={<Upload />} />
-            <Route path="confirm-account" element={<AccountConfirmation />} />
-            <Route path="supplier-register" element={<SupplierRegisteration />}>
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/supplier" element={<Suppliers />} />
+            <Route path="/upload" element={<Upload />} />
+            <Route path="/confirm-account" element={<AccountConfirmation />} />
+            <Route path="/contact" element={<Contactus />} />
+
+            <Route
+              path="/supplier-register"
+              element={<SupplierRegisteration />}
+            >
               <Route index element={<BasicData />} />
               <Route path="base" element={<BasicData />} />
               <Route path="business" element={<BusinessData />} />
@@ -60,9 +78,18 @@ const AppRoutes = () => {
                 element={<SupplierDataSummary />}
               />
             </Route>
+            <Route path="/*" element={<PageNotFound />} />
           </Route>
-
-          {/* Admin Layout */}
+          {/* Admin Layout  */}
+          {/* 
+           <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoutes>
+                <AdminLayout />
+              </ProtectedRoutes>
+            }
+          > */}
           <Route path="/dashboard" element={<AdminLayout />}>
             <Route index element={<MainOverview />} />
             <Route path="products" element={<ProductsLayout />}>

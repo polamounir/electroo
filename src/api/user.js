@@ -1,5 +1,6 @@
 import { api } from "./axiosInstance";
 
+import Cookies from "js-cookie";
 export const registerNewUser = async (userData) => {
   const response = await api.post("/auth/register", userData);
   return response.data;
@@ -20,25 +21,24 @@ export const getUserDataFn = async () => {
   return response.data;
 };
 // ---------------------------------------
-export const checkUserExistance = async (email , phoneNumber) => {
-
-  const {data} = await api.post("/auth/validate-data", {
+export const checkUserExistance = async (email, phoneNumber) => {
+  const { data } = await api.post("/auth/validate-data", {
     email: email,
     phoneNumber: phoneNumber,
   });
   console.log(data.data);
-  const {emailRegisterd, phoneRegisterd} = data.data;
+  const { emailRegisterd, phoneRegisterd } = data.data;
   if (emailRegisterd || phoneRegisterd) {
     // console.log("User already exists");
     return true;
-  }else {
+  } else {
     // console.log("User does not exist");
     return false;
   }
 };
 
 const reformSupplierData = (userData) => {
-  // console.log("Reformatted user data:", userData); 
+  // console.log("Reformatted user data:", userData);
 
   const formData = new FormData();
 
@@ -63,9 +63,8 @@ const reformSupplierData = (userData) => {
     formData.append("taxCard", userData.taxCard);
   }
 
-
   // for (let pair of formData.entries()) {
-  //   console.log(pair[0] + ": " + pair[1]); 
+  //   console.log(pair[0] + ": " + pair[1]);
   // }
 
   return formData;
@@ -73,8 +72,8 @@ const reformSupplierData = (userData) => {
 
 export const registerNewSupplier = async (userData) => {
   try {
-    const reformattedData = reformSupplierData(userData); 
-    // console.log(reformattedData); 
+    const reformattedData = reformSupplierData(userData);
+    // console.log(reformattedData);
 
     const response = await api.post(
       "/auth/register-supplier",
@@ -86,10 +85,34 @@ export const registerNewSupplier = async (userData) => {
       }
     );
 
-    console.log("Registration response:", response);
+    // console.log("Registration response:", response);
     return response;
   } catch (error) {
     console.log("Error registering new supplier:", error);
     throw error;
   }
+};
+
+export const addAddress = async (address) => {
+  // console.log(address);
+
+  try {
+    const res = await api.post("/addresses", address);
+    // console.log(data);
+    return res;
+  } catch (error) {
+    if (error) {
+      console.error(error);
+      return error.response;
+    }
+  }
+};
+
+export const logoutUser = async () => {
+  Cookies.remove("accessToken");
+  Cookies.remove("email");
+  localStorage.removeItem("cartId");
+  localStorage.removeItem("userId");
+  localStorage.removeItem("email");
+  window.location.href = "/";
 };

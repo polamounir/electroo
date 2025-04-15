@@ -13,6 +13,7 @@ const initialState = {
     nationalIdFront: null,
     nationalIdBack: null,
     taxCard: null,
+    governorate: "",
     nationalId: "",
   },
   progress: 0,
@@ -51,13 +52,15 @@ const supplierSlice = createSlice({
     },
 
     setSupplierBasicData: (state, action) => {
-      const { fullName, email, password, phoneNumber } = action.payload;
-      //   console.log(fullName, email, password, phoneNumber);
+      const { fullName, email, password, phoneNumber, governorate } =
+        action.payload;
+        console.log(fullName, email, password, phoneNumber, governorate);
       state.supplierRegisterationData.fullName = fullName;
       state.supplierRegisterationData.email = email;
       state.supplierRegisterationData.password = password;
       state.supplierRegisterationData.phoneNumber = phoneNumber;
-      //   console.log(state.supplierRegisterationData);
+      state.supplierRegisterationData.governorate = governorate;
+        console.log(state.supplierRegisterationData);
     },
     setSupplierBusinessData: (state, action) => {
       const { businessName, storeName, taxNumber, nationalId } = action.payload;

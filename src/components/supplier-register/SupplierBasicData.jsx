@@ -25,6 +25,7 @@ export default function BasicData() {
     phoneNumber: supplierdata.phoneNumber || "",
     email: supplierdata.email || "",
     password: "",
+    governorate:"",
   });
   const handleChange = (e) => {
     e.preventDefault();
@@ -90,6 +91,39 @@ export default function BasicData() {
   //     handleSubmit();
   //   }
   // };
+
+
+const governorates = [
+  { name: "Alexandria", title: "الإسكندرية" },
+  { name: "Aswan", title: "أسوان" },
+  { name: "Asyut", title: "أسيوط" },
+  { name: "Beheira", title: "البحيرة" },
+  { name: "BeniSuef", title: "بني سويف" },
+  { name: "Cairo", title: "القاهرة" },
+  { name: "Dakahlia", title: "الدقهلية" },
+  { name: "Damietta", title: "دمياط" },
+  { name: "Fayoum", title: "الفيوم" },
+  { name: "Gharbia", title: "الغربية" },
+  { name: "Giza", title: "الجيزة" },
+  { name: "Ismailia", title: "الإسماعيلية" },
+  { name: "KafrElSheikh", title: "كفر الشيخ" },
+  { name: "Luxor", title: "الأقصر" },
+  { name: "Matrouh", title: "مطروح" },
+  { name: "Minya", title: "المنيا" },
+  { name: "Monufia", title: "المنوفية" },
+  { name: "NewValley", title: "الوادي الجديد" },
+  { name: "NorthSinai", title: "شمال سيناء" },
+  { name: "PortSaid", title: "بورسعيد" },
+  { name: "Qalyubia", title: "القليوبية" },
+  { name: "Qena", title: "قنا" },
+  { name: "RedSea", title: "البحر الأحمر" },
+  { name: "Sharqia", title: "الشرقية" },
+  { name: "Sohag", title: "سوهاج" },
+  { name: "SouthSinai", title: "جنوب سيناء" },
+  { name: "Suez", title: "السويس" },
+];
+
+
   return (
     <div className="">
       <div className="flex flex-col-reverse items-center lg:flex-row justify-center gap-10 lg:gap-20 p-3 lg:p-5">
@@ -158,6 +192,26 @@ export default function BasicData() {
                       className="w-full bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
                       onChange={handleChange}
                     />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-3 md:flex-row justify-between md:gap-5">
+                  <div className="w-full">
+                    <label htmlFor="email">المحافظة</label>
+                    <select
+                      type="text"
+                      name="governorate"
+                      id="governorate"
+                      value={formData.governorate}
+                      
+                      className="w-full bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)] outline-none "
+                      onChange={handleChange}
+                    >
+                      <option  value="" className="text-grey-300">أختر المحافظة</option>
+
+                      {governorates.map((gov) => (
+                        <option key={gov.name} value={gov.name}>{gov.title}</option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               </div>

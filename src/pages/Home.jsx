@@ -14,7 +14,7 @@ export default function Home() {
       return data;
     },
   });
-  console.log(data);
+  // console.log(data);
 
   return (
     <div className="">

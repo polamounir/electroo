@@ -11,7 +11,7 @@ export default function Navbar() {
     setIsSidebarOpen(!isSidebarOpen);
   };
   const user = useSelector((state) => state.auth.user);
-  console.log(user);
+  // console.log(user);
 
   const links = [
     {
@@ -24,7 +24,7 @@ export default function Navbar() {
     },
     {
       name: "الموردين",
-      link: "/suppliers",
+      link: "/supplier",
     },
     {
       name: "تواصل معنا",
@@ -50,9 +50,9 @@ export default function Navbar() {
           <div>
             <div className="hidden lg:flex items-center gap-5">
               <div className="">
-                <button className="text-3xl">
+                <Link to="/cart" className="text-3xl" >
                   <IoCartOutline />
-                </button>
+                </Link>
               </div>
               <div>
                 {user ? (

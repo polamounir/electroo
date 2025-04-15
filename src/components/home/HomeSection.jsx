@@ -6,8 +6,8 @@ import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
 import { IoArrowBack } from "react-icons/io5";
 
-export default function DailyDeals({ title , products }) {
-  console.log(products);
+export default function DailyDeals({ title, products }) {
+  // console.log(products);
   const settings = {
     dots: false,
     infinite: true,
