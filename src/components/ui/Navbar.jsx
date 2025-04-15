@@ -24,7 +24,7 @@ export default function Navbar() {
     },
     {
       name: "الموردين",
-      link: "/suppliers",
+      link: "/supplier",
     },
     {
       name: "تواصل معنا",
