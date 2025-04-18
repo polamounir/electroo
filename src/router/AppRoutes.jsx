@@ -32,6 +32,7 @@ import Profile from "../pages/Profile";
 import PageNotFound from "../pages/PageNotFound";
 import Contactus from "../pages/Contactus";
 import LiveChat from "../pages/LiveChat";
+import Product from "../pages/Product";
 
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
@@ -64,6 +65,7 @@ const AppRoutes = () => {
             <Route path="/confirm-account" element={<AccountConfirmation />} />
             <Route path="/contact" element={<Contactus />} />
             <Route path="/live-chat" element={<LiveChat />} />
+            <Route path="/product/:id" element={<Product />} />
 
             <Route
               path="/supplier-register"

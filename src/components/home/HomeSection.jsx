@@ -35,9 +35,9 @@ export default function DailyDeals({ title, products }) {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2,
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          // initialSlide: 2,
         },
       },
       {
@@ -45,14 +45,14 @@ export default function DailyDeals({ title, products }) {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          initialSlide: 2,
+          // initialSlide: 2,
         },
       },
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
+          slidesToShow: 2,
+          slidesToScroll: 2,
         },
       },
     ],
@@ -97,7 +97,7 @@ export default function DailyDeals({ title, products }) {
         </div>
         <div className="flex justify-center mt-5 show-more-box">
           <Link
-            to=""
+            to={`/products?category=${title}`}
             className="bg-white px-20 py-2 rounded-full border border-gray-400 "
           >
             المزيد

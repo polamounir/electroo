@@ -1,4 +1,19 @@
+import { toast } from "sonner";
 import { api } from "./axiosInstance";
+
+// --------------------------------
+//  Product API Logic
+// --------------------------------
+
+export const getProductById = async (id) => {
+  const res = await api.get(`/products/${id}`);
+  console.log(res.data);
+  return res.data.data;
+};
+
+// --------------------------------
+//  Cart API Logic
+// --------------------------------
 
 export const addProductToCart = async (data) => {
   console.log(data);
@@ -7,10 +22,10 @@ export const addProductToCart = async (data) => {
       "https://ecommerce.zerobytetools.com/api/cart/add-to-cart",
       data
     );
-    console.log(res);
-    return res
+
+    return res;
   } catch (error) {
-    return error.response.data
+    return error.response.data;
   }
 };
 
@@ -121,7 +136,7 @@ export const fetchDeliveryMethods = async () => {
   }
 };
 export const validateCoupon = async (couponData) => {
-//   console.log(couponData);
+  //   console.log(couponData);
   try {
     const { data } = await api.post("/coupons/validate", couponData, {
       headers: {
