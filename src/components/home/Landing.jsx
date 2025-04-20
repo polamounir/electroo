@@ -17,12 +17,12 @@ export default function Landing() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-              {/* <Link
+              <Link
                 to={`/search?SearchQuery=${search}&Page=1&Limit=20`}
                 className="absolute top-0 bottom-0 end-0 w-15 text-3xl flex justify-center items-center text-red-400"
               >
                 <IoSearch className={search ? "text-teal-300" : ""} />
-              </Link> */}
+              </Link>
             </div>
           </div>
           <div className="w-full h-full flex justify-center flex-col gap-10 lg:gap-20 md:max-w-lg lg:ps-20 mt-5 lg:mt-10">
