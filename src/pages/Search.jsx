@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchSearchProducts } from "../api/product";
-import SearchProductsContainer from "../components/search/searchProductsContainer";
+import SearchProductsContainer from "../components/search/SearchProductsContainer";
 
 function Search() {
   const location = useLocation();
