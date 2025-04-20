@@ -33,6 +33,7 @@ import PageNotFound from "../pages/PageNotFound";
 import Contactus from "../pages/Contactus";
 import LiveChat from "../pages/LiveChat";
 import Product from "../pages/Product";
+import Search from "../pages/Search";
 
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
@@ -66,6 +67,7 @@ const AppRoutes = () => {
             <Route path="/contact" element={<Contactus />} />
             <Route path="/live-chat" element={<LiveChat />} />
             <Route path="/product/:id" element={<Product />} />
+            <Route path="/search" element={<Search />} />
 
             <Route
               path="/supplier-register"

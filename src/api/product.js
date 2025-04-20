@@ -1,4 +1,4 @@
-import { toast } from "sonner";
+// import { toast } from "sonner";
 import { api } from "./axiosInstance";
 
 // --------------------------------
@@ -11,6 +11,29 @@ export const getProductById = async (id) => {
   return res.data.data;
 };
 
+export const fetchSearchProducts = async (query) => {
+  try {
+    const response = await api.get(
+      "https://ecommerce.zerobytetools.com/api/products",
+      {
+        params: {
+          SearchQuery: query,
+          Page: 1,
+          Limit: 10,
+        },
+      }
+    );
+
+    const items = response.data?.data?.items;
+    console.log("Fetched Products:", items);
+    return items;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw new Error(
+      error.response?.data?.message || "Failed to fetch products"
+    );
+  }
+};
 // --------------------------------
 //  Cart API Logic
 // --------------------------------

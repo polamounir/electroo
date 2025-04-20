@@ -9,15 +9,17 @@ const initialState = {
   error: null,
 };
 const TOKEN_KEY = "accessToken";
+const REFRESH_TOKEN_KEY = "refreshToken";
 const EMAIL_KEY = "email";
 const USER_ID_KEY = "userId";
 const USER_NAME_KEY = "userName";
 const FULL_NAME_KEY = "fullName";
 
 // Helper functions for token management
-const saveAuthData = (token, email) => {
+const saveAuthData = (token, email, refreshToken) => {
   Cookies.set(TOKEN_KEY, token);
   Cookies.set(EMAIL_KEY, email);
+  Cookies.set(REFRESH_TOKEN_KEY, refreshToken);
 };
 const saveUserData = (userId, userName) => {
   localStorage.setItem("userId", userId);
@@ -45,9 +47,9 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await loginUserFn(userData);
       console.log(response);
-      const { accessToken, email } = response.data;
+      const { accessToken, email, refreshToken } = response.data;
 
-      saveAuthData(accessToken, email);
+      saveAuthData(accessToken, email, refreshToken);
       console.log(response.status);
       dispatch(getUserData());
       return response.status;

@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
 export default function Landing() {
+  const [search, setSearch] = useState("");
   return (
     <div className="h-[60dvh] lg:h-[90dvh] bg-gray-300 landing-section">
       <div className="w-full h-full bg-black/50">
@@ -12,9 +14,14 @@ export default function Landing() {
                 type="text"
                 placeholder="بحث ..."
                 className="bg-[var(--color-light-gray)] px-5 pe-20 py-2 rounded-full border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)] w-full"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
-              <Link to="/" className="absolute top-0 bottom-0 end-0 w-15 text-3xl flex justify-center items-center text-gray-400">
-                <IoSearch />
+              <Link
+                to={`/search?SearchQuery=${search}&Page=1&Limit=20`}
+                className="absolute top-0 bottom-0 end-0 w-15 text-3xl flex justify-center items-center text-gray-400"
+              >
+                <IoSearch className={search ? "text-teal-300" : ""} />
               </Link>
             </div>
           </div>

@@ -111,6 +111,7 @@ export const addAddress = async (address) => {
 export const logoutUser = async () => {
   Cookies.remove("accessToken");
   Cookies.remove("email");
+  Cookies.remove("refreshToken");
   localStorage.removeItem("cartId");
   localStorage.removeItem("userId");
   localStorage.removeItem("email");
