@@ -25,7 +25,7 @@ export default function DailyDeals({ title, products }) {
     arrows: false,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1400,
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
@@ -35,8 +35,8 @@ export default function DailyDeals({ title, products }) {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
+          slidesToShow: 2,
+          slidesToScroll: 2,
           // initialSlide: 2,
         },
       },

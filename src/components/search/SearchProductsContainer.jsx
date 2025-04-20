@@ -8,10 +8,13 @@ function ProductCard({ product, isRowView }) {
       }`}
     >
       <img
-        src={product.images?.[0] || "/fallback.jpg"}
+        src={
+          product.images?.[0] ||
+          "https://cdn.dribbble.com/userupload/21207141/file/original-af25d78fac8dc71b312d8b0bef78c93b.jpg"
+        }
         alt={product.title || "Product image"}
         className={`rounded-md object-cover ${
-          isRowView ? "w-full sm:w-48 h-48" : "w-full h-48"
+          isRowView ? "w-full sm:w-48 h-48 me-2" : "w-full h-56"
         }`}
         onError={(e) => {
           e.target.onerror = null;
@@ -21,7 +24,7 @@ function ProductCard({ product, isRowView }) {
       <div className="flex-1">
         <h3 className="text-lg font-semibold">{product.title}</h3>
         <p className="text-gray-600 text-sm mb-2">{product.description}</p>
-        <p className="text-blue-600 font-bold">${product.price}</p>
+        <p className="text-teal-600 font-bold">${product.price}</p>
       </div>
     </div>
   );
@@ -88,6 +91,54 @@ export default function SearchProductsContainer({ products }) {
         return "grid-cols-1";
     }
   };
+
+//   const demoProducts = [
+//     {
+//       id: 1,
+//       title: "Wireless Headphones",
+//       description:
+//         "High-quality noise cancelling headphones with Bluetooth connectivity.",
+//       price: 99.99,
+//       images: [],
+//     },
+//     {
+//       id: 2,
+//       title: "Smartwatch",
+//       description: "Track your fitness and receive notifications on the go.",
+//       price: 149.99,
+//       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
+//     },
+//     {
+//       id: 3,
+//       title: "Gaming Mouse",
+//       description: "Ergonomic mouse with customizable DPI and RGB lighting.",
+//       price: 49.99,
+//       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
+//     },
+//     {
+//       id: 4,
+//       title: "Mechanical Keyboard",
+//       description:
+//         "Durable mechanical keyboard with tactile switches and backlighting.",
+//       price: 89.99,
+//       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
+//     },
+//     {
+//       id: 5,
+//       title: "4K Monitor",
+//       description: "Ultra HD monitor with vibrant colors and sharp details.",
+//       price: 299.99,
+//       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
+//     },
+//     {
+//       id: 6,
+//       title: "Portable Speaker",
+//       description: "Compact speaker with powerful sound and long battery life.",
+//       price: 39.99,
+//       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
+//     },
+//   ];
+
 
   return (
     <div className="px-4 py-6">
