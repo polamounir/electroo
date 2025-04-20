@@ -19,7 +19,7 @@ export default function Landing() {
               />
               <Link
                 to={`/search?SearchQuery=${search}&Page=1&Limit=20`}
-                className="absolute top-0 bottom-0 end-0 w-15 text-3xl flex justify-center items-center text-gray-400"
+                className="absolute top-0 bottom-0 end-0 w-15 text-3xl flex justify-center items-center text-red-400"
               >
                 <IoSearch className={search ? "text-teal-300" : ""} />
               </Link>
