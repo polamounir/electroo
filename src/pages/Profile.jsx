@@ -24,7 +24,8 @@ function Profile() {
     toast.success("تم تسجيل الخروج بنجاح");
     navigate("/login");
   };
-
+  
+  // console.log("user", user);
   return (
     <div className="page">
       <div className="">

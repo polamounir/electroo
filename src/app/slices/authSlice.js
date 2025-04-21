@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getUserDataFn, loginUserFn, registerNewUser } from "../../api/user";
 import Cookies from "js-cookie";
+import { authService } from "../../api/axiosInstance";
 
 const initialState = {
   user: null,
@@ -72,7 +73,20 @@ export const getUserData = createAsyncThunk("auth/getUserData", async () => {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    setCredentials: (state, action) => {
+      const { accessToken, refreshToken, user } = action.payload;
+      state.accessToken = accessToken;
+      state.refreshToken = refreshToken;
+      if (user) state.user = user;
+      state.isAuthenticated = true;
+      state.error = null;
+    },
+    logOut: (state) => {
+      authService.logout();
+      return initialState;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
@@ -111,4 +125,5 @@ const authSlice = createSlice({
   },
 });
 
+export const { setCredentials, logOut } = authSlice.actions;  
 export default authSlice.reducer;

@@ -16,10 +16,10 @@ export default function Login() {
     const user = useSelector((state) => state.auth.user);
     useEffect(() => {
       if (user) {
-        toast.error("تم تسجيل الدخول بالفعل");
         navigate("/");
+        toast.error("تم تسجيل الدخول بالفعل");
       }
-    }, [navigate]);
+    }, [user ,navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

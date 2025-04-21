@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { IoSearch } from "react-icons/io5";
+import { RiMenuSearchLine } from "react-icons/ri";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function Landing() {
   const [search, setSearch] = useState("");
+  const user = useSelector((state) => state.auth.user);
   return (
     <div className="h-[60dvh] lg:h-[90dvh] bg-gray-300 landing-section">
       <div className="w-full h-full bg-black/50">
@@ -19,9 +22,24 @@ export default function Landing() {
               />
               <Link
                 to={`/search?SearchQuery=${search}&Page=1&Limit=20`}
-                className="absolute top-0 bottom-0 end-0 w-15 text-3xl flex justify-center items-center text-red-400"
+                className="absolute top-0 bottom-0 end-0 w-15 text-3xl flex justify-center items-center"
               >
-                <IoSearch className={search ? "text-teal-300" : ""} />
+                <div className="search-icon-container rounded-full flex justify-center items-center relative text-gray-500">
+                  <div
+                    className={`absolute text-3xl flex justify-center items-center search-icon ${
+                      search ? "" : "active"
+                    }`}
+                  >
+                    <IoSearch />
+                  </div>
+                  <div
+                    className={`absolute text-3xl flex justify-center items-center search-icon text-teal-600 ${
+                      search ? "active" : ""
+                    }`}
+                  >
+                    <RiMenuSearchLine />
+                  </div>
+                </div>
               </Link>
             </div>
           </div>
@@ -42,12 +60,15 @@ export default function Landing() {
               >
                 ابدأ التسوق
               </Link>
+              {
+                !user && (
               <Link
                 to="/login"
                 className="bg-white px-10 py-3 rounded-lg md:text-2xl text-[var(--color-primary)] font-semibold"
               >
                 تسجيل الدخول
-              </Link>
+                </Link>
+              )}
             </div>
           </div>
         </div>
