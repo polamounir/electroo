@@ -4,8 +4,12 @@ import { uploadProduct } from "../../../api/admin";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "sonner";
+import AddCategoryModel from "../../ui/addCategoryModel";
+import { useDispatch } from "react-redux";
+import { openCategoryModel } from "../../../app/slices/addCategoryModel";
 
 export default function AddNewProduct() {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     title: "",
     price: "",
@@ -144,8 +148,12 @@ export default function AddNewProduct() {
     console.log("Submitted Data:", finalData);
   };
 
+  const handleOpenCategoryModel = () => {
+    dispatch(openCategoryModel());
+  };
   return (
     <div className="p-0">
+      <AddCategoryModel />
       <h2 className="text-2xl font-semibold mb-6">اضافة منتج جديد</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
@@ -239,26 +247,33 @@ export default function AddNewProduct() {
           required
         />
 
-        <select
-          name="categoryId"
-          onChange={handleChange}
-          value={formData.categoryId}
-          className="w-full border outline-none border-gray-300 rounded-md shadow p-3"
-          required
-        >
-          <option value="">أختار فئة المنتج </option>
-          {categories && categories.length > 0 ? (
-            categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))
-          ) : (
-            <option disabled>No categories available.</option>
-            
-          )}
-        </select>
-
+        <div>
+          <select
+            name="categoryId"
+            onChange={handleChange}
+            value={formData.categoryId}
+            className="w-full border outline-none border-gray-300 rounded-md shadow p-3"
+            required
+          >
+            <option value="">أختار فئة المنتج </option>
+            {categories && categories.length > 0 ? (
+              categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))
+            ) : (
+              <option disabled>No categories available.</option>
+            )}
+          </select>
+          <button
+            type="button"
+            onClick={handleOpenCategoryModel}
+            className="text-teal-600 hover:underline"
+          >
+            أضف فئة جديدة
+          </button>
+        </div>
         <div
           className="border border-gray-300 rounded-md shadow p-3"
           onDragOver={(e) => e.preventDefault()}

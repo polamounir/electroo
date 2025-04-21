@@ -1,12 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { logoutUser } from "../api/user";
+import { useDispatch, useSelector } from "react-redux";
+// import { logoutUser } from "../api/user";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { logOut } from "../app/slices/authSlice";
 
 function Profile() {
   const navigate = useNavigate();
-  
+  const dispatch = useDispatch();
+
   const user = useSelector((state) => state.auth.user);
   useEffect(() => {
     if (!user) {
@@ -20,11 +22,9 @@ function Profile() {
   const lastName = name?.[1] || "ج";
 
   const handleLogout = () => {
-    logoutUser();
-    toast.success("تم تسجيل الخروج بنجاح");
-    navigate("/login");
+    dispatch(logOut());
   };
-  
+
   // console.log("user", user);
   return (
     <div className="page">
@@ -66,7 +66,9 @@ function Profile() {
               </div>
               <div className="flex flex-col">
                 <h2 className="text-xl font-bold">رقم الهاتف</h2>
-                <h3 className="text-lg font-medium ps-2">{user?.phoneNumber}</h3>
+                <h3 className="text-lg font-medium ps-2">
+                  {user?.phoneNumber}
+                </h3>
               </div>
             </div>
           </div>

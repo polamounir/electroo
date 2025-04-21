@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getUserDataFn, loginUserFn, registerNewUser } from "../../api/user";
 import Cookies from "js-cookie";
-import { authService } from "../../api/axiosInstance";
 
 const initialState = {
   user: null,
@@ -59,32 +58,38 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
-export const getUserData = createAsyncThunk("auth/getUserData", async () => {
-  try {
-    const response = await getUserDataFn();
-    // console.log(response);
+export const getUserData = createAsyncThunk(
+  "auth/getUserData",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getUserDataFn();
 
-    return response.data;
-  } catch (error) {
-    return error.response.data;
+      console.log(response);
+
+      return response.data;
+    } catch (error) {
+      // console.log(error);
+      rejectWithValue(error.response.data);
+    }
   }
-});
+);
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setCredentials: (state, action) => {
-      const { accessToken, refreshToken, user } = action.payload;
-      state.accessToken = accessToken;
-      state.refreshToken = refreshToken;
-      if (user) state.user = user;
-      state.isAuthenticated = true;
-      state.error = null;
-    },
     logOut: (state) => {
-      authService.logout();
-      return initialState;
+      state.user = null;
+      state.isAuthenticated = false;
+      state.loading = false;
+      state.error = null;
+      Cookies.remove(TOKEN_KEY);
+      Cookies.remove(REFRESH_TOKEN_KEY);
+      Cookies.remove(EMAIL_KEY);
+      localStorage.removeItem("cartId");
+      localStorage.removeItem("userId");
+      localStorage.removeItem("email");
+      window.location.href = "/";
     },
   },
   extraReducers: (builder) => {
@@ -125,5 +130,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, logOut } = authSlice.actions;  
+export const { logOut } = authSlice.actions;
 export default authSlice.reducer;
