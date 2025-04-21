@@ -137,6 +137,21 @@ export default function AddNewProduct() {
       console.log(res);
       if (res.data.isSuccess) {
         toast.success("تم إضافة المنتج");
+        setFormData({
+          title: "",
+          price: "",
+          discountPercentage: "",
+          stock: "",
+          sku: "",
+          tags: [],
+          brand: "",
+          description: "",
+          categoryId: "",
+          images: [],
+          productOptions: [
+            { optionGroupName: "", optionName: "", optionPrice: 1 },
+          ],
+        });
       } else {
         toast.error("تحقق من بيانات المنتج و حاول مجددا");
       }
