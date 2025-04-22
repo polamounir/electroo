@@ -1,13 +1,37 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
+import { startConversation } from "../../api/conversation";
+import { toast } from "sonner";
+
+// Async thunk
+export const startConversationThunk = createAsyncThunk(
+  "chat/startConversation",
+  async (data, { rejectWithValue , dispatch}) => {
+    try {
+      dispatch(setChatInfo(data));
+      const response = await startConversation(data);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data || { detail: "Something went wrong" }
+      );
+    }
+  }
+);
+
+// Initial state
 const initialState = {
   activeChat: null,
   isMenuOpen: false,
   supplierId: null,
   productId: null,
+  supplierName: null,
   productName: null,
+  loading: false,
 };
 
+// Slice
 const chatSlice = createSlice({
   name: "chat",
   initialState,
@@ -29,6 +53,7 @@ const chatSlice = createSlice({
     },
     closeChat: (state) => {
       state.activeChat = null;
+      state.isMenuOpen = false;
     },
     toggleMenu: (state) => {
       state.isMenuOpen = !state.isMenuOpen;
@@ -37,13 +62,37 @@ const chatSlice = createSlice({
       }
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(startConversationThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(startConversationThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.activeChat = "popup";
+        state.isMenuOpen = true;
+        state.supplierName = action.payload.supplierName;
+      })
+      .addCase(startConversationThunk.rejected, (state, action) => {
+        state.loading = false;
+        toast.error(action.payload?.detail || "Failed to start conversation");
+      });
+  },
 });
 
-export const {setChatInfo, openChatBot, openChatPopup, closeChat, toggleMenu } =
-  chatSlice.actions;
+// Actions
+export const {
+  setChatInfo,
+  openChatBot,
+  openChatPopup,
+  closeChat,
+  toggleMenu,
+} = chatSlice.actions;
 
 // Selectors
 export const selectActiveChat = (state) => state.chat.activeChat;
 export const selectIsMenuOpen = (state) => state.chat.isMenuOpen;
+export const selectChatLoading = (state) => state.chat.loading;
 
+// Reducer
 export default chatSlice.reducer;

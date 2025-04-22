@@ -33,6 +33,7 @@ export const onMessageReceived = (callback) => {
     return;
   }
 
+  console.log("onMessageReceived");
   connection.on("ReceiveMessage", callback);
 };
 

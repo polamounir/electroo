@@ -12,7 +12,7 @@ import { closeChat } from "../../app/slices/chatSlice";
 
 export default function ChatPopup() {
   const dispatch = useDispatch();
-  const { supplierId, productId, productName } = useSelector((state) => state.chat);
+  const { supplierId, productId, productName , supplierName } = useSelector((state) => state.chat);
   console.log(supplierId,"sss", productId, productName);
   const [messages, setMessages] = useState([
     { text: "مرحبًا ! ما هو استفسارك بخصوص المنتج " + productName + "؟  ", fromMe: false },
@@ -69,7 +69,7 @@ export default function ChatPopup() {
       <div className="chat-header">
         <div className="chat-header-content">
           <IoChatbubbleEllipsesOutline className="chat-icon" />
-          <h3 className="ar-font-s">خدمة العملاء</h3>
+          <h3 className="ar-font-s">{supplierName}</h3>
         </div>
         <button className="close-button" onClick={handleClose}>
           ×

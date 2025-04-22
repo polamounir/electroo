@@ -5,7 +5,7 @@ function ProductCard({ product, isRowView }) {
   console.log(product);
   return (
     <Link to={`/product/${product.id}`}
-      className={`p-4 rounded shadow-sm transition-all ${
+      className={`p-4 rounded hover:shadow-sm duration-300 transition-all ${
         isRowView ? "flex flex-col sm:flex-row gap-4" : ""
       }`}
     >

@@ -4,7 +4,7 @@ import { getProductById } from "../api/product";
 import { useQuery } from "@tanstack/react-query";
 import placeholderImage from "../assets/images/product_placeholder.webp";
 import { useDispatch } from "react-redux";
-import { setChatInfo } from "../app/slices/chatSlice";
+import { setChatInfo, startConversationThunk } from "../app/slices/chatSlice";
 
 export default function Product() {
   const dispatch = useDispatch();
@@ -33,11 +33,10 @@ export default function Product() {
 
   const handleChatStart = () => {
     dispatch(
-      setChatInfo({
+      startConversationThunk({
         supplierId: data.supplierId,
         productId: data.id,
         productName: data.title,
-
       })
     );
   };
