@@ -54,7 +54,8 @@ export default function ChatPopup() {
   const handleSend = async () => {
     if (message.trim()) {
       const res = await sendMessage(message, supplierId);
-      console.log(res);
+
+      console.log("senddd",res);
       setMessages([...messages, { text: message, fromMe: true }]);
       setMessage("");
     }

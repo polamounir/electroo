@@ -45,6 +45,7 @@ export const sendMessage = (message, RId) => {
     return;
   }
 
+  
   return connection.invoke("SendMessage", RId, message).catch((err) => {
     console.error("SendMessage Error:", err);
   });
