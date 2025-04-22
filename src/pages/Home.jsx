@@ -21,7 +21,7 @@ export default function Home() {
 
   return (
     <div className="">
-      <Landing />
+      {/* <Landing /> */}
       <MainSlider />
       <div className="pb-20">
         <HomeSection title="عروض اليوم" products={data} />
