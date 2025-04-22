@@ -3,8 +3,11 @@ import { useParams } from "react-router-dom";
 import { getProductById } from "../api/product";
 import { useQuery } from "@tanstack/react-query";
 import placeholderImage from "../assets/images/product_placeholder.webp";
+import { useDispatch } from "react-redux";
+import { setChatInfo } from "../app/slices/chatSlice";
 
 export default function Product() {
+  const dispatch = useDispatch();
   const { id } = useParams();
   const { data } = useQuery({
     queryKey: ["product", id],
@@ -28,18 +31,29 @@ export default function Product() {
     e.target.src = placeholderImage;
   };
 
+  const handleChatStart = () => {
+    dispatch(
+      setChatInfo({
+        supplierId: data.supplierId,
+        productId: data.id,
+        productName: data.title,
+
+      })
+    );
+  };
+
   return (
-    <div className="mx-auto px-4 md:px-50 py-20 flex justify-center items-center min-h-[75svh]">
+    <div className="mx-auto px-4 xl:px-50 py-20 flex justify-center items-center min-h-[75svh]">
       <div className="flex flex-col md:flex-row-reverse gap-10  p-6 md:p-8 rounded-xl w-full ">
         {/* Image Gallery */}
         <div className="flex-1">
-          <div className="border border-teal-500 rounded-lg overflow-hidden relative">
+          <div className="border border-teal-500 rounded-lg overflow-hidden relative flex justify-center items-center p-5">
             <img
               key={mainImage || data.images[0]}
-              src={mainImage || data.images[0]||placeholderImage}
+              src={mainImage || data.images[0] || placeholderImage}
               onError={handleImageError}
               alt={data.title}
-              className="w-full h-[300px] sm:h-[400px] object-cover transition-all duration-500 ease-in-out opacity-0 animate-fadeIn"
+              className="w-full  max-h-[400px] object-contain transition-all duration-500 ease-in-out opacity-0 animate-fadeIn"
             />
           </div>
 
@@ -67,11 +81,21 @@ export default function Product() {
 
           {/* Price & Discount */}
           <div className="text-xl md:text-2xl font-semibold flex items-center gap-3 flex-wrap">
-            <span className="text-gray-800">${data.discountedPrice}</span>
-            <span className="text-gray-400 line-through">${data.price}</span>
-            <span className="bg-teal-100 text-teal-700 text-sm px-2 py-1 rounded-full">
-              وفر {data.discountPercentage}%
+            {data.discountPercentage > 0 && (
+              <span className="text-gray-800">${data.discountedPrice}</span>
+            )}
+            <span
+              className={` ${
+                data.discountPercentage > 0 && "text-gray-400 line-through"
+              }`}
+            >
+              ${data.price}
             </span>
+            {data.discountPercentage > 0 && (
+              <span className="bg-teal-100 text-teal-700 text-sm px-2 py-1 rounded-full">
+                وفر {data.discountPercentage}%
+              </span>
+            )}
           </div>
 
           {/* Description */}
@@ -79,10 +103,10 @@ export default function Product() {
 
           {/* Product Info */}
           <div className="space-y-1 text-sm">
-            <p>
+            {/* <p>
               <span className="font-semibold text-teal-600">المخزون:</span>{" "}
               {data.stock}
-            </p>
+            </p> */}
             <p>
               <span className="font-semibold text-teal-600">الفئة:</span>{" "}
               {data.category}
@@ -92,6 +116,18 @@ export default function Product() {
                 العلامة التجارية:
               </span>{" "}
               {data.brand}
+            </p>
+            <p>
+              <span className="font-semibold text-teal-600">يباع من :</span>{" "}
+              {data.storeName}
+            </p>
+            <p>
+              <button
+                onClick={handleChatStart}
+                className="font-semibold text-teal-600 italic underline"
+              >
+                تحدث مع البائع
+              </button>
             </p>
           </div>
 

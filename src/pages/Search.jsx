@@ -18,10 +18,10 @@ function Search() {
   const errorMessage = isError && error ? error.message : "حدث خطأ غير معروف.";
 
   return (
-    <div className="min-h-screen bg-gray-50" dir="rtl">
+    <div className="min-h-screen bg-gray-50">
       {" "}
-      {/* Set direction to RTL */}
-      <div className="container mx-auto px-4 py-8">
+  
+      <div className=" mx-auto px-4 py-8">
         <h1 className="text-3xl font-semibold text-gray-800 mb-6 text-right">
           نتائج البحث لـ: <span className="text-teal-600">{searchQuery}</span>
         </h1>

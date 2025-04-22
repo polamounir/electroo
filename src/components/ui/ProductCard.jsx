@@ -15,7 +15,7 @@ export default function ProductCard({ product }) {
 
   return (
     <div>
-      <div to={`/product/${id}`}>
+      <Link to={`/product/${id}`}>
         <div className="relative bg-white border border-gray-200 rounded-lg shadow-lg p-4 text-center">
           {discountPercentage > 0 && (
             <div className="absolute top-4 end-4 bg-red-500 text-white text-sm px-2 py-1 rounded">
@@ -75,7 +75,7 @@ export default function ProductCard({ product }) {
             </div>
           </div>
         </div>
-      </div>
+      </Link>
     </div>
   );
 }

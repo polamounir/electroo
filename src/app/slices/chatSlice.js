@@ -1,14 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  activeChat: null, // null, 'bot', or 'popup'
+  activeChat: null,
   isMenuOpen: false,
+  supplierId: null,
+  productId: null,
+  productName: null,
 };
 
 const chatSlice = createSlice({
   name: "chat",
   initialState,
   reducers: {
+    setChatInfo: (state, action) => {
+      state.supplierId = action.payload.supplierId;
+      state.productId = action.payload.productId;
+      state.productName = action.payload.productName;
+      state.isMenuOpen = true;
+      state.activeChat = "popup";
+    },
     openChatBot: (state) => {
       state.activeChat = "bot";
       state.isMenuOpen = false;
@@ -29,7 +39,7 @@ const chatSlice = createSlice({
   },
 });
 
-export const { openChatBot, openChatPopup, closeChat, toggleMenu } =
+export const {setChatInfo, openChatBot, openChatPopup, closeChat, toggleMenu } =
   chatSlice.actions;
 
 // Selectors

@@ -7,20 +7,23 @@ import {
 } from "../../services/signalr";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import "./Chat.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { closeChat } from "../../app/slices/chatSlice";
 
 export default function ChatPopup() {
   const dispatch = useDispatch();
+  const { supplierId, productId, productName } = useSelector((state) => state.chat);
+  console.log(supplierId,"sss", productId, productName);
   const [messages, setMessages] = useState([
-    { text: "مرحبًا! كيف يمكنني مساعدتك اليوم؟", fromMe: false },
+    { text: "مرحبًا ! ما هو استفسارك بخصوص المنتج " + productName + "؟  ", fromMe: false },
   ]);
   const [message, setMessage] = useState("");
-  const [rId, setRId] = useState("");
+  
   const chatContainerRef = useRef(null);
   const chatEndRef = useRef(null);
 
   useEffect(() => {
+
     const init = async () => {
       await startConnection();
       onMessageReceived((id, message) => {
@@ -50,7 +53,7 @@ export default function ChatPopup() {
 
   const handleSend = async () => {
     if (message.trim()) {
-      const res = await sendMessage(message, rId);
+      const res = await sendMessage(message, supplierId);
       console.log(res);
       setMessages([...messages, { text: message, fromMe: true }]);
       setMessage("");
@@ -100,7 +103,7 @@ export default function ChatPopup() {
         </button>
       </div>
 
-      <div className="p-4 border-t border-gray-200">
+      {/* <div className="p-4 border-t border-gray-200">
         <input
           type="text"
           value={rId}
@@ -108,7 +111,7 @@ export default function ChatPopup() {
           placeholder="Enter Receiver ID..."
           className="w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
         />
-      </div>
+      </div> */}
     </div>
   );
 }

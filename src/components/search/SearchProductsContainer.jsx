@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function ProductCard({ product, isRowView }) {
+  console.log(product);
   return (
-    <div
-      className={`border p-4 rounded shadow-sm transition-all ${
+    <Link to={`/product/${product.id}`}
+      className={`p-4 rounded shadow-sm transition-all ${
         isRowView ? "flex flex-col sm:flex-row gap-4" : ""
       }`}
     >
@@ -13,20 +15,21 @@ function ProductCard({ product, isRowView }) {
           "https://cdn.dribbble.com/userupload/21207141/file/original-af25d78fac8dc71b312d8b0bef78c93b.jpg"
         }
         alt={product.title || "Product image"}
-        className={`rounded-md object-cover ${
-          isRowView ? "w-full sm:w-48 h-48 me-2" : "w-full h-56"
+        className={`rounded-xl object-contain  ${
+          isRowView ? "w-full sm:w-48 h-48 me-2" : "w-full aspect-square"
         }`}
         onError={(e) => {
           e.target.onerror = null;
           e.target.src = "/fallback.jpg";
         }}
       />
-      <div className="flex-1">
-        <h3 className="text-lg font-semibold">{product.title}</h3>
-        <p className="text-gray-600 text-sm mb-2">{product.description}</p>
-        <p className="text-teal-600 font-bold">${product.price}</p>
+      <div className="flex-1 text-xs ">
+        <h3 className="font-semibold truncate">{product.title}</h3>
+        {/* <p className="text-gray-600 text-sm mb-2">{product.description}</p> */}
+        <p className="text-teal-600 font-bold"> {product.price} ج.م</p>
+        <p ؤclassName="text-gray-600">{product.supplierName}</p>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -52,11 +55,11 @@ export default function SearchProductsContainer({ products }) {
       setColumns(maxCols); // Adjust columns on resize
     }
 
-    // Toggle row view based on screen width
+    
     if (screenWidth < 640) {
       setIsRowView(true);
     } else {
-      setIsRowView(false); // Optionally preserve user choice
+      setIsRowView(false); 
     }
   }, [screenWidth, columns]);
 
@@ -65,7 +68,7 @@ export default function SearchProductsContainer({ products }) {
     if (screenWidth < 640) return 1;
     if (screenWidth < 768) return 2;
     if (screenWidth < 1024) return 3;
-    return 5; // Allow up to 5 columns on large screens
+    return 5; 
   };
 
   const handleColumnChange = (num) => {
@@ -143,7 +146,7 @@ export default function SearchProductsContainer({ products }) {
   return (
     <div className="px-4 py-6">
       {/* Layout Buttons */}
-      {screenWidth >= 640 && (
+      {/* {screenWidth >= 640 && (
         <div className="flex flex-wrap gap-2 mb-6 items-center">
           {[1, 2, 3, 4, 5]
             .filter((num) => num <= maxColumnsAllowed()) // Now including 5 as a valid option
@@ -171,10 +174,11 @@ export default function SearchProductsContainer({ products }) {
             Row View
           </button>
         </div>
-      )}
+      )} */}
 
       {/* Product Grid */}
-      <div className={`grid gap-4 ${gridColsClass()}`}>
+      {/* <div className={`grid gap-4 ${gridColsClass()}`}> */}
+      <div className={`grid gap-4  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5`}>
         {products.length > 0 ? (
           products.map((product) => (
             <ProductCard
