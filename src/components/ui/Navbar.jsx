@@ -3,10 +3,25 @@ import { IoClose } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { IoIosMenu } from "react-icons/io";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 export default function Navbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 80) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -32,7 +47,11 @@ export default function Navbar() {
     },
   ];
   return (
-    <div className=" border-b border-gray-400 shadow-md">
+    <div
+      className={`border-b  bg-white sticky top-0 left-0 right-0 z-50 border-gray-400 shadow-md ${
+        isScrolled ? " bg-white" : ""
+      }`}
+    >
       <div className="p-5 w-full md:w-[85%] mx-auto">
         <div className="flex justify-between gap-10">
           <div className="flex items-center gap-5">
@@ -50,7 +69,7 @@ export default function Navbar() {
           <div>
             <div className="hidden lg:flex items-center gap-5">
               <div className="">
-                <Link to="/cart" className="text-3xl" >
+                <Link to="/cart" className="text-3xl">
                   <IoCartOutline />
                 </Link>
               </div>
@@ -63,7 +82,10 @@ export default function Navbar() {
                     </div>
                   </Link>
                 ) : (
-                  <Link to="/login" className="flex items-center gap-3 bg-teal-500 text-white px-4 py-2 rounded-full">
+                  <Link
+                    to="/login"
+                    className="flex items-center gap-3 bg-teal-500 text-white px-4 py-2 rounded-full"
+                  >
                     <FaRegUser />
                     تسجيل دخول
                   </Link>
