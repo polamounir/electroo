@@ -10,7 +10,7 @@ export const startConversationThunk = createAsyncThunk(
     try {
       dispatch(setChatInfo(data));
       const response = await startConversation(data);
-      console.log(response.data);
+      console.log(response);
       return response.data;
     } catch (error) {
       return rejectWithValue(

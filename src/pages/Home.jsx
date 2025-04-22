@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import HomeSection from "../components/home/HomeSection";
 import Landing from "../components/home/Landing";
+import MainSlider from "../components/home/MainSlider";
 
 export default function Home() {
   const { data } = useQuery({
@@ -21,6 +22,7 @@ export default function Home() {
   return (
     <div className="">
       <Landing />
+      <MainSlider />
       <div className="pb-20">
         <HomeSection title="عروض اليوم" products={data} />
         <HomeSection title="الاكثر مبيعاً" products={data} />
