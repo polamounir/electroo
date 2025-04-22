@@ -7,7 +7,7 @@ import { api } from "./axiosInstance";
 
 export const getProductById = async (id) => {
   const res = await api.get(`/products/${id}`);
-  console.log(res.data);
+  // console.log(res.data);
   return res.data.data;
 };
 

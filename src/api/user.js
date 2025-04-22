@@ -18,7 +18,7 @@ export const loginUserFn = async (userData) => {
 
 export const getUserDataFn = async () => {
   const response = await api.get("/auth/me");
-  console.log(response.data)
+  // console.log(response.data)
   return response.data;
 };
 // ---------------------------------------

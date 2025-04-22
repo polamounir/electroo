@@ -9,10 +9,10 @@ export default function Home() {
       const res = await fetch(
         "https://ecommerce.zerobytetools.com/api/products?MinimumPrice=0&MaximumPrice=10000&Page=1&Limit=20"
       );
-      console.log(res);
+      // console.log(res);
 
       const data = res.json();
-      console.log(data);
+      // console.log(data);
       return data;
     },
   });
