@@ -4,7 +4,7 @@ import { uploadProduct } from "../../../api/admin";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "sonner";
-import AddCategoryModel from "../../ui/addCategoryModel";
+import AddCategoryModel from "../../ui/AddCategoryModel";
 import { useDispatch } from "react-redux";
 import { openCategoryModel } from "../../../app/slices/addCategoryModel";
 
