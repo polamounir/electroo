@@ -1,9 +1,10 @@
 import * as signalR from "@microsoft/signalr";
+import Cookies from "js-cookie";
 
-const token = localStorage.getItem("token");
+const token = Cookies.get("accessToken");
 
 let connection = null;
-localStorage;
+
 export const startConnection = () => {
   if (connection && connection.state === signalR.HubConnectionState.Connected) {
     return Promise.resolve(connection);
