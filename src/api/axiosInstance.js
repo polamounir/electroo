@@ -8,7 +8,7 @@ export const api = axios.create({
   withCredentials: true,
 });
 
-// Add request interceptor to include access token
+// add the access token to the request
 api.interceptors.request.use(
   (config) => {
     const accessToken = Cookies.get("accessToken");
@@ -20,6 +20,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+// update the request
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -31,7 +32,6 @@ api.interceptors.response.use(
       try {
         const Token = Cookies.get("refreshToken");
 
-        // Send refreshToken in the request body
         const response = await axios.post(
           `${API_URL}auth/refresh-token`,
           { refreshToken: Token },
@@ -41,20 +41,17 @@ api.interceptors.response.use(
         );
 
         const { accessToken, refreshToken, email } = response.data.data;
-        console.log("hhhhhhhhhhhhhhhhhhhhhhhh",response.data.data)
+        // console.log("hhhhhhhhhhhhhhhhhhhhhhhh",response.data.data)
 
-        // Store new tokens in cookies
         Cookies.set("accessToken", accessToken);
         Cookies.set("refreshToken", refreshToken);
         Cookies.set("email", email);
 
-
-        // Update the original request with new access token
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
 
         return api(originalRequest);
       } catch (refreshError) {
-        console.error("Token refresh failed:", refreshError);
+        // console.error("Token refresh failed:", refreshError);
         return Promise.reject(refreshError);
       }
     }
