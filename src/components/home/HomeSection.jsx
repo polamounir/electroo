@@ -64,7 +64,7 @@ export default function DailyDeals({ title, products }) {
         <h2>{title}</h2>
       </div>
 
-      <div className="w-full bg-gray-200 py-15">
+      <div className="w-full bg-[#fafafa] py-15">
         <div className="w-full lg:w-[85%] m-auto shadow-none">
           {/* {products.length > 0 ? (
             <Slider

@@ -25,7 +25,7 @@ export const fetchSearchProducts = async (query) => {
     );
 
     const items = response.data?.data?.items;
-    console.log("Fetched Products:", items);
+    // console.log("Fetched Products:", items);
     return items;
   } catch (error) {
     console.error("API Error:", error);

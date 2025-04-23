@@ -6,10 +6,12 @@ import { IoSearch } from "react-icons/io5";
 import { RiMenuSearchLine } from "react-icons/ri";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import { useState } from "react";
+// import { getSearchResults, setSearchParams } from "../../app/slices/searchSlice";
 
 export default function MainSlider() {
+  // const dispatch = useDispatch();
     const [search, setSearch] = useState("");
     const user = useSelector((state) => state.auth.user);
   const settings = {
@@ -87,6 +89,8 @@ export default function MainSlider() {
         });
     });
   }, []);
+
+
   return (
     <main className="bg-slate-200 w-full overflow-hidden">
       <div className="mx-auto w-full">
@@ -116,6 +120,7 @@ export default function MainSlider() {
                       />
                       <Link
                         to={`/search?SearchQuery=${search}&Page=1&Limit=20`}
+                        // onClick={handleSearch}
                         className="absolute top-0 bottom-0 end-0 w-15 text-3xl flex justify-center items-center"
                       >
                         <div className="search-icon-container rounded-full flex justify-center items-center relative text-gray-500">

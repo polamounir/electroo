@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function ProductCard({ product, isRowView }) {
-  console.log(product);
+  // console.log(product);
   return (
     <Link to={`/product/${product.id}`}
       className={`p-4 rounded hover:shadow-sm duration-300 transition-all ${
@@ -178,7 +178,7 @@ export default function SearchProductsContainer({ products }) {
 
       {/* Product Grid */}
       {/* <div className={`grid gap-4 ${gridColsClass()}`}> */}
-      <div className={`grid gap-4  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5`}>
+      <div className={`grid gap-4  grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5`}>
         {products.length > 0 ? (
           products.map((product) => (
             <ProductCard
