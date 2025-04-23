@@ -48,7 +48,7 @@ export default function Navbar() {
   ];
   return (
     <div
-      className={`border-b  bg-white sticky top-0 left-0 right-0 z-50 border-gray-400 shadow-md ${
+      className={`border-b  bg-white sticky top-0 left-0 right-0 z-[999] border-gray-400 shadow-md ${
         isScrolled ? " bg-white" : ""
       }`}
     >
@@ -100,7 +100,7 @@ export default function Navbar() {
           </div>
         </div>
         <div
-          className={`absolute z-50 duration-1000 ${
+          className={`absolute z-[988] duration-1000 min-h-[100svh] ${
             isSidebarOpen ? "" : "translate-x-[100%]"
           } start-0 top-0 bottom-0 bg-gray-100 min-w-[21rem]`}
         >
