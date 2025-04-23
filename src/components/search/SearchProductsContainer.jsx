@@ -27,7 +27,7 @@ function ProductCard({ product, isRowView }) {
         <h3 className="font-semibold truncate">{product.title}</h3>
         {/* <p className="text-gray-600 text-sm mb-2">{product.description}</p> */}
         <p className="text-teal-600 font-bold"> {product.price} ج.م</p>
-        <p ؤclassName="text-gray-600">{product.supplierName}</p>
+        <p className="text-gray-600">{product.supplierName}</p>
       </div>
     </Link>
   );

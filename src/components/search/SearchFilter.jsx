@@ -33,6 +33,7 @@ export default function SearchFilter() {
     const ViewMode = viewMode;
     dispatch(
       setSearchParams({
+        SearchQuery: search,
         MinimumPrice,
         MaximumPrice,
         HasDiscount,
@@ -42,6 +43,7 @@ export default function SearchFilter() {
     );
     dispatch(
       getSearchResults({
+        SearchQuery: search,
         MinimumPrice,
         MaximumPrice,
         HasDiscount,
@@ -63,6 +65,7 @@ export default function SearchFilter() {
   });
   const [sortOption, setSortOption] = useState("price-low-high");
   const [viewMode, setViewMode] = useState("grid");
+  const [search, setSearch] = useState(SearchQuery || "");
 
   const handleRangeChange = (type, value) => {
     const val = parseInt(value) || 0;
@@ -82,6 +85,19 @@ export default function SearchFilter() {
 
   return (
     <div className="flex flex-col w-full p-4 rounded" dir="rtl">
+      {/* Filter Section */}
+
+      <div className="mb-4">
+        <div>
+          <input
+            type="text"
+            placeholder="ابحث عن منتج"
+            className="w-full border border-gray-300 rounded p-2 text-right"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+      </div>
       {/* Filter Section */}
       <div className="mb-4">
         <div

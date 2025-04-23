@@ -4,11 +4,11 @@ import { api } from "../../api/axiosInstance";
 // Initial/default state
 const initialState = {
   page: 1,
-  limit: 10,
+  limit: 20,
   viewMode: "grid",
   SearchQuery: "",
   MinimumPrice: 0,
-  MaximumPrice: 0,
+  MaximumPrice: 10000,
   HasDiscount: false,
   SortBy: "price-low-high",
   searchResults: [],
@@ -19,14 +19,16 @@ const initialState = {
 export const getSearchResults = createAsyncThunk(
   "search/getSearchResults",
   async (params, { rejectWithValue }) => {
+    // console.log("params", params);
     const {
       SearchQuery,
       MinimumPrice = 0,
-      MaximumPrice = 100000,
+      MaximumPrice = 10000,
       HasDiscount = false,
       page = 1,
       limit = 20,
     } = params;
+    // console.log("params", params);
     try {
       const response = await api.get(
         "https://ecommerce.zerobytetools.com/api/products",
@@ -43,7 +45,7 @@ export const getSearchResults = createAsyncThunk(
       );
 
       const items = response.data?.data?.items;
-      console.log("Fetched Products:", items);
+    //   console.log("Fetched Products:", items);
       return items;
     } catch (error) {
       console.error("API Error:", error);
