@@ -34,6 +34,7 @@ import Contactus from "../pages/Contactus";
 import LiveChat from "../pages/LiveChat";
 import Product from "../pages/Product";
 import Search from "../pages/Search";
+import PreRegister from "../pages/PreRegister";
 
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
@@ -59,6 +60,7 @@ const AppRoutes = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/pre-register" element={<PreRegister/>} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/supplier" element={<Suppliers />} />

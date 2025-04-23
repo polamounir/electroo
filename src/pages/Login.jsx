@@ -130,7 +130,7 @@ export default function Login() {
                 <p className="text-sm text-gray-600 mt-2">
                   ليس لديك حساب؟{" "}
                   <span className="text-[var(--color-primary)]">
-                    <Link to="/register">انشاء حساب جديد</Link>
+                    <Link to="/pre-register">انشاء حساب جديد</Link>
                   </span>
                 </p>
               </div>
