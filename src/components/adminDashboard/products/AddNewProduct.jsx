@@ -125,6 +125,7 @@ export default function AddNewProduct() {
     updated.splice(index, 1);
     setFormData((prev) => ({ ...prev, productOptions: updated }));
   };
+  const formValidation = (data) => {};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -132,6 +133,10 @@ export default function AddNewProduct() {
       ...formData,
       tags: formData.tags.join(","),
     };
+
+    if (finalData.images.length === 0) {
+      return toast.error("يجب اضافة صورة واحدة ع الاقل");
+    }
     try {
       const res = await uploadProduct(finalData);
       console.log(res);
@@ -306,7 +311,6 @@ export default function AddNewProduct() {
             onChange={handleImageChange}
             disabled={formData.images.length >= 5}
             className="block w-full"
-            required
           />
           <p className="text-sm text-gray-500 mt-1">
             أو قم بسحب وإفلات الصور هنا (بحد أقصى 5 صور)
