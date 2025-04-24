@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 function ProductCard({ product, isRowView }) {
   // console.log(product);
   return (
-    <Link to={`/product/${product.id}`}
+    <Link
+      to={`/product/${product.id}`}
       className={`p-4 rounded hover:shadow-sm duration-300 transition-all ${
         isRowView ? "flex flex-col sm:flex-row gap-4" : ""
       }`}
@@ -26,7 +27,17 @@ function ProductCard({ product, isRowView }) {
       <div className="flex-1 text-xs ">
         <h3 className="font-semibold truncate">{product.title}</h3>
         {/* <p className="text-gray-600 text-sm mb-2">{product.description}</p> */}
-        <p className="text-teal-600 font-bold"> {product.price} ج.م</p>
+        {product.discountPercentage > 0 ? (
+          <div className="flex items-center gap-2">
+            <p className="text-teal-600 font-bold ">{product.discountedPrice} ج.م</p>
+            <p className="text-gray-600 font-bold line-through">
+              {product.price} ج.م
+            </p>
+          </div>
+        ) : (
+          <p className="text-teal-600 font-bold ">{product.price} ج.م</p>
+        )}
+        {/* <p className="text-teal-600 font-bold"> {product.price} ج.م</p> */}
         <p className="text-gray-600">{product.supplierName}</p>
       </div>
     </Link>
@@ -55,11 +66,10 @@ export default function SearchProductsContainer({ products }) {
       setColumns(maxCols); // Adjust columns on resize
     }
 
-    
     if (screenWidth < 640) {
       setIsRowView(true);
     } else {
-      setIsRowView(false); 
+      setIsRowView(false);
     }
   }, [screenWidth, columns]);
 
@@ -68,7 +78,7 @@ export default function SearchProductsContainer({ products }) {
     if (screenWidth < 640) return 1;
     if (screenWidth < 768) return 2;
     if (screenWidth < 1024) return 3;
-    return 5; 
+    return 5;
   };
 
   const handleColumnChange = (num) => {
@@ -95,53 +105,52 @@ export default function SearchProductsContainer({ products }) {
     }
   };
 
-//   const demoProducts = [
-//     {
-//       id: 1,
-//       title: "Wireless Headphones",
-//       description:
-//         "High-quality noise cancelling headphones with Bluetooth connectivity.",
-//       price: 99.99,
-//       images: [],
-//     },
-//     {
-//       id: 2,
-//       title: "Smartwatch",
-//       description: "Track your fitness and receive notifications on the go.",
-//       price: 149.99,
-//       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
-//     },
-//     {
-//       id: 3,
-//       title: "Gaming Mouse",
-//       description: "Ergonomic mouse with customizable DPI and RGB lighting.",
-//       price: 49.99,
-//       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
-//     },
-//     {
-//       id: 4,
-//       title: "Mechanical Keyboard",
-//       description:
-//         "Durable mechanical keyboard with tactile switches and backlighting.",
-//       price: 89.99,
-//       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
-//     },
-//     {
-//       id: 5,
-//       title: "4K Monitor",
-//       description: "Ultra HD monitor with vibrant colors and sharp details.",
-//       price: 299.99,
-//       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
-//     },
-//     {
-//       id: 6,
-//       title: "Portable Speaker",
-//       description: "Compact speaker with powerful sound and long battery life.",
-//       price: 39.99,
-//       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
-//     },
-//   ];
-
+  //   const demoProducts = [
+  //     {
+  //       id: 1,
+  //       title: "Wireless Headphones",
+  //       description:
+  //         "High-quality noise cancelling headphones with Bluetooth connectivity.",
+  //       price: 99.99,
+  //       images: [],
+  //     },
+  //     {
+  //       id: 2,
+  //       title: "Smartwatch",
+  //       description: "Track your fitness and receive notifications on the go.",
+  //       price: 149.99,
+  //       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
+  //     },
+  //     {
+  //       id: 3,
+  //       title: "Gaming Mouse",
+  //       description: "Ergonomic mouse with customizable DPI and RGB lighting.",
+  //       price: 49.99,
+  //       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
+  //     },
+  //     {
+  //       id: 4,
+  //       title: "Mechanical Keyboard",
+  //       description:
+  //         "Durable mechanical keyboard with tactile switches and backlighting.",
+  //       price: 89.99,
+  //       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
+  //     },
+  //     {
+  //       id: 5,
+  //       title: "4K Monitor",
+  //       description: "Ultra HD monitor with vibrant colors and sharp details.",
+  //       price: 299.99,
+  //       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
+  //     },
+  //     {
+  //       id: 6,
+  //       title: "Portable Speaker",
+  //       description: "Compact speaker with powerful sound and long battery life.",
+  //       price: 39.99,
+  //       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
+  //     },
+  //   ];
 
   return (
     <div className="px-4 py-6">
@@ -178,7 +187,9 @@ export default function SearchProductsContainer({ products }) {
 
       {/* Product Grid */}
       {/* <div className={`grid gap-4 ${gridColsClass()}`}> */}
-      <div className={`grid gap-4  grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5`}>
+      <div
+        className={`grid gap-4  grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5`}
+      >
         {products.length > 0 ? (
           products.map((product) => (
             <ProductCard

@@ -88,7 +88,7 @@ export default function FAQ() {
         <div className="lg:col-span-1 flex justify-center items-center">
           <img
             src="/api/placeholder/300/300"
-            alt="FAQ illustration"
+            alt="FAQ"
             className="max-w-full"
           />
         </div>
@@ -128,7 +128,7 @@ export default function FAQ() {
         <div className="lg:col-span-1 flex justify-center items-center">
           <img
             src="/api/placeholder/300/300"
-            alt="FAQ illustration 2"
+            alt="FAQ"
             className="max-w-full"
           />
         </div>

@@ -130,7 +130,7 @@ export default function AddNewProduct() {
     e.preventDefault();
     const finalData = {
       ...formData,
-      tags: formData.tags,
+      tags: formData.tags.join(","),
     };
     try {
       const res = await uploadProduct(finalData);
