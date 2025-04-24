@@ -152,6 +152,7 @@ export default function AddNewProduct() {
             { optionGroupName: "", optionName: "", optionPrice: 1 },
           ],
         });
+        setImagesPreview([]);
       } else {
         toast.error("تحقق من بيانات المنتج و حاول مجددا");
       }

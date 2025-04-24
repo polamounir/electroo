@@ -4,7 +4,7 @@ export const uploadProduct = async (productData) => {
   console.log(productData.productOptions);
 
   const formData = new FormData();
-  console.log(productData.tags);
+  
 
   formData.append("brand", productData.brand);
   formData.append("categoryId", productData.categoryId);
