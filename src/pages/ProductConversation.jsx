@@ -26,7 +26,7 @@ export default function ProductConversation() {
 
   const chatContainerRef = useRef(null);
   const chatEndRef = useRef(null);
-
+// ------------------------------------------
   useEffect(() => {
     const init = async () => {
       await startConnection();
@@ -59,7 +59,8 @@ export default function ProductConversation() {
     if (message.trim()) {
       const res = await sendMessage(message, supplierId);
 
-      console.log("senddd", res);
+
+      console.log("senddd", res, message, supplierId);
       setMessages([...messages, { text: message, fromMe: true }]);
       setMessage("");
     }
@@ -70,7 +71,7 @@ export default function ProductConversation() {
   };
 
   return (
-    <div className="chat-window">
+    <div className="">
       <div className="chat-header">
         <div className="chat-header-content">
           <IoChatbubbleEllipsesOutline className="chat-icon" />

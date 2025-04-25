@@ -131,7 +131,7 @@ export default function Product() {
                 تحدث مع البائع
                 </button> */}
               <Link
-                to={`/chat`}
+                // to={`/chat`}
                 onClick={handleChatStart}
                 className="font-semibold text-teal-600 italic underline"
               >
