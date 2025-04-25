@@ -15,6 +15,7 @@ api.interceptors.request.use(
   (config) => {
     const accessToken = TokenStorageService.getAccessToken();
     if (accessToken) {
+      console.log("accessToken", accessToken);
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;

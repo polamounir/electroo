@@ -2,7 +2,7 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 import { useSelector } from "react-redux";
 export default function DashboardHeader() {
   const { user } = useSelector((state) => state.auth);
-  console.log(user);
+  // console.log(user);
   return (
     <div className="w-full bg-red-30 flex items-center justify-end gap-5">
       <div>

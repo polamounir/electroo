@@ -3,12 +3,13 @@ import Cookies from "js-cookie";
 
 const token = Cookies.get("accessToken");
 
+
 let connection = null;
 let connectionPromise = null;
 
 export const startConnection = () => {
   console.log("startConnection");
-
+  console.log("token", token);
   if (connection && connection.state === signalR.HubConnectionState.Connected) {
     console.log("connection already connected");
     return Promise.resolve(connection);
@@ -53,8 +54,8 @@ export const onMessageReceived = (callback) => {
   connection.on("ReceiveMessage", callback);
 };
 
-export const sendMessage = async (message, RId) => {
-  console.log("Attempting to send message:", message, RId);
+export const sendMessage = async (message, conversationId) => {
+  console.log("Attempting to send message:", message, conversationId);
 
   try {
     if (
@@ -66,7 +67,10 @@ export const sendMessage = async (message, RId) => {
     }
 
     console.log("Sending message with connection state:", connection.state);
-    return await connection.invoke("SendMessage", RId, message);
+    return await connection.invoke({
+      conversationId: conversationId,
+      message: message,
+    });
   } catch (err) {
     console.error("SendMessage Error:", err);
     throw err;

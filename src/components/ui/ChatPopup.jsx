@@ -23,8 +23,8 @@ export default function ChatPopup() {
   const chatEndRef = useRef(null);
 
   useEffect(() => {
-
     const init = async () => {
+      console.log("init CONVERSATION");
       await startConnection();
       onMessageReceived((id, message) => {
         console.log(id, message);
@@ -53,7 +53,10 @@ export default function ChatPopup() {
 
   const handleSend = async () => {
     if (message.trim()) {
-      const res = await sendMessage(message, supplierId);
+      const res = await sendMessage(
+        message,
+        "65b47cc1-3cc3-4852-8883-08dd83f5f933"
+      );
 
       console.log("senddd",res);
       setMessages([...messages, { text: message, fromMe: true }]);
