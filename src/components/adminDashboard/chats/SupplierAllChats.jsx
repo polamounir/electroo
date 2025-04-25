@@ -1,20 +1,13 @@
-import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { api } from "../../../api/axiosInstance";
+import { Link } from "react-router-dom";
 export default function SupplierAllChats() {
+  const [items, setItems] = useState([]);
   const fetchChats = async () => {
-    // const [data, setData] = useState([]);
-    const options = {
-      method: "GET",
-      url: "https://ecommerce.markomedhat.com/api/conversations?page=1&limit=10",
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyMzhjZmIyMC1iNzI2LTRiNGYtMjY1MS0wOGRkODMwYWZkZDUiLCJGdWxsTmFtZSI6Itio2YjZhNinINmF2YbZitixIiwiZW1haWwiOiJuYWthbTU0MTc3QGY1dXJsLmNvbSIsIlVzZXJUeXBlIjoiU3VwcGxpZXIiLCJTdXBwbGllcklkIjoiN2VlMmJmZTYtNDdjOS00OWQ5LTlmYTYtNDI2MWIwMDhhOWNjIiwiVmVyaWZpZWRTdXBwbGllciI6IlRydWUiLCJuYmYiOjE3NDU1ODY2NDMsImV4cCI6MTc0NTU4Njk0MywiaWF0IjoxNzQ1NTg2NjQzfQ.ALgCm5ecr2qT7rHoYmCkv4T4gOtQss6GsWV4T3MSdOs",
-      },
-    };
-
     try {
-      const { data } = await axios.request(options);
+      const { data } = await api.get("/conversations?page=1&limit=10");
       console.log(data);
+      setItems(data.data.items);
     } catch (error) {
       console.error(error);
     }
@@ -23,5 +16,24 @@ export default function SupplierAllChats() {
     fetchChats();
   }, []);
 
-  return <div>SupplierAllChats</div>;
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-6">All Chats</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {items?.map((chat) => (
+          <Link
+            to={`/live-chat/${chat.id}`}
+            key={chat.id}
+            className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer p-5 px-10"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <p className="font-semibold text-lg">{chat.fullName}</p>
+              {/* <span className="text-sm text-gray-500">ID: {chat.id}</span> */}
+            </div>
+            <p className="text-gray-600 truncate">{chat.lastMessage}</p>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
 }

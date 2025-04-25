@@ -125,7 +125,7 @@ export default function AddNewProduct() {
     updated.splice(index, 1);
     setFormData((prev) => ({ ...prev, productOptions: updated }));
   };
-  const formValidation = (data) => {};
+  // const formValidation = (data) => {};
 
   const handleSubmit = async (e) => {
     e.preventDefault();

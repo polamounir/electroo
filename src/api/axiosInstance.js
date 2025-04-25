@@ -15,7 +15,7 @@ api.interceptors.request.use(
   (config) => {
     const accessToken = TokenStorageService.getAccessToken();
     if (accessToken) {
-      console.log("accessToken", accessToken);
+      // console.log("accessToken", accessToken);
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
@@ -49,6 +49,7 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
 
 api.interceptors.request.use(
   async (request) => {

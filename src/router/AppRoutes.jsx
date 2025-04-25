@@ -76,7 +76,7 @@ const AppRoutes = () => {
             <Route path="/upload" element={<Upload />} />
             <Route path="/confirm-account" element={<AccountConfirmation />} />
             <Route path="/contact" element={<Contactus />} />
-            <Route path="/live-chat" element={<LiveChat />} />
+            <Route path="/live-chat/:id" element={<LiveChat />} />
             <Route path="/product/:id" element={<Product />} />
             <Route path="/search" element={<Search />} />
             <Route path="/faq" element={<FAQ />} />
@@ -121,7 +121,7 @@ const AppRoutes = () => {
               <Route path="" element={<ProductsOverview />} />
               <Route path="add" element={<AddNewProduct />} />
             </Route>
-            <Route path="chats" element={<SupplierChatLayout />} >
+            <Route path="chats" element={<SupplierChatLayout />}>
               <Route path="" element={<SupplierAllChats />} />
               <Route path=":id" element={<SupplierChat />} />
             </Route>
