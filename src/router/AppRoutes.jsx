@@ -39,6 +39,9 @@ import FAQ from "../pages/FAQ";
 import SupplierLogin from "../pages/SupplierLogin";
 import UsersLayout from "../components/adminDashboard/users/UsersLayout";
 import ProductConversation from "../pages/ProductConversation";
+import SupplierChatLayout from "../components/adminDashboard/chats/SupplierChatLayout";
+import SupplierAllChats from "../components/adminDashboard/chats/SupplierAllChats";
+import SupplierChat from "../components/adminDashboard/chats/SupplierChat";
 
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
@@ -117,6 +120,10 @@ const AppRoutes = () => {
             <Route path="users" element={<UsersLayout />}>
               <Route path="" element={<ProductsOverview />} />
               <Route path="add" element={<AddNewProduct />} />
+            </Route>
+            <Route path="chats" element={<SupplierChatLayout />} >
+              <Route path="" element={<SupplierAllChats />} />
+              <Route path=":id" element={<SupplierChat />} />
             </Route>
             <Route path="sales" element={<div>Sales</div>} />
             <Route path="settings" element={<div>Settings</div>} />

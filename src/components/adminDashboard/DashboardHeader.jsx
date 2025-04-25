@@ -1,5 +1,8 @@
 import { IoIosNotificationsOutline } from "react-icons/io";
+import { useSelector } from "react-redux";
 export default function DashboardHeader() {
+  const { user } = useSelector((state) => state.auth);
+  console.log(user);
   return (
     <div className="w-full bg-red-30 flex items-center justify-end gap-5">
       <div>
@@ -7,9 +10,7 @@ export default function DashboardHeader() {
           <IoIosNotificationsOutline />
         </button>
       </div>
-      <div>
-        <h2>اسم المستخدم</h2>
-      </div>
+      <div>{user ? <h2>{user.name}</h2> : <h2>اسم المستخدم</h2>}</div>
     </div>
   );
 }

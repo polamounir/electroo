@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router";
-import { IoSpeedometerOutline, IoBagOutline } from "react-icons/io5";
+import { IoSpeedometerOutline, IoBagOutline, IoChatbubbleOutline } from "react-icons/io5";
 import { TfiPackage } from "react-icons/tfi";
 
 import { FaRegCircleUser } from "react-icons/fa6";
@@ -49,6 +49,13 @@ export default function SideMenu() {
       title: "settings",
       link: "/dashboard/settings",
       icon: <BsGear />,
+    },
+    {
+      id: 7,
+      name: "المحادثات",
+      title: "chats",
+      link: "/dashboard/chats",
+      icon: <IoChatbubbleOutline />,
     },
   ];
   const [activeLink, setActiveLink] = useState("dashboard");

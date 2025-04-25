@@ -46,7 +46,7 @@ export const uploadProduct = async (productData) => {
     url: "https://ecommerce.zerobytetools.com/api/products",
     headers: {
       Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxNDk1ZmRjNS1jY2Q2LTQ3MzUtNDRiNC0wOGRkNzkzNjg0NWQiLCJGdWxsTmFtZSI6Itio2KjYqNioIiwiZW1haWwiOiJka3l2MGNlZzk2QGtubWNhZGliYXYuY29tIiwiVXNlclR5cGUiOiJTdXBwbGllciIsIlN1cHBsaWVySWQiOiI2YmUyMGFmZi0zZmJiLTRiNjItYWZkOC0yNDljNzhlNTdhZmUiLCJuYmYiOjE3NDQ0NzQxODQsImV4cCI6MTgwOTI3NDE4NCwiaWF0IjoxNzQ0NDc0MTg0fQ.xMq6MryPQvxxKJra_pPfg5TElYEs1SlkySCam6a8gGo",
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyMzhjZmIyMC1iNzI2LTRiNGYtMjY1MS0wOGRkODMwYWZkZDUiLCJGdWxsTmFtZSI6Itio2YjZhNinINmF2YbZitixIiwiZW1haWwiOiJuYWthbTU0MTc3QGY1dXJsLmNvbSIsIlVzZXJUeXBlIjoiU3VwcGxpZXIiLCJTdXBwbGllcklkIjoiN2VlMmJmZTYtNDdjOS00OWQ5LTlmYTYtNDI2MWIwMDhhOWNjIiwiVmVyaWZpZWRTdXBwbGllciI6IlRydWUiLCJuYmYiOjE3NDU1Nzk1MjgsImV4cCI6MTc0NTU3OTcwOCwiaWF0IjoxNzQ1NTc5NTI4fQ.Enej57bziYHxAS_yrNvv5tkR0rBl_8kuYUnd1H2jCDk",
     },
     data: formData,
   };
