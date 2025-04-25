@@ -8,6 +8,7 @@ import chatbotReducer from "./slices/chatbotSlice";
 import chatReducer from "./slices/chatSlice";
 import addCategoryModelReducer from "./slices/addCategoryModel"
 import searchReducer from "./slices/searchSlice"
+import productReviewReducer from "./slices/prouctReviewSlice"
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
     chat: chatReducer,
     categoryModel : addCategoryModelReducer,
     search: searchReducer,
+    productReview: productReviewReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

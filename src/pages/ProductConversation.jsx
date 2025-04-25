@@ -4,26 +4,30 @@ import {
   sendMessage,
   startConnection,
   stopConnection,
-} from "../../services/signalr";
+} from "../services/signalr";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
-import "./Chat.css";
+import "../components/ui/Chat.css";
 import { useDispatch, useSelector } from "react-redux";
-import { closeChat } from "../../app/slices/chatSlice";
+import { closeChat } from "../app/slices/chatSlice";
 
-export default function ChatPopup() {
+export default function ProductConversation() {
   const dispatch = useDispatch();
-  const { supplierId, productId, productName , supplierName } = useSelector((state) => state.chat);
-  console.log(supplierId,"sss", productId, productName);
+  const { supplierId, productId, productName, supplierName } = useSelector(
+    (state) => state.chat
+  );
+  console.log(supplierId, "sss", productId, productName);
   const [messages, setMessages] = useState([
-    { text: "مرحبًا ! ما هو استفسارك بخصوص المنتج " + productName + "؟  ", fromMe: false },
+    {
+      text: "مرحبًا ! ما هو استفسارك بخصوص المنتج " + productName + "؟  ",
+      fromMe: false,
+    },
   ]);
   const [message, setMessage] = useState("");
-  
+
   const chatContainerRef = useRef(null);
   const chatEndRef = useRef(null);
 
   useEffect(() => {
-
     const init = async () => {
       await startConnection();
       onMessageReceived((id, message) => {
@@ -55,7 +59,7 @@ export default function ChatPopup() {
     if (message.trim()) {
       const res = await sendMessage(message, supplierId);
 
-      console.log("senddd",res);
+      console.log("senddd", res);
       setMessages([...messages, { text: message, fromMe: true }]);
       setMessage("");
     }
@@ -63,7 +67,6 @@ export default function ChatPopup() {
 
   const handleClose = () => {
     dispatch(closeChat());
-    console.log("close");
   };
 
   return (

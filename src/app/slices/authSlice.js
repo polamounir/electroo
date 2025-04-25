@@ -58,6 +58,25 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
+export const loginSupplier = createAsyncThunk(
+  "auth/loginSupplier",
+  async (userData, { dispatch }) => {
+    console.log(userData);
+    try {
+      const response = await loginUserFn(userData);
+      console.log(response);
+      const { accessToken, email, refreshToken } = response.data;
+
+      saveAuthData(accessToken, email, refreshToken);
+      console.log(response.status);
+      dispatch(getUserData());
+      return response.status;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+);
+
 export const getUserData = createAsyncThunk(
   "auth/getUserData",
   async (_, { rejectWithValue }) => {
@@ -114,6 +133,17 @@ const authSlice = createSlice({
       .addCase(loginUser.rejected, (state) => {
         state.loading = false;
       })
+      .addCase(loginSupplier.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(loginSupplier.fulfilled, (state) => {
+        state.loading = false;
+        state.isAuthenticated = true;
+      })
+      .addCase(loginSupplier.rejected, (state) => {
+        state.loading = false;
+      })
+
       .addCase(getUserData.pending, (state) => {
         state.loading = true;
       })

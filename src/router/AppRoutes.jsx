@@ -36,6 +36,9 @@ import Product from "../pages/Product";
 import Search from "../pages/Search";
 import PreRegister from "../pages/PreRegister";
 import FAQ from "../pages/FAQ";
+import SupplierLogin from "../pages/SupplierLogin";
+import UsersLayout from "../components/adminDashboard/users/UsersLayout";
+import ProductConversation from "../pages/ProductConversation";
 
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
@@ -59,9 +62,11 @@ const AppRoutes = () => {
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/login-supplier" element={<SupplierLogin />} />
+
             <Route path="/profile" element={<Profile />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/pre-register" element={<PreRegister/>} />
+            <Route path="/pre-register" element={<PreRegister />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/supplier" element={<Suppliers />} />
@@ -72,6 +77,7 @@ const AppRoutes = () => {
             <Route path="/product/:id" element={<Product />} />
             <Route path="/search" element={<Search />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/chat" element={<ProductConversation />} />
 
             <Route
               path="/supplier-register"
@@ -107,7 +113,11 @@ const AppRoutes = () => {
               <Route path="add" element={<AddNewProduct />} />
             </Route>
             <Route path="orders" element={<div>Orders</div>} />
-            <Route path="users" element={<div>Users</div>} />
+            {/* <Route path="users" element={<div>Users</div>} /> */}
+            <Route path="users" element={<UsersLayout />}>
+              <Route path="" element={<ProductsOverview />} />
+              <Route path="add" element={<AddNewProduct />} />
+            </Route>
             <Route path="sales" element={<div>Sales</div>} />
             <Route path="settings" element={<div>Settings</div>} />
           </Route>

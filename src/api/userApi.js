@@ -6,8 +6,7 @@ export const getUserData = async () => {
     return response.data;
   } catch (error) {
     if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
+    S
       switch (error.response.status) {
         case 401:
           throw new Error("Unauthorized: Please login again");

@@ -1,5 +1,7 @@
 import Cookies from "js-cookie";
 import axios from "axios";
+import TokenStorageService from "../services/TokenStorageService";
+import AuthService from "../services/AuthService";
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -11,7 +13,7 @@ export const api = axios.create({
 // add the access token to the request
 api.interceptors.request.use(
   (config) => {
-    const accessToken = Cookies.get("accessToken");
+    const accessToken = TokenStorageService.getAccessToken();
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -20,9 +22,11 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// update the request
+// refresh token
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
 
@@ -30,32 +34,46 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const Token = Cookies.get("refreshToken");
+        const newAccessToken = await AuthService.getAccessToken();
 
-        const response = await axios.post(
-          `${API_URL}auth/refresh-token`,
-          { refreshToken: Token },
-          {
-            withCredentials: true,
-          }
-        );
-
-        const { accessToken, refreshToken, email } = response.data.data;
-        // console.log("hhhhhhhhhhhhhhhhhhhhhhhh",response.data.data)
-
-        Cookies.set("accessToken", accessToken);
-        Cookies.set("refreshToken", refreshToken);
-        Cookies.set("email", email);
-
-        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-
-        return api(originalRequest);
+        if (newAccessToken) {
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          return api(originalRequest);
+        }
       } catch (refreshError) {
         console.error("Token refresh failed:", refreshError);
-        return Promise.reject(refreshError);
       }
     }
 
     return Promise.reject(error);
   }
+);
+
+api.interceptors.request.use(
+  async (request) => {
+
+    if (
+      !TokenStorageService.HasAccessToken() ||
+      (TokenStorageService.HasAccessToken() &&
+        TokenStorageService.IsTokenExpired() &&
+        TokenStorageService.HasRefreshToken())
+    ) {
+      try {
+        const newAccessToken = await AuthService.getAccessToken();
+        if (newAccessToken) {
+          request.headers.Authorization = `Bearer ${newAccessToken}`;
+        }
+      } catch (error) {
+        console.error("Failed to refresh token:", error);
+      }
+    } else if (
+      TokenStorageService.HasAccessToken() &&
+      !TokenStorageService.IsTokenExpired()
+    ) {
+      request.headers.Authorization = `Bearer ${TokenStorageService.getAccessToken()}`;
+    }
+
+    return request;
+  },
+  (error) => Promise.reject(error)
 );

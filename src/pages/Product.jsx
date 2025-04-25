@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getProductById } from "../api/product";
 import { useQuery } from "@tanstack/react-query";
 import placeholderImage from "../assets/images/product_placeholder.webp";
 import { useDispatch } from "react-redux";
 import { setChatInfo, startConversationThunk } from "../app/slices/chatSlice";
+import { openProductReviewModal } from "../app/slices/prouctReviewSlice";
+import AddProductReviewModel from "../components/product/AddProductReviewModel";
 
 export default function Product() {
   const dispatch = useDispatch();
@@ -43,6 +45,7 @@ export default function Product() {
 
   return (
     <div className="mx-auto px-4 xl:px-50 py-20 flex justify-center items-center min-h-[75svh]">
+      <AddProductReviewModel />
       <div className="flex flex-col md:flex-row-reverse gap-10  p-6 md:p-8 rounded-xl w-full ">
         {/* Image Gallery */}
         <div className="flex-1">
@@ -121,12 +124,19 @@ export default function Product() {
               {data.storeName}
             </p>
             <p>
-              <button
+              {/* <button
+                onClick={handleChatStart}
+                className="font-semibold text-teal-600 italic underline"
+                >
+                تحدث مع البائع
+                </button> */}
+              <Link
+                to={`/chat`}
                 onClick={handleChatStart}
                 className="font-semibold text-teal-600 italic underline"
               >
                 تحدث مع البائع
-              </button>
+              </Link>
             </p>
           </div>
 
@@ -141,6 +151,10 @@ export default function Product() {
               </span>
             ))}
           </div>
+          {/* Add to Cart Button */}
+          <button className="mt-6 w-full md:w-auto px-6 py-3 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-lg shadow-md transition">
+            🛒 أضف إلى السلة
+          </button>
 
           {/* Reviews */}
           <div className="mt-6">
@@ -164,12 +178,10 @@ export default function Product() {
             ) : (
               <p className="text-gray-500">لا توجد تقييمات حتى الآن</p>
             )}
+            <button onClick={() => dispatch(openProductReviewModal(data.id))}>
+              إضافة تقيم
+            </button>
           </div>
-
-          {/* Add to Cart Button */}
-          <button className="mt-6 w-full md:w-auto px-6 py-3 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-lg shadow-md transition">
-            🛒 أضف إلى السلة
-          </button>
         </div>
       </div>
     </div>

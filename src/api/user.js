@@ -15,6 +15,10 @@ export const loginUserFn = async (userData) => {
   const response = await api.post("/auth/login", userData);
   return response.data;
 };
+export const loginSupplierFn = async (userData) => {
+  const response = await api.post("/auth/login-supplier", userData);
+  return response.data;
+};
 
 export const getUserDataFn = async () => {
   const response = await api.get("/auth/me");

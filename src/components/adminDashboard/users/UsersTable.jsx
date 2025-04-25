@@ -4,7 +4,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { GoTrash } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
 
-export default function ProductsTable() {
+export default function UsersTable() {
   const navigate = useNavigate();
   const { data, isLoading, isError } = useQuery({
     queryKey: ["products"],

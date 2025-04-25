@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import image from "../assets/images/login.webp";
-import { loginUser } from "../app/slices/authSlice";
-export default function Login() {
+import { loginSupplier } from "../app/slices/authSlice";
+export default function SupplierLogin() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading } = useSelector((state) => state.auth);
@@ -13,13 +13,13 @@ export default function Login() {
     password: "",
   });
 
-    const user = useSelector((state) => state.auth.user);
-    useEffect(() => {
-      if (user) {
-        navigate("/");
-        toast.error("تم تسجيل الدخول بالفعل");
-      }
-    }, [user ,navigate]);
+  const user = useSelector((state) => state.auth.user);
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+      toast.error("تم تسجيل الدخول بالفعل");
+    }
+  }, [user, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,7 +44,7 @@ export default function Login() {
     }
 
     try {
-      const res = await dispatch(loginUser(formData)).unwrap();
+      const res = await dispatch(loginSupplier(formData)).unwrap();
       console.log(res);
 
       if (res === "Successful") {
@@ -53,7 +53,6 @@ export default function Login() {
       } else if (res.detail === "Wrong email or password") {
         toast.error("اسم المستخدم أو كلمة المرور غير صحيحة");
       } else if (res.title === "EmailNotConfirmedException") {
-        
         navigate("/confirm-account");
       } else {
         toast.error(" برجاء المحاولة في وقت لاحق");
@@ -73,10 +72,15 @@ export default function Login() {
           <div className=" flex justify-center">
             <div className="min-w-xs md:min-w-sm">
               <div className="flex flex-col gap-2 mb-10">
-                <h2 className="text-3xl font-bold">تسجيل دخول مستخدم</h2>
+                <h2 className="text-3xl font-bold">تسجيل دخول مورد</h2>
                 <p className="text-md text-gray-700">مرحب برجوعك لينا 👋</p>
                 <div className="-mt-2">
-                  <Link to="/login-supplier" className="text-sm text-teal-600 hover:text-teal-500 hover:underline italic "> تسجيل دخول كمورد من هنا</Link>
+                  <Link
+                    to="/login"
+                    className="text-sm text-teal-600 hover:text-teal-500 hover:underline italic "
+                  >
+                    تسجيل دخول كمستخدم من هنا
+                  </Link>
                 </div>
               </div>
 
