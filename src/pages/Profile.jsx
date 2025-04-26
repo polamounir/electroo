@@ -71,15 +71,19 @@ function Profile() {
                 </h3>
               </div>
             </div>
+
+            <div className="flex justify-center lg:justify-end">
+              <button
+                className="btn bg-black text-white border border-sky-950 font-semibold w-52 px-10 py-3 text-center rounded-3xl justify-center"
+                onClick={handleLogout}
+              >
+                تسجيل الخروج
+              </button>
+            </div>
           </div>
 
-          <div className="flex justify-center lg:justify-end">
-            <button
-              className="btn bg-black text-white border border-sky-950 font-semibold w-52 px-10 py-3 text-center rounded-3xl justify-center"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
+          <div>
+            <h2>الطلبات</h2>
           </div>
         </div>
       </div>

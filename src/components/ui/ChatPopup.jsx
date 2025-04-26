@@ -12,19 +12,23 @@ import { closeChat } from "../../app/slices/chatSlice";
 
 export default function ChatPopup() {
   const dispatch = useDispatch();
-  const { supplierId, productId, productName , supplierName } = useSelector((state) => state.chat);
-  console.log(supplierId,"sss", productId, productName);
+  const { supplierId, productId, productName, supplierName } = useSelector(
+    (state) => state.chat
+  );
+  console.log(supplierId, "sss", productId, productName);
   const [messages, setMessages] = useState([
-    { text: "مرحبًا ! ما هو استفسارك بخصوص المنتج " + productName + "؟  ", fromMe: false },
+    {
+      text: "مرحبًا ! ما هو استفسارك بخصوص المنتج " + productName + "؟  ",
+      fromMe: false,
+    },
   ]);
   const [message, setMessage] = useState("");
-  
+
   const chatContainerRef = useRef(null);
   const chatEndRef = useRef(null);
 
   useEffect(() => {
     const init = async () => {
-      console.log("init CONVERSATION");
       await startConnection();
       onMessageReceived((id, message) => {
         console.log(id, message);
@@ -58,7 +62,7 @@ export default function ChatPopup() {
         "65b47cc1-3cc3-4852-8883-08dd83f5f933"
       );
 
-      console.log("senddd",res);
+      console.log("senddd", res);
       setMessages([...messages, { text: message, fromMe: true }]);
       setMessage("");
     }

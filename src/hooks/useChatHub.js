@@ -20,7 +20,7 @@ export const useChatHub = () => {
        console.log("Received message model:", model.payload.text);
       setMessages((prevMessages) => [
         ...prevMessages,
-        { sender: "", text: model.payload.text },
+        { sender: "you", text: model.payload.text },
       ]);
     });
 
@@ -45,7 +45,7 @@ export const useChatHub = () => {
       })
       .catch((err) => console.error("Error sending message:", err));
 
-    setMessages((prev) => [...prev, { sender: "You", text: message }]);
+    setMessages((prev) => [...prev, { sender: "me", text: message }]);
   };
 
   return {

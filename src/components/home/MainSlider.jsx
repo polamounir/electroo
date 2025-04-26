@@ -27,47 +27,47 @@ export default function MainSlider() {
 
   const slides = [
     {
-      title: "Google Smart Home",
-      desc: "A hands-free device that can provide answers to spoken questions, play music, interact with smart home devices and more.",
-      url: "",
-      textPostion: "lm",
-      className: "bg-[url('https://ecommerce.markomedhat.com/media/1.png')]",
-    },
-    {
       title: "Sport Watches Bluetooth Speaker",
       desc: "This upgraded wearable waterproof wireless wrist portable sports Bluetooth speaker watch features a multi-functional ",
       url: "",
       textPostion: "rm",
-      className: "bg-[url('https://ecommerce.markomedhat.com/media/2.png')]",
+      className: "bg-[url('https://i.postimg.cc/Wz6HhVBy/slide.webp')]",
     },
     {
-      title: "Apple Watch Series",
-      desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
+      title: "Google Smart Home",
+      desc: "A hands-free device that can provide answers to spoken questions, play music, interact with smart home devices and more.",
       url: "",
-      textPostion: "ct",
-      className: "bg-[url('https://ecommerce.markomedhat.com/media/3.png')]",
+      textPostion: "lm",
+      className: "bg-[url('https://i.postimg.cc/v8WjP74v/slide2.webp')]",
     },
-    {
-      title: "Apple Watch Series",
-      desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
-      url: "",
-      textPostion: "ct",
-      className: "bg-[url('https://ecommerce.markomedhat.com/media/4.png')]",
-    },
-    {
-      title: "Apple Watch Series",
-      desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
-      url: "",
-      textPostion: "ct",
-      className: "bg-[url('https://ecommerce.markomedhat.com/media/5.png')]",
-    },
-    {
-      title: "Apple Watch Series",
-      desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
-      url: "",
-      textPostion: "ct",
-      className: "bg-[url('https://ecommerce.markomedhat.com/media/6.jpg')]",
-    },
+    // {
+    //   title: "Apple Watch Series",
+    //   desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
+    //   url: "",
+    //   textPostion: "ct",
+    //   className: "bg-[url('https://ecommerce.markomedhat.com/media/3.png')]",
+    // },
+    // {
+    //   title: "Apple Watch Series",
+    //   desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
+    //   url: "",
+    //   textPostion: "ct",
+    //   className: "bg-[url('https://ecommerce.markomedhat.com/media/4.png')]",
+    // },
+    // {
+    //   title: "Apple Watch Series",
+    //   desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
+    //   url: "",
+    //   textPostion: "ct",
+    //   className: "bg-[url('https://ecommerce.markomedhat.com/media/5.png')]",
+    // },
+    // {
+    //   title: "Apple Watch Series",
+    //   desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
+    //   url: "",
+    //   textPostion: "ct",
+    //   className: "bg-[url('https://ecommerce.markomedhat.com/media/6.jpg')]",
+    // },
     {
       title: "Apple Watch Series",
       desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
@@ -155,7 +155,7 @@ export default function MainSlider() {
                       </Link>
                     </div>
                   </div>
-                  <div className="w-full h-full flex justify-center flex-col gap-10 lg:gap-20 md:max-w-lg lg:ps-20 mt-5 lg:mt-10">
+                  <div className="w-full h-full flex justify-center flex-col gap-10 lg:gap-20 md:max-w-lg lg:ps-20 ms-60 mt-5 lg:mt-10">
                     <div className="text-center md:text-start">
                       <h1 className="ar-font-s text-2xl md:text-6xl text-white">
                         مرحباً بكم في متجرنا
