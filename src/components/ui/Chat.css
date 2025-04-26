@@ -197,6 +197,7 @@
   border-bottom-right-radius: 0;
 }
 
+
 .message.bot {
   background-color: white;
   margin-right: auto;
@@ -211,6 +212,15 @@
   border-radius: 8px;
 }
 
+.product-message {
+background-color: #f8d7da;
+  color: #721c24;
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 10px !important;
+
+
+}
 .typing-indicator {
   display: inline-block;
   margin-left: 5px;

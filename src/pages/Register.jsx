@@ -77,11 +77,17 @@ export default function Register() {
     }
     try {
       const res = await dispatch(registerUser(formData)).unwrap();
+      console.log(res);
       if (res.status === "Successful") {
         toast.success("تم تسجيل حسابك بنجاح");
         navigate("/confirm-account");
       }
       if (res.title == "UserAlreadyExistsException") {
+        toast.error(
+          "البريد الإلكتروني مستخدم بالفعل. يمكنك إعادة تعيين كلمة المرور."
+        );
+      }
+      if (res.title == "EmailAlreadyExistsException") {
         toast.error(
           "البريد الإلكتروني مستخدم بالفعل. يمكنك إعادة تعيين كلمة المرور."
         );

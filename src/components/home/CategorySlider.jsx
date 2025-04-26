@@ -14,8 +14,10 @@ export default function CategorySlider() {
       const res = await api.get("/categories?Page=1&Limit=20");
       return res.data;
     },
+    cacheTime: 0,
+    gcTime: 1,
   });
-//   console.log(data);
+  //   console.log(data);
   const categories = data?.data?.items;
 
   const settings = {
@@ -158,7 +160,7 @@ export default function CategorySlider() {
                 </div>
               </div>
             ))}
-          {(isLoading || !categories  ) &&
+          {(isLoading || !categories) &&
             demoCategories.map((category, index) => (
               <div
                 key={category.id}

@@ -40,8 +40,9 @@ const chatSlice = createSlice({
       state.supplierId = action.payload.supplierId;
       state.productId = action.payload.productId;
       state.productName = action.payload.productName;
-      state.isMenuOpen = true;
-      state.activeChat = "popup";
+      state.supplierName = action.payload.supplierName;
+      // state.isMenuOpen = true;
+      // state.activeChat = "popup";
     },
     openChatBot: (state) => {
       state.activeChat = "bot";

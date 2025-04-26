@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useChatHub } from "../hooks/useChatHub";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { api } from "../api/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { closeChat } from "../app/slices/chatSlice";
@@ -39,7 +39,6 @@ export default function LiveChat() {
       );
       // console.log(data.data.items);
       // setChatDetails(data.data);
-     
 
       return data.data;
     } catch (error) {
@@ -47,7 +46,7 @@ export default function LiveChat() {
     }
   };
 
-  const { data: chatDetails = {} } = useQuery({
+  const { data: chatDetails = { items: [] } } = useQuery({
     queryKey: ["chat", id],
     queryFn: () => getChat(),
   });
@@ -105,6 +104,43 @@ export default function LiveChat() {
         </div>
 
         <div ref={chatContainerRef} className="chat-messages h-[50svh] ">
+          {/* ---------------Old Messages ----------------- */}
+          {chatDetails &&
+            chatDetails.items &&
+            chatDetails.items.map((msg, idx) => {
+              console.log(msg, "msg");
+              return (
+                <div
+                  key={idx}
+                  className={`message ${msg.isIncoming ? "user" : "bot"} ${
+                    msg.messageType === "Product" ? "product-message" : ""
+                  }`}
+                >
+                  {msg.messageType === "Product" ? (
+                    <div className="">
+                      <Link
+                        to={`/product/${msg.payload.productId}`}
+                        className="flex flex-col items-center gap-2"
+                      >
+                        <img
+                          src={
+                            msg?.payload?.productImage ||
+                            "https://fakeimg.pl/200x200"
+                          }
+                          alt={msg.payload.productTitel}
+                          className="w-20 h-20 rounded-full"
+                        />
+                        <h3 className="text-xs">{msg.payload.productTitel}</h3>
+                      </Link>
+                    </div>
+                  ) : (
+                    msg.payload.text
+                  )}
+                </div>
+              );
+            })}
+
+          {/* ---------------New Messages ----------------- */}
           {messages.map((msg, idx) => {
             // console.log(msg, "msg");
             return (

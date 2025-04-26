@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import { api } from "../api/axiosInstance";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setChatInfo } from "../app/slices/chatSlice";
 
 export default function LiveChats() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const fetchChats = async () => {
@@ -29,6 +32,13 @@ export default function LiveChats() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {items?.map((chat) => (
           <Link
+            onClick={() =>
+              dispatch(
+                setChatInfo({
+                  supplierName: chat.fullName,
+                })
+              )
+            }
             to={`/live-chat/${chat.id}`}
             key={chat.id}
             className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer p-5 px-10"
