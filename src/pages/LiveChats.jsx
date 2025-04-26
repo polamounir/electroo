@@ -39,7 +39,7 @@ export default function LiveChats() {
                 })
               )
             }
-            to={`/live-chat/${chat.id}`}
+            to={`/live-chat/${chat.id}?with=${chat.fullName}`}
             key={chat.id}
             className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer p-5 px-10"
           >

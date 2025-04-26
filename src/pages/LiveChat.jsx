@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useChatHub } from "../hooks/useChatHub";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { api } from "../api/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { closeChat } from "../app/slices/chatSlice";
@@ -9,7 +9,15 @@ import "../components/ui/Chat.css";
 import { useQuery } from "@tanstack/react-query";
 
 export default function LiveChat() {
+
+  const location = useLocation();
+
+  // Get search params
+  const searchParams = new URLSearchParams(location.search);
+  const withParam = searchParams.get('with');
+  console.log(withParam)
   const dispatch = useDispatch();
+
   const { supplierId, productId, productName, supplierName } = useSelector(
     (state) => state.chat
   );
@@ -96,7 +104,7 @@ export default function LiveChat() {
         <div className="chat-header">
           <div className="chat-header-content">
             <IoChatbubbleEllipsesOutline className="chat-icon" />
-            <h3 className="ar-font-s">{supplierName}</h3>
+            <h3 className="ar-font-s">{supplierName || withParam}</h3>
           </div>
           <button className="close-button" onClick={handleClose}>
             ×

@@ -14,8 +14,6 @@ export default function CategorySlider() {
       const res = await api.get("/categories?Page=1&Limit=20");
       return res.data;
     },
-    cacheTime: 0,
-    gcTime: 1,
   });
   //   console.log(data);
   const categories = data?.data?.items;
