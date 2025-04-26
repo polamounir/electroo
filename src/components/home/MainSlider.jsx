@@ -111,9 +111,9 @@ export default function MainSlider() {
           {slides.map((slide) => (
             <div
               key={slide.title}
-              className={`flex justify-center items-center min-h-[500px] lg:h-[90svh] text-white shadow-lg bg-cover bg-right ${slide.className} `}
+              className={`flex justify-center items-center min-h-[500px] lg:h-[70svh] text-white shadow-lg bg-cover bg-right ${slide.className} `}
             >
-              <div className="main-slider-content relative w-full h-full bg-black/40">
+              <div className="main-slider-content relative w-full h-full bg-black/0">
                 {/* <div className={`main-slider-text ${slide.textPostion} w-[80%] lg:w-[500px] mx-auto  static lg:absolute`}>
                                     <div className="mt-20 lg:mt-0 flex flex-col items-center text-center lg:items-start lg:text-start gap-5 ">
                                         <h2 className="text-3xl lg:text-5xl">{slide.title}</h2>

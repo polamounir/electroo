@@ -18,13 +18,12 @@ export default function LiveChat() {
   //   // { text: "مرحبًا ! ما هو استفسارك بخصوص المنتج " + productName + "؟  ", fromMe: false },
   // ]);
 
- 
-
   const chatContainerRef = useRef(null);
   const chatEndRef = useRef(null);
   const { id } = useParams();
 
   const [message, setMessage] = useState("");
+  // const [chatDetails, setChatDetails] = useState({});
   const { messages, sendMessage } = useChatHub();
 
   const handleSend = () => {
@@ -36,20 +35,24 @@ export default function LiveChat() {
   const getChat = async () => {
     try {
       const { data } = await api.get(
-        `/conversations/${id}/messages?page=1&limit=10`
+        `/conversations/${id}/messages?Page=1&Limit=10`
       );
-      console.log(data.data.items);
-      return data.data.items;
+      // console.log(data.data.items);
+      // setChatDetails(data.data);
+     
+
+      return data.data;
     } catch (error) {
       console.error(error);
     }
   };
 
-   const { data: oldMessages={} } = useQuery({
-     queryKey: ["chat", id],
-     queryFn: () => getChat(),
-   });
-   console.log(oldMessages);
+  const { data: chatDetails = {} } = useQuery({
+    queryKey: ["chat", id],
+    queryFn: () => getChat(),
+  });
+  console.log(chatDetails);
+
   useEffect(() => {
     getChat();
   }, [id]);
@@ -101,7 +104,7 @@ export default function LiveChat() {
           </button>
         </div>
 
-        <div ref={chatContainerRef} className="chat-messages">
+        <div ref={chatContainerRef} className="chat-messages h-[50svh] ">
           {messages.map((msg, idx) => {
             // console.log(msg, "msg");
             return (

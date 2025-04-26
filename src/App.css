@@ -85,7 +85,6 @@ button {
   border-top-right-radius: 50%;
   /* overflow: hidden; */
   transition: all 0.5s ease-in-out !important;
-  transition: border-radius 0.0s ease-in-out !important;
   transform: scale(0.9);
   cursor: pointer;
 }
@@ -94,7 +93,6 @@ button {
 .slick-slide.slick-center.slick-cloned .inner-slider-container {
   transform: scale(1.2);
   transition: all 0.5s ease-in-out !important;
-  transition: border-radius 0.0s ease-in-out !important;
   background: var(--color-light-yellow);
   box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.2);
   /* background-color: #000000; */
