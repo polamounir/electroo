@@ -69,6 +69,15 @@ export default function LiveChat() {
     console.log("close");
   };
 
+    useEffect(() => {
+      if (chatContainerRef.current) {
+        const container = chatContainerRef.current;
+        container.scrollTo({
+          top: container.scrollHeight,
+          behavior: "smooth",
+        });
+      }
+    }, [messages]);
   return (
     <div className="py-20 flex flex-col gap-10 items-center">
       {/* <div>
