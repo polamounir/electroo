@@ -50,7 +50,6 @@ button {
   animation: scaleInOut 0.7s ease-in-out forwards;
 }
 
-
 /* ----------------------- */
 .search-icon-container {
   position: relative;
@@ -76,4 +75,30 @@ button {
   transform: translateY(0%);
 }
 
+/* ------------------------------ */
 
+.slick-slide.slick-active .inner-slider-container,
+.slick-slide.slick-cloned .inner-slider-container {
+  background: var(--color-light-gray);
+  padding: 5rem 1rem 3rem 1rem;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+  /* overflow: hidden; */
+  transition: all 0.5s ease-in-out !important;
+  transition: border-radius 0.0s ease-in-out !important;
+  transform: scale(0.9);
+  cursor: pointer;
+}
+
+.slick-slide.slick-active.slick-center.slick-current .inner-slider-container,
+.slick-slide.slick-center.slick-cloned .inner-slider-container {
+  transform: scale(1.2);
+  transition: all 0.5s ease-in-out !important;
+  transition: border-radius 0.0s ease-in-out !important;
+  background: var(--color-light-yellow);
+  box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.2);
+  /* background-color: #000000; */
+}
+
+.category-slider-container {
+}

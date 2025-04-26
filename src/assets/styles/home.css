@@ -29,7 +29,7 @@
   background-color: #fff;
   mix-blend-mode: difference;
 }
-.slick-active {
+.slick-dots .slick-active {
   outline: 2px rgb(0, 132, 255) solid;
   border-radius: 50%;
   border: none !important;
