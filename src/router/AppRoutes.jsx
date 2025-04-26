@@ -42,6 +42,7 @@ import ProductConversation from "../pages/ProductConversation";
 import SupplierChatLayout from "../components/adminDashboard/chats/SupplierChatLayout";
 import SupplierAllChats from "../components/adminDashboard/chats/SupplierAllChats";
 import SupplierChat from "../components/adminDashboard/chats/SupplierChat";
+import LiveChats from "../pages/LiveChats";
 
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
@@ -76,6 +77,7 @@ const AppRoutes = () => {
             <Route path="/upload" element={<Upload />} />
             <Route path="/confirm-account" element={<AccountConfirmation />} />
             <Route path="/contact" element={<Contactus />} />
+            <Route path="/live-chat" element={<LiveChats />} />
             <Route path="/live-chat/:id" element={<LiveChat />} />
             <Route path="/product/:id" element={<Product />} />
             <Route path="/search" element={<Search />} />

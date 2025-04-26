@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { IoIosMenu } from "react-icons/io";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+
+import { LuMessageCircleMore } from "react-icons/lu";
 export default function Navbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -37,10 +39,10 @@ export default function Navbar() {
       name: "المحفوظات",
       link: "/",
     },
-    {
-      name: "الموردين",
-      link: "/supplier",
-    },
+    // {
+    //   name: "الموردين",
+    //   link: "/supplier",
+    // },
     {
       name: "تواصل معنا",
       link: "/contact",
@@ -71,6 +73,11 @@ export default function Navbar() {
               <div className="">
                 <Link to="/cart" className="text-3xl">
                   <IoCartOutline />
+                </Link>
+              </div>
+              <div className="">
+                <Link to="/live-chat" className="text-3xl">
+                  <LuMessageCircleMore />
                 </Link>
               </div>
               <div>
@@ -121,10 +128,15 @@ export default function Navbar() {
                 <li>
                   <Link to="/cart">السلة</Link>
                 </li>
+                <li>
+                  <Link to="/logout">تسجيل الخروج</Link>
+                </li>
                 {user ? (
-                  <li>
-                    <Link to="/profile">الملف الشخصي</Link>
-                  </li>
+                  <>
+                    <li>
+                      <Link to="/profile">الملف الشخصي</Link>
+                    </li>
+                  </>
                 ) : (
                   <li>
                     <Link to="/login">تسجيل دخول</Link>
