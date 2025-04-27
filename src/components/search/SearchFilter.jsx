@@ -83,6 +83,12 @@ export default function SearchFilter() {
     setViewMode(viewMode);
   }, [MinimumPrice, MaximumPrice, HasDiscount, SortBy, viewMode]);
 
+   const handleSearchEnter = (e) => {
+     if (e.key === "Enter" || e.code === "Enter" || e.keyCode === 13) {
+       updateSearchParams();
+     }
+   };
+
   return (
     <div className="flex flex-col w-full p-4 rounded" dir="rtl">
       {/* Filter Section */}
@@ -95,6 +101,7 @@ export default function SearchFilter() {
             className="w-full border border-gray-300 rounded p-2 text-right"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={handleSearchEnter}
           />
         </div>
       </div>
@@ -128,7 +135,7 @@ export default function SearchFilter() {
             </div>
 
             {/* Price Range Inputs */}
-            <div className="flex justify-between gap-4">
+            {/* <div className="flex justify-between gap-4">
               <input
                 type="number"
                 min={MIN}
@@ -145,12 +152,14 @@ export default function SearchFilter() {
                 onChange={(e) => handleRangeChange("max", e.target.value)}
                 className="w-full border border-gray-300 rounded p-2 text-right"
               />
-            </div>
+            </div> */}
 
             {/* Dual Range Slider */}
-            <div className="relative h-6 mt-4">
-              <div className="absolute top-1/2 transform -translate-y-1/2 w-full h-2 bg-gray-200 rounded" />
-              <div
+            <div>
+              <h2>السعر</h2>
+              <div className="relative h-6 mt-4">
+                <div className="absolute top-1/2 transform -translate-y-1/2 w-full h-2 bg-gray-200 rounded" />
+                <div
                 className="absolute top-1/2 transform -translate-y-1/2 h-2 bg-teal-500 rounded"
                 style={{
                   right: `${percentage(rangeValues[0])}%`,
@@ -177,6 +186,7 @@ export default function SearchFilter() {
                 onChange={(e) => handleRangeChange("max", e.target.value)}
                 className="absolute w-full pointer-events-none appearance-none h-2 bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-teal-500 [&::-webkit-slider-thumb]:rounded-full"
               />
+            </div>
             </div>
 
             <div className="flex justify-between text-sm text-gray-500 mt-1">

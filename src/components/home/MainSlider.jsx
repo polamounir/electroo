@@ -5,7 +5,7 @@ import "../../assets/styles/home.css";
 import { IoSearch } from "react-icons/io5";
 import { RiMenuSearchLine } from "react-icons/ri";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import {
@@ -15,6 +15,7 @@ import {
 
 export default function MainSlider() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const user = useSelector((state) => state.auth.user);
   const settings = {
@@ -83,7 +84,7 @@ export default function MainSlider() {
   }, []);
 
   const handleSearch = () => {
-    console.log("search");
+
     dispatch(setSearchParams({ SearchQuery: search }));
     dispatch(
       getSearchResults({
@@ -97,7 +98,20 @@ export default function MainSlider() {
         ViewMode: "grid",
       })
     );
+    navigate(`/search?SearchQuery=${search}&Page=1&Limit=20`);
   };
+
+  const handleSearchInput = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleSearchEnter = (e) => {
+    if (e.key === "Enter" || e.code === "Enter" || e.keyCode === 13) {
+
+      handleSearch();
+    }
+  };
+
   return (
     <main className="bg-slate-200 w-full overflow-hidden">
       <div className="mx-auto w-full">
@@ -126,10 +140,11 @@ export default function MainSlider() {
                         placeholder="بحث ..."
                         className="bg-[var(--color-light-gray)] px-5 pe-20 py-2 rounded-full border border-gray-300 text-black  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)] w-full"
                         value={search}
-                        onChange={(e) => setSearch(e.target.value)}
+                        onChange={handleSearchInput}
+                        onKeyDown={handleSearchEnter}
                       />
-                      <Link
-                        to={`/search?SearchQuery=${search}&Page=1&Limit=20`}
+                      <button
+                        
                         onClick={handleSearch}
                         className="absolute top-0 bottom-0 end-0 w-15 text-3xl flex justify-center items-center"
                       >
@@ -149,7 +164,7 @@ export default function MainSlider() {
                             <RiMenuSearchLine />
                           </div>
                         </div>
-                      </Link>
+                      </button>
                     </div>
                   </div>
                   <div className="w-full h-full flex justify-center flex-col gap-10 lg:gap-20 md:max-w-lg lg:ps-20 lg:ms-60  ">
