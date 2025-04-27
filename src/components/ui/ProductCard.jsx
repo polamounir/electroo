@@ -28,8 +28,8 @@ export default function ProductCard({ product }) {
               src={images[0]}
               alt={title}
               className="h-full aspect-square"
-              width={100}
-              height={100}
+              width={200}
+              height={200}
             />
           </div>
         </div>
