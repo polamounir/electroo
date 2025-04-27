@@ -114,7 +114,7 @@ export default function CategorySlider() {
 
   return (
     <div className="category-slider-container py-10">
-      <h2 className="text-3xl lg:text-5xl text-center title">الفئات</h2>
+      <h2 className="text-3xl lg:text-5xl text-center title mt-10">الفئات</h2>
       <div className="w-full lg:w-[90%] m-auto ">
         <Slider ref={sliderRef} {...settings} className=" pt-5 h-[500px]">
           {categories &&

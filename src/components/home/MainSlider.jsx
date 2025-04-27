@@ -29,13 +29,13 @@ export default function MainSlider() {
   };
 
   const slides = [
-    {
-      title: "Sport Watches Bluetooth Speaker",
-      desc: "This upgraded wearable waterproof wireless wrist portable sports Bluetooth speaker watch features a multi-functional ",
-      url: "",
-      textPostion: "rm",
-      className: "bg-[url('https://i.postimg.cc/Wz6HhVBy/slide.webp')]",
-    },
+    // {
+    //   title: "Sport Watches Bluetooth Speaker",
+    //   desc: "This upgraded wearable waterproof wireless wrist portable sports Bluetooth speaker watch features a multi-functional ",
+    //   url: "",
+    //   textPostion: "rm",
+    //   className: "bg-[url('https://i.postimg.cc/Wz6HhVBy/slide.webp')]",
+    // },
     {
       title: "Google Smart Home",
       desc: "A hands-free device that can provide answers to spoken questions, play music, interact with smart home devices and more.",

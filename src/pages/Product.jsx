@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { setChatInfo, startConversationThunk } from "../app/slices/chatSlice";
 import { openProductReviewModal } from "../app/slices/prouctReviewSlice";
 import AddProductReviewModel from "../components/product/AddProductReviewModel";
+import LoadingPage from "./LoadingPage";
 
 export default function Product() {
   const dispatch = useDispatch();
@@ -18,12 +19,7 @@ export default function Product() {
 
   const [mainImage, setMainImage] = useState(null);
 
-  if (!data)
-    return (
-      <div className="text-center text-teal-600 mt-10 font-medium">
-        جاري التحميل...
-      </div>
-    );
+  if (!data) return <LoadingPage />;
 
   const handleImageClick = (img) => {
     setMainImage(img);

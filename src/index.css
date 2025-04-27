@@ -23,11 +23,18 @@
   --color-accent: #b31312;
 }
 
-.ar-font-m  {
+.ar-font-m {
   font-family: "Marhey", sans-serif;
   font-optical-sizing: auto;
 }
-.ar-font-s , .title {
+.ar-font-s,
+.title {
+  font-family: "Marhey", sans-serif;
+  font-optical-sizing: auto;
+  font-size: 2.5rem;
+}
+.ar-font-s,
+.logo {
   font-family: "Lalezar", system-ui;
   font-optical-sizing: auto;
 }
@@ -37,14 +44,13 @@ input {
   outline: none;
   & ::placeholder {
     /* font-family: "Marhey", sans-serif; */
-    
   }
   &:focus {
     background: #ffffff;
   }
 }
 
-.slide-item{
+.slide-item {
   direction: rtl;
 }
 
@@ -61,8 +67,8 @@ input {
   position: relative;
   overflow: hidden;
 }
-.show-more-box a span{
-  position: absolute; 
+.show-more-box a span {
+  position: absolute;
   top: 50%;
   left: 30%;
   transform: translate(-50%, -40%);
@@ -96,7 +102,7 @@ input {
   background: white;
   padding: 1rem;
   border-radius: 8px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
 }
 
 .close-button {

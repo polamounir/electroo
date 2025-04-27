@@ -46,7 +46,7 @@ export default function Category() {
     <div className="container mx-auto px-2 py-10 pb-20">
       <div>
         <div>
-          <h1>اسم الفئة</h1>
+          <h1 className="title text-center text-3xl md:text-5xl py-10">اسم الفئة</h1>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {products.map((product) => (

@@ -1,5 +1,10 @@
-import { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 
 import Loader from "../components/ui/Loader";
 
@@ -19,14 +24,12 @@ import SupplierTexCard from "../components/supplier-register/SupplierTexCard";
 import SupplierNationalIdFront from "../components/supplier-register/SupplierNationalIdFront";
 import SupplierDataSummary from "../components/supplier-register/SupplierDataSummary";
 import Upload from "../pages/Upload";
-import AdminDashboard from "../pages/AdminDashboard";
 import { Toaster } from "sonner";
 import MainOverview from "../components/adminDashboard/dashboard/MainOverview";
 import ProductsOverview from "../components/adminDashboard/products/ProductsOverview";
 import Cart from "../pages/Cart";
 import ProductsLayout from "../components/adminDashboard/products/ProductsLayout";
 import AddNewProduct from "../components/adminDashboard/products/AddNewProduct";
-import ProtectedRoutes from "./ProtectedRoutes";
 import Checkout from "../pages/Checkout";
 import Profile from "../pages/Profile";
 import PageNotFound from "../pages/PageNotFound";
@@ -45,11 +48,26 @@ import SupplierChat from "../components/adminDashboard/chats/SupplierChat";
 import LiveChats from "../pages/LiveChats";
 import Category from "../pages/Category";
 
+import AdminDashboard from "../pages/AdminDashboard";
+import ProtectedRoutes from "./ProtectedRoutes";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
 const AccountConfirmation = lazy(() => import("../pages/AccountConfirmation"));
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [pathname]);
+
+  return null;
+};
 
 const AppRoutes = () => {
   return (
@@ -62,6 +80,7 @@ const AppRoutes = () => {
         visibleToasts={2}
       />
       <Suspense fallback={<Loader />}>
+        <ScrollToTop />
         <Routes>
           {/* Main App Layout */}
           <Route path="/" element={<MainLayout />}>
