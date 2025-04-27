@@ -33,25 +33,17 @@ export default function FloatingChatMenu() {
   return (
     <div className="chat-container">
       {/* Floating Menu Button */}
-      <button className="floating-menu-button" onClick={handleToggleMenu}>
-        <IoChatbubbleEllipsesOutline className="text-2xl" />
+      {/* <button className="floating-menu-button" onClick={handleToggleMenu}> */}
+      <button className="floating-menu-button" onClick={handleOpenChatBot}>
+        <RiRobot2Line className="text-2xl" />
       </button>
-      <NoteTooltip message="ابدأ المحادثة مع المساعد الذكي" classes="chat-tooltip
-      " />
+      <NoteTooltip
+        message="ابدأ المحادثة مع المساعد الذكي"
+        classes="chat-tooltip
+      "
+      />
 
-      {/* Floating Menu Options */}
-      {isMenuOpen && (
-        <div className="floating-menu-options">
-          <button className="menu-option-button" onClick={handleOpenChatBot}>
-            <RiRobot2Line className="text-xl" />
-            <span>المساعد الذكي</span>
-          </button>
-          <button className="menu-option-button" onClick={handleOpenChatPopup}>
-            <IoChatbubbleEllipsesOutline className="text-xl" />
-            <span>خدمة العملاء</span>
-          </button>
-        </div>
-      )}
+   
 
       {/* Render the active chat component */}
       {activeChat === "bot" && <ChatBot />}
@@ -59,3 +51,19 @@ export default function FloatingChatMenu() {
     </div>
   );
 }
+
+
+
+  //  Floating Menu Options
+  //     {isMenuOpen && (
+  //       // <div className="floating-menu-options">
+  //       //   <button className="menu-option-button" onClick={handleOpenChatBot}>
+  //       //     <RiRobot2Line className="text-xl" />
+  //       //     <span>المساعد الذكي</span>
+  //       //   </button>
+  //         // {/* <button className="menu-option-button" onClick={handleOpenChatPopup}>
+  //           // <IoChatbubbleEllipsesOutline className="text-xl" />
+  //           // <span>خدمة العملاء</span>
+  //         // </button> */
+  //       // </div>
+  //     )}
