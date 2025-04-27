@@ -6,7 +6,7 @@ const NoteTooltip = ({ message , classes }) => {
     setIsVisible(false);
     const timeout = setTimeout(() => {
       setIsVisible(true);
-    }, 6000);
+    }, 10000);
     return () => {
       clearTimeout(timeout);
     };
