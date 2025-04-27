@@ -24,7 +24,7 @@ export default function MainSlider() {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 5000,
+    autoplaySpeed: 7000,
     arrows: false,
   };
 
@@ -43,34 +43,7 @@ export default function MainSlider() {
       textPostion: "lm",
       className: "bg-[url('https://i.postimg.cc/v8WjP74v/slide2.webp')]",
     },
-    // {
-    //   title: "Apple Watch Series",
-    //   desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
-    //   url: "",
-    //   textPostion: "ct",
-    //   className: "bg-[url('https://ecommerce.markomedhat.com/media/3.png')]",
-    // },
-    // {
-    //   title: "Apple Watch Series",
-    //   desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
-    //   url: "",
-    //   textPostion: "ct",
-    //   className: "bg-[url('https://ecommerce.markomedhat.com/media/4.png')]",
-    // },
-    // {
-    //   title: "Apple Watch Series",
-    //   desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
-    //   url: "",
-    //   textPostion: "ct",
-    //   className: "bg-[url('https://ecommerce.markomedhat.com/media/5.png')]",
-    // },
-    // {
-    //   title: "Apple Watch Series",
-    //   desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
-    //   url: "",
-    //   textPostion: "ct",
-    //   className: "bg-[url('https://ecommerce.markomedhat.com/media/6.jpg')]",
-    // },
+
     {
       title: "Apple Watch Series",
       desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
@@ -134,7 +107,7 @@ export default function MainSlider() {
               key={slide.title}
               className={`flex justify-center items-center min-h-[500px] lg:h-[70svh] text-white shadow-lg bg-cover bg-right ${slide.className} `}
             >
-              <div className="main-slider-content relative w-full h-full bg-black/0">
+              <div className="main-slider-content relative w-full h-full bg-black/30">
                 {/* <div className={`main-slider-text ${slide.textPostion} w-[80%] lg:w-[500px] mx-auto  static lg:absolute`}>
                                     <div className="mt-20 lg:mt-0 flex flex-col items-center text-center lg:items-start lg:text-start gap-5 ">
                                         <h2 className="text-3xl lg:text-5xl">{slide.title}</h2>
@@ -143,7 +116,7 @@ export default function MainSlider() {
                                     </div>
                                 </div> */}
                 <div
-                  className="p-5 md:p-15 py-15 flex flex-col gap-5 lg:gap-30"
+                  className="p-5 md:p-15 py-15 flex flex-col gap-5 lg:gap-20"
                   dir="rtl"
                 >
                   <div className="self-center">
@@ -179,18 +152,24 @@ export default function MainSlider() {
                       </Link>
                     </div>
                   </div>
-                  <div className="w-full h-full flex justify-center flex-col gap-10 lg:gap-20 md:max-w-lg lg:ps-20 ms-60 mt-5 lg:mt-10">
+                  <div className="w-full h-full flex justify-center flex-col gap-10 lg:gap-20 md:max-w-lg lg:ps-20 lg:ms-60  ">
                     <div className="text-center md:text-start">
-                      <h1 className="ar-font-s text-2xl md:text-6xl text-white">
+                      <h1 className="ar-font-s text-2xl md:text-6xl text-white welcome-header">
                         مرحباً بكم في متجرنا
                       </h1>
-                      <p className="text-white text-lg font-semibold mt-5">
-                        نحن مستعدون لتقديم لكم افضل المنتجات الالكترونية بأرخص
-                        الاسعار مع توفير قطع غيار موثوقة و مضمونة وخدمة الشحن
-                        المجاني
-                      </p>
+                      <div className="flex flex-col gap-2 text-white text-lg font-semibold mt-5 welcome-message-text">
+                        <p className="welcome-message-line1">
+                          نحن مستعدون لتقديم لكم افضل المنتجات الالكترونية
+                        </p>
+                        <p className="welcome-message-line2">
+                          بأرخص الاسعار مع توفير قطع غيار موثوقة و مضمونة
+                        </p>
+                        <p className="welcome-message-line3">
+                          و خدمة الشحن المجاني
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex gap-5 justify-center md:justify-start">
+                    <div className="flex gap-5 justify-center md:justify-start welcome-buttons-box">
                       <Link
                         to=""
                         className="bg-black px-10 py-3 rounded-lg md:text-2xl  text-white font-semibold"

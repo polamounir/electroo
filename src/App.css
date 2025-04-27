@@ -100,3 +100,66 @@ button {
 
 .category-slider-container {
 }
+
+@keyframes typing-animation {
+  from {
+    width: 0;
+  }
+  to {
+    width: max-content;
+  }
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+.welcome-header {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing-animation 2s steps(19) forwards;
+}
+/* .welcome-header::after {
+  content: "|";
+  animation: blink 0.7s infinite;
+} */
+
+.welcome-message-line1 {
+  display: inline-block;
+  background-color: #00000086;
+  padding: 0 0.5rem;
+  border-radius: 10px;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing-animation 3s 2s steps(74) forwards;
+}
+
+.welcome-message-line2 {
+  display: inline-block;
+  background-color: #00000086;
+  padding: 0 0.5rem;
+  border-radius: 10px;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing-animation 3s 5s steps(73) forwards;
+}
+
+.welcome-message-line3 {
+  display: inline-block;
+  background-color: #00000086;
+  padding: 0 0.5rem;
+  border-radius: 10px;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing-animation 3s 8s steps(46) forwards;
+}
