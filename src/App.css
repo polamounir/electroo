@@ -133,8 +133,8 @@ button {
 
 .welcome-message-line1 {
   display: inline-block;
-  background-color: #00000086;
-  padding: 0 0.5rem;
+  /* background-color: #00000086; */
+  /* padding: 0 0.5rem; */
   border-radius: 10px;
   width: 0;
   overflow: hidden;
@@ -144,8 +144,8 @@ button {
 
 .welcome-message-line2 {
   display: inline-block;
-  background-color: #00000086;
-  padding: 0 0.5rem;
+  /* background-color: #00000086; */
+  /* padding: 0 0.5rem; */
   border-radius: 10px;
   width: 0;
   overflow: hidden;
@@ -155,8 +155,8 @@ button {
 
 .welcome-message-line3 {
   display: inline-block;
-  background-color: #00000086;
-  padding: 0 0.5rem;
+  /* background-color: #00000086; */
+  /* padding: 0 0.5rem; */
   border-radius: 10px;
   width: 0;
   overflow: hidden;

@@ -44,14 +44,14 @@ export default function MainSlider() {
       className: "bg-[url('https://i.postimg.cc/v8WjP74v/slide2.webp')]",
     },
 
-    {
-      title: "Apple Watch Series",
-      desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
-      url: "",
-      textPostion: "ct",
-      className:
-        "bg-[url('https://as2.ftcdn.net/jpg/03/93/40/11/1000_F_393401196_4hIQIOQ0t14dwaIyoQBDQIuZhfpF4tFz.jpg')]",
-    },
+    // {
+    //   title: "Apple Watch Series",
+    //   desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
+    //   url: "",
+    //   textPostion: "ct",
+    //   className:
+    //     "bg-[url('https://as2.ftcdn.net/jpg/03/93/40/11/1000_F_393401196_4hIQIOQ0t14dwaIyoQBDQIuZhfpF4tFz.jpg')]",
+    // },
     {
       title: "Apple Watch Series",
       desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
@@ -107,7 +107,7 @@ export default function MainSlider() {
               key={slide.title}
               className={`flex justify-center items-center min-h-[500px] lg:h-[70svh] text-white shadow-lg bg-cover bg-right ${slide.className} `}
             >
-              <div className="main-slider-content relative w-full h-full bg-black/30">
+              <div className="main-slider-content relative w-full h-full bg-black/50">
                 {/* <div className={`main-slider-text ${slide.textPostion} w-[80%] lg:w-[500px] mx-auto  static lg:absolute`}>
                                     <div className="mt-20 lg:mt-0 flex flex-col items-center text-center lg:items-start lg:text-start gap-5 ">
                                         <h2 className="text-3xl lg:text-5xl">{slide.title}</h2>
