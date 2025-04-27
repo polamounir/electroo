@@ -8,12 +8,15 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { getSearchResults, setSearchParams } from "../../app/slices/searchSlice";
+import {
+  getSearchResults,
+  setSearchParams,
+} from "../../app/slices/searchSlice";
 
 export default function MainSlider() {
   const dispatch = useDispatch();
-    const [search, setSearch] = useState("");
-    const user = useSelector((state) => state.auth.user);
+  const [search, setSearch] = useState("");
+  const user = useSelector((state) => state.auth.user);
   const settings = {
     dots: true,
     infinite: true,
@@ -76,6 +79,22 @@ export default function MainSlider() {
       className:
         "bg-[url('https://as2.ftcdn.net/jpg/03/93/40/11/1000_F_393401196_4hIQIOQ0t14dwaIyoQBDQIuZhfpF4tFz.jpg')]",
     },
+    {
+      title: "Apple Watch Series",
+      desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
+      url: "",
+      textPostion: "ct",
+      className:
+        "bg-[url('https://img.freepik.com/premium-photo/circuit-board-with-variety-electronic-components-including-chips-resistors-capacitors-connectors-arranged-symmetrical-pattern_319816-8530.jpg?w=1380')]",
+    },
+    {
+      title: "Apple Watch Series",
+      desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
+      url: "",
+      textPostion: "ct",
+      className:
+        "bg-[url('https://img.freepik.com/premium-photo/abstract-flat-lay-composition-with-various-electronic-components-microchips-circuits-dark-background_319816-4768.jpg?w=1380')]",
+    },
   ];
 
   useEffect(() => {
@@ -93,17 +112,19 @@ export default function MainSlider() {
   const handleSearch = () => {
     console.log("search");
     dispatch(setSearchParams({ SearchQuery: search }));
-    dispatch(getSearchResults({
-      SearchQuery: search,
-      Page: 1,
-      Limit: 10,
-      MinimumPrice: 0,
-      MaximumPrice: 10000,
-      HasDiscount: false,
-      SortBy: "price-low-high",
-      ViewMode: "grid",
-    }));
-  }
+    dispatch(
+      getSearchResults({
+        SearchQuery: search,
+        Page: 1,
+        Limit: 10,
+        MinimumPrice: 0,
+        MaximumPrice: 10000,
+        HasDiscount: false,
+        SortBy: "price-low-high",
+        ViewMode: "grid",
+      })
+    );
+  };
   return (
     <main className="bg-slate-200 w-full overflow-hidden">
       <div className="mx-auto w-full">
@@ -121,7 +142,10 @@ export default function MainSlider() {
                                         <button className="" aria-label="view more button"><Link to="" className="px-10 py-3 font-semibold rounded duration-500">View Details</Link></button>
                                     </div>
                                 </div> */}
-                <div className="p-5 md:p-15 py-15 flex flex-col gap-5 lg:gap-30" dir="rtl">
+                <div
+                  className="p-5 md:p-15 py-15 flex flex-col gap-5 lg:gap-30"
+                  dir="rtl"
+                >
                   <div className="self-center">
                     <div className="w-xs sm:w-sm md:w-md relative">
                       <input

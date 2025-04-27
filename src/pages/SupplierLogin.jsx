@@ -21,7 +21,7 @@ export default function SupplierLogin() {
       navigate("/");
       toast.error("تم تسجيل الدخول بالفعل");
     }
-  }, [user, navigate]);
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,7 +64,9 @@ export default function SupplierLogin() {
       console.log(error);
     }
   };
-  {/* ---------------Show Password ----------------- */}
+  {
+    /* ---------------Show Password ----------------- */
+  }
   const [showPassword, setShowPassword] = useState(false);
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);

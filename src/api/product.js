@@ -13,16 +13,13 @@ export const getProductById = async (id) => {
 
 export const fetchSearchProducts = async (query) => {
   try {
-    const response = await api.get(
-      "https://ecommerce.zerobytetools.com/api/products",
-      {
-        params: {
-          SearchQuery: query,
-          Page: 1,
-          Limit: 10,
-        },
-      }
-    );
+    const response = await api.get("/products", {
+      params: {
+        SearchQuery: query,
+        Page: 1,
+        Limit: 20,
+      },
+    });
 
     const items = response.data?.data?.items;
     // console.log("Fetched Products:", items);
@@ -33,6 +30,17 @@ export const fetchSearchProducts = async (query) => {
       error.response?.data?.message || "Failed to fetch products"
     );
   }
+};
+
+export const getCategoryProducts = async ( page) => {
+  // const res = await api.get(`/categories/${id}/products`);
+  const res = await api.get(`/products/`, {
+    params: {
+      Page: page,
+      Limit: 10,
+    },
+  });
+  return res.data.data;
 };
 // --------------------------------
 //  Cart API Logic
