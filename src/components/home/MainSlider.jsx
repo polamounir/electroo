@@ -157,7 +157,7 @@ export default function MainSlider() {
                       <h1 className="ar-font-s text-2xl md:text-6xl text-white welcome-header">
                         مرحباً بكم في متجرنا
                       </h1>
-                      <div className="flex flex-col gap-2 text-white text-lg font-semibold mt-5 welcome-message-text">
+                      <div className="flex flex-col gap-2 items-center lg:items-start text-white text-lg font-semibold mt-5 welcome-message-text">
                         <p className="welcome-message-line1">
                           نحن مستعدون لتقديم لكم افضل المنتجات الالكترونية
                         </p>

@@ -161,5 +161,6 @@ button {
   width: 0;
   overflow: hidden;
   white-space: nowrap;
+  max-width: max-content;
   animation: typing-animation 3s 8s steps(46) forwards;
 }
