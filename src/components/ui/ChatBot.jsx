@@ -32,7 +32,7 @@ const ChatBot = () => {
   useEffect(() => {
     // Initialize SignalR connection
     connection.current = new HubConnectionBuilder()
-      .withUrl("https://ecommerce.zerobytetools.com/hubs/aibot")
+      .withUrl("https://ecommerce.markomedhat.com/hubs/aibot")
       .withAutomaticReconnect()
       .build();
 
@@ -174,7 +174,7 @@ const ChatBot = () => {
         <button
           onClick={handleSendMessage}
           disabled={isLoading || !inputMessage.trim()}
-          className="ar-font-s"
+          className="text-sm "
         >
           إرسال
         </button>

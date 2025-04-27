@@ -110,7 +110,7 @@ export default function EditProduct() {
         تعديل بيانات المنتج
       </h2>
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
+        <div className="flex ">
           <div className="flex flex-col">
             <label htmlFor="title" className="text-lg text-gray-700">
               الاسم

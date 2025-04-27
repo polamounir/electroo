@@ -1,0 +1,29 @@
+<svg viewBox="0 0 500 275" xmlns="http://www.w3.org/2000/svg">
+  <!-- Black background rectangle -->
+  <rect x="0" y="0" width="500" height="350" fill="#000000" />
+  
+  <!-- Central hub -->
+  <circle cx="250" cy="130" r="50" fill="none" stroke="#FFFFFF" stroke-width="3" />
+  
+  <!-- Connection spokes -->
+  <line x1="250" y1="80" x2="250" y2="30" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" />
+  <line x1="250" y1="180" x2="250" y2="230" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" />
+  <line x1="200" y1="130" x2="150" y2="130" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" />
+  <line x1="300" y1="130" x2="350" y2="130" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" />
+  <line x1="215" y1="95" x2="180" y2="60" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" />
+  <line x1="285" y1="95" x2="320" y2="60" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" />
+  <line x1="215" y1="165" x2="180" y2="200" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" />
+  <line x1="285" y1="165" x2="320" y2="200" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" />
+  
+  <!-- Component symbols -->
+  <circle cx="250" cy="30" r="10" fill="#FFFFFF" />
+  <rect x="240" y="220" width="20" height="20" fill="#FFFFFF" />
+  <polygon points="150,120 150,140 130,130" fill="#FFFFFF" />
+  <path d="M350,120 L350,140 M360,120 L360,140" stroke="#FFFFFF" stroke-width="3" />
+  <circle cx="180" cy="60" r="10" fill="#FFFFFF" />
+  <rect x="310" y="50" width="20" height="20" fill="#FFFFFF" />
+  <polygon points="180,200 180,220 160,210" fill="#FFFFFF" />
+  <path d="M320,190 L320,210 M330,190 L330,210" stroke="#FFFFFF" stroke-width="3" />
+  
+  
+</svg>

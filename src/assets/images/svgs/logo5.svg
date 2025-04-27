@@ -1,0 +1,28 @@
+<svg viewBox="0 0 500 275" xmlns="http://www.w3.org/2000/svg">
+  <!-- Black background rectangle -->
+  <rect x="0" y="0" width="500" height="350" fill="#000000" />
+  
+  <!-- Background hexagon - white outline -->
+  <polygon points="150,55 350,55 400,130 350,205 150,205 100,130" fill="none" stroke="#FFFFFF" stroke-width="3" />
+  
+  <!-- Circuit board pattern -->
+  <path d="M150,130 L200,130 M300,130 L350,130" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" />
+  <circle cx="150" cy="130" r="6" fill="#FFFFFF" />
+  <circle cx="350" cy="130" r="6" fill="#FFFFFF" />
+  
+  <!-- Diode and resistor symbols -->
+  <polygon points="200,110 200,150 230,130" fill="#FFFFFF" />
+  <rect x="230" y="110" width="8" height="40" fill="#FFFFFF" />
+  <rect x="245" y="110" width="40" height="40" fill="none" stroke="#FFFFFF" stroke-width="8" />
+  <rect x="292" y="110" width="8" height="40" fill="#FFFFFF" />
+  
+  <!-- Connection traces -->
+  <path d="M170,100 L230,100 L230,80 M330,100 L270,100 L270,80" stroke="#FFFFFF" stroke-width="3" fill="none" />
+  <path d="M170,160 L230,160 L230,180 M330,160 L270,160 L270,180" stroke="#FFFFFF" stroke-width="3" fill="none" />
+  <circle cx="230" cy="80" r="4" fill="#FFFFFF" />
+  <circle cx="270" cy="80" r="4" fill="#FFFFFF" />
+  <circle cx="230" cy="180" r="4" fill="#FFFFFF" />
+  <circle cx="270" cy="180" r="4" fill="#FFFFFF" />
+  
+
+</svg>

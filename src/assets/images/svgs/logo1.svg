@@ -1,0 +1,23 @@
+<svg viewBox="0 0 500 275" xmlns="http://www.w3.org/2000/svg">
+  <!-- Black background rectangle -->
+  <rect x="0" y="0" width="500" height="350" fill="#000000" />
+  
+  <!-- Circuit pattern -->
+  <path d="M200,130 L170,130 L170,90 L230,90 L230,60" stroke="#FFFFFF" stroke-width="5" fill="none" stroke-linecap="round" />
+  <path d="M300,130 L330,130 L330,170 L270,170 L270,200" stroke="#FFFFFF" stroke-width="5" fill="none" stroke-linecap="round" />
+  <circle cx="170" cy="90" r="5" fill="#FFFFFF" />
+  <circle cx="230" cy="60" r="5" fill="#FFFFFF" />
+  <circle cx="330" cy="170" r="5" fill="#FFFFFF" />
+  <circle cx="270" cy="200" r="5" fill="#FFFFFF" />
+  
+  <!-- Main circle outline -->
+  <circle cx="250" cy="130" r="100" fill="none" stroke="#FFFFFF" stroke-width="3" />
+  
+  <!-- Diode symbol -->
+  <polygon points="200,110 200,150 240,130" fill="#FFFFFF" />
+  <rect x="240" y="110" width="10" height="40" fill="#FFFFFF" />
+  <polygon points="250,110 250,150 290,130" fill="#FFFFFF" />
+  <rect x="290" y="110" width="10" height="40" fill="#FFFFFF" />
+  
+
+</svg>
