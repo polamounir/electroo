@@ -3,6 +3,8 @@ import { getCategoryProducts } from "../api/product";
 import { useQuery } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import ProductCard from "../components/ui/ProductCard";
+import LoadingPage from "./LoadingPage";
+import ErrorPage from "./ErrorPage";
 
 export default function Category() {
   const { id } = useParams();
@@ -33,11 +35,11 @@ export default function Category() {
   const hasMoreItems = products.length < totalItems;
 
   if (isLoading && page === 1) {
-    return <div>Loading...</div>;
+    return <LoadingPage />;
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <ErrorPage error={error.message} />;
   }
 
   return (
@@ -54,10 +56,10 @@ export default function Category() {
           ))}
         </div>
         {hasMoreItems && (
-          <div className="flex justify-center mt-4">
+          <div className="flex justify-center mt-10">
             <button
               onClick={handleLoadMore}
-              className="bg-teal-500 text-white px-4 py-2 rounded-md"
+              className="bg-teal-500 text-white px-10  py-2 rounded-full text-lg font-semibold"
             >
               {isLoading ? "جاري التحميل..." : "المزيد"}
             </button>

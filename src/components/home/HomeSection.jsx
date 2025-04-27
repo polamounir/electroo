@@ -60,8 +60,8 @@ export default function DailyDeals({ title, products }) {
 
   return (
     <div>
-      <div className="py-20 text-center text-3xl md:text-5xl font-semibold">
-        <h2>{title}</h2>
+      <div className="py-20 text-center text-3xl md:text-5xl ">
+        <h2 className="title">{title}</h2>
       </div>
 
       <div className="w-full bg-[#fafafa] py-15">
