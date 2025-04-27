@@ -5,10 +5,11 @@ import {
   setSupplierBasicData,
   updatesupplierRegisterationProgress,
 } from "../../app/slices/supplierSLice";
-
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { checkUserExistance } from "../../api/user";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 export default function BasicData() {
   const dispatch = useDispatch();
   const supplierdata = useSelector(
@@ -25,7 +26,7 @@ export default function BasicData() {
     phoneNumber: supplierdata.phoneNumber || "",
     email: supplierdata.email || "",
     password: "",
-    governorate:"",
+    governorate: "",
   });
   const handleChange = (e) => {
     e.preventDefault();
@@ -92,37 +93,40 @@ export default function BasicData() {
   //   }
   // };
 
+  const governorates = [
+    { name: "Alexandria", title: "الإسكندرية" },
+    { name: "Aswan", title: "أسوان" },
+    { name: "Asyut", title: "أسيوط" },
+    { name: "Beheira", title: "البحيرة" },
+    { name: "BeniSuef", title: "بني سويف" },
+    { name: "Cairo", title: "القاهرة" },
+    { name: "Dakahlia", title: "الدقهلية" },
+    { name: "Damietta", title: "دمياط" },
+    { name: "Fayoum", title: "الفيوم" },
+    { name: "Gharbia", title: "الغربية" },
+    { name: "Giza", title: "الجيزة" },
+    { name: "Ismailia", title: "الإسماعيلية" },
+    { name: "KafrElSheikh", title: "كفر الشيخ" },
+    { name: "Luxor", title: "الأقصر" },
+    { name: "Matrouh", title: "مطروح" },
+    { name: "Minya", title: "المنيا" },
+    { name: "Monufia", title: "المنوفية" },
+    { name: "NewValley", title: "الوادي الجديد" },
+    { name: "NorthSinai", title: "شمال سيناء" },
+    { name: "PortSaid", title: "بورسعيد" },
+    { name: "Qalyubia", title: "القليوبية" },
+    { name: "Qena", title: "قنا" },
+    { name: "RedSea", title: "البحر الأحمر" },
+    { name: "Sharqia", title: "الشرقية" },
+    { name: "Sohag", title: "سوهاج" },
+    { name: "SouthSinai", title: "جنوب سيناء" },
+    { name: "Suez", title: "السويس" },
+  ];
 
-const governorates = [
-  { name: "Alexandria", title: "الإسكندرية" },
-  { name: "Aswan", title: "أسوان" },
-  { name: "Asyut", title: "أسيوط" },
-  { name: "Beheira", title: "البحيرة" },
-  { name: "BeniSuef", title: "بني سويف" },
-  { name: "Cairo", title: "القاهرة" },
-  { name: "Dakahlia", title: "الدقهلية" },
-  { name: "Damietta", title: "دمياط" },
-  { name: "Fayoum", title: "الفيوم" },
-  { name: "Gharbia", title: "الغربية" },
-  { name: "Giza", title: "الجيزة" },
-  { name: "Ismailia", title: "الإسماعيلية" },
-  { name: "KafrElSheikh", title: "كفر الشيخ" },
-  { name: "Luxor", title: "الأقصر" },
-  { name: "Matrouh", title: "مطروح" },
-  { name: "Minya", title: "المنيا" },
-  { name: "Monufia", title: "المنوفية" },
-  { name: "NewValley", title: "الوادي الجديد" },
-  { name: "NorthSinai", title: "شمال سيناء" },
-  { name: "PortSaid", title: "بورسعيد" },
-  { name: "Qalyubia", title: "القليوبية" },
-  { name: "Qena", title: "قنا" },
-  { name: "RedSea", title: "البحر الأحمر" },
-  { name: "Sharqia", title: "الشرقية" },
-  { name: "Sohag", title: "سوهاج" },
-  { name: "SouthSinai", title: "جنوب سيناء" },
-  { name: "Suez", title: "السويس" },
-];
-
+  const [showPassword, setShowPassword] = useState(false);
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <div className="">
@@ -183,15 +187,25 @@ const governorates = [
                   </div>
                   <div className="w-full">
                     <label htmlFor="password">كلمة المرور</label>
-                    <input
-                      type="text"
-                      name="password"
-                      id="password"
-                      value={formData.password}
-                      placeholder="************"
-                      className="w-full bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-                      onChange={handleChange}
-                    />
+                    <div className="relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        id="password"
+                        value={formData.password}
+                        placeholder="************"
+                        className="w-full bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                        onChange={handleChange}
+                      />
+                      {/* ---------------Show Password ----------------- */}
+                      {formData.password && (
+                        <div className="absolute inset-y-0 end-0 pe-3 flex items-center text-gray-700">
+                          <button type="button" onClick={handleTogglePassword}>
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div className="flex flex-col gap-3 md:flex-row justify-between md:gap-5">
@@ -202,14 +216,17 @@ const governorates = [
                       name="governorate"
                       id="governorate"
                       value={formData.governorate}
-                      
                       className="w-full bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)] outline-none "
                       onChange={handleChange}
                     >
-                      <option  value="" className="text-grey-300">أختر المحافظة</option>
+                      <option value="" className="text-grey-300">
+                        أختر المحافظة
+                      </option>
 
                       {governorates.map((gov) => (
-                        <option key={gov.name} value={gov.name}>{gov.title}</option>
+                        <option key={gov.name} value={gov.name}>
+                          {gov.title}
+                        </option>
                       ))}
                     </select>
                   </div>

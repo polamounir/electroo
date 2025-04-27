@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../app/slices/authSlice";
 import { Link, useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Register() {
   const dispatch = useDispatch();
@@ -97,6 +98,17 @@ export default function Register() {
       console.log(error);
     }
   };
+  {
+    /* ---------------Show Password ----------------- */
+  }
+  const [showPassword, setShowPassword] = useState(false);
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const handleToggleConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   return (
     <div className="w-full md:w-[85%] mx-auto">
@@ -171,14 +183,27 @@ export default function Register() {
                       >
                         كلمةالمرور
                       </label>
-                      <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-                        onChange={handleChange}
-                        placeholder="********"
-                      />
+                      <div className="relative">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          name="password"
+                          id="password"
+                          className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                          onChange={handleChange}
+                          placeholder="********"
+                        />
+                        {/* ---------------Show Password ----------------- */}
+                        {formData.password && (
+                          <div className="absolute inset-y-0 end-0 pe-3 flex items-center text-gray-700">
+                            <button
+                              type="button"
+                              onClick={handleTogglePassword}
+                            >
+                              {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
                     <div className="flex flex-col gap-1">
                       <label
@@ -187,14 +212,27 @@ export default function Register() {
                       >
                         تاكيد كلمة المرور
                       </label>
-                      <input
-                        type="password"
-                        name="confirmPassword"
-                        id="confirmPassword"
-                        className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        placeholder="********"
-                      />
+                      <div className="relative">
+                        <input
+                          type={showConfirmPassword ? "text" : "password"}
+                          name="confirmPassword"
+                          id="confirmPassword"
+                          className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          placeholder="********"
+                        />
+                        {/* ---------------Show Confirm Password ----------------- */}
+                        {confirmPassword && (
+                          <div className="absolute inset-y-0 end-0 pe-3 flex items-center text-gray-700">
+                            <button
+                              type="button"
+                              onClick={handleToggleConfirmPassword}
+                            >
+                              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div>

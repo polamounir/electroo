@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import image from "../assets/images/login.webp";
 import { loginSupplier } from "../app/slices/authSlice";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 export default function SupplierLogin() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -62,6 +64,11 @@ export default function SupplierLogin() {
       console.log(error);
     }
   };
+  {/* ---------------Show Password ----------------- */}
+  const [showPassword, setShowPassword] = useState(false);
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
   return (
     <div className="w-full md:w-[85%] mx-auto">
       <div className="min-h-[70dvh] px-10 flex justify-center items-center">
@@ -110,15 +117,28 @@ export default function SupplierLogin() {
                       >
                         كلمةالمرور
                       </label>
-                      <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        className="w-full bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-                        onChange={handleChange}
-                        placeholder="********"
-                        autoComplete="off"
-                      />
+                      <div className="relative">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          name="password"
+                          id="password"
+                          className="w-full bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                          onChange={handleChange}
+                          placeholder="********"
+                          autoComplete="off"
+                        />
+                        {/* ---------------Show Password ----------------- */}
+                        {formData.password && (
+                          <div className="absolute inset-y-0 end-0 pe-3 flex items-center text-gray-700">
+                            <button
+                              type="button"
+                              onClick={handleTogglePassword}
+                            >
+                              {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div>

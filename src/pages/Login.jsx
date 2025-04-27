@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import image from "../assets/images/login.webp";
 import { loginUser } from "../app/slices/authSlice";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -13,13 +15,13 @@ export default function Login() {
     password: "",
   });
 
-    const user = useSelector((state) => state.auth.user);
-    useEffect(() => {
-      if (user) {
-        navigate("/");
-        toast.error("تم تسجيل الدخول بالفعل");
-      }
-    }, [user ,navigate]);
+  const user = useSelector((state) => state.auth.user);
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+      toast.error("تم تسجيل الدخول بالفعل");
+    }
+  }, [user, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,7 +55,6 @@ export default function Login() {
       } else if (res.detail === "Wrong email or password") {
         toast.error("اسم المستخدم أو كلمة المرور غير صحيحة");
       } else if (res.title === "EmailNotConfirmedException") {
-        
         navigate("/confirm-account");
       } else {
         toast.error(" برجاء المحاولة في وقت لاحق");
@@ -62,6 +63,10 @@ export default function Login() {
       toast.error(" برجاء المحاولة في وقت لاحق");
       console.log(error);
     }
+  };
+  const [showPassword, setShowPassword] = useState(false);
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
   };
   return (
     <div className="w-full md:w-[85%] mx-auto">
@@ -76,7 +81,13 @@ export default function Login() {
                 <h2 className="text-3xl font-bold">تسجيل دخول مستخدم</h2>
                 <p className="text-md text-gray-700">مرحب برجوعك لينا 👋</p>
                 <div className="-mt-2">
-                  <Link to="/login-supplier" className="text-sm text-teal-600 hover:text-teal-500 hover:underline italic "> تسجيل دخول كمورد من هنا</Link>
+                  <Link
+                    to="/login-supplier"
+                    className="text-sm text-teal-600 hover:text-teal-500 hover:underline italic "
+                  >
+                    {" "}
+                    تسجيل دخول كمورد من هنا
+                  </Link>
                 </div>
               </div>
 
@@ -106,15 +117,28 @@ export default function Login() {
                       >
                         كلمةالمرور
                       </label>
-                      <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        className="w-full bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-                        onChange={handleChange}
-                        placeholder="********"
-                        autoComplete="off"
-                      />
+                      <div className="relative">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          name="password"
+                          id="password"
+                          className="w-full bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                          onChange={handleChange}
+                          placeholder="********"
+                          autoComplete="off"
+                        />
+                        {/* ---------------Show Password ----------------- */}
+                        {formData.password && (
+                          <div className="absolute inset-y-0 end-0 pe-3 flex items-center text-gray-700">
+                            <button
+                              type="button"
+                              onClick={handleTogglePassword}
+                            >
+                              {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div>
