@@ -11,6 +11,7 @@ import {
   selectActiveChat,
   selectIsMenuOpen,
 } from "../../app/slices/chatSlice";
+import NoteTooltip from "./NoteTooltip";
 
 export default function FloatingChatMenu() {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ export default function FloatingChatMenu() {
   return (
     <div className="chat-container">
       {/* Floating Menu Button */}
+      <NoteTooltip message="ابدأ المحادثة مع المساعد الذكي" classes="chat-tooltip" />
       <button className="floating-menu-button" onClick={handleToggleMenu}>
         <IoChatbubbleEllipsesOutline className="text-2xl" />
       </button>

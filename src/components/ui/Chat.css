@@ -70,6 +70,13 @@
   animation: bounce 2s infinite ease-in-out;
 }
 
+.chat-tooltip {
+  border-top-left-radius: 20px;
+  border-top-right-radius:20px;
+  border-bottom-right-radius:0px;
+  border-bottom-left-radius:20px;
+  animation: bounce 2s infinite ease-in-out;
+}
 .floating-menu-button:hover {
   transform: scale(1.1);
   animation: none;
@@ -197,7 +204,6 @@
   border-bottom-right-radius: 0;
 }
 
-
 .message.bot {
   background-color: white;
   margin-right: auto;
@@ -213,13 +219,11 @@
 }
 
 .product-message {
-background-color: #f8d7da;
+  background-color: #f8d7da;
   color: #721c24;
   width: 100%;
   margin: 0 auto;
   border-radius: 10px !important;
-
-
 }
 .typing-indicator {
   display: inline-block;
