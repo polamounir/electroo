@@ -31,7 +31,7 @@ export const getSearchResults = createAsyncThunk(
     // console.log("params", params);
     try {
       const response = await api.get(
-        "https://ecommerce.zerobytetools.com/api/products",
+        "/products",
         {
           params: {
             SearchQuery: SearchQuery,

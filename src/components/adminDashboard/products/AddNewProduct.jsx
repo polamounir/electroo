@@ -31,7 +31,7 @@ export default function AddNewProduct() {
     queryFn: async () => {
       const options = {
         method: "GET",
-        url: "https://ecommerce.zerobytetools.com/api/categories?Page=1&Limit=20",
+        url: "https://ecommerce.markomedhat.com/api/categories?Page=1&Limit=20",
       };
 
       try {

@@ -11,7 +11,7 @@ export default function UsersTable() {
     queryFn: async () => {
       const options = {
         method: "GET",
-        url: "https://ecommerce.zerobytetools.com/api/products?Page=1&Limit=20",
+        url: "https://ecommerce.markomedhat.com/api/products?Page=1&Limit=20",
       };
       try {
         const { data } = await axios.request(options);

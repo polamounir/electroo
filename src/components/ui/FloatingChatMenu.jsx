@@ -33,10 +33,11 @@ export default function FloatingChatMenu() {
   return (
     <div className="chat-container">
       {/* Floating Menu Button */}
-      <NoteTooltip message="ابدأ المحادثة مع المساعد الذكي" classes="chat-tooltip" />
       <button className="floating-menu-button" onClick={handleToggleMenu}>
         <IoChatbubbleEllipsesOutline className="text-2xl" />
       </button>
+      <NoteTooltip message="ابدأ المحادثة مع المساعد الذكي" classes="chat-tooltip
+      " />
 
       {/* Floating Menu Options */}
       {isMenuOpen && (

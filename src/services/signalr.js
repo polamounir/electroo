@@ -3,7 +3,6 @@ import Cookies from "js-cookie";
 
 const token = Cookies.get("accessToken");
 
-
 let connection = null;
 let connectionPromise = null;
 
@@ -21,7 +20,7 @@ export const startConnection = () => {
   }
 
   connection = new signalR.HubConnectionBuilder()
-    .withUrl("https://ecommerce.markomedhat.com/hubs/chat", {
+    .withUrl("https://ecommerce.markomedhat.com/api/hubs/chat", {
       accessTokenFactory: () => token,
     })
     .withAutomaticReconnect()

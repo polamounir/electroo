@@ -11,7 +11,7 @@ export default function ProductsTable() {
     queryFn: async () => {
       const options = {
         method: "GET",
-        url: "https://ecommerce.zerobytetools.com/api/products?Page=1&Limit=20",
+        url: "https://ecommerce.markomedhat.com/api/products?Page=1&Limit=20",
       };
       try {
         const { data } = await axios.request(options);
@@ -27,6 +27,9 @@ export default function ProductsTable() {
     navigate("/dashboard/products/add");
   };
 
+  const handleEditNavigation = (id) => {
+    navigate(`/dashboard/products/edit/${id}`);
+  };
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -71,7 +74,10 @@ export default function ProductsTable() {
             <div className="col-span-1">{product.stock || "__"}</div>
             <div className="col-span-1">{product.sales || "__"}</div>
             <div className="col-span-2 flex justify-center gap-2">
-              <button className="text-teal-600 text-2xl">
+              <button
+                className="text-teal-600 text-2xl"
+                onClick={() => handleEditNavigation(product.id)}
+              >
                 <FaRegEdit />
               </button>
               <button className="text-red-600 text-2xl">

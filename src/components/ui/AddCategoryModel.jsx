@@ -41,7 +41,7 @@ const AddCategoryModel = () => {
 
     const options = {
       method: "POST",
-      url: "https://ecommerce.zerobytetools.com/api/categories",
+      url: "https://ecommerce.markomedhat.com/api/categories",
       headers: {
         Authorization:
           "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxNmFmMWUyNy02MTJhLTQ3NzMtOWQzOS0wOGRkNmQwOWY2Y2MiLCJGdWxsTmFtZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBncmFkZWNvbS5jb20iLCJVc2VyVHlwZSI6IkFkbWluIiwibmJmIjoxNzQ1MjM5NDY3LCJleHAiOjE3NDUyMzk2NDcsImlhdCI6MTc0NTIzOTQ2N30.JLhCdFI6TMX63-5AJVpcl0720_3EuUZTqb_iGYXgW1k",
@@ -57,10 +57,8 @@ const AddCategoryModel = () => {
         dispatch(closeCategoryModel());
         setCategoryName("");
         setImage(null);
-        
       } else {
         toast.error("فشل إضافة الفئة");
-
       }
     } catch (error) {
       console.error(error);
@@ -139,6 +137,4 @@ const AddCategoryModel = () => {
 
 export default AddCategoryModel;
 
-
 // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxNmFmMWUyNy02MTJhLTQ3NzMtOWQzOS0wOGRkNmQwOWY2Y2MiLCJGdWxsTmFtZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkBncmFkZWNvbS5jb20iLCJVc2VyVHlwZSI6IkFkbWluIiwibmJmIjoxNzQ1NTI4MDQ4LCJleHAiOjE3NDU1MjgyMjgsImlhdCI6MTc0NTUyODA0OH0.psSR5Mwt98e_QfOPik0XyrkKIqKH4RU-l1xm_BykUgM
-   

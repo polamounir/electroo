@@ -47,9 +47,10 @@ import SupplierAllChats from "../components/adminDashboard/chats/SupplierAllChat
 import SupplierChat from "../components/adminDashboard/chats/SupplierChat";
 import LiveChats from "../pages/LiveChats";
 import Category from "../pages/Category";
-
+import EditProduct from "../components/adminDashboard/products/EditProduct";
 import AdminDashboard from "../pages/AdminDashboard";
 import ProtectedRoutes from "./ProtectedRoutes";
+import EditProductImages from "../components/adminDashboard/products/EditProductImages";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -137,6 +138,8 @@ const AppRoutes = () => {
             <Route path="products" element={<ProductsLayout />}>
               <Route path="" element={<ProductsOverview />} />
               <Route path="add" element={<AddNewProduct />} />
+              <Route path="edit/:id" element={<EditProduct />} />
+              <Route path="edit-images/:id" element={<EditProductImages />} />
             </Route>
             <Route path="orders" element={<div>Orders</div>} />
             {/* <Route path="users" element={<div>Users</div>} /> */}

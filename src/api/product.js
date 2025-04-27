@@ -50,7 +50,7 @@ export const addProductToCart = async (data) => {
   console.log(data);
   try {
     const res = await api.post(
-      "https://ecommerce.zerobytetools.com/api/cart/add-to-cart",
+      "/cart/add-to-cart",
       data
     );
 
@@ -127,7 +127,7 @@ export const deleteFromCart = async ({ productId, cartId, quantity }) => {
 export const fetchCart = async (id) => {
   try {
     const res = await api.get(
-      `https://ecommerce.zerobytetools.com/api/cart/${id}`
+      `/cart/${id}`
     );
     // console.log(res);
     return res.data;

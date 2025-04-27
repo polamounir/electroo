@@ -80,14 +80,14 @@ export default function Product() {
           {/* Price & Discount */}
           <div className="text-xl md:text-2xl font-semibold flex items-center gap-3 flex-wrap">
             {data.discountPercentage > 0 && (
-              <span className="text-gray-800">${data.discountedPrice}</span>
+              <span className="text-gray-800"> {data.discountedPrice} ج.م</span>
             )}
             <span
               className={` ${
                 data.discountPercentage > 0 && "text-gray-400 line-through"
               }`}
             >
-              ${data.price}
+              {data.price}ج.م
             </span>
             {data.discountPercentage > 0 && (
               <span className="bg-teal-100 text-teal-700 text-sm px-2 py-1 rounded-full">

@@ -53,6 +53,15 @@
   }
 }
 
+@keyframes slideRight {
+  from {
+    width: 0;
+  }
+  to {
+    width: 250px;
+  }
+}
+
 /* Floating Menu Button */
 .floating-menu-button {
   width: 50px;
@@ -72,11 +81,13 @@
 
 .chat-tooltip {
   border-top-left-radius: 20px;
-  border-top-right-radius:20px;
-  border-bottom-right-radius:0px;
-  border-bottom-left-radius:20px;
-  animation: bounce 2s infinite ease-in-out;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 20px;
+  /* max-width: ; */
+  animation: slideRight 1s  ease, bounce 2s infinite ease-in-out;
 }
+
 .floating-menu-button:hover {
   transform: scale(1.1);
   animation: none;

@@ -10,14 +10,14 @@ export const useChatHub = () => {
 
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl("https://ecommerce.markomedhat.com/hubs/chat", {
+      .withUrl("https://ecommerce.markomedhat.com/api/hubs/chat", {
         accessTokenFactory: () => token,
       })
       .withAutomaticReconnect()
       .build();
 
     connection.on("ReceiveMessage", (model) => {
-       console.log("Received message model:", model.payload.text);
+      console.log("Received message model:", model.payload.text);
       setMessages((prevMessages) => [
         ...prevMessages,
         { sender: "you", text: model.payload.text },
