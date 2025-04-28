@@ -24,11 +24,11 @@ export default function ProductsTable() {
   });
   // console.log(data?.data?.items);
   const handleAddNavigation = () => {
-    navigate("/dashboard/products/add");
+    navigate("/supplier/products/add");
   };
 
   const handleEditNavigation = (id) => {
-    navigate(`/dashboard/products/edit/${id}`);
+    navigate(`/supplier/products/edit/${id}`);
   };
   if (isLoading) {
     return <div>Loading...</div>;

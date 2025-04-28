@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { api } from "../../../api/axiosInstance";
+import { FaTrash } from "react-icons/fa";
 
 export default function EditProduct() {
   const { id } = useParams();
@@ -11,6 +12,7 @@ export default function EditProduct() {
     queryKey: ["product", id],
     queryFn: () => getProductById(id),
   });
+
   const { data: categories } = useQuery({
     queryKey: ["addcategories"],
     queryFn: async () => {
@@ -29,7 +31,7 @@ export default function EditProduct() {
     },
   });
 
-  //   console.log(data);
+  console.log(data);
 
   //   console.log(categories);
   const [product, setProduct] = useState({
@@ -44,6 +46,7 @@ export default function EditProduct() {
     categoryId: "",
     category: "",
   });
+  const [productImages, setProductImages] = useState([]);
 
   const [category, setCategory] = useState("");
   const [categoryId, setCategoryId] = useState("");
@@ -73,8 +76,7 @@ export default function EditProduct() {
         category: data.category || "",
       });
       setingCategoryId(data.category);
-      //   setCategoryId(data.categoryId);
-      //   console.log(categoryId);
+      setProductImages(data.images);
     }
   }, [data]);
 
@@ -84,12 +86,10 @@ export default function EditProduct() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     console.log(product);
     try {
       const response = await api.put(`/products/${id}`, product);
       console.log("Product updated successfully:", response.data);
-      // You might want to redirect or show a success message
     } catch (error) {
       console.error("Error", error);
     }
@@ -104,14 +104,49 @@ export default function EditProduct() {
       </div>
     );
 
+  const handleDeleteImage = async (image) => {
+    console.log(image);
+    let newImages = productImages.filter((img) => {
+      return img != image;
+    });
+    setProductImages(newImages);
+    try {
+      const imageId = image.split("/media/")[1].split(".")[0];
+      const response = await api.delete(`/products/images/${imageId}`);
+      console.log("Image deleted successfully:", response.data);
+    } catch (error) {
+      console.error("Error deleting image:", error);
+    }
+  };
+
+  const handleAddImage = async (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("image[0]", file);
+
+    try {
+      const response = await api.put(`/products/${id}/images`, formData, {});
+
+      console.log("Image uploaded successfully:", response.data);
+
+      const newImageUrl = response.data.url;
+      setProductImages((prevImages) => [...prevImages, newImageUrl]);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-3xl font-bold text-teal-500 mb-6">
         تعديل بيانات المنتج
       </h2>
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="flex ">
-          <div className="flex flex-col">
+        <div className="flex gap-5 flex-col md:flex-row">
+          <div className="flex-1 flex flex-col">
             <label htmlFor="title" className="text-lg text-gray-700">
               الاسم
             </label>
@@ -123,19 +158,19 @@ export default function EditProduct() {
               onChange={handleChange}
               className="mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
-            <div className="flex flex-col">
-              <label htmlFor="price" className="text-lg text-gray-700">
-                السعر
-              </label>
-              <input
-                type="number"
-                id="price"
-                name="price"
-                value={product.price}
-                onChange={handleChange}
-                className="mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-              />
-            </div>
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="price" className="text-lg text-gray-700">
+              السعر
+            </label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              value={product.price}
+              onChange={handleChange}
+              className="mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
           </div>
         </div>
         <div className="flex flex-col">
@@ -151,47 +186,66 @@ export default function EditProduct() {
             rows="4"
           />
         </div>
+        <div className="flex gap-5 flex-col md:flex-row">
+          <div className="flex-1 flex flex-col">
+            <label htmlFor="stock" className="text-lg text-gray-700">
+              المخزن
+            </label>
+            <input
+              type="number"
+              id="stock"
+              name="stock"
+              value={product.stock}
+              onChange={handleChange}
+              className="mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
+          </div>
 
-        <div className="flex flex-col">
-          <label htmlFor="stock" className="text-lg text-gray-700">
-            المخزن
-          </label>
-          <input
-            type="number"
-            id="stock"
-            name="stock"
-            value={product.stock}
-            onChange={handleChange}
-            className="mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-          />
+          <div className="flex-1 flex flex-col">
+            <label
+              htmlFor="discountPercentage"
+              className="text-lg text-gray-700"
+            >
+              نسبة الخصم
+            </label>
+            <input
+              type="number"
+              id="discountPercentage"
+              name="discountPercentage"
+              value={product.discountPercentage}
+              onChange={handleChange}
+              className="mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
+          </div>
         </div>
 
-        <div className="flex flex-col">
-          <label htmlFor="discountPercentage" className="text-lg text-gray-700">
-            نسبة الخصم
-          </label>
-          <input
-            type="number"
-            id="discountPercentage"
-            name="discountPercentage"
-            value={product.discountPercentage}
-            onChange={handleChange}
-            className="mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-          />
-        </div>
-
-        <div className="flex flex-col">
-          <label htmlFor="sku" className="text-lg text-gray-700">
-            SKU
-          </label>
-          <input
-            type="text"
-            id="sku"
-            name="sku"
-            value={product.sku}
-            onChange={handleChange}
-            className="mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-          />
+        <div className="flex gap-5 flex-col md:flex-row">
+          <div className="flex-1 flex flex-col">
+            <label htmlFor="sku" className="text-lg text-gray-700">
+              SKU
+            </label>
+            <input
+              type="text"
+              id="sku"
+              name="sku"
+              value={product.sku}
+              onChange={handleChange}
+              className="mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
+          </div>
+          <div className="flex-1 flex flex-col">
+            <label htmlFor="brand" className="text-lg text-gray-700">
+              العلامة التجارية
+            </label>
+            <input
+              type="text"
+              id="brand"
+              name="brand"
+              value={product.brand}
+              onChange={handleChange}
+              className="mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
+          </div>
         </div>
 
         <div className="flex flex-col">
@@ -207,21 +261,6 @@ export default function EditProduct() {
             className="mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
           />
         </div>
-
-        <div className="flex flex-col">
-          <label htmlFor="brand" className="text-lg text-gray-700">
-            العلامة التجارية
-          </label>
-          <input
-            type="text"
-            id="brand"
-            name="brand"
-            value={product.brand}
-            onChange={handleChange}
-            className="mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-          />
-        </div>
-
         <div className="flex flex-col">
           <select
             name="categoryId"
@@ -243,9 +282,39 @@ export default function EditProduct() {
           </select>
         </div>
 
+        {/* IMAGES */}
+        <div className="flex flex-col">
+          <label htmlFor="images" className="text-lg text-gray-700">
+            الصور
+          </label>
+          <div className="flex gap-2 flex-wrap">
+            {productImages.map((image, index) => {
+              console.log(image);
+              return (
+                <div className="relative" key={index}>
+                  <img src={image} alt="product" className="w20 h-20" />
+                  <button
+                    className="absolute -top-2 -end-2 bg-red-500 text-white p-1 rounded-full"
+                    onClick={() => handleDeleteImage(image)}
+                  >
+                    <FaTrash />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+          <div className="flex justify-center mt-5">
+            <input
+              type="file"
+              className="justify-self-center py-2 px-5 bg-teal-500 text-white font-semibold rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50"
+              onChange={handleAddImage}
+            />
+          </div>
+        </div>
+
         <button
           type="submit"
-          className="w-full py-3 bg-teal-500 text-white font-semibold rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50"
+          className="w-full py-3 ps-10 bg-teal-500 text-white font-semibold rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50"
         >
           تعديل
         </button>
