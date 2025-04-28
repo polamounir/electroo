@@ -1,3 +1,4 @@
+import { Toaster } from "sonner";
 import { lazy, Suspense, useEffect } from "react";
 import {
   BrowserRouter as Router,
@@ -13,6 +14,7 @@ import AppInit from "../components/ui/AppInit";
 // Layouts
 import MainLayout from "../layouts/MainLayout";
 import AdminLayout from "../layouts/AdminLayout";
+import SupplierLayout from "../layouts/SupplierLayout";
 
 // Pages & Components
 import SupplierRegisteration from "../pages/SupplierRegisteration";
@@ -24,12 +26,31 @@ import SupplierTexCard from "../components/supplier-register/SupplierTexCard";
 import SupplierNationalIdFront from "../components/supplier-register/SupplierNationalIdFront";
 import SupplierDataSummary from "../components/supplier-register/SupplierDataSummary";
 import Upload from "../pages/Upload";
-import { Toaster } from "sonner";
-import MainOverview from "../components/adminDashboard/dashboard/MainOverview";
-import ProductsOverview from "../components/adminDashboard/products/ProductsOverview";
+// ------------------------------------
+import AdminOverview from "../components/adminDashboard/dashboard/MainOverview";
+import AdminProductsOverview from "../components/adminDashboard/products/ProductsOverview";
+import AdminProductsLayout from "../components/adminDashboard/products/ProductsLayout";
+import AdminAddNewProduct from "../components/adminDashboard/products/AddNewProduct";
+import AdminEditProduct from "../components/adminDashboard/products/EditProduct";
+import AdminEditProductImages from "../components/adminDashboard/products/EditProductImages";
+import AdminUsersOverview from "../components/adminDashboard/users/UsersOverview";
+import AdminUsersLayout from "../components/adminDashboard/users/UsersLayout";
+// import AdminAddNewUser from "../components/adminDashboard/users/AddNewUser";
+import AdminChatLayout from "../components/adminDashboard/chats/SupplierChatLayout";
+import AdminAllChats from "../components/adminDashboard/chats/SupplierAllChats";
+import AdminChat from "../components/adminDashboard/chats/SupplierChat";
+// ------------------------------------
+import SupplierOverview from "../components/supplierDashboard/dashboard/MainOverview";
+import SupplierProductsOverview from "../components/supplierDashboard/products/ProductsOverview";
+import SupplierProductsLayout from "../components/supplierDashboard/products/ProductsLayout";
+import SupplierAddNewProduct from "../components/supplierDashboard/products/AddNewProduct";
+import SupplierEditProduct from "../components/supplierDashboard/products/EditProduct";
+import SupplierEditProductImages from "../components/supplierDashboard/products/EditProductImages";
+import SupplierChatLayout from "../components/supplierDashboard/chats/SupplierChatLayout";
+import SupplierAllChats from "../components/supplierDashboard/chats/SupplierAllChats";
+import SupplierChat from "../components/supplierDashboard/chats/SupplierChat";
+// ------------------------------------
 import Cart from "../pages/Cart";
-import ProductsLayout from "../components/adminDashboard/products/ProductsLayout";
-import AddNewProduct from "../components/adminDashboard/products/AddNewProduct";
 import Checkout from "../pages/Checkout";
 import Profile from "../pages/Profile";
 import PageNotFound from "../pages/PageNotFound";
@@ -40,18 +61,12 @@ import Search from "../pages/Search";
 import PreRegister from "../pages/PreRegister";
 import FAQ from "../pages/FAQ";
 import SupplierLogin from "../pages/SupplierLogin";
-import UsersLayout from "../components/adminDashboard/users/UsersLayout";
 import ProductConversation from "../pages/ProductConversation";
-import SupplierChatLayout from "../components/adminDashboard/chats/SupplierChatLayout";
-import SupplierAllChats from "../components/adminDashboard/chats/SupplierAllChats";
-import SupplierChat from "../components/adminDashboard/chats/SupplierChat";
 import LiveChats from "../pages/LiveChats";
 import Category from "../pages/Category";
-import EditProduct from "../components/adminDashboard/products/EditProduct";
-import AdminDashboard from "../pages/AdminDashboard";
+// import AdminDashboard from "../pages/AdminDashboard";
 import ProtectedRoutes from "./ProtectedRoutes";
-import EditProductImages from "../components/adminDashboard/products/EditProductImages";
-import ChatPopup from "../components/ui/ChatPopup";
+import Forbidden from "../pages/Forbidden";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -81,7 +96,6 @@ const AppRoutes = () => {
         closeButton={true}
         visibleToasts={2}
       />
-      <ChatPopup />
       <Suspense fallback={<Loader />}>
         <ScrollToTop />
         <Routes>
@@ -90,13 +104,12 @@ const AppRoutes = () => {
             <Route index element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/login-supplier" element={<SupplierLogin />} />
-
             <Route path="/profile" element={<Profile />} />
             <Route path="/register" element={<Register />} />
             <Route path="/pre-register" element={<PreRegister />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
-            <Route path="/supplier" element={<Suppliers />} />
+            <Route path="/info-supplier" element={<Suppliers />} />
             <Route path="/upload" element={<Upload />} />
             <Route path="/confirm-account" element={<AccountConfirmation />} />
             <Route path="/contact" element={<Contactus />} />
@@ -123,39 +136,63 @@ const AppRoutes = () => {
                 element={<SupplierDataSummary />}
               />
             </Route>
+            <Route path="/forbidden" element={<Forbidden />} />
             <Route path="/*" element={<PageNotFound />} />
           </Route>
+
           {/* Admin Layout  */}
-          {/* 
-           <Route
-            path="/dashboard"
+          <Route
+            path="/admin"
             element={
               <ProtectedRoutes>
                 <AdminLayout />
               </ProtectedRoutes>
             }
-          > */}
-          <Route path="/dashboard" element={<AdminLayout />}>
-            <Route index element={<MainOverview />} />
-            <Route path="products" element={<ProductsLayout />}>
-              <Route path="" element={<ProductsOverview />} />
-              <Route path="add" element={<AddNewProduct />} />
-              <Route path="edit/:id" element={<EditProduct />} />
-              <Route path="edit-images/:id" element={<EditProductImages />} />
+          >
+            <Route index element={<AdminOverview />} />
+            <Route path="products" element={<AdminProductsLayout />}>
+              <Route index element={<AdminProductsOverview />} />
+              <Route path="add" element={<AdminAddNewProduct />} />
+              <Route path="edit/:id" element={<AdminEditProduct />} />
+              <Route path="edit-images/:id" element={<AdminEditProductImages />} />
             </Route>
             <Route path="orders" element={<div>Orders</div>} />
-            {/* <Route path="users" element={<div>Users</div>} /> */}
-            <Route path="users" element={<UsersLayout />}>
-              <Route path="" element={<ProductsOverview />} />
-              <Route path="add" element={<AddNewProduct />} />
+            <Route path="users" element={<AdminUsersLayout />}>
+              <Route index element={<AdminUsersOverview />} />
+              {/* <Route path="add" element={<AdminAddNewUser />} /> */}
             </Route>
-            <Route path="chats" element={<SupplierChatLayout />}>
-              <Route path="" element={<SupplierAllChats />} />
-              <Route path=":id" element={<SupplierChat />} />
+            <Route path="chats" element={<AdminChatLayout />}>
+              <Route index element={<AdminAllChats />} />
+              <Route path=":id" element={<AdminChat />} />
             </Route>
             <Route path="sales" element={<div>Sales</div>} />
             <Route path="settings" element={<div>Settings</div>} />
           </Route>
+          {/* supplier Layout  */}
+           <Route
+            path="/supplier"
+            element={
+              <ProtectedRoutes>
+                <SupplierLayout />
+              </ProtectedRoutes>
+            }
+          >
+            <Route index element={<SupplierOverview />} />
+            <Route path="products" element={<SupplierProductsLayout />}>
+              <Route index element={<SupplierProductsOverview />} />
+              <Route path="add" element={<SupplierAddNewProduct />} />
+              <Route path="edit/:id" element={<SupplierEditProduct />} />
+              <Route path="edit-images/:id" element={<SupplierEditProductImages />} />
+            </Route>
+            <Route path="orders" element={<div>Orders</div>} />
+           
+            <Route path="chats" element={<SupplierChatLayout />}>
+              <Route index element={<SupplierAllChats />} />
+              <Route path=":id" element={<SupplierChat />} />
+            </Route>
+            <Route path="sales" element={<div>Sales</div>} />
+            <Route path="settings" element={<div>Settings</div>} />
+          </Route> 
         </Routes>
       </Suspense>
     </Router>

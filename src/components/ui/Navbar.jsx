@@ -41,7 +41,7 @@ export default function Navbar() {
     },
     // {
     //   name: "الموردين",
-    //   link: "/supplier",
+    //   link: "/info-supplier",
     // },
     {
       name: "تواصل معنا",

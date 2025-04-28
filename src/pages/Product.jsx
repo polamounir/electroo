@@ -4,7 +4,8 @@ import { getProductById } from "../api/product";
 import { useQuery } from "@tanstack/react-query";
 import placeholderImage from "../assets/images/product_placeholder.webp";
 import { useDispatch, useSelector } from "react-redux";
-import { setChatInfo, startConversationThunk } from "../app/slices/chatSlice";
+import {  startConversationThunk } from "../app/slices/chatSlice";
+import ChatPopup from "../components/ui/ChatPopup";
 import { openProductReviewModal } from "../app/slices/prouctReviewSlice";
 import AddProductReviewModel from "../components/product/AddProductReviewModel";
 import LoadingPage from "./LoadingPage";
@@ -13,7 +14,8 @@ import { toast } from "sonner";
 export default function Product() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { error } = useSelector((state) => state.chat);
+  // const { error } = useSelector((state) => state.chat);
+  const { activeChat, isMenuOpen } = useSelector((state) => state.chat);
 
   const { id } = useParams();
   const { data } = useQuery({
@@ -55,6 +57,8 @@ export default function Product() {
   return (
     <div className="mx-auto px-4 xl:px-50 py-20 flex justify-center items-center min-h-[75svh]">
       <AddProductReviewModel />
+      {activeChat === "popup" && isMenuOpen && <ChatPopup />}
+
       <div className="flex flex-col md:flex-row-reverse gap-10  p-6 md:p-8 rounded-xl w-full ">
         {/* Image Gallery */}
         <div className="flex-1">

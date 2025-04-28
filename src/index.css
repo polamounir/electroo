@@ -112,3 +112,26 @@ input {
   cursor: pointer;
   color: #888;
 }
+/* ------------------------------------ */
+.chat-messages {
+  scrollbar-width: thin;
+  scrollbar-color: #00bfa5 #fcfcfce3;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 8px;
+}
+.chat-messages::-webkit-scrollbar-track {
+  background: #00bfa5;
+  border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background-color: #00bfa5;
+  border-radius: 10px;
+  border: 2px solid #00bfa5;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background-color: #009688;
+}

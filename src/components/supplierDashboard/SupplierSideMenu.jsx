@@ -6,59 +6,59 @@ import { TfiPackage } from "react-icons/tfi";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { BsGear } from "react-icons/bs";
 import { AiOutlineDollar } from "react-icons/ai";
-export default function SideMenu() {
+export default function SupplierSideMenu() {
   const links = [
     {
       id: 1,
       name: "لوحة التحكم",
-      title: "dashboard",
-      link: "/dashboard",
+      title: "supplier",
+      link: "/supplier",
       icon: <IoSpeedometerOutline />,
     },
     {
       id: 2,
       name: "الطلبات",
       title: "orders",
-      link: "/dashboard/orders",
+      link: "/supplier/orders",
       icon: <IoBagOutline />,
     },
     {
       id: 3,
       name: "المنتجات",
       title: "products",
-      link: "/dashboard/products",
+      link: "/supplier/products",
       icon: <TfiPackage />,
     },
-    {
-      id: 4,
-      name: "المستخدمين",
-      title: "users",
-      link: "/dashboard/users",
-      icon: <FaRegCircleUser />,
-    },
+    // {
+    //   id: 4,
+    //   name: "المستخدمين",
+    //   title: "users",
+    //   link: "/supplier/users",
+    //   icon: <FaRegCircleUser />,
+    // },
     {
       id: 5,
       name: "المبيعات",
       title: "sales",
-      link: "/dashboard/sales",
+      link: "/supplier/sales",
       icon: <AiOutlineDollar />,
     },
     {
       id: 6,
       name: "الاعدادت",
       title: "settings",
-      link: "/dashboard/settings",
+      link: "/supplier/settings",
       icon: <BsGear />,
     },
     {
       id: 7,
       name: "المحادثات",
       title: "chats",
-      link: "/dashboard/chats",
+      link: "/supplier/chats",
       icon: <IoChatbubbleOutline />,
     },
   ];
-  const [activeLink, setActiveLink] = useState("dashboard");
+  const [activeLink, setActiveLink] = useState("supplier");
   const handleActiveLink = (link) => {
     setActiveLink(link);
   };
