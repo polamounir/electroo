@@ -4,7 +4,7 @@ import { getProductById } from "../api/product";
 import { useQuery } from "@tanstack/react-query";
 import placeholderImage from "../assets/images/product_placeholder.webp";
 import { useDispatch, useSelector } from "react-redux";
-import {  startConversationThunk } from "../app/slices/chatSlice";
+import { startConversationThunk } from "../app/slices/chatSlice";
 import ChatPopup from "../components/ui/ChatPopup";
 import { openProductReviewModal } from "../app/slices/prouctReviewSlice";
 import AddProductReviewModel from "../components/product/AddProductReviewModel";

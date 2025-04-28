@@ -10,7 +10,7 @@ export const useChatHub = () => {
 
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl("https://ecommerce.markomedhat.com/api/hubs/chat", {
+      .withUrl("https://ecommerce.markomedhat.com/hubs/chat", {
         accessTokenFactory: () => token,
       })
       .withAutomaticReconnect()

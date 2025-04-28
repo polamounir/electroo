@@ -20,7 +20,7 @@ export const startConversationThunk = createAsyncThunk(
       return response.data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data || { detail: "Something went wrong" }
+        error.response?.data || { detail: "Something" }
       );
     }
   }
@@ -36,6 +36,7 @@ const initialState = {
   productName: null,
   loading: false,
   error: null,
+  conversationId: null,
 };
 
 // Slice
@@ -80,6 +81,7 @@ const chatSlice = createSlice({
         state.activeChat = "popup";
         state.isMenuOpen = true;
         state.supplierName = action.payload.supplierName;
+        state.conversationId = action.payload.conversationId;
       })
       .addCase(startConversationThunk.rejected, (state, action) => {
         state.loading = false;

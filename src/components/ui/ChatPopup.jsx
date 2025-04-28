@@ -22,8 +22,10 @@ export default function ChatPopup() {
     supplierName,
     activeChat,
     isMenuOpen,
+    conversationId,
   } = useSelector((state) => state.chat);
   console.log(supplierId, "sss", productId, productName);
+  console.log(conversationId, "conversationId");
   // const [messages, setMessages] = useState([
   //   // { text: "مرحبًا ! ما هو استفسارك بخصوص المنتج " + productName + "؟  ", fromMe: false },
   // ]);
@@ -43,10 +45,10 @@ export default function ChatPopup() {
   };
 
   const getChat = async () => {
-    let id = "65b47cc1-3cc3-4852-8883-08dd83f5f933";
+
     const options = {
       method: "GET",
-      url: `https://ecommerce.markomedhat.com/api/conversations/${id}/messages?page=1&limit=20`,
+      url: `https://ecommerce.markomedhat.com/api/conversations/${conversationId}/messages?page=1&limit=20`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -69,7 +71,7 @@ export default function ChatPopup() {
 
   useEffect(() => {
     getChat();
-  }, [productId]);
+  }, [conversationId]);
 
   const handleClose = () => {
     dispatch(closeChat());
@@ -113,7 +115,7 @@ export default function ChatPopup() {
               return (
                 <div
                   key={idx}
-                  className={`message ${msg.isIncoming ? "user" : "bot"} ${
+                  className={`message ${msg.isIncoming ? "bot" : "user"} ${
                     msg.messageType === "Product" ? "product-message" : ""
                   }`}
                 >

@@ -7,8 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import "../components/ui/Chat.css";
 import { useQuery } from "@tanstack/react-query";
+import { startConversationThunk } from "../app/slices/chatSlice";
 
 export default function LiveChat() {
+  const dispatch = useDispatch();
 
   const location = useLocation();
 
@@ -43,7 +45,7 @@ export default function LiveChat() {
   const getChat = async () => {
     try {
       const { data } = await api.get(
-        `/conversations/${id}/messages?Page=1&Limit=10`
+        `/conversations/${id}/messages?Page=1&Limit=20`
       );
       // console.log(data.data.items);
       // setChatDetails(data.data);
@@ -78,6 +80,10 @@ export default function LiveChat() {
         });
       }
     }, [messages, chatDetails]);
+
+    // useEffect(() => {
+    //   dispatch(startConversationThunk());
+    // }, []);
   return (
     <div className=" flex flex-col gap-10 items-center">
       {/* <div>
@@ -126,7 +132,7 @@ export default function LiveChat() {
               return (
                 <div
                   key={idx}
-                  className={`message ${msg.isIncoming ? "user" : "bot"} ${
+                  className={`message ${msg.isIncoming ? "bot" : "user"} ${
                     msg.messageType === "Product" ? "product-message" : ""
                   }`}
                 >
