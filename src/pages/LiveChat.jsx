@@ -3,7 +3,7 @@ import { useChatHub } from "../hooks/useChatHub";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { api } from "../api/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
-import { closeChat } from "../app/slices/chatSlice";
+// import { closeChat } from "../app/slices/chatSlice";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import "../components/ui/Chat.css";
 import { useQuery } from "@tanstack/react-query";
@@ -16,7 +16,7 @@ export default function LiveChat() {
   const searchParams = new URLSearchParams(location.search);
   const withParam = searchParams.get('with');
   console.log(withParam)
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const { supplierId, productId, productName, supplierName } = useSelector(
     (state) => state.chat
@@ -64,10 +64,10 @@ export default function LiveChat() {
     getChat();
   }, [id]);
 
-  const handleClose = () => {
-    dispatch(closeChat());
-    console.log("close");
-  };
+  // const handleClose = () => {
+  //   dispatch(closeChat());
+  //   console.log("close");
+  // };
 
     useEffect(() => {
       if (chatContainerRef.current) {
@@ -77,9 +77,9 @@ export default function LiveChat() {
           behavior: "smooth",
         });
       }
-    }, [messages]);
+    }, [messages, chatDetails]);
   return (
-    <div className="py-20 flex flex-col gap-10 items-center">
+    <div className=" flex flex-col gap-10 items-center">
       {/* <div>
         <div className="chatBox flex flex-col gap-2 max-h-96 overflow-auto">
           {messages.map((message) => (
@@ -109,18 +109,15 @@ export default function LiveChat() {
         </div>
       </div> */}
       {/* --------------------------------------------- */}
-      <div className=" w-full">
+      <div className=" w-full mb-20">
         <div className="chat-header">
           <div className="chat-header-content">
             <IoChatbubbleEllipsesOutline className="chat-icon" />
             <h3 className="ar-font-s">{supplierName || withParam}</h3>
           </div>
-          <button className="close-button" onClick={handleClose}>
-            ×
-          </button>
         </div>
 
-        <div ref={chatContainerRef} className="chat-messages h-[50svh] ">
+        <div ref={chatContainerRef} className="chat-messages h-[65svh] ">
           {/* ---------------Old Messages ----------------- */}
           {chatDetails &&
             chatDetails.items &&
@@ -184,7 +181,7 @@ export default function LiveChat() {
           <button
             onClick={handleSend}
             disabled={!message.trim()}
-            className="ar-font-s"
+            className="text-sm"
           >
             إرسال
           </button>

@@ -1,16 +1,20 @@
 import React, { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getProductById } from "../api/product";
 import { useQuery } from "@tanstack/react-query";
 import placeholderImage from "../assets/images/product_placeholder.webp";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setChatInfo, startConversationThunk } from "../app/slices/chatSlice";
 import { openProductReviewModal } from "../app/slices/prouctReviewSlice";
 import AddProductReviewModel from "../components/product/AddProductReviewModel";
 import LoadingPage from "./LoadingPage";
+import { toast } from "sonner";
 
 export default function Product() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { error } = useSelector((state) => state.chat);
+
   const { id } = useParams();
   const { data } = useQuery({
     queryKey: ["product", id],
@@ -29,14 +33,23 @@ export default function Product() {
     e.target.src = placeholderImage;
   };
 
-  const handleChatStart = () => {
-    dispatch(
-      startConversationThunk({
-        supplierId: data.supplierId,
-        productId: data.id,
-        productName: data.title,
-      })
-    );
+  const handleChatStart = async () => {
+    try {
+      const response = await dispatch(
+        startConversationThunk({
+          supplierId: data.supplierId,
+          productId: data.id,
+          productName: data.title,
+        })
+      );
+      console.log(response.payload);
+      if (response?.payload?.status === 401) {
+        toast.error(response?.payload?.detail);
+        navigate("/login");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

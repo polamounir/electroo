@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isOpen: false,
-  type: null, // can be 'success', 'error', 'info', etc.
+  type: null,
   message: "",
-  duration: 3000, // default duration in milliseconds
+  duration: 3000, 
 };
 
 const popupSlice = createSlice({

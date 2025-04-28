@@ -1,7 +1,7 @@
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { RiRobot2Line } from "react-icons/ri";
 import ChatBot from "./ChatBot";
-import ChatPopup from "./ChatPopup";
+// import ChatPopup from "./ChatPopup";
 import "./Chat.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -45,7 +45,7 @@ export default function FloatingChatMenu() {
 
       {/* Render the active chat component */}
       {activeChat === "bot" && <ChatBot />}
-      {activeChat === "popup" && <ChatPopup />}
+      {/* {activeChat === "popup" && <ChatPopup />} */}
     </div>
   );
 }

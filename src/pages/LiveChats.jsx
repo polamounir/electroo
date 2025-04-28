@@ -11,7 +11,7 @@ export default function LiveChats() {
   const [items, setItems] = useState([]);
   const fetchChats = async () => {
     try {
-      const { data } = await api.get("/conversations?page=1&limit=10");
+      const { data } = await api.get("/conversations?page=1&limit=20");
       console.log(data);
       setItems(data.data.items);
     } catch (error) {

@@ -51,6 +51,7 @@ import EditProduct from "../components/adminDashboard/products/EditProduct";
 import AdminDashboard from "../pages/AdminDashboard";
 import ProtectedRoutes from "./ProtectedRoutes";
 import EditProductImages from "../components/adminDashboard/products/EditProductImages";
+import ChatPopup from "../components/ui/ChatPopup";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -80,6 +81,7 @@ const AppRoutes = () => {
         closeButton={true}
         visibleToasts={2}
       />
+      <ChatPopup />
       <Suspense fallback={<Loader />}>
         <ScrollToTop />
         <Routes>

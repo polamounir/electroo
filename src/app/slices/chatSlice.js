@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
 import { startConversation } from "../../api/conversation";
-import { toast } from "sonner";
+
 
 // Async thunk
 export const startConversationThunk = createAsyncThunk(
@@ -11,6 +11,12 @@ export const startConversationThunk = createAsyncThunk(
       dispatch(setChatInfo(data));
       const response = await startConversation(data);
       console.log(response);
+      if (response.status === 401) {
+        dispatch(closeChat());
+        return rejectWithValue(
+           { detail: "يجب عليك تسجيل الدخول للبدء بالمحادثة" , status: 401 }
+        );
+      }
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -29,6 +35,7 @@ const initialState = {
   supplierName: null,
   productName: null,
   loading: false,
+  error: null,
 };
 
 // Slice
@@ -76,7 +83,9 @@ const chatSlice = createSlice({
       })
       .addCase(startConversationThunk.rejected, (state, action) => {
         state.loading = false;
-        toast.error(action.payload?.detail || "Failed to start conversation");
+        if (action.payload?.status === 401) {
+          state.error = action.payload;
+        }
       });
   },
 });

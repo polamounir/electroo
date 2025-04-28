@@ -53,8 +53,6 @@ const ChatBot = () => {
         clearTimeout(messageTimeoutRef.current);
       }
 
-      // Set a timeout to detect when the message is complete
-      // If no new characters arrive for 1 second, consider the message complete
       messageTimeoutRef.current = setTimeout(() => {
         setIsMessageComplete(true);
         setIsLoading(false);
