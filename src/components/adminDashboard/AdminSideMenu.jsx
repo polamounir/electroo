@@ -75,7 +75,7 @@ export default function AdminSideMenu() {
   const location = useLocation();
   const pathParts = location.pathname.split("/");
   const section = pathParts[2];
-  console.log(section);
+  // console.log(section);
   useEffect(() => {
     handleActiveLink(section);
   }, []);

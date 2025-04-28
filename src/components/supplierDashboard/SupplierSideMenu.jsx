@@ -71,7 +71,7 @@ export default function SupplierSideMenu() {
   const location = useLocation();
   const pathParts = location.pathname.split("/");
   const section = pathParts[2];
-  console.log(section);
+  // console.log(section);
   useEffect(() => {
     handleActiveLink(section);
   }, []);
@@ -90,7 +90,7 @@ export default function SupplierSideMenu() {
                 className="py-3 rounded-bl-full rounded-tl-full text-lg font-semibold ps-5 duration-400 flex items-center gap-5"
                 style={
                   activeLink === link.title ||
-                  (!activeLink && link.title == "dashboard")
+                  (!activeLink && link.title == "supplier")
                     ? activeLinkStyles
                     : null
                 }
