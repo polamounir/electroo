@@ -7,6 +7,19 @@ export const useChatHub = () => {
   const hubConnection = useRef(null);
   const [messages, setMessages] = useState([]);
   const token = Cookies.get("accessToken");
+  
+  const getTimeNow = () => {
+    const date = new Date();
+    const options = {
+      hour: "2-digit",
+      minute: "2-digit",
+      // second: "2-digit",
+      hour12: true,
+    };
+    console.log("now", date.toLocaleTimeString("ar-EG", options));
+    const now = date.toLocaleTimeString("ar-EG", options);
+    return now;
+  };
 
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
@@ -45,7 +58,7 @@ export const useChatHub = () => {
       })
       .catch((err) => console.error("Error sending message:", err));
 
-    setMessages((prev) => [...prev, { sender: "me", text: message }]);
+    setMessages((prev) => [...prev, { sender: "me", text: message  , time: getTimeNow()}]);
   };
 
   return {

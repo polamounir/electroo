@@ -16,21 +16,21 @@ export default function EditProduct() {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-    useEffect(() => {
-      const fetchProduct = async () => {
-        try {
-          setIsLoading(true);
-          const data = await getProductById(id);
-          setData(data);
-        } catch (error) {
-          setIsError(true);
-        } finally {
-          setIsLoading(false);
-        }
-      };
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setIsLoading(true);
+        const data = await getProductById(id);
+        setData(data);
+      } catch (error) {
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-      fetchProduct();
-    }, [id]);
+    fetchProduct();
+  }, [id]);
 
   const { data: categories } = useQuery({
     queryKey: ["addcategories"],
@@ -136,16 +136,16 @@ export default function EditProduct() {
     const files = e.target.files;
     console.log(files);
     if (!files) return;
-    
-    const filesArray = Array.from(files); 
+
+    const filesArray = Array.from(files);
     if (previewImages.length + filesArray.length >= 5) {
       toast.error("لا يمكن اضافة اكثر من 5 صور");
       return;
     }
-     const newPreviewUrls = filesArray.map((file) => URL.createObjectURL(file));
-     console.log(newPreviewUrls);
+    const newPreviewUrls = filesArray.map((file) => URL.createObjectURL(file));
+    console.log(newPreviewUrls);
 
-     setPreviewImages((prev) => [...prev, ...newPreviewUrls]);
+    setPreviewImages((prev) => [...prev, ...newPreviewUrls]);
 
     const formData = new FormData();
 
@@ -164,7 +164,6 @@ export default function EditProduct() {
     } catch (error) {
       console.error("Error uploading image:", error);
       toast.error("Error uploading image");
-
     }
   };
 

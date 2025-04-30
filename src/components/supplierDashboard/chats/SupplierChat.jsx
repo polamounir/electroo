@@ -29,8 +29,6 @@ export default function SupplierChat() {
     //   },
     // };
 
-
-
     try {
       const { data } = await api.get(
         "/conversations/65b47cc1-3cc3-4852-8883-08dd83f5f933/messages?page=1&limit=10"
@@ -119,7 +117,7 @@ export default function SupplierChat() {
         </button> */}
       </div>
 
-      <div ref={chatContainerRef} className="chat-messages">
+      <div ref={chatContainerRef} className="chat-messages scrolling">
         {messages.map((msg, idx) => (
           <div key={idx} className={`message ${msg.fromMe ? "user" : "bot"}`}>
             {msg.text}

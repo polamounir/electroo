@@ -6,9 +6,11 @@ import addAddressModelReducer from "./slices/addAddressModelSlice";
 import popupReducer from "./slices/popupSlice";
 import chatbotReducer from "./slices/chatbotSlice";
 import chatReducer from "./slices/chatSlice";
-import addCategoryModelReducer from "./slices/addCategoryModel"
-import searchReducer from "./slices/searchSlice"
-import productReviewReducer from "./slices/prouctReviewSlice"
+import addCategoryModelReducer from "./slices/addCategoryModel";
+import searchReducer from "./slices/searchSlice";
+import productReviewReducer from "./slices/prouctReviewSlice";
+import userSaplierChatReducer from "./slices/UserSaplierChat";
+import userChatsReducer from "./slices/userChatsSlicce";
 
 const store = configureStore({
   reducer: {
@@ -19,9 +21,11 @@ const store = configureStore({
     popup: popupReducer,
     chatbot: chatbotReducer,
     chat: chatReducer,
-    categoryModel : addCategoryModelReducer,
+    categoryModel: addCategoryModelReducer,
     search: searchReducer,
     productReview: productReviewReducer,
+    userSaplierChat: userSaplierChatReducer,
+    userChatsMenu: userChatsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -49,17 +49,3 @@ export default function FloatingChatMenu() {
     </div>
   );
 }
-
-//  Floating Menu Options
-//     {isMenuOpen && (
-//       // <div className="floating-menu-options">
-//       //   <button className="menu-option-button" onClick={handleOpenChatBot}>
-//       //     <RiRobot2Line className="text-xl" />
-//       //     <span>المساعد الذكي</span>
-//       //   </button>
-//         // {/* <button className="menu-option-button" onClick={handleOpenChatPopup}>
-//           // <IoChatbubbleEllipsesOutline className="text-xl" />
-//           // <span>خدمة العملاء</span>
-//         // </button> */
-//       // </div>
-//     )}

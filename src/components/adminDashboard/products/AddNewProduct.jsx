@@ -173,7 +173,7 @@ export default function AddNewProduct() {
     dispatch(openCategoryModel());
   };
   return (
-    <div className="p-0">
+    <div className="p-0 ">
       <AddCategoryModel />
       <h2 className="text-2xl font-semibold mb-6">اضافة منتج جديد</h2>
       <form onSubmit={handleSubmit} className="space-y-4">

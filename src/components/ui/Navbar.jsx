@@ -4,10 +4,17 @@ import { FaRegUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { IoIosMenu } from "react-icons/io";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
 import { LuMessageCircleMore } from "react-icons/lu";
+import ChatDropdownList from "./ChatDropdownList";
+import {
+  closeUserChatsMenu,
+  openUserChatsMenu,
+} from "../../app/slices/userChatsSlicce";
+
 export default function Navbar() {
+  const dispatch = useDispatch();
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -48,6 +55,18 @@ export default function Navbar() {
       link: "/contact",
     },
   ];
+
+  const { isChatMenuOpen } = useSelector((state) => state.userChatsMenu);
+
+  const openChatDropdown = () => {
+    dispatch(openUserChatsMenu());
+  };
+  const closeChatDropdown = () => {
+    setTimeout(() => {
+      dispatch(closeUserChatsMenu());
+    }, 500);
+  };
+
   return (
     <div
       className={`border-b  bg-white sticky top-0 left-0 right-0 z-[999] border-gray-400 shadow-md ${
@@ -75,10 +94,20 @@ export default function Navbar() {
                   <IoCartOutline />
                 </Link>
               </div>
-              <div className="">
-                <Link to="/live-chat" className="text-3xl">
+              <div
+                className="relative cursor-pointer"
+                onClick={openChatDropdown}
+                onMouseLeave={closeChatDropdown}
+              >
+                {/* <Link to="/live-chat" className=" md:hidden">
                   <LuMessageCircleMore />
-                </Link>
+                </Link> */}
+
+                <div className=" text-3xl">
+                  <LuMessageCircleMore />
+                </div>
+
+                {isChatMenuOpen && <ChatDropdownList isPopupOpen={true} />}
               </div>
               <div>
                 {user ? (

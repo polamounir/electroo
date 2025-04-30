@@ -14,7 +14,7 @@ import { toast } from "sonner";
 export default function Product() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const { error } = useSelector((state) => state.chat);
+
   const { activeChat, isMenuOpen } = useSelector((state) => state.chat);
 
   const { id } = useParams();
@@ -22,6 +22,7 @@ export default function Product() {
     queryKey: ["product", id],
     queryFn: () => getProductById(id),
   });
+  // console.log(data, "data");
 
   const [mainImage, setMainImage] = useState(null);
 
@@ -37,14 +38,15 @@ export default function Product() {
 
   const handleChatStart = async () => {
     try {
-      const response = await dispatch(
+      const response = dispatch(
         startConversationThunk({
           supplierId: data.supplierId,
           productId: data.id,
           productName: data.title,
+  
         })
       );
-      console.log(response.payload);
+      // console.log(response.payload);
       if (response?.payload?.status === 401) {
         toast.error(response?.payload?.detail);
         navigate("/login");

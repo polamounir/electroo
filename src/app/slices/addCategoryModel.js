@@ -4,13 +4,16 @@ const addCategoryModelSlice = createSlice({
   name: "addCategoryModel",
   initialState: {
     isOpen: false,
+    
   },
   reducers: {
     openCategoryModel: (state) => {
       state.isOpen = true;
+      
     },
     closeCategoryModel: (state) => {
       state.isOpen = false;
+
     },
   },
 });

@@ -13,6 +13,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <AppRoutes />
         <FloatingChatMenu />
+        
         {/* <ReactQueryDevtools initialIsOpen={false} />   */}
       </QueryClientProvider>
     </Provider>

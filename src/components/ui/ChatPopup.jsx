@@ -1,81 +1,36 @@
 import { useEffect, useRef, useState } from "react";
-// import { useChatHub } from "../hooks/useChatHub";
-import { Link, useParams } from "react-router-dom";
-import { api } from "../../api/axiosInstance";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { closeChat } from "../../app/slices/chatSlice";
+import {
+  closeChat,
+  startConversationThunk,
+  getChatThunk,
+} from "../../app/slices/chatSlice";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import "./Chat.css";
-import { useQuery } from "@tanstack/react-query";
 import { useChatHub } from "../../hooks/useChatHub";
-import axios from "axios";
-import TokenStorageService from "../../services/TokenStorageService";
-const token = TokenStorageService.getAccessToken();
+import { closeDropdownChatPopup } from "../../app/slices/userChatsSlicce";
 
 export default function ChatPopup() {
   const dispatch = useDispatch();
-
   const {
-    supplierId,
-    productId,
-    productName,
     supplierName,
     activeChat,
     isMenuOpen,
     conversationId,
+    loading,
+    error: chatError,
+    chat: chatDetails,
   } = useSelector((state) => state.chat);
-  console.log(supplierId, "sss", productId, productName);
-  console.log(conversationId, "conversationId");
-  // const [messages, setMessages] = useState([
-  //   // { text: "مرحبًا ! ما هو استفسارك بخصوص المنتج " + productName + "؟  ", fromMe: false },
-  // ]);
 
   const chatContainerRef = useRef(null);
   const chatEndRef = useRef(null);
-  const { id } = useParams();
-
   const [message, setMessage] = useState("");
-  // const [chatDetails, setChatDetails] = useState({});
   const { messages, sendMessage } = useChatHub();
-
-  const handleSend = () => {
-    if (!message.trim()) return;
-    sendMessage(id, message);
-    setMessage("");
-  };
-
-  const getChat = async () => {
-
-    const options = {
-      method: "GET",
-      url: `https://ecommerce.markomedhat.com/api/conversations/${conversationId}/messages?page=1&limit=20`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    try {
-      const { data } = await axios.request(options);
-      console.log(data);
-      return data.data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const { data: chatDetails } = useQuery({
-    queryKey: ["chat", productId],
-    queryFn: () => getChat(),
-  });
-  console.log(chatDetails);
-
-  useEffect(() => {
-    getChat();
-  }, [conversationId]);
 
   const handleClose = () => {
     dispatch(closeChat());
-    console.log("close");
+    dispatch(closeDropdownChatPopup());
   };
 
   useEffect(() => {
@@ -86,16 +41,71 @@ export default function ChatPopup() {
         behavior: "smooth",
       });
     }
-  }, [messages, isMenuOpen]);
+  }, [messages, isMenuOpen, chatDetails]);
+
+  const handleSend = () => {
+    if (!message.trim() || !conversationId) return;
+    sendMessage(conversationId, message);
+    setMessage("");
+  };
+
+  // Initialize conversation if needed
+  useEffect(() => {
+    if (!conversationId) {
+      dispatch(startConversationThunk());
+    }
+  }, [conversationId, dispatch]);
+
+  useEffect(() => {
+    if (conversationId) {
+      dispatch(getChatThunk(conversationId));
+    }
+  }, []);
+
+  const formatDate = (dateString) => {
+    const date =
+      dateString.endsWith("Z") || dateString.includes("+")
+        ? new Date(dateString)
+        : new Date(dateString + "Z");
+
+    const now = new Date();
+    const diffTime = now - date;
+    // const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    return date.toLocaleTimeString("ar-EG", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    // if (diffDays >= 1) {
+    //   return date.toLocaleDateString("ar-EG", {
+    //     year: "numeric",
+    //     month: "short",
+    //     day: "numeric",
+    //   });
+    // } else {
+    //   return date.toLocaleTimeString("ar-EG", {
+    //     hour: "2-digit",
+    //     minute: "2-digit",
+    //   });
+    // }
+  };
+
+  if (chatError) {
+    return (
+      <div className="flex items-center justify-center p-4 text-red-500">
+        Error: {chatError.detail || "Failed to load chat"}
+      </div>
+    );
+  }
 
   return (
     <div
       className={`${
         activeChat === "popup" || isMenuOpen ? "flex" : "hidden"
-      } flex flex-col gap-10 items-center fixed border-2 border-gray-200 rounded-lg overflow-hidden shadow-lg shadow-teal-500 bottom-5 right-5 z-[110] `}
+      } flex flex-col gap-10 items-center fixed border-2 border-gray-200 rounded-lg overflow-hidden shadow-lg shadow-teal-500 bottom-5 right-5 z-[110] max-w-sm min-w-sm `}
     >
-      {/* --------------------------------------------- */}
-      <div className=" w-full">
+      <div className="w-full">
         <div className="chat-header">
           <div className="chat-header-content">
             <IoChatbubbleEllipsesOutline className="chat-icon" />
@@ -106,13 +116,18 @@ export default function ChatPopup() {
           </button>
         </div>
 
-        <div ref={chatContainerRef} className="chat-messages h-[50svh] ">
-          {/* ---------------Old Messages ----------------- */}
-          {chatDetails &&
-            chatDetails.items &&
-            chatDetails.items.map((msg, idx) => {
-              console.log(msg, "msg");
-              return (
+        <div
+          ref={chatContainerRef}
+          className="chat-messages h-[50svh] scrolling"
+        >
+          {loading ? (
+            <div className="flex items-center justify-center p-4">
+              Loading...
+            </div>
+          ) : (
+            <>
+              {/* Old Messages */}
+              {chatDetails?.items?.map((msg, idx) => (
                 <div
                   key={idx}
                   className={`message ${msg.isIncoming ? "bot" : "user"} ${
@@ -120,7 +135,7 @@ export default function ChatPopup() {
                   }`}
                 >
                   {msg.messageType === "Product" ? (
-                    <div className="">
+                    <div>
                       <Link
                         to={`/product/${msg.payload.productId}`}
                         className="flex flex-col items-center gap-2"
@@ -137,24 +152,37 @@ export default function ChatPopup() {
                       </Link>
                     </div>
                   ) : (
-                    msg.payload.text
+                    <div className="pb-1 relative min-w-20">
+                      <p className="ps-14">{msg.payload.text}</p>
+                      <span className="absolute -bottom-1 start-0 text-[12px] text-gray-300">
+                        <span>{formatDate(msg.sentOn)}</span>
+                        {/* <span>{msg.readOn}</span> */}
+                      </span>
+                    </div>
                   )}
                 </div>
-              );
-            })}
+              ))}
 
-          {/* ---------------New Messages ----------------- */}
-          {messages.map((msg, idx) => {
-            // console.log(msg, "msg");
-            return (
-              <div
-                key={idx}
-                className={`message ${msg.sender === "me" ? "user" : "bot"}`}
-              >
-                {msg.text}
-              </div>
-            );
-          })}
+              {/* New Messages */}
+              {messages.map((msg, idx) => {
+                console.log("msg", msg);
+                return (
+                  <div
+                    key={idx}
+                    className={`message chating ${
+                      msg.sender === "me" ? "user" : "bot"
+                    } relative min-w-20 pb-1`}
+                  >
+                    <p className="ps-14">{msg.text}</p>
+                    <p className="absolute bottom-1 start-2 text-[12px] text-gray-300">
+                      <span>{msg.time}</span>
+                      {/* <span>{msg.readOn}</span> */}
+                    </p>
+                  </div>
+                );
+              })}
+            </>
+          )}
           <div ref={chatEndRef} />
         </div>
 
@@ -169,7 +197,7 @@ export default function ChatPopup() {
           />
           <button
             onClick={handleSend}
-            disabled={!message.trim()}
+            disabled={!message.trim() || !conversationId || loading}
             className="text-sm"
           >
             إرسال

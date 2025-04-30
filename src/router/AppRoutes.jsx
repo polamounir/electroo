@@ -67,6 +67,8 @@ import Category from "../pages/Category";
 // import AdminDashboard from "../pages/AdminDashboard";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Forbidden from "../pages/Forbidden";
+import ChatPopup from "../components/ui/ChatPopup";
+import { useSelector } from "react-redux";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -87,15 +89,18 @@ const ScrollToTop = () => {
 };
 
 const AppRoutes = () => {
+  const { isChatPopupOpen } = useSelector((state) => state.userChatsMenu);
   return (
     <Router>
       <AppInit />
+      {isChatPopupOpen && <ChatPopup />}
       <Toaster
         position="top-left"
         richColors={true}
         closeButton={true}
         visibleToasts={2}
       />
+      {/* <ChatPopup /> */}
       <Suspense fallback={<Loader />}>
         <ScrollToTop />
         <Routes>
@@ -154,7 +159,10 @@ const AppRoutes = () => {
               <Route index element={<AdminProductsOverview />} />
               <Route path="add" element={<AdminAddNewProduct />} />
               <Route path="edit/:id" element={<AdminEditProduct />} />
-              <Route path="edit-images/:id" element={<AdminEditProductImages />} />
+              <Route
+                path="edit-images/:id"
+                element={<AdminEditProductImages />}
+              />
             </Route>
             <Route path="orders" element={<div>Orders</div>} />
             <Route path="users" element={<AdminUsersLayout />}>
@@ -169,7 +177,7 @@ const AppRoutes = () => {
             <Route path="settings" element={<div>Settings</div>} />
           </Route>
           {/* supplier Layout  */}
-           <Route
+          <Route
             path="/supplier"
             element={
               <ProtectedRoutes>
@@ -182,17 +190,20 @@ const AppRoutes = () => {
               <Route index element={<SupplierProductsOverview />} />
               <Route path="add" element={<SupplierAddNewProduct />} />
               <Route path="edit/:id" element={<SupplierEditProduct />} />
-              <Route path="edit-images/:id" element={<SupplierEditProductImages />} />
+              <Route
+                path="edit-images/:id"
+                element={<SupplierEditProductImages />}
+              />
             </Route>
             <Route path="orders" element={<div>Orders</div>} />
-           
+
             <Route path="chats" element={<SupplierChatLayout />}>
               <Route index element={<SupplierAllChats />} />
               <Route path=":id" element={<SupplierChat />} />
             </Route>
             <Route path="sales" element={<div>Sales</div>} />
             <Route path="settings" element={<div>Settings</div>} />
-          </Route> 
+          </Route>
         </Routes>
       </Suspense>
     </Router>

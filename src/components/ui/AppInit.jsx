@@ -5,6 +5,7 @@ import { generateNewSessionId } from "../../app/slices/chatbotSlice";
 import Cookies from "js-cookie";
 export default function AppInit() {
   const token = Cookies.get("accessToken");
+
   const dispatch = useDispatch();
   // console.log("AppInit");
   if (token) {

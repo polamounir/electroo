@@ -45,10 +45,9 @@ export default function LiveChat() {
   const getChat = async () => {
     try {
       const { data } = await api.get(
-        `/conversations/${id}/messages?Page=1&Limit=20`
+        `/conversations/${id}/messages?Page=1&Limit=100`
       );
-      // console.log(data.data.items);
-      // setChatDetails(data.data);
+
 
       return data.data;
     } catch (error) {
@@ -123,7 +122,10 @@ export default function LiveChat() {
           </div>
         </div>
 
-        <div ref={chatContainerRef} className="chat-messages h-[65svh] ">
+        <div
+          ref={chatContainerRef}
+          className="chat-messages h-[65svh] scrolling"
+        >
           {/* ---------------Old Messages ----------------- */}
           {chatDetails &&
             chatDetails.items &&
@@ -161,6 +163,7 @@ export default function LiveChat() {
             })}
 
           {/* ---------------New Messages ----------------- */}
+
           {messages.map((msg, idx) => {
             // console.log(msg, "msg");
             return (

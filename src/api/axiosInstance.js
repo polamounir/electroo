@@ -74,6 +74,7 @@ api.interceptors.request.use(
     ) {
       request.headers.Authorization = `Bearer ${TokenStorageService.getAccessToken()}`;
     }
+    // console.log(request)
 
     return request;
   },

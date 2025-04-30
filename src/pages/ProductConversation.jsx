@@ -82,7 +82,7 @@ export default function ProductConversation() {
         </button>
       </div>
 
-      <div ref={chatContainerRef} className="chat-messages">
+      <div ref={chatContainerRef} className="chat-messages scrolling">
         {messages.map((msg, idx) => (
           <div key={idx} className={`message ${msg.fromMe ? "user" : "bot"}`}>
             {msg.text}

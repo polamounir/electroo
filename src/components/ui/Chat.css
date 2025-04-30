@@ -85,7 +85,7 @@
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 20px;
   /* max-width: ; */
-  animation: slideRight 1s  ease, bounce 2s infinite ease-in-out;
+  animation: slideRight 1s ease, bounce 2s infinite ease-in-out;
 }
 
 .floating-menu-button:hover {
@@ -198,14 +198,35 @@
   padding: 10px;
   border-radius: 8px;
   max-width: 80%;
+  
   word-wrap: break-word;
   line-height: 1.5;
 }
 
 .welcome-message {
+  margin-right: auto;
+  border-bottom-left-radius: 0;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  max-width: 80%;
+  word-wrap: break-word;
+  line-height: 1.5;
+  margin-right: auto;
+  border-bottom-left-radius: 0;
+  text-align: end;
+}
+.welcome-message p {
   background-color: white;
   margin-right: auto;
   border-bottom-left-radius: 0;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  word-wrap: break-word;
+  line-height: 1.5;
+  margin-right: auto;
+  border-bottom-left-radius: 0;
+  text-align: start;
 }
 
 .message.user {

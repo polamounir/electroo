@@ -7,10 +7,11 @@ class AuthService {
   static async refreshToken() {
     try {
       const refreshToken = TokenStorageService.getRefreshToken();
-
+      
       if (!refreshToken) {
         throw new Error("No refresh token available");
       }
+      console.log(API_URL)
 
       const response = await axios.post(
         `${API_URL}auth/refresh-token`,
@@ -37,7 +38,7 @@ class AuthService {
   }
 
   static async getAccessToken() {
-    // If we have a valid token, return it
+
     if (
       TokenStorageService.HasAccessToken() &&
       !TokenStorageService.IsTokenExpired()
@@ -45,12 +46,9 @@ class AuthService {
       return TokenStorageService.getAccessToken();
     }
 
-    // If we have a refresh token, try to get a new access token
     if (TokenStorageService.HasRefreshToken()) {
       return await this.refreshToken();
     }
-
-    // No valid tokens available
     return null;
   }
 }

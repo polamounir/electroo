@@ -1,39 +1,49 @@
-import { useEffect, useState } from "react";
-import { api } from "../api/axiosInstance";
+// import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getChatThunk, openChatingPopup } from "../../app/slices/chatSlice";
 import { toast } from "sonner";
-import { Link, useNavigate } from "react-router-dom";
+import { api } from "../../api/axiosInstance";
 import { useDispatch } from "react-redux";
-import {
-  getChatThunk,
-  openChatingPopup,
-  // setChatInfo,
-} from "../app/slices/chatSlice";
-import ChatPopup from "../components/ui/ChatPopup";
+import { useNavigate } from "react-router-dom";
+import ChatPopup from "./ChatPopup";
+import { openDropdownChatPopup } from "../../app/slices/userChatsSlicce";
 
-export default function LiveChats() {
+export default function ChatDropdownList({isPopupOpen}) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [items, setItems] = useState([]);
+
   const fetchChats = async () => {
     try {
       const { data } = await api.get("/conversations?page=1&limit=20");
-      // console.log(data);
-      setItems(data.data.items);
+      return data.data.items;
     } catch (error) {
-      console.error(error);
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         toast.error("يجب عليك تسجيل الدخول");
         navigate("/login");
       }
+      throw error;
     }
   };
-  useEffect(() => {
-    fetchChats();
-  }, []);
+
+  const {
+    data: items = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["userChatas"],
+    queryFn: fetchChats,
+    enabled: isPopupOpen,
+    staleTime: 1000 * 60 * 10,
+    cacheTime: 1000 * 60 * 30,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+  });
 
   const openChatPopup = (chat) => {
     dispatch(openChatingPopup(chat));
     dispatch(getChatThunk(chat.id));
+    dispatch(openDropdownChatPopup());
   };
 
   const bgColors = [
@@ -68,16 +78,26 @@ export default function LiveChats() {
   };
 
   return (
-    <div className="p-6 min-h-[75svh]">
-      <ChatPopup />
+    <div className="scrolling p-6 max-h-[50svh] overflow-y-auto w-sm absolute top-[90%] end-0 bg-white rounded-lg shadow-md border border-gray-300 chat-dropdown-menu">
+    
       <h1 className="text-2xl font-bold mb-6">المحادثات</h1>
-      {items.length === 0 && (
+      {isLoading && (
+        <div className="flex items-center justify-center h-full">
+          <p className="text-gray-500">جاري تحميل المحادثات...</p>
+        </div>
+      )}
+      {isError && (
+        <div>
+          <p className="text-red-500">خطأ في تحميل المحادثات</p>
+        </div>
+      )}
+      {items.length === 0 && !isLoading && (
         <div className="flex items-center justify-center h-full">
           <p className="text-gray-500">لا يوجد محادثات حاليا</p>
         </div>
       )}
-      <div className="grid grid-cols-1  gap-4 w-sm">
-        {items?.map((chat) => {
+      <div className="grid grid-cols-1 gap-4">
+        {items.map((chat) => {
           const randomColor =
             bgColors[Math.floor(Math.random() * bgColors.length)];
           return (
@@ -86,31 +106,10 @@ export default function LiveChats() {
               className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 p-5 px-5 cursor-pointer"
               onClick={() => openChatPopup(chat)}
             >
-              {/* <Link
-              onClick={() =>
-                dispatch(
-                  setChatInfo({
-                    supplierName: chat.fullName,
-                  })
-                )
-              }
-              to={`/live-chat/${chat.id}?with=${chat.fullName}`}
-              key={chat.id}
-              className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer p-5 px-10"
-            >
-              <div className="flex items-center justify-between mb-2">
-                <p className="font-semibold text-lg">{chat.fullName}</p>
-                <span className="text-sm text-gray-500">ID: {chat.id}</span>
-              </div>
-              <p className="text-gray-600 truncate">{chat.lastMessage}</p>
-              <p className="text-gray-600 truncate">{chat.lastMessage}</p>
-            
-            </Link> */}
-
               <div className="flex items-start gap-5">
                 <div>
                   <span
-                    className={`text-gray-500 bg-gray-200 rounded-full  w-15 h-15 flex items-center justify-center text-2xl font-bold ${randomColor.bg} ${randomColor.text}`}
+                    className={`text-gray-500 bg-gray-200 rounded-full w-15 h-15 flex items-center justify-center text-2xl font-bold ${randomColor.bg} ${randomColor.text}`}
                   >
                     {chat.fullName[0] + chat.fullName[1]}
                   </span>
@@ -123,12 +122,6 @@ export default function LiveChats() {
                     </p>
                   </div>
                   <p className="text-gray-600 truncate">{chat.lastMessage}</p>
-                  {/* <button
-                  onClick={() => openChatPopup(chat)}
-                  className="self-end bg-teal-500 text-white px-4 max-w-fit rounded-md py-1"
-                >
-                  فتح
-                </button> */}
                 </div>
               </div>
             </div>

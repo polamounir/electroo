@@ -137,20 +137,34 @@ const ChatBot = () => {
           ×
         </button>
       </div>
-      <div className="chat-messages">
+      <div className="chat-messages scrolling">
         {messages.length === 0 && !isLoading && (
-          <div className="message bot welcome-message">
-            مرحباً! كيف يمكنني مساعدتك اليوم؟
+          <div className="welcome-message">
+            <h3 className="flex flex-row-reverse items-center gap-2 mb-1 text-xs">
+              <RiRobot2Line className="" />
+              المساعد الذكي
+            </h3>
+            <p className="">مرحباً! كيف يمكنني مساعدتك اليوم؟</p>
           </div>
         )}
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`message ${message.sender === "bot" ? "bot" : "user"}`}
-          >
-            {message.text}
-          </div>
-        ))}
+        {messages.map((message, index) =>
+          message.sender === "bot" ? (
+            <div className="welcome-message">
+              <h3 className="flex flex-row-reverse items-center gap-2 mb-1 text-xs">
+                <RiRobot2Line className="" />
+                المساعد الذكي
+              </h3>
+              <p className="">{message.text}</p>
+            </div>
+          ) : (
+            <div
+              key={index}
+              className={`message user`}
+            >
+              {message.text}
+            </div>
+          )
+        )}
         {isLoading && currentAIMessage && (
           <div className="message bot">
             {currentAIMessage}
