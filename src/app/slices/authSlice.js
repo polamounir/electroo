@@ -43,14 +43,14 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (userData, { dispatch }) => {
-    console.log(userData);
+    // console.log(userData);
     try {
       const response = await loginUserFn(userData);
-      console.log(response);
+      // console.log(response);
       const { accessToken, email, refreshToken } = response.data;
 
       saveAuthData(accessToken, email, refreshToken);
-      console.log(response.status);
+      // console.log(response.status);
       dispatch(getUserData());
       return response.status;
     } catch (error) {
@@ -61,14 +61,14 @@ export const loginUser = createAsyncThunk(
 export const loginSupplier = createAsyncThunk(
   "auth/loginSupplier",
   async (userData, { dispatch }) => {
-    console.log(userData);
+    // console.log(userData);
     try {
       const response = await loginUserFn(userData);
-      console.log(response);
+      // console.log(response);
       const { accessToken, email, refreshToken } = response.data;
 
       saveAuthData(accessToken, email, refreshToken);
-      console.log(response.status);
+      // console.log(response.status);
       dispatch(getUserData());
       return response.status;
     } catch (error) {

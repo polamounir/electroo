@@ -45,17 +45,21 @@ export const addProductToCartAsync = createAsyncThunk(
         cartId: cartId,
       });
 
-      console.log(res);
+      // console.log(res);
       if (res.status === 200) {
         toast.success("تمت اضافة المنتج بنجاح");
         dispatch(fetchCartAsync());
       }
-      if (res.detail.includes("max")) {
+      if (res.status === 429) {
+        toast.error(" رجاء الانتظار 5 ثواني و جرب مرة اخري ");
+      }
+      if (res?.detail?.includes("max")) {
         toast.error(" تم الوصول الحد الاقصي");
       }
 
       return res;
     } catch (error) {
+      // console.log(error);
       return rejectWithValue(error.message);
     }
   }
@@ -104,16 +108,21 @@ export const decreaseProductQuantityAsync = createAsyncThunk(
 );
 export const deleteProductAsync = createAsyncThunk(
   "cart/deleteProductAsync",
-  async ({ productId }, { dispatch, rejectWithValue }) => {
+  async (id, { dispatch, rejectWithValue }) => {
+
     try {
       const res = await deleteFromCart({
-        productId,
+        productId: id,
         cartId: localStorage.getItem("cartId"),
         quantity: 0,
       });
       console.log(res);
       dispatch(fetchCartAsync());
-      toast.success("تم الحذف");
+      if (res.status == 200) {
+        toast.success("تم الحذف");
+      } else {
+        toast.error("حدثت مشكلة اثناء الحذف");
+      }
     } catch (error) {
       return rejectWithValue(error.message);
     }

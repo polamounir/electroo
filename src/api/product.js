@@ -32,7 +32,7 @@ export const fetchSearchProducts = async (query) => {
   }
 };
 
-export const getCategoryProducts = async ( page) => {
+export const getCategoryProducts = async (page) => {
   // const res = await api.get(`/categories/${id}/products`);
   const res = await api.get(`/products/`, {
     params: {
@@ -47,16 +47,15 @@ export const getCategoryProducts = async ( page) => {
 // --------------------------------
 
 export const addProductToCart = async (data) => {
-  console.log(data);
+  // console.log(data);
   try {
-    const res = await api.post(
-      "/cart/add-to-cart",
-      data
-    );
+    const res = await api.post("/cart/add-to-cart", data);
 
+    // console.log(res)
     return res;
   } catch (error) {
-    return error.response.data;
+    // console.log(error)
+    return error;
   }
 };
 
@@ -72,7 +71,7 @@ export const changeProductQuantity = async ({
       cartId: cartId,
       quantity: quantity,
     });
-    console.log(res);
+    // console.log(res);
     return {
       code: res.status,
       message: res.data.message,
@@ -92,7 +91,7 @@ export const decreaseProductQuantity = async ({
   cartId,
   quantity,
 }) => {
-  console.log("Product:", productId);
+  // console.log("Product:", productId);
   try {
     const res = await api.post("/cart/update-cart", {
       productId: productId,
@@ -110,7 +109,9 @@ export const decreaseProductQuantity = async ({
 };
 
 export const deleteFromCart = async ({ productId, cartId, quantity }) => {
-  console.log("Product:", productId);
+  // console.log("Product:", productId);
+  // console.log("Cart:", cartId);
+  // console.log("Quantity:", quantity);
 
   try {
     const res = await api.post("/cart/update-cart", {
@@ -118,17 +119,16 @@ export const deleteFromCart = async ({ productId, cartId, quantity }) => {
       cartId: cartId,
       quantity: quantity,
     });
-    console.log(res);
+    // console.log(res);
     return res;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
+    return error.response.data;
   }
 };
 export const fetchCart = async (id) => {
   try {
-    const res = await api.get(
-      `/cart/${id}`
-    );
+    const res = await api.get(`/cart/${id}`);
     // console.log(res);
     return res.data;
   } catch (error) {

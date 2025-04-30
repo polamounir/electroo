@@ -30,10 +30,10 @@ export const useChatHub = () => {
       .build();
 
     connection.on("ReceiveMessage", (model) => {
-      console.log("Received message model:", model.payload.text);
+      console.log("Received message model:", model.payload);
       setMessages((prevMessages) => [
         ...prevMessages,
-        { sender: "you", text: model.payload.text },
+        { sender: "you", text: model.payload.text , time: getTimeNow() },
       ]);
     });
 

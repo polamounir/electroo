@@ -1,6 +1,8 @@
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function CartDetails() {
+  const { cart } = useSelector((state) => state.cart);
   return (
     <div className="lg:col-span-2 p-10 flex flex-col gap-5 border border-gray-300 rounded-2xl">
       <h2 className="font-bold text-lg">تفاصيل الطلب </h2>
@@ -10,7 +12,7 @@ export default function CartDetails() {
             <h2 className="text-gray-400">المجموع الفرعى</h2>
             <h2 className="">
               {/* {cart?.subTotal - cart?.shippingPrice || 0} EGP */}
-              5555 ج.م
+              {cart.subTotal} ج.م
             </h2>
           </div>
 

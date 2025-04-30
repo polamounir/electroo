@@ -24,7 +24,7 @@ export const startConversationThunk = createAsyncThunk(
     try {
       dispatch(setChatInfo(data));
       const response = await startConversation(data);
-      console.log(response        , "xxxxxxxxxxxxxxxxxxxx");
+      // console.log(response        , "xxxxxxxxxxxxxxxxxxxx");
       if (response.status === 401) {
         dispatch(closeChat());
         return rejectWithValue({
@@ -43,7 +43,7 @@ export const getChatThunk = createAsyncThunk(
   "chat/getChat",
   async (id, { rejectWithValue }) => {
     
-    console.log(id, "idxxxxxxxxxxxxxxxxxxx");
+    // console.log(id, "idxxxxxxxxxxxxxxxxxxx");
     try {
       const response = await getConversation(id);
       return response.data;
@@ -82,10 +82,10 @@ const chatSlice = createSlice({
       }
     },
     openChatingPopup: (state, action) => {
-      console.log("action");
+      // console.log("action");
       state.activeChat = "popup";
       state.isMenuOpen = true;
-      console.log(action.payload, "action.payload.chat");
+      // console.log(action.payload, "action.payload.chat");
       state.supplierName = action.payload.fullName;
       state.conversationId = action.payload.id;
     },
@@ -117,7 +117,7 @@ const chatSlice = createSlice({
       })
       .addCase(getChatThunk.fulfilled, (state, action) => {
         state.loading = false;
-        console.log(action.payload, "action.payload");
+        // console.log(action.payload, "action.payload");
         state.chat = action.payload;
       })
       .addCase(getChatThunk.rejected, (state, action) => {

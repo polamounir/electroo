@@ -6,6 +6,7 @@ import {
   decreaseProductQuantityAsync,
   deleteProductAsync,
 } from "../../app/slices/cartSlice";
+import { FaTrash } from "react-icons/fa";
 
 export default function CartProduct({ item }) {
   const dispatch = useDispatch();
@@ -27,21 +28,27 @@ export default function CartProduct({ item }) {
   };
 
   const decrementQuantity = () => {
-  
-      dispatch(
-        decreaseProductQuantityAsync({
-          productId: item.id,
-          quantity: item.quantity - 1,
-        })
-      );
-
+    dispatch(
+      decreaseProductQuantityAsync({
+        productId: item.id,
+        quantity: item.quantity - 1,
+      })
+    );
   };
 
+  const deleteProduct = (id) => {
+    dispatch(deleteProductAsync(id));
+  };
 
   return (
-    <div className="w-full flex justify-between gap-5 items-center border border-gray-300 shadow p-2 rounded-lg mx-auto">
-      <button onClick={() => dispatch(deleteProductAsync(item.id))}>delete</button>
-      <div className="sm:w-32 h-32 mx-auto sm:mx-0">
+    <div className="w-full relative flex justify-between gap-5 items-center border border-gray-300 shadow p-2 rounded-lg mx-auto">
+      <button
+        onClick={() => deleteProduct(item.id)}
+        className="absolute top-2 start-2 text-gray-500 hover:text-red-500 duration-300"
+      >
+        <FaTrash />
+      </button>
+      <div className="min-w-25 sm:w-100 h-32 mx-auto sm:mx-0">
         <img
           src={item.imageUrl}
           alt={item.title}

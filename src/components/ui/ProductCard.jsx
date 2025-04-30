@@ -30,6 +30,7 @@ export default function ProductCard({ product }) {
               className="h-full aspect-square"
               width={200}
               height={200}
+              loading="lazy"
             />
           </div>
         </div>

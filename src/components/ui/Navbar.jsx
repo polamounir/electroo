@@ -11,6 +11,7 @@ import {
   closeUserChatsMenu,
   openUserChatsMenu,
 } from "../../app/slices/userChatsSlicce";
+import { logOut } from "../../app/slices/authSlice";
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -157,11 +158,12 @@ export default function Navbar() {
                 <li>
                   <Link to="/cart">السلة</Link>
                 </li>
-                <li>
-                  <Link to="/logout">تسجيل الخروج</Link>
-                </li>
+
                 {user ? (
                   <>
+                    <li>
+                      <Link to="/live-chat">المحادثات</Link>
+                    </li>
                     <li>
                       <Link to="/profile">الملف الشخصي</Link>
                     </li>
@@ -171,6 +173,15 @@ export default function Navbar() {
                     <Link to="/login">تسجيل دخول</Link>
                   </li>
                 )}
+                <li>
+                  <button
+                    onClick={() => {
+                      dispatch(logOut());
+                    }}
+                  >
+                    تسجيل الخروج
+                  </button>
+                </li>
               </ul>
             </div>
           </div>

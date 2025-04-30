@@ -10,12 +10,14 @@ import { openProductReviewModal } from "../app/slices/prouctReviewSlice";
 import AddProductReviewModel from "../components/product/AddProductReviewModel";
 import LoadingPage from "./LoadingPage";
 import { toast } from "sonner";
+import { addProductToCartAsync } from "../app/slices/cartSlice";
 
 export default function Product() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { activeChat, isMenuOpen } = useSelector((state) => state.chat);
+  const { cartItems } = useSelector((state) => state.cart);
 
   const { id } = useParams();
   const { data } = useQuery({
@@ -43,7 +45,6 @@ export default function Product() {
           supplierId: data.supplierId,
           productId: data.id,
           productName: data.title,
-  
         })
       );
       // console.log(response.payload);
@@ -54,6 +55,10 @@ export default function Product() {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const addToCart = (id) => {
+    dispatch(addProductToCartAsync(id));
   };
 
   return (
@@ -167,7 +172,14 @@ export default function Product() {
             ))}
           </div>
           {/* Add to Cart Button */}
-          <button className="mt-6 w-full md:w-auto px-6 py-3 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-lg shadow-md transition">
+
+          <button
+            className="mt-6 w-full md:w-auto px-6 py-3 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-lg shadow-md transition"
+            onClick={() => {
+              addToCart(data.id);
+              toast.success("تمت إضافة المنتج إلى السلة بنجاح");
+            }}
+          >
             🛒 أضف إلى السلة
           </button>
 

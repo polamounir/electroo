@@ -5,8 +5,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
 import { IoArrowBack } from "react-icons/io5";
+import ProductCardSkeleton from "../ui/ProductCardSkeleton";
 
-export default function DailyDeals({ title, products }) {
+export default function HomeSection({ title, products, loading, error }) {
   // console.log(products);
   const settings = {
     dots: false,
@@ -66,25 +67,33 @@ export default function DailyDeals({ title, products }) {
 
       <div className="w-full bg-[#fafafa] py-15">
         <div className="w-full lg:w-[85%] m-auto shadow-none">
-          {/* {products.length > 0 ? (
-            <Slider
-              {...settings}
-              aria-label="Daily Deals Carousel"
-              className="shadow-none"
-            >
-              {products.map((product, index) => (
-                <ProductCard key={index} product={product} />
-              ))}
-            </Slider>
-            ) : (
-              <p className="text-center text-gray-500 text-lg">
-              No deals available right now.
-              </p>
-              )} */}
           <div className="slider-container">
+            {products?.data?.items.length === 0 && (
+              <div className="text-center text-2xl py-10">لا توجد منتجات</div>
+            )}
+            {loading && (
+              <Slider
+                {...settings}
+                aria-label={"products placeholder slider"}
+                className="shadow-none"
+              >
+                {[1, 2, 3, 4, 5].map((product, index) => (
+                  <div key={index} className="px-1 sm:px-5 slide-item">
+                    <ProductCardSkeleton />
+                  </div>
+                ))}
+              </Slider>
+            )}
+
+            {error && (
+              <div className="text-center text-2xl py-10">
+                حدث خطأ ما, حاول مرة اخرى
+              </div>
+            )}
+
             <Slider
               {...settings}
-              aria-label="Daily Deals Carousel"
+              aria-label={title || "products slider"}
               className="shadow-none"
             >
               {products?.data?.items.map((product, index) => (
