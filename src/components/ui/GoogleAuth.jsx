@@ -4,7 +4,7 @@ import { GoogleLogin } from "@react-oauth/google";
 
 export default function GoogleAuth() {
   const dispatch = useDispatch();
-  const handleLogin = (credentialResponse) => {
+  const handleLogin = async (credentialResponse) => {
     const { credential } = credentialResponse;
     dispatch(loginUserWithGoogle(credential));
   };

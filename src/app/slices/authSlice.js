@@ -75,6 +75,7 @@ export const loginUserWithGoogle = createAsyncThunk(
       saveAuthData(accessToken, email, refreshToken);
       // console.log(response.status);
       dispatch(getUserData());
+      window.location.href = "/";
       return response.status;
     } catch (error) {
       return error.response.data;

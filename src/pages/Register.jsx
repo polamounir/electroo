@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import image from "../assets/images/registerImg.webp";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +9,17 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 export default function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  // ------------------------------------
   const { loading } = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.auth.user);
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+      toast.error("تم تسجيل الدخول بالفعل");
+    }
+  }, [navigate]);
+  // ------------------------------------
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -33,6 +43,7 @@ export default function Register() {
     }
     return true;
   };
+  // ---------------------------------
   const formDataValidation = () => {
     const { fullName, email, password, phoneNumber } = formData;
     const emailRegex =
@@ -68,6 +79,8 @@ export default function Register() {
     }
     return true;
   };
+  // ---------------------------------
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formValidation()) {
@@ -109,6 +122,8 @@ export default function Register() {
   const handleToggleConfirmPassword = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
+
+  // ---------------------------------
 
   return (
     <div className="w-full md:w-[85%] mx-auto">

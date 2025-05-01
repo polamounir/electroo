@@ -60,6 +60,9 @@
   text-align: center;
 }
 
+.bg-img-bottom {
+  background-position: bottom !important;
+}
 @media (max-width: 1200px) {
   .main-slider-text.rm {
     padding-bottom: 50px;

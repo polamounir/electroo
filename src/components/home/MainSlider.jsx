@@ -31,6 +31,10 @@ export default function MainSlider() {
 
   const slides = [
     {
+      className: "bg-[url('/seedream-image.jpeg')]  bg-img-bottom",
+      // "https://i.imghippo.com/files/UHC8864xgs.jpeg"
+    },
+    {
       className: "bg-[url('https://i.postimg.cc/v8WjP74v/slide2.webp')]",
     },
 
@@ -41,10 +45,6 @@ export default function MainSlider() {
     {
       className:
         "bg-[url('https://img.freepik.com/premium-photo/abstract-flat-lay-composition-with-various-electronic-components-microchips-circuits-dark-background_319816-4768.jpg?w=1380')]",
-    },
-    {
-      className: "bg-[url('/seedream-image.jpeg')]  bg-bottom",
-      // "https://i.imghippo.com/files/UHC8864xgs.jpeg"
     },
   ];
 
