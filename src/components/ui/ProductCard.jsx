@@ -64,8 +64,8 @@ export default function ProductCard({ product }) {
         <div className="flex">
           <button
             onClick={(e) => {
-              e.stopPropagation(); // not needed anymore since button is outside Link, but safe
-              e.preventDefault(); // stop Link default behavior if still inside
+              e.stopPropagation();
+              e.preventDefault(); 
               addToCart(id);
             }}
             className="mt-4 text-teal-500 text-sm md:text-2xl border-2 border-teal-500 rounded-full p-2"

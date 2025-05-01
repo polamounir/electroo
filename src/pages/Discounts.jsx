@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { api } from "../api/axiosInstance";
+import { BsCartPlus } from "react-icons/bs";
 
 export default function Discounts() {
   const { data, isLoading, isError } = useQuery({
@@ -65,14 +66,18 @@ export default function Discounts() {
                   </div>
 
                   {/* Add to cart button */}
-                  <button
-                    className="mt-2 w-full bg-teal-500 text-white text-sm py-1 rounded hover:bg-teal-600 transition-colors duration-150"
-                    onClick={() => {
-                      console.log("Add to cart", product.id);
-                    }}
-                  >
-                    أضف إلى السلة
-                  </button>
+                   <div className="flex justify-end">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault(); 
+                                // addToCart(id);
+                              }}
+                              className="text-teal-500 text-sm md:text-2xl border-2 border-teal-500 rounded-full p-2"
+                            >
+                              <BsCartPlus />
+                            </button>
+                          </div>
                 </div>
               );
             })}

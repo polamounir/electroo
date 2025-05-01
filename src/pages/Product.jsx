@@ -61,19 +61,19 @@ export default function Product() {
     dispatch(addProductToCartAsync(id));
   };
 
-  console.log(data.productReviews);
+  console.log(data);
   return (
-    <div className="mx-auto px-4 xl:px-50 py-20 flex justify-center items-center min-h-[75svh]">
+    <div className="mx-auto px-4 xl:px-50 py-20 flex justify-center items-center flex-col min-h-[75svh]">
       <AddProductReviewModel />
       {activeChat === "popup" && isMenuOpen && <ChatPopup />}
       <div className="w-full p-6 md:p-8 rounded-xl ">
         <div className="flex flex-col md:flex-row-reverse gap-10  ">
           {/* Image Gallery */}
           <div className="flex-1">
-            <div className="border-none border-teal-500 rounded-lg overflow-hidden relative flex justify-center items-center p-5">
+            <div className=" rounded-lg overflow-hidden relative flex justify-center items-center p-5">
               <img
-                key={mainImage || data.images[0]}
-                src={mainImage || data.images[0] || placeholderImage}
+                key={mainImage || data.images[0].url}
+                src={mainImage || data.images[0].url || placeholderImage}
                 onError={handleImageError}
                 alt={data.title}
                 className="w-full  max-h-[400px] object-contain transition-all duration-500 ease-in-out opacity-0 animate-fadeIn"
@@ -84,10 +84,10 @@ export default function Product() {
               {data.images.map((img, idx) => (
                 <img
                   key={idx}
-                  src={img}
+                  src={img.url || placeholderImage}
                   onError={handleImageError}
                   alt={`thumb-${idx}`}
-                  onClick={() => handleImageClick(img)}
+                  onClick={() => handleImageClick(img.url)}
                   className={`w-20 h-20 object-cover rounded-lg cursor-pointer border-2 transition-all duration-200 hover:scale-110 ${
                     img === mainImage
                       ? "border-teal-500 ring-2 ring-offset-2 ring-teal-400"
@@ -189,6 +189,8 @@ export default function Product() {
           </div>
           {/* Reviews */}
         </div>
+      </div>
+      <div className="w-full ">
         <div className="mt-6">
           <h2 className="text-xl font-semibold text-teal-600 mb-2">
             التقييمات
