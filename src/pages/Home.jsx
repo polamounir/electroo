@@ -73,18 +73,21 @@ export default function Home() {
           products={discounts}
           loading={discountLoading}
           error={discountError}
+          more="/discounts"
         />
         <HomeSection
           title="الاكثر مبيعاً"
           products={sales}
           loading={salesLoading}
           error={salesError}
+          more="/sales"
         />
         <HomeSection
-          title="أحدث المنتجات"
+          title="كل المنتجات "
           products={newProducts}
           loading={newProductsLoading}
           error={newProductError}
+          more="/all-products"
         />
       </div>
     </div>

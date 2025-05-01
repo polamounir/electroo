@@ -80,7 +80,7 @@ const isHomePage = location.pathname === "/";
         isHomePage
           ? "bg-black text-white border-gray-700"
           : "bg-white text-black border-gray-100"
-      } sticky top-0 left-0 right-0 z-[999] shadow-md ${
+      } sticky top-0 left-0 right-0 z-[999] shadow-md duration-700 ${
         isScrolled ? "bg-black" : ""
       }`}
     >

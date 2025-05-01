@@ -70,6 +70,9 @@ import Forbidden from "../pages/Forbidden";
 import ChatPopup from "../components/ui/ChatPopup";
 import { useSelector } from "react-redux";
 import Test from "../pages/Test";
+import AllProducts from "../pages/AllProducts";
+import Discounts from "../pages/Discounts";
+import Sales from "../pages/Sales";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -113,20 +116,30 @@ const AppRoutes = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/register" element={<Register />} />
             <Route path="/pre-register" element={<PreRegister />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/checkout" element={<Checkout />} />
             <Route path="/info-supplier" element={<Suppliers />} />
-            <Route path="/upload" element={<Upload />} />
+
             <Route path="/confirm-account" element={<AccountConfirmation />} />
             <Route path="/contact" element={<Contactus />} />
             <Route path="/live-chat" element={<LiveChats />} />
             <Route path="/live-chat/:id" element={<LiveChat />} />
+            <Route path="/chat" element={<ProductConversation />} />
+            <Route path="/faq" element={<FAQ />} />
+
+            {/* products */}
+            <Route path="/all-products" element={<AllProducts />} />
+            <Route path="/discounts" element={<Discounts />} />
+            <Route path="/sales" element={<Sales />} />
             <Route path="/product/:id" element={<Product />} />
             <Route path="/categories/:id" element={<Category />} />
             <Route path="/search" element={<Search />} />
-            <Route path="/faq" element={<FAQ />} />
-            <Route path="/chat" element={<ProductConversation />} />
+
+            {/* Order */}
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
+
+            {/* TEsting */}
             <Route path="/test" element={<Test />} />
+            <Route path="/upload" element={<Upload />} />
 
             <Route
               path="/supplier-register"

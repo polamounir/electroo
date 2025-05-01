@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { IoArrowBack } from "react-icons/io5";
 import ProductCardSkeleton from "../ui/ProductCardSkeleton";
 
-export default function HomeSection({ title, products, loading, error }) {
+export default function HomeSection({ title, products, loading, error, more }) {
   // console.log(products);
   const settings = {
     dots: false,
@@ -124,7 +124,7 @@ export default function HomeSection({ title, products, loading, error }) {
         </div>
         <div className="flex justify-center mt-5 show-more-box">
           <Link
-            to={`/products?category=${title}`}
+            to={`${more}`}
             className="bg-white px-20 py-2 rounded-full border border-gray-400 "
           >
             المزيد
