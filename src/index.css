@@ -143,12 +143,14 @@ input {
 .nsm7Bb-HzV7m-LgbsSe.hJDwNd-SxQuSe.i5vt6e-Ia7Qfc.uaxL4e-RbRzK {
   width: 100% !important;
 }
-  .nsm7Bb-HzV7m-LgbsSe-BPrWId {
+.nsm7Bb-HzV7m-LgbsSe-BPrWId {
   color: #0000 !important;
   position: relative;
 }
 .nsm7Bb-HzV7m-LgbsSe-BPrWId::after {
-  content: "تسجيل الدخول";
+  content: "تسجيل الدخول باستخدام جوجل";
+  font-size: 1.01rem;
+  font-weight: 500;
   position: absolute;
   color: #000000 !important;
   top: 0;
