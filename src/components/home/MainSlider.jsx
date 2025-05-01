@@ -30,44 +30,21 @@ export default function MainSlider() {
   };
 
   const slides = [
-    // {
-    //   title: "Sport Watches Bluetooth Speaker",
-    //   desc: "This upgraded wearable waterproof wireless wrist portable sports Bluetooth speaker watch features a multi-functional ",
-    //   url: "",
-    //   textPostion: "rm",
-    //   className: "bg-[url('https://i.postimg.cc/Wz6HhVBy/slide.webp')]",
-    // },
     {
-      title: "Google Smart Home",
-      desc: "A hands-free device that can provide answers to spoken questions, play music, interact with smart home devices and more.",
-      url: "",
-      textPostion: "lm",
       className: "bg-[url('https://i.postimg.cc/v8WjP74v/slide2.webp')]",
     },
 
-    // {
-    //   title: "Apple Watch Series",
-    //   desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
-    //   url: "",
-    //   textPostion: "ct",
-    //   className:
-    //     "bg-[url('https://as2.ftcdn.net/jpg/03/93/40/11/1000_F_393401196_4hIQIOQ0t14dwaIyoQBDQIuZhfpF4tFz.jpg')]",
-    // },
     {
-      title: "Apple Watch Series",
-      desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
-      url: "",
-      textPostion: "ct",
       className:
         "bg-[url('https://img.freepik.com/premium-photo/circuit-board-with-variety-electronic-components-including-chips-resistors-capacitors-connectors-arranged-symmetrical-pattern_319816-8530.jpg?w=1380')]",
     },
     {
-      title: "Apple Watch Series",
-      desc: "The all-new watchOS 10 brings more to your watch screen than ever before. Virtually every app has an updated look",
-      url: "",
-      textPostion: "ct",
       className:
         "bg-[url('https://img.freepik.com/premium-photo/abstract-flat-lay-composition-with-various-electronic-components-microchips-circuits-dark-background_319816-4768.jpg?w=1380')]",
+    },
+    {
+      className: "bg-[url('/seedream-image.jpeg')]  bg-bottom",
+      // "https://i.imghippo.com/files/UHC8864xgs.jpeg"
     },
   ];
 
@@ -84,7 +61,6 @@ export default function MainSlider() {
   }, []);
 
   const handleSearch = () => {
-
     dispatch(setSearchParams({ SearchQuery: search }));
     dispatch(
       getSearchResults({
@@ -107,7 +83,6 @@ export default function MainSlider() {
 
   const handleSearchEnter = (e) => {
     if (e.key === "Enter" || e.code === "Enter" || e.keyCode === 13) {
-
       handleSearch();
     }
   };

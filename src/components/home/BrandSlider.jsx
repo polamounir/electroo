@@ -23,6 +23,8 @@ export default function BrandSlider() {
     { brand: b5, name: "Brand 5" },
     { brand: b6, name: "Brand 6" },
     { brand: b7, name: "Brand 7" },
+    { brand: b3, name: "Brand 9" },
+    { brand: b4, name: "Brand 8" },
     { brand: b1, name: "Brand 11" },
     { brand: b2, name: "Brand 22" },
     { brand: b3, name: "Brand 33" },
@@ -30,6 +32,8 @@ export default function BrandSlider() {
     { brand: b5, name: "Brand 55" },
     { brand: b6, name: "Brand 66" },
     { brand: b7, name: "Brand 77" },
+    { brand: b3, name: "Brand 99" },
+    { brand: b4, name: "Brand 88" },
   ];
 
   return (
