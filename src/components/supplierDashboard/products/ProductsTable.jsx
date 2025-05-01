@@ -1,41 +1,51 @@
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaRegEdit } from "react-icons/fa";
 import { GoTrash } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
+import { api } from "../../../api/axiosInstance";
 
 export default function ProductsTable() {
   const navigate = useNavigate();
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["products"],
-    queryFn: async () => {
-      const options = {
-        method: "GET",
-        url: "https://ecommerce.markomedhat.com/api/products?Page=1&Limit=20",
-      };
-      try {
-        const { data } = await axios.request(options);
-        console.log(data);
-        return data;
-      } catch (error) {
-        console.error(error);
-      }
-    },
-  });
-  // console.log(data?.data?.items);
-  const handleAddNavigation = () => {
-    navigate("/supplier/products/add");
+  const [products, setProducts] = useState([]);
+  const [cursor, setCursor] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
+
+  const fetchProducts = async (cursor = null) => {
+    try {
+      const { data } = await api.get(
+        `/supplier-products?Limit=5${cursor ? `&cursor=${cursor}` : ""}`
+      );
+      setProducts((prev) => [...prev, ...data.data.items]);
+
+      setCursor(data.data.cursor);
+      setHasMore(data.data.hasMore);
+    } catch (err) {
+      console.error("Fetching error:", err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleEditNavigation = (id) => {
-    navigate(`/supplier/products/edit/${id}`);
+  useEffect(() => {
+    fetchProducts(); 
+    console.log("Products fetched:", products);
+
+  }, []);
+
+  const handleFetchMore = () => {
+    if (hasMore) {
+      fetchProducts(cursor);
+    }
   };
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-  if (isError) {
-    return <div>Error With fetching data</div>;
-  }
+
+  const handleAddNavigation = () => navigate("/supplier/products/add");
+  const handleEditNavigation = (id) =>
+    navigate(`/supplier/products/edit/${id}`);
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <div className="">
       <div className="w-full flex justify-between">
@@ -47,15 +57,9 @@ export default function ProductsTable() {
           أضافة
         </button>
       </div>
-      <div className="flex justify-between items-center">
-        <div>
-          <button className="bg-[var(--secondary-color)] px-7 py-2 text-lg text-white rounded-lg">
-            Add New
-          </button>
-        </div>
-      </div>
+
       <div className="flex flex-col mt-10">
-        <div className="grid grid-cols-12 py-3">
+        <div className="grid grid-cols-12 py-3 font-bold">
           <div className="col-span-4">اسم المنتج</div>
           <div className="col-span-2">الفئة</div>
           <div className="col-span-2">السعر</div>
@@ -63,7 +67,7 @@ export default function ProductsTable() {
           <div className="col-span-1">المبيعات</div>
           <div className="col-span-2 text-center">الاوامر</div>
         </div>
-        {data?.data?.items.map((product) => (
+        {products.map((product) => (
           <div
             key={product.id}
             className="grid grid-cols-12 border-t border-gray-300 py-5 gap-5"
@@ -87,6 +91,17 @@ export default function ProductsTable() {
           </div>
         ))}
       </div>
+
+      {hasMore && (
+        <div className="flex justify-center mt-4">
+          <button
+            className="bg-teal-500 px-4 py-2 text-white rounded-2xl"
+            onClick={handleFetchMore}
+          >
+            View more
+          </button>
+        </div>
+      )}
     </div>
   );
 }

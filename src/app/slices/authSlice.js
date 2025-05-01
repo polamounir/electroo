@@ -1,5 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getUserDataFn, loginUserFn, registerNewUser } from "../../api/user";
+import {
+  getUserDataFn,
+  loginUserFn,
+  loginWithGoogle,
+  registerNewUser,
+} from "../../api/user";
 import Cookies from "js-cookie";
 
 const initialState = {
@@ -46,6 +51,24 @@ export const loginUser = createAsyncThunk(
     // console.log(userData);
     try {
       const response = await loginUserFn(userData);
+      // console.log(response);
+      const { accessToken, email, refreshToken } = response.data;
+
+      saveAuthData(accessToken, email, refreshToken);
+      // console.log(response.status);
+      dispatch(getUserData());
+      return response.status;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+);
+export const loginUserWithGoogle = createAsyncThunk(
+  "auth/loginUserWithGoogle",
+  async (credential, { dispatch }) => {
+    // console.log(userData);
+    try {
+      const response = await loginWithGoogle(credential);
       // console.log(response);
       const { accessToken, email, refreshToken } = response.data;
 
@@ -155,6 +178,16 @@ const authSlice = createSlice({
         state.isAuthenticated = true;
       })
       .addCase(getUserData.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(loginUserWithGoogle.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(loginUserWithGoogle.fulfilled, (state) => {
+        state.loading = false;
+        state.isAuthenticated = true;
+      })
+      .addCase(loginUserWithGoogle.rejected, (state) => {
         state.loading = false;
       });
   },

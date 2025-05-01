@@ -12,12 +12,17 @@ import {
   openUserChatsMenu,
 } from "../../app/slices/userChatsSlicce";
 import { logOut } from "../../app/slices/authSlice";
-
+import { useLocation } from "react-router-dom";
 export default function Navbar() {
   const dispatch = useDispatch();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+
+const location = useLocation();
+const isHomePage = location.pathname === "/";
+
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,7 +41,7 @@ export default function Navbar() {
     setIsSidebarOpen(!isSidebarOpen);
   };
   const user = useSelector((state) => state.auth.user);
-  // console.log(user);
+
 
   const links = [
     {
@@ -68,10 +73,15 @@ export default function Navbar() {
     }, 500);
   };
 
+  
   return (
     <div
-      className={`border-b  bg-white sticky top-0 left-0 right-0 z-[999] border-gray-400 shadow-md ${
-        isScrolled ? " bg-white" : ""
+      className={`border-b ${
+        isHomePage
+          ? "bg-black text-white border-gray-700"
+          : "bg-white text-black border-gray-100"
+      } sticky top-0 left-0 right-0 z-[999] shadow-md ${
+        isScrolled ? "bg-black" : ""
       }`}
     >
       <div className="p-5 w-full md:w-[85%] mx-auto">

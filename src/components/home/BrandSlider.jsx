@@ -27,13 +27,13 @@ export default function BrandSlider() {
 
           {items.map((item, index) => (
             <div key={`first-${index}`} className="slide">
-              <img src={item.brand} alt={item.name} className="h-[100px]" />
+              <img src={item.brand} alt={item.name} className="h-[80px]" />
             </div>
           ))}
           {/* ------------------------------------- */}
           {items.map((item, index) => (
             <div key={`second-${index}`} className="slide">
-              <img src={item.brand} alt={item.name} className="h-[100px]" />
+              <img src={item.brand} alt={item.name} className="h-[80px]" />
             </div>
           ))}
 

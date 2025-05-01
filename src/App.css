@@ -14,7 +14,7 @@ button {
   font-optical-sizing: auto;
   font-weight: 500;
   font-size: 1.2rem;
-  color: #000000;
+  /* color: #000000; */
   text-decoration: none;
   transition: all 0.3s ease-in-out;
   position: relative;
@@ -26,7 +26,7 @@ button {
     display: block;
     width: 0px;
     height: 2px;
-    background-color: #000000;
+    background-color: #ffffff;
     transition: all 0.3s ease-in-out;
   }
   &:hover::after {
@@ -163,4 +163,59 @@ button {
   white-space: nowrap;
   max-width: max-content;
   animation: typing-animation 3s 8s steps(46) forwards;
+}
+
+/* ------------------------------ */
+
+@media(min-width: 1020px) {
+  .inner-slider-container.category {
+    margin: 0 1rem;
+    scale: 0.8;
+  }
+}
+@media(max-width: 900px) {
+  .inner-slider-container.category {
+    margin: 0 0rem;
+  }
+}
+@media(max-width: 750px) {
+  .inner-slider-container.category {
+    margin: 0 0rem;
+  }
+}
+@media(max-width: 600px) {
+  .inner-slider-container.category {
+    margin: 0 5rem;
+    max-height: 250px;
+    padding: 60px !important;
+  }
+}
+@media(max-width: 575px) {
+  .inner-slider-container.category{
+    /* padding: 0 !important; */
+    padding: 40px !important;
+    
+    
+  }
+  .inner-slider-container.category .slide-content{
+    /* scale: 0.5; */
+    margin: 0 !important;
+    
+  }
+}
+@media(max-width: 550px) {
+  .inner-slider-container.category {
+  /* scale: 0.8; */
+  
+  }
+}
+@media (max-width: 450px) {
+  .inner-slider-container.category {
+    margin: 0 0.5rem;
+  }
+}
+@media (max-width: 350px) {
+  .inner-slider-container.category {
+    padding: 20px 20px !important;
+  }
 }

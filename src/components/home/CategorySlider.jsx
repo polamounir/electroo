@@ -38,10 +38,11 @@ export default function CategorySlider() {
       {
         breakpoint: 1400,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 5,
           slidesToScroll: 1,
         },
       },
+
       {
         breakpoint: 768,
         settings: {
@@ -113,21 +114,22 @@ export default function CategorySlider() {
   ];
 
   return (
-    <div className="category-slider-container py-10">
-      <h2 className="text-3xl lg:text-5xl text-center title mt-10">الفئات</h2>
+    <div className="category-slider-container py-5">
+      <h1 className="text-3xl lg:text-4xl text-center title mt-10">الفئات</h1>
       <div className="w-full lg:w-[90%] m-auto ">
-        <Slider ref={sliderRef} {...settings} className=" pt-5 h-[500px]">
+        <Slider ref={sliderRef} {...settings} className=" pt-5 max-h-[350px]">
           {categories &&
             categories?.length > 0 &&
             categories?.map((category, index) => (
               <div
                 key={category.id}
-                className="p-10 pt-20"
+                className="px-15 sm:px-10 lg:px-0 xl:px-10 pt-10 md:pt-15 "
                 role="button"
                 aria-label={`View ${category.name} category`}
               >
                 <div
-                  className="inner-slider-container p-10 mx-10 sm:mx-0 relative"
+                  // mx => out space
+                  className="inner-slider-container category  relative"
                   onMouseEnter={() =>
                     handleTooltipVisible(index, category.name)
                   }
@@ -146,12 +148,12 @@ export default function CategorySlider() {
                       {categoryName}
                     </h2>
                   </div>
-                  <div className="flex justify-center items-center flex-col">
-                    <div className="w-[80%] mt-5">
+                  <div className="slide-content flex justify-center items-center flex-col">
+                    <div className="md:w-[80%] ">
                       <img
                         src={category.image}
                         alt={category.name}
-                        className="w-full h-full object-contain"
+                        className="w-full object-contain"
                       />
                     </div>
                   </div>
@@ -187,14 +189,14 @@ export default function CategorySlider() {
                     </h2>
                   </div>
                   <div className="flex justify-center items-center flex-col">
-                    <div className="w-[80%] mt-5 h-[150px]"></div>
+                    <div className="w-[80%] mt-5 h-[50px]"></div>
                   </div>
                 </div>
               </div>
             ))}
         </Slider>
 
-        <div className="flex justify-center items-center gap-4 mt-4">
+        <div className="flex justify-center items-center gap-4 mt-5">
           <button
             onClick={goToPrev}
             className="text-2xl p-2 hover:bg-gray-100 rounded-full border border-gray-300"

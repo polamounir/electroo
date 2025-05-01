@@ -31,7 +31,7 @@
 .title {
   font-family: "Marhey", sans-serif;
   font-optical-sizing: auto;
-  font-size: 2.5rem;
+  /* font-size: 2.5rem; */
 }
 .ar-font-s,
 .logo {
@@ -135,3 +135,4 @@ input {
 .scrolling::-webkit-scrollbar-thumb:hover {
   background-color: #009688;
 }
+

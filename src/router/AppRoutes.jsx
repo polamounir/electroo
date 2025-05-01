@@ -69,6 +69,7 @@ import ProtectedRoutes from "./ProtectedRoutes";
 import Forbidden from "../pages/Forbidden";
 import ChatPopup from "../components/ui/ChatPopup";
 import { useSelector } from "react-redux";
+import Test from "../pages/Test";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -125,6 +126,7 @@ const AppRoutes = () => {
             <Route path="/search" element={<Search />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/chat" element={<ProductConversation />} />
+            <Route path="/test" element={<Test />} />
 
             <Route
               path="/supplier-register"

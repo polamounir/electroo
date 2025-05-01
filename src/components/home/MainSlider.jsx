@@ -121,7 +121,7 @@ export default function MainSlider() {
               key={slide.title}
               className={`flex justify-center items-center min-h-[500px] lg:h-[70svh] text-white shadow-lg bg-cover bg-right ${slide.className} `}
             >
-              <div className="main-slider-content relative w-full h-full bg-black/50">
+              <div className="main-slider-content relative w-full min-h-[500px] lg:h-[70svh]  bg-black/50">
                 {/* <div className={`main-slider-text ${slide.textPostion} w-[80%] lg:w-[500px] mx-auto  static lg:absolute`}>
                                     <div className="mt-20 lg:mt-0 flex flex-col items-center text-center lg:items-start lg:text-start gap-5 ">
                                         <h2 className="text-3xl lg:text-5xl">{slide.title}</h2>
@@ -138,13 +138,12 @@ export default function MainSlider() {
                       <input
                         type="text"
                         placeholder="بحث ..."
-                        className="bg-[var(--color-light-gray)] px-5 pe-20 py-2 rounded-full border border-gray-300 text-black  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)] w-full"
+                        className="bg-[var(--color-light-gray)] px-5 pe-20 py-2 rounded-full border border-gray-300 text-black  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)] w-full "
                         value={search}
                         onChange={handleSearchInput}
                         onKeyDown={handleSearchEnter}
                       />
                       <button
-                        
                         onClick={handleSearch}
                         className="absolute top-0 bottom-0 end-0 w-15 text-3xl flex justify-center items-center"
                       >
@@ -169,7 +168,7 @@ export default function MainSlider() {
                   </div>
                   <div className="w-full h-full flex justify-center flex-col gap-10 lg:gap-20 md:max-w-lg lg:ps-20 lg:ms-60  ">
                     <div className="text-center md:text-start">
-                      <h1 className="ar-font-s text-2xl md:text-6xl text-white welcome-header">
+                      <h1 className="ar-font-s text-xl md:text-4xl text-white welcome-header">
                         مرحباً بكم في متجرنا
                       </h1>
                       <div className="flex flex-col gap-2 items-center lg:items-start text-white text-lg font-semibold mt-5 welcome-message-text">
@@ -187,14 +186,14 @@ export default function MainSlider() {
                     <div className="flex gap-5 justify-center md:justify-start welcome-buttons-box">
                       <Link
                         to=""
-                        className="bg-black px-10 py-3 rounded-lg md:text-2xl  text-white font-semibold"
+                        className="bg-black px-7 py-2 rounded-lg md:text-lg  text-white font-semibold"
                       >
                         ابدأ التسوق
                       </Link>
                       {!user && (
                         <Link
                           to="/login"
-                          className="bg-white px-10 py-3 rounded-lg md:text-2xl text-[var(--color-primary)] font-semibold"
+                          className="bg-white px-7 py-2 rounded-lg md:text-lg text-[var(--color-primary)] font-semibold"
                         >
                           تسجيل الدخول
                         </Link>

@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { api } from "../../../api/axiosInstance";
 import { FaTrash } from "react-icons/fa";
+import { toast } from "sonner";
 
 export default function EditProduct() {
   const { id } = useParams();
@@ -111,7 +112,7 @@ export default function EditProduct() {
     });
     setProductImages(newImages);
     try {
-      const imageId = image.split("/media/")[1].split(".")[0];
+      const imageId = image.id;
       const response = await api.delete(`/products/images/${imageId}`);
       console.log("Image deleted successfully:", response.data);
     } catch (error) {
@@ -125,15 +126,18 @@ export default function EditProduct() {
     if (!file) return;
 
     const formData = new FormData();
-    formData.append("image[0]", file);
+    formData.append("images[0]", file);
 
     try {
       const response = await api.put(`/products/${id}/images`, formData, {});
 
       console.log("Image uploaded successfully:", response.data);
 
-      const newImageUrl = response.data.url;
-      setProductImages((prevImages) => [...prevImages, newImageUrl]);
+      if (response.data.status === "Successful") {
+        const newImageUrl = URL.createObjectURL(file);
+         setProductImages((prevImages) => [...prevImages, newImageUrl]);
+         toast.success("تم رفع الصورة بنجاح")
+      }
     } catch (error) {
       console.error("Error uploading image:", error);
     }
@@ -292,7 +296,11 @@ export default function EditProduct() {
               console.log(image);
               return (
                 <div className="relative" key={index}>
-                  <img src={image} alt="product" className="w20 h-20" />
+                  <img
+                    src={image.url ? image.url : image}
+                    alt="product"
+                    className="w20 h-20"
+                  />
                   <button
                     className="absolute -top-2 -end-2 bg-red-500 text-white p-1 rounded-full"
                     onClick={() => handleDeleteImage(image)}

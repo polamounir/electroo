@@ -46,16 +46,16 @@ export default function ProductCard({ product }) {
       </Link>
 
       <Link to={`/product/${id}`} className="flex justify-between gap-3">
-        <div>
+        <div className="text-sm">
           <div
-            className={`text-gray-800 text-lg font-bold ${
+            className={`text-gray-800 font-bold ${
               discountPercentage > 0 && "line-through text-red-500"
             }`}
           >
             {price} جنيه
           </div>
           {discountPercentage > 0 && (
-            <div className="text-gray-800 text-lg font-bold">
+            <div className="text-gray-800  font-bold">
               {discountedPrice} جنيه
             </div>
           )}
@@ -68,7 +68,7 @@ export default function ProductCard({ product }) {
               e.preventDefault(); // stop Link default behavior if still inside
               addToCart(id);
             }}
-            className="mt-4 text-teal-500 text-2xl border-2 border-teal-500 rounded-full p-2"
+            className="mt-4 text-teal-500 text-sm md:text-2xl border-2 border-teal-500 rounded-full p-2"
           >
             <BsCartPlus />
           </button>

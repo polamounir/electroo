@@ -13,8 +13,8 @@ export default function HomeSection({ title, products, loading, error }) {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 4,
+    slidesToShow: 5,
+    slidesToScroll: 5,
     // centerPadding: "50px",
     // centerMode: true,
 
@@ -28,16 +28,34 @@ export default function HomeSection({ title, products, loading, error }) {
       {
         breakpoint: 1400,
         settings: {
+          slidesToShow: 5,
+          slidesToScroll: 5,
+          infinite: true,
+        },
+      },
+
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 4,
+          // initialSlide: 2,
+        },
+      },
+
+      {
+        breakpoint: 992,
+        settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
-          infinite: true,
+          // initialSlide: 2,
         },
       },
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
+          slidesToShow: 3,
+          slidesToScroll: 3,
           // initialSlide: 2,
         },
       },
@@ -62,7 +80,7 @@ export default function HomeSection({ title, products, loading, error }) {
   return (
     <div>
       <div className="py-15 text-center text-3xl md:text-5xl ">
-        <h2 className="title">{title}</h2>
+        <h2 className="title text-2xl lg:text-4xl">{title}</h2>
       </div>
 
       <div className="w-full bg-[#fafafa] py-15">
@@ -97,7 +115,7 @@ export default function HomeSection({ title, products, loading, error }) {
               className="shadow-none"
             >
               {products?.data?.items.map((product, index) => (
-                <div key={index} className="px-1 sm:px-5 slide-item">
+                <div key={index} className="px-1 slide-item">
                   <ProductCard key={index} product={product} />
                 </div>
               ))}

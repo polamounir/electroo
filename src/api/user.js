@@ -20,6 +20,18 @@ export const loginSupplierFn = async (userData) => {
   return response.data;
 };
 
+export const loginWithGoogle = async (credential) => {
+// console.log("Google credential:", credential);
+  try {
+    const res = await api.post("/auth/google-login", {
+      credentials: credential,
+    });
+
+    return res.data;
+  } catch (error) {
+    console.error("Login:", error);
+  }
+};
 export const getUserDataFn = async () => {
   const response = await api.get("/auth/me");
   // console.log(response.data)
