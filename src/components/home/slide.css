@@ -13,7 +13,7 @@
   display: flex;
   justify-content: space-between;
   width: calc(200%);
-  animation: scroll 10s linear infinite;
+  /* animation: scroll 10s linear infinite; */
 }
 
 @keyframes scroll {

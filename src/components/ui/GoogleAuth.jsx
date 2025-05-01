@@ -13,26 +13,26 @@ export default function GoogleAuth() {
   };
 
   return (
-    <div className="flex justify-center items-center">
-  
+    <div className="w-full">
       <GoogleLogin
         onSuccess={handleLogin}
         onError={handleLoginWithGoogleError}
-        locale="ar"
-        shape="rectangular"
-        size="large"
-        width="300"
+        width="300px"
         theme="filled"
-        text="تسجيل الدخول باستخدام جوجل"
+        size="large"
+        shape="rectangular"
+        text="continue_with"
+        locale="ar_EG"
         logo_alignment="left"
-        logo_width="20"
-        logo_height="20"
-        logo_padding="0"
-        logo_margin="0"
-        logo_background_color="transparent"
-        logo_border_radius="0"
-       
-
+        style={{
+          width: "100%",
+          height: "50px",
+          borderRadius: "8px",
+          backgroundColor: "#4285F4 !important",
+          color: "#fff",
+          fontSize: "16px",
+          fontWeight: "bold",
+        }}
       />
     </div>
   );
