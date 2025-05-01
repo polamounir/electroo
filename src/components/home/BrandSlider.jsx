@@ -25,21 +25,12 @@ export default function BrandSlider() {
     { brand: b7, name: "Brand 7" },
     { brand: b3, name: "Brand 9" },
     { brand: b4, name: "Brand 8" },
-    { brand: b1, name: "Brand 11" },
-    { brand: b2, name: "Brand 22" },
-    { brand: b3, name: "Brand 33" },
-    { brand: b4, name: "Brand 44" },
-    { brand: b5, name: "Brand 55" },
-    { brand: b6, name: "Brand 66" },
-    { brand: b7, name: "Brand 77" },
-    { brand: b3, name: "Brand 99" },
-    { brand: b4, name: "Brand 88" },
   ];
 
   return (
     <div className="bg-black">
       <div className="slider">
-        <div className="slider-track">
+        <div className="slider-track hidden md:flex">
           {items.map((item, index) => (
             <div key={`first-${index}`} className="slide">
               <img src={item.brand} alt={item.name} className="h-[100px]" />
@@ -51,7 +42,25 @@ export default function BrandSlider() {
               <img src={item.brand} alt={item.name} className="h-[100px]" />
             </div>
           ))}
+          {items.map((item, index) => (
+            <div key={`second-${index}`} className="slide">
+              <img src={item.brand} alt={item.name} className="h-[100px]" />
+            </div>
+          ))}
         </div>
+      <div className="slider-track mob flex md:hidden">
+        {items.map((item, index) => (
+          <div key={`first-${index}`} className="slide">
+            <img src={item.brand} alt={item.name} className="h-[100px]" />
+          </div>
+        ))}
+        {/* ------------------------------------- */}
+        {items.map((item, index) => (
+          <div key={`second-${index}`} className="slide">
+            <img src={item.brand} alt={item.name} className="h-[100px]" />
+          </div>
+        ))}
+      </div>
       </div>
     </div>
   );
