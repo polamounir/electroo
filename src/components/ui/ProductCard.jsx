@@ -3,6 +3,7 @@ import { GoStarFill } from "react-icons/go";
 import { useDispatch } from "react-redux";
 import { addProductToCartAsync } from "../../app/slices/cartSlice";
 import { Link } from "react-router-dom";
+import placeholderImage from "../../assets/images/product_placeholder.webp";
 export default function ProductCard({ product }) {
   const dispatch = useDispatch();
   const { title, images, discountPercentage, discountedPrice, price, id } =
@@ -25,7 +26,7 @@ export default function ProductCard({ product }) {
         <div className="flex justify-center items-center min-h-60">
           <div className="w-full h-full overflow-hidden rounded-lg flex justify-center">
             <img
-              src={images[0]}
+              src={images[0] || placeholderImage}
               alt={title}
               className="h-full aspect-square"
               width={200}

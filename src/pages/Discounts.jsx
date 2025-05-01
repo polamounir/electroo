@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { api } from "../api/axiosInstance";
 import { BsCartPlus } from "react-icons/bs";
+import placeholderImage from "../assets/images/product_placeholder.webp";
 
 export default function Discounts() {
   const { data, isLoading, isError } = useQuery({
@@ -49,7 +50,7 @@ export default function Discounts() {
                   {/* Image Container with fixed height */}
                   <div className="h-40 w-full flex items-center justify-center rounded overflow-hidden">
                     <img
-                      src={product.images[0]}
+                      src={product.images[0] || placeholderImage}
                       alt={product.title}
                       className="w-full h-full object-contain"
                     />
