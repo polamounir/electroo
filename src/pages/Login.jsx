@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import image from "../assets/images/login.webp";
 import { loginUser } from "../app/slices/authSlice";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import GoogleAuth from "../components/ui/GoogleAuth";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -161,6 +162,8 @@ export default function Login() {
                   </span>
                 </p>
               </div>
+              <div className="text-center text-gray-500 py-1 relative">او</div>
+              <GoogleAuth />
             </div>
           </div>
         </div>

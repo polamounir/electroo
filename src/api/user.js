@@ -21,7 +21,7 @@ export const loginSupplierFn = async (userData) => {
 };
 
 export const loginWithGoogle = async (credential) => {
-// console.log("Google credential:", credential);
+
   try {
     const res = await api.post("/auth/google-login", {
       credentials: credential,
