@@ -451,16 +451,15 @@ export default function SearchFilter() {
             </div>
           </div>
         )}
-
-        <div>
-          <button
-            onClick={updateSearchParams}
-            className="bg-teal-500 text-white px-4 py-2 rounded-md w-full justify-center"
-          >
-            تطبيق الفلتر
-          </button>
-        </div>
       </div> */}
+      <div>
+        <button
+          onClick={updateSearchParams}
+          className="bg-teal-500 text-white px-4 py-2 rounded-md w-full justify-center"
+        >
+          تطبيق الفلتر
+        </button>
+      </div>
     </div>
   );
 }
