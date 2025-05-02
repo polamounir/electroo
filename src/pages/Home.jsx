@@ -79,7 +79,7 @@ export default function Home() {
           </div>
 
           <div className="w-full bg-[#fafafa] py-15">
-            <div className="w-full lg:w-[85%] m-auto shadow-none">
+            <div className="w-full lg:w-[100%] m-auto shadow-none">
               <div className="slider-container">
                 {newProducts === 0 && (
                   <div className="text-center text-2xl py-10">
@@ -168,21 +168,21 @@ export default function Home() {
           products={discounts}
           loading={discountLoading}
           error={discountError}
-          more="/discounts"
+          more="/search?HasDiscount=true"
         />
         <HomeSection
           title="الاكثر مبيعاً"
           products={sales}
           loading={salesLoading}
           error={salesError}
-          more="/sales"
+          more="/search?"
         />
         <HomeSection
           title="كل المنتجات "
           products={newProducts}
           loading={newProductsLoading}
           error={newProductError}
-          more="/all-products"
+          more="/search"
         />
       </div>
     </div>

@@ -70,7 +70,7 @@ export default function Product() {
         <div className="flex flex-col md:flex-row-reverse gap-10  ">
           {/* Image Gallery */}
           <div className="flex-1">
-            <div className=" rounded-lg overflow-hidden relative flex justify-center items-center p-5">
+            <div className=" rounded-lg overflow-hidden relative flex justify-center items-center p-5 border border-teal-500 shadow-md">
               <img
                 key={mainImage || data.images[0].url}
                 src={mainImage || data.images[0].url || placeholderImage}
@@ -89,7 +89,7 @@ export default function Product() {
                   alt={`thumb-${idx}`}
                   onClick={() => handleImageClick(img.url)}
                   className={`w-20 h-20 object-cover rounded-lg cursor-pointer border-2 transition-all duration-200 hover:scale-110 ${
-                    img === mainImage
+                    img.url === mainImage
                       ? "border-teal-500 ring-2 ring-offset-2 ring-teal-400"
                       : "border-gray-300"
                   }`}
