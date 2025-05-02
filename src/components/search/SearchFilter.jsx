@@ -286,7 +286,7 @@ export default function SearchFilter() {
             }))
           }
         >
-          <h3 className="font-bold text-lg">ترتيب حسب</h3>
+          <h3 className="font-bold text-lg">ترتيب حسب الـــ</h3>
           <FaChevronUp
             className={`text-gray-600 transition-transform duration-200 ${
               collapsedSections.optionsGroup ? "rotate-180" : ""
@@ -343,7 +343,7 @@ export default function SearchFilter() {
       </div>
 
       {/* Price Sort By Section */}
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <div
           className="flex justify-between items-center py-2 cursor-pointer border-b border-gray-200"
           onClick={() =>
@@ -401,10 +401,10 @@ export default function SearchFilter() {
             </div>
           </div>
         )}
-      </div>
+      </div> */}
 
       {/* View Mode Section */}
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <div
           className="flex justify-between items-center py-2 cursor-pointer border-b border-gray-200"
           onClick={() =>
@@ -460,7 +460,7 @@ export default function SearchFilter() {
             تطبيق الفلتر
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
