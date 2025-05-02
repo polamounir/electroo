@@ -11,10 +11,11 @@ const initialState = {
   MaximumPrice: 10000,
   HasDiscount: false,
   SortBy: "price-low-high",
-  optionGroup: null,
-  selectedOptionsValue: null,
+  OptionGroupName: null,
+  OptionValue: null,
+  CategoryId: null,
+  
   searchResults: [],
-
   isLoading: false,
   error: null,
   isSearchSidebarOpen: false,
@@ -30,10 +31,11 @@ export const getSearchResults = createAsyncThunk(
       MaximumPrice = 10000,
       HasDiscount = false,
       limit = 20,
-      optionGroup,
-      selectedOptionsValue,
+      OptionGroupName,
+      OptionValue,
+      CategoryId,
     } = params;
-    // console.log("params", params);
+    console.log("params", params);
     try {
       const response = await api.get("/products", {
         params: {
@@ -43,8 +45,9 @@ export const getSearchResults = createAsyncThunk(
           MinimumPrice: MinimumPrice,
           MaximumPrice: MaximumPrice,
           HasDiscount: HasDiscount,
-          OptionGroupName: optionGroup,
-          OptionValue: selectedOptionsValue,
+          OptionGroupName: OptionGroupName,
+          OptionValue: OptionValue,
+          CategoryId: CategoryId,
         },
       });
 
@@ -82,13 +85,15 @@ const searchSlice = createSlice({
       if (MinimumPrice !== undefined) state.MinimumPrice = MinimumPrice;
       if (MaximumPrice !== undefined) state.MaximumPrice = MaximumPrice;
       if (HasDiscount !== undefined) state.HasDiscount = HasDiscount;
-      if (optionGroup !== undefined) state.optionGroup = optionGroup;
+      if (optionGroup !== undefined) state.OptionGroupName = optionGroup;
       if (selectedOptionsValue !== undefined)
-        state.selectedOptionsValue = selectedOptionsValue;
+        state.OptionValue = selectedOptionsValue;
 
       if (limit !== undefined) state.limit = limit;
       //   if (sort !== undefined) state.sort = sort;
       if (viewMode !== undefined) state.viewMode = viewMode;
+      if (action.payload.CategoryId !== undefined)
+        state.CategoryId = action.payload.CategoryId;
 
       state.isSearchSidebarOpen = false;
     },

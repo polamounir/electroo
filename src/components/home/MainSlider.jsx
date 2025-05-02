@@ -31,7 +31,7 @@ export default function MainSlider() {
 
   const slides = [
     {
-      className: "bg-[url('/seedream-image.jpeg')]  bg-img-bottom",
+      className: "bg-[url('/seedream-image.jpeg')] bg-img-bottom",
       // "https://i.imghippo.com/files/UHC8864xgs.jpeg"
     },
     {

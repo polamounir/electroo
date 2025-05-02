@@ -18,41 +18,61 @@ function Search() {
   const { searchResults, isLoading, error } = useSelector(
     (state) => state.search
   );
-  const searchQuery = params.get("SearchQuery") || "";
+  const searchQuery = params.get("SearchQuery") || null;
+  const categoryId = params.get("CategoryId") || null;
   const minimumPrice = Number(params.get("MinimumPrice")) || 0;
   const maximumPrice = Number(params.get("MaximumPrice")) || 10000;
   const hasDiscount = params.get("HasDiscount") === "true";
   const sortBy = params.get("SortBy") || "price-low-high";
-  const viewMode = params.get("ViewMode") || "grid";
-  const page = parseInt(params.get("Page"), 10) || 1;
+  // const viewMode = params.get("ViewMode") || "grid";
+
   const limit = parseInt(params.get("Limit"), 10) || 20;
+  const optionGroupName = params.get("OptionGroupName") || null;
+  const optionValue = params.get("OptionValue") || null;
 
   useEffect(() => {
+    console.log(
+      "search",
+      searchQuery,
+      categoryId,
+      minimumPrice,
+      maximumPrice,
+      hasDiscount,
+      sortBy,
+      // viewMode,
+      limit,
+      optionGroupName,
+      optionValue
+    );
     dispatch(
       getSearchResults({
         SearchQuery: searchQuery,
-        Page: page,
         Limit: limit,
         MinimumPrice: minimumPrice,
         MaximumPrice: maximumPrice,
         HasDiscount: hasDiscount,
         SortBy: sortBy,
-        ViewMode: viewMode,
+        // ViewMode: viewMode,
+        CategoryId: categoryId,
+        OptionGroupName: optionGroupName,
+        OptionValue: optionValue,
       })
     );
     dispatch(
       setSearchParams({
         SearchQuery: searchQuery,
-        Page: page,
         Limit: limit,
         MinimumPrice: minimumPrice,
         MaximumPrice: maximumPrice,
         HasDiscount: hasDiscount,
         SortBy: sortBy,
-        ViewMode: viewMode,
+        // ViewMode: viewMode,
+        optionGroup: optionGroupName,
+        selectedOptionsValue: optionValue,
+        CategoryId: categoryId,
       })
     );
-  }, [dispatch, searchQuery]);
+  }, [dispatch, searchQuery, categoryId]);
   // console.log(searchResults);
 
   return (

@@ -29,6 +29,7 @@ export default function SearchFilter() {
     OptionGroupName,
     OptionValue,
     isSearchSidebarOpen,
+    CategoryId,
   } = useSelector((state) => state.search);
 
   const [rangeValues, setRangeValues] = useState([MIN, MAX]);
@@ -38,13 +39,17 @@ export default function SearchFilter() {
     sortBy: false,
     viewMode: false,
     optionsGroup: false,
+    categories: false,
   });
 
   const [sortOption, setSortOption] = useState("price-low-high");
-  const [optionGroup, setOptionGroup] = useState("");
-  const [selectedOptionsValue, setSelectedOptionsValue] = useState("");
+  const [optionGroup, setOptionGroup] = useState(OptionGroupName || "");
+  const [selectedOptionsValue, setSelectedOptionsValue] = useState(
+    OptionValue || ""
+  );
   const [viewMode, setViewMode] = useState("grid");
   const [search, setSearch] = useState(SearchQuery || "");
+  const [selectedCategory, setSelectedCategory] = useState(CategoryId || "");
 
   const handleRangeChange = (type, value) => {
     const val = parseInt(value) || 0;
@@ -74,6 +79,9 @@ export default function SearchFilter() {
     const HasDiscount = showDiscounts;
     const SortBy = sortOption;
     const ViewMode = viewMode;
+    const OptionGroupName = optionGroup;
+    const OptionValue = selectedOptionsValue;
+    const CategoryId = selectedCategory;
     dispatch(
       setSearchParams({
         SearchQuery: search,
@@ -82,8 +90,9 @@ export default function SearchFilter() {
         HasDiscount,
         SortBy,
         ViewMode,
-        optionGroup,
-        selectedOptionsValue,
+        OptionGroupName,
+        OptionValue,
+        CategoryId,
       })
     );
     dispatch(
@@ -94,19 +103,26 @@ export default function SearchFilter() {
         HasDiscount,
         SortBy,
         ViewMode,
-        optionGroup,
-        selectedOptionsValue,
+        OptionGroupName,
+        OptionValue,
+        CategoryId,
       })
     );
 
-    const searhLink = `/search?SearchQuery=${search}&MinimumPrice=${MinimumPrice}&MaximumPrice=${MaximumPrice}&HasDiscount=${HasDiscount}&SortBy=${SortBy}&ViewMode=${ViewMode}&Limit=${limit}?OptionGroupName=${optionGroup}&OptionValue=${selectedOptionsValue}`;
+    const searhLink = `/search?SearchQuery=${search}&CategoryId=${CategoryId}&MinimumPrice=${MinimumPrice}&MaximumPrice=${MaximumPrice}&HasDiscount=${HasDiscount}&SortBy=${SortBy}&ViewMode=${ViewMode}&Limit=${limit}&OptionGroupName=${optionGroup}&OptionValue=${selectedOptionsValue}`;
     navigate(searhLink);
   };
   const { data: productOptions } = useQuery({
     queryKey: ["searchProducts", "options"],
     queryFn: () => api.get("/product-options"),
   });
-  console.log(productOptions?.data.data);
+  // console.log(productOptions?.data.data);
+  const { data: categories } = useQuery({
+    queryKey: ["searchCategories"],
+    queryFn: () => api.get("/categories?Page=1&Limit=100"),
+  });
+  // console.log(categories?.data.data.items);
+
   return (
     <div
       className={`fixed lg:static w-xs z-[1000] lg:w-full pt-10 lg:pt-4  flex flex-col p-4 rounded  top-0 duration-500 bg-white lg:bg-transparent  h-[100svh] lg:h-auto overflow-y-auto scrolling ${
@@ -167,25 +183,50 @@ export default function SearchFilter() {
               />
             </div>
 
-            {/* Price Range Inputs */}
-            {/* <div className="flex justify-between gap-4">
-              <input
-                type="number"
-                min={MIN}
-                max={rangeValues[1]}
-                value={MinimumPrice || rangeValues[0]}
-                onChange={(e) => handleRangeChange("min", e.target.value)}
-                className="w-full border border-gray-300 rounded p-2 text-right"
-              />
-              <input
-                type="number"
-                min={rangeValues[0]}
-                max={MAX}
-                value={MaximumPrice || rangeValues[1]}
-                onChange={(e) => handleRangeChange("max", e.target.value)}
-                className="w-full border border-gray-300 rounded p-2 text-right"
-              />
-            </div> */}
+            {/* Sort By Category */}
+            <div className="mb-4">
+              <div
+                className="flex justify-between items-center py-2 cursor-pointer border-b border-gray-200"
+                onClick={() =>
+                  setCollapsedSections((prev) => ({
+                    ...prev,
+                    categories: !prev.categories,
+                  }))
+                }
+              >
+                <h3 className="font-bold text-lg">ترتيب حسب الفئة</h3>
+                <FaChevronUp
+                  className={`text-gray-600 transition-transform duration-200 ${
+                    collapsedSections.categories ? "rotate-180" : ""
+                  }`}
+                />
+              </div>
+              {!collapsedSections.categories && (
+                <div className="py-3 space-y-2">
+                  {categories?.data.data.items.map((opt, index) => {
+                    return (
+                      <div key={index} className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          name="categoriesSelection"
+                          className="w-5 h-5 accent-teal-500"
+                          value={opt.id}
+                          checked={selectedCategory === opt.id}
+                          onChange={() => {
+                            if (selectedCategory === opt.id) {
+                              setSelectedCategory("");
+                            } else {
+                              setSelectedCategory(opt.id);
+                            }
+                          }}
+                        />
+                        <span className="text-gray-800">{opt.name}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
 
             {/* Dual Range Slider */}
             <div>
@@ -250,9 +291,10 @@ export default function SearchFilter() {
         </div>
         {!collapsedSections.optionsGroup && (
           <div className="py-3 space-y-2">
-            {productOptions?.data.data.map((option) => (
+            {productOptions?.data.data.map((option, idx) => (
               <div
                 className=""
+                key={idx}
                 onClick={() => setOptionGroup(option.optionGroup)}
               >
                 <span
@@ -417,4 +459,28 @@ export default function SearchFilter() {
       </div>
     </div>
   );
+}
+
+{
+  /* Price Range Inputs */
+}
+{
+  /* <div className="flex justify-between gap-4">
+              <input
+                type="number"
+                min={MIN}
+                max={rangeValues[1]}
+                value={MinimumPrice || rangeValues[0]}
+                onChange={(e) => handleRangeChange("min", e.target.value)}
+                className="w-full border border-gray-300 rounded p-2 text-right"
+              />
+              <input
+                type="number"
+                min={rangeValues[0]}
+                max={MAX}
+                value={MaximumPrice || rangeValues[1]}
+                onChange={(e) => handleRangeChange("max", e.target.value)}
+                className="w-full border border-gray-300 rounded p-2 text-right"
+              />
+            </div> */
 }
