@@ -1,20 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import imagePlaceholder from "../../assets/images/product_placeholder.webp"; 
 
 function ProductCard({ product, isRowView }) {
   // console.log(product);
   return (
     <Link
       to={`/product/${product.id}`}
-      className={`p-4 rounded hover:shadow-sm duration-300 transition-all ${
+      className={`p-4 rounded hover:shadow-sm duration-300 transition-all bg-white ${
         isRowView ? "flex flex-col sm:flex-row gap-4" : ""
       }`}
     >
       <img
-        src={
-          product.images?.[0] ||
-          "https://cdn.dribbble.com/userupload/21207141/file/original-af25d78fac8dc71b312d8b0bef78c93b.jpg"
-        }
+        src={product.images?.[0] || imagePlaceholder}
         alt={product.title || "Product image"}
         className={`rounded-xl object-contain  ${
           isRowView ? "w-full sm:w-48 h-48 me-2" : "w-full aspect-square"
@@ -28,9 +26,11 @@ function ProductCard({ product, isRowView }) {
         <h3 className="font-semibold truncate">{product.title}</h3>
         {/* <p className="text-gray-600 text-sm mb-2">{product.description}</p> */}
         {product.discountPercentage > 0 ? (
-          <div className="flex items-center gap-2">
-            <p className="text-teal-600 font-bold ">{product.discountedPrice} ج.م</p>
-            <p className="text-gray-600 font-bold line-through">
+          <div className="flex items-center gap-2 my-1">
+            <p className="text-teal-600 font-bold ">
+              {product.discountedPrice} ج.م
+            </p>
+            <p className="text-red-700 font-bold line-through">
               {product.price} ج.م
             </p>
           </div>
@@ -59,11 +59,11 @@ export default function SearchProductsContainer({ products }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Force row view on small screens and manage column state
+
   useEffect(() => {
     const maxCols = maxColumnsAllowed();
     if (columns > maxCols) {
-      setColumns(maxCols); // Adjust columns on resize
+      setColumns(maxCols);
     }
 
     if (screenWidth < 640) {
@@ -73,7 +73,7 @@ export default function SearchProductsContainer({ products }) {
     }
   }, [screenWidth, columns]);
 
-  // Determine which column buttons to show
+ 
   const maxColumnsAllowed = () => {
     if (screenWidth < 640) return 1;
     if (screenWidth < 768) return 2;
@@ -86,7 +86,6 @@ export default function SearchProductsContainer({ products }) {
     setColumns(num);
   };
 
-  // Conditional class for grid columns based on user choice and screen width
   const gridColsClass = () => {
     if (isRowView) return "grid-cols-1";
     switch (columns) {

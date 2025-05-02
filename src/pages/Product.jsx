@@ -61,7 +61,6 @@ export default function Product() {
     dispatch(addProductToCartAsync(id));
   };
 
-  console.log(data);
   return (
     <div className="mx-auto px-4 xl:px-50 py-20 flex justify-center items-center flex-col min-h-[75svh]">
       <AddProductReviewModel />

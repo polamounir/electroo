@@ -19,10 +19,8 @@ export default function Navbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-const location = useLocation();
-const isHomePage = location.pathname === "/";
-
-
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,7 +39,6 @@ const isHomePage = location.pathname === "/";
     setIsSidebarOpen(!isSidebarOpen);
   };
   const user = useSelector((state) => state.auth.user);
-
 
   const links = [
     {
@@ -73,7 +70,6 @@ const isHomePage = location.pathname === "/";
     }, 500);
   };
 
-  
   return (
     <div
       className={`border-b ${
@@ -84,7 +80,7 @@ const isHomePage = location.pathname === "/";
         isScrolled ? "bg-black" : ""
       }`}
     >
-      <div className="p-5 w-full md:w-[85%] mx-auto">
+      <div className="px-5 py-3 w-full md:w-[85%] mx-auto">
         <div className="flex justify-between gap-10">
           <div className="flex items-center gap-5">
             <h1 className="ar-font-s text-4xl">
@@ -146,10 +142,11 @@ const isHomePage = location.pathname === "/";
             </div>
           </div>
         </div>
+        {/* MOBILE MENU */}
         <div
           className={`absolute z-[988] duration-1000 min-h-[100svh] ${
             isSidebarOpen ? "" : "translate-x-[100%]"
-          } start-0 top-0 bottom-0 bg-gray-100 min-w-[21rem]`}
+          } start-0 top-0 bottom-0 bg-gray-100 min-w-[21rem] text-black`}
         >
           <div className="p-5">
             <div className="flex justify-between items-center">
@@ -177,21 +174,21 @@ const isHomePage = location.pathname === "/";
                     <li>
                       <Link to="/profile">الملف الشخصي</Link>
                     </li>
+                    <li>
+                      <button
+                        onClick={() => {
+                          dispatch(logOut());
+                        }}
+                      >
+                        تسجيل الخروج
+                      </button>
+                    </li>
                   </>
                 ) : (
                   <li>
                     <Link to="/login">تسجيل دخول</Link>
                   </li>
                 )}
-                <li>
-                  <button
-                    onClick={() => {
-                      dispatch(logOut());
-                    }}
-                  >
-                    تسجيل الخروج
-                  </button>
-                </li>
               </ul>
             </div>
           </div>

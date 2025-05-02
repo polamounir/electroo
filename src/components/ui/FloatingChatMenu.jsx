@@ -34,14 +34,16 @@ export default function FloatingChatMenu() {
     <div className="chat-container">
       {/* Floating Menu Button */}
       {/* <button className="floating-menu-button" onClick={handleToggleMenu}> */}
-      <button className="floating-menu-button" onClick={handleOpenChatBot}>
-        <RiRobot2Line className="text-2xl" />
-      </button>
-      <NoteTooltip
-        message="ابدأ المحادثة مع المساعد الذكي"
-        classes="chat-tooltip
-      "
-      />
+      <div className="floating-menu-button-container">
+        <button className="floating-menu-button" onClick={handleOpenChatBot}>
+          <RiRobot2Line className="text-2xl" />
+        </button>
+        <NoteTooltip
+          message="ابدأ المحادثة مع المساعد الذكي"
+          classes="chat-tooltip
+          "
+        />
+      </div>
 
       {/* Render the active chat component */}
       {activeChat === "bot" && <ChatBot />}

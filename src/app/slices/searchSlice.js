@@ -11,9 +11,13 @@ const initialState = {
   MaximumPrice: 10000,
   HasDiscount: false,
   SortBy: "price-low-high",
+  optionGroup: null,
+  selectedOptionsValue: null,
   searchResults: [],
+
   isLoading: false,
   error: null,
+  isSearchSidebarOpen: false,
 };
 
 export const getSearchResults = createAsyncThunk(
@@ -25,27 +29,27 @@ export const getSearchResults = createAsyncThunk(
       MinimumPrice = 0,
       MaximumPrice = 10000,
       HasDiscount = false,
-      page = 1,
       limit = 20,
+      optionGroup,
+      selectedOptionsValue,
     } = params;
     // console.log("params", params);
     try {
-      const response = await api.get(
-        "/products",
-        {
-          params: {
-            SearchQuery: SearchQuery,
-            Page: page,
-            Limit: limit,
-            MinimumPrice: MinimumPrice,
-            MaximumPrice: MaximumPrice,
-            HasDiscount: HasDiscount,
-          },
-        }
-      );
+      const response = await api.get("/products", {
+        params: {
+          SearchQuery: SearchQuery,
+
+          Limit: limit,
+          MinimumPrice: MinimumPrice,
+          MaximumPrice: MaximumPrice,
+          HasDiscount: HasDiscount,
+          OptionGroupName: optionGroup,
+          OptionValue: selectedOptionsValue,
+        },
+      });
 
       const items = response.data?.data?.items;
-    //   console.log("Fetched Products:", items);
+      //   console.log("Fetched Products:", items);
       return items;
     } catch (error) {
       console.error("API Error:", error);
@@ -67,19 +71,29 @@ const searchSlice = createSlice({
         MinimumPrice,
         MaximumPrice,
         HasDiscount,
-        page,
+
         limit,
         // sort,
         viewMode,
+        optionGroup,
+        selectedOptionsValue,
       } = action.payload;
       if (SearchQuery !== undefined) state.SearchQuery = SearchQuery;
       if (MinimumPrice !== undefined) state.MinimumPrice = MinimumPrice;
       if (MaximumPrice !== undefined) state.MaximumPrice = MaximumPrice;
       if (HasDiscount !== undefined) state.HasDiscount = HasDiscount;
-      if (page !== undefined) state.page = page;
+      if (optionGroup !== undefined) state.optionGroup = optionGroup;
+      if (selectedOptionsValue !== undefined)
+        state.selectedOptionsValue = selectedOptionsValue;
+
       if (limit !== undefined) state.limit = limit;
       //   if (sort !== undefined) state.sort = sort;
       if (viewMode !== undefined) state.viewMode = viewMode;
+
+      state.isSearchSidebarOpen = false;
+    },
+    setIsSearchSidebarOpen: (state) => {
+      state.isSearchSidebarOpen = !state.isSearchSidebarOpen;
     },
   },
   extraReducers: (builder) => {
@@ -87,17 +101,20 @@ const searchSlice = createSlice({
       .addCase(getSearchResults.pending, (state) => {
         state.isLoading = true;
         state.error = null;
+        state.isSearchSidebarOpen = false;
       })
       .addCase(getSearchResults.fulfilled, (state, action) => {
         state.isLoading = false;
         state.searchResults = action.payload;
+        state.isSearchSidebarOpen = false;
       })
       .addCase(getSearchResults.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+        state.isSearchSidebarOpen = false;
       });
   },
 });
 
-export const { setSearchParams } = searchSlice.actions;
+export const { setSearchParams, setIsSearchSidebarOpen } = searchSlice.actions;
 export default searchSlice.reducer;

@@ -5,7 +5,12 @@ import SearchProductsContainer from "../components/search/SearchProductsContaine
 import SearchFilter from "../components/search/SearchFilter";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getSearchResults, setSearchParams } from "../app/slices/searchSlice";
+import { LuTextSearch } from "react-icons/lu";
+import {
+  getSearchResults,
+  setIsSearchSidebarOpen,
+  setSearchParams,
+} from "../app/slices/searchSlice";
 function Search() {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -54,10 +59,21 @@ function Search() {
     <div className="min-h-screen bg-gray-50">
       {" "}
       <div className=" mx-auto px-4 py-8">
-        <h1 className="text-3xl font-semibold text-gray-800 mb-6 text-right">
-          نتائج البحث لـ: <span className="text-teal-600">{searchQuery}</span>
-        </h1>
-
+        {/* Search Header */}
+        <div className="flex justify-between items-start mb-4 px-1 sm:px-5">
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-semibold text-gray-800 mb-6 text-right">
+            نتائج البحث لـ: <span className="text-teal-600">{searchQuery}</span>
+          </h1>
+          <div className="lg:hidden text-3xl  shadow">
+            <button
+              onClick={() => {
+                dispatch(setIsSearchSidebarOpen());
+              }}
+            >
+              <LuTextSearch />
+            </button>
+          </div>
+        </div>
         {/* Loading Spinner */}
         {isLoading && (
           <div className="flex justify-center items-center">
