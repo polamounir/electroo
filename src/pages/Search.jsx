@@ -72,7 +72,18 @@ function Search() {
         CategoryId: categoryId,
       })
     );
-  }, [dispatch, searchQuery, categoryId]);
+  }, [
+    dispatch,
+    searchQuery,
+    categoryId,
+    minimumPrice,
+    maximumPrice,
+    hasDiscount,
+    sortBy,
+    limit,
+    optionGroupName,
+    optionValue,
+  ]);
   // console.log(searchResults);
 
   return (

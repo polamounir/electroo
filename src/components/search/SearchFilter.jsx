@@ -111,6 +111,10 @@ export default function SearchFilter() {
 
     const searhLink = `/search?SearchQuery=${search}&CategoryId=${CategoryId}&MinimumPrice=${MinimumPrice}&MaximumPrice=${MaximumPrice}&HasDiscount=${HasDiscount}&SortBy=${SortBy}&ViewMode=${ViewMode}&Limit=${limit}&OptionGroupName=${optionGroup}&OptionValue=${selectedOptionsValue}`;
     navigate(searhLink);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
   const { data: productOptions } = useQuery({
     queryKey: ["searchProducts", "options"],
