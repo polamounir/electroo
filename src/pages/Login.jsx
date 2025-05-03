@@ -28,7 +28,7 @@ export default function Login() {
       }
       toast.error("تم تسجيل الدخول بالفعل");
     }
-  }, [navigate, user]);
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

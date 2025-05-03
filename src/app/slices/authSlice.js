@@ -109,7 +109,6 @@ export const getUserData = createAsyncThunk(
 
       console.log(response);
 
-
       return response.data;
     } catch (error) {
       // console.log(error);
@@ -117,8 +116,6 @@ export const getUserData = createAsyncThunk(
     }
   }
 );
-
-
 
 const authSlice = createSlice({
   name: "auth",
@@ -137,7 +134,12 @@ const authSlice = createSlice({
       localStorage.removeItem("email");
       window.location.href = "/";
     },
-    
+    setUserInitData: (state, action) => {
+      state.user = action.payload;
+      state.isAuthenticated = true;
+      state.loading = false;
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -200,5 +202,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logOut } = authSlice.actions;
+export const { logOut, setUserInitData } = authSlice.actions;
 export default authSlice.reducer;
