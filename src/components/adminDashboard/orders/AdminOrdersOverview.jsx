@@ -16,6 +16,9 @@ export default function OrdersOverview() {
   const navigateToProduct = () => {
     navigate(`/admin/orders/${orderId}`);
   };
+  const editProduct = (id) => {
+    navigate(`/admin/orders/${id}`);
+  };
   const getAllOrders = async () => {
     setIsLoading(true);
     try {
@@ -54,7 +57,6 @@ export default function OrdersOverview() {
             <button
               className="px-4 py-2 bg-teal-600 hover:bg-teal-500 absolute end-0 top-0 bottom-0 text-white duration-300"
               onClick={navigateToProduct}
-              
             >
               بحث
             </button>
@@ -83,7 +85,12 @@ export default function OrdersOverview() {
                       <td className="px-4 py-2">{order.orderDate}</td>
                       <td className="px-4 py-2">{order.status}</td>
                       <td className="px-4 py-2 flex gap-3">
-                        <button className="text-teal-500 hover:text-teal-600">
+                        <button
+                          className="text-teal-500 hover:text-teal-600"
+                          onClick={() => {
+                            editProduct(order.orderId);
+                          }}
+                        >
                           <FaRegEdit size={20} />
                         </button>
                         <button className="text-red-500 hover:text-red-600">

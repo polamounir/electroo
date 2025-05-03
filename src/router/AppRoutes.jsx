@@ -78,6 +78,7 @@ import ResetUserPassword from "../pages/ResetUserPassword";
 import AdminOrdersOverview from "../components/adminDashboard/orders/AdminOrdersOverview";
 import AdminOrderDetails from "../components/adminDashboard/orders/AdminOrderDetails";
 import AdminOrdersLayout from "../components/adminDashboard/orders/AdminOrdersLayout";
+import CheckoutSuccess from "../pages/CheckoutSuccess";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -142,6 +143,7 @@ const AppRoutes = () => {
             {/* Order */}
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/checkout-success" element={<CheckoutSuccess />} />
 
             {/* TEsting */}
             <Route path="/test" element={<Test />} />

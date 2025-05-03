@@ -16,13 +16,19 @@ export default function Login() {
     password: "",
   });
 
-  const user = useSelector((state) => state.auth.user);
+  const { user } = useSelector((state) => state.auth);
   useEffect(() => {
     if (user) {
-      navigate("/");
+      if (user.role === "Admin") {
+        navigate("/admin");
+      } else if (user.role === "Supplier") {
+        navigate("/supplier");
+      } else {
+        navigate("/");
+      }
       toast.error("تم تسجيل الدخول بالفعل");
     }
-  }, [navigate]);
+  }, [ navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
