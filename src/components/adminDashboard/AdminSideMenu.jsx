@@ -40,13 +40,13 @@ export default function AdminSideMenu() {
       link: "/admin/users",
       icon: <FaRegCircleUser />,
     },
-    {
-      id: 5,
-      name: "المبيعات",
-      title: "sales",
-      link: "/admin/sales",
-      icon: <AiOutlineDollar />,
-    },
+    // {
+    //   id: 5,
+    //   name: "المبيعات",
+    //   title: "sales",
+    //   link: "/admin/sales",
+    //   icon: <AiOutlineDollar />,
+    // },
     {
       id: 6,
       name: "الاعدادت",
@@ -54,13 +54,13 @@ export default function AdminSideMenu() {
       link: "/admin/settings",
       icon: <BsGear />,
     },
-    {
-      id: 7,
-      name: "المحادثات",
-      title: "chats",
-      link: "/admin/chats",
-      icon: <IoChatbubbleOutline />,
-    },
+    // {
+    //   id: 7,
+    //   name: "المحادثات",
+    //   title: "chats",
+    //   link: "/admin/chats",
+    //   icon: <IoChatbubbleOutline />,
+    // },
   ];
   const [activeLink, setActiveLink] = useState("admin");
   const handleActiveLink = (link) => {

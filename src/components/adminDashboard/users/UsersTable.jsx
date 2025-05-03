@@ -1,86 +1,270 @@
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { useState, useEffect } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { GoTrash } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
-
+import { api } from "../../../api/axiosInstance";
+import { toast } from "sonner";
+import { TbReload } from "react-icons/tb";
 export default function UsersTable() {
   const navigate = useNavigate();
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["products"],
-    queryFn: async () => {
-      const options = {
-        method: "GET",
-        url: "https://ecommerce.markomedhat.com/api/products?Page=1&Limit=20",
-      };
-      try {
-        const { data } = await axios.request(options);
-        console.log(data);
-        return data;
-      } catch (error) {
-        console.error(error);
-      }
-    },
-  });
-  // console.log(data?.data?.items);
+
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
+  const [displayedUsers, setDisplayedUsers] = useState([]);
+
+  const [userType, setUserType] = useState("Admin");
+
+  useEffect(() => {
+    fetchUsers();
+  }, [userType]);
+
+  const fetchUsers = async () => {
+    setIsLoading(true);
+    try {
+      const response = await api.get(`/users?UsersType=${userType}`);
+      // console.log(response.data.data);
+      setUsers(response.data.data);
+      setIsLoading(false);
+      setIsError(false);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      setIsError(true);
+      setIsLoading(false);
+      toast.error("Failed to load users");
+    }
+  };
+
+  useEffect(() => {
+    setDisplayedUsers(users);
+  }, [users]);
   const handleAddNavigation = () => {
-    navigate("/dashboard/products/add");
+    navigate("/admin/users/add");
+  };
+
+  const handleEditNavigation = (userId) => {
+    navigate(`/admin/users/edit/${userId}`);
+  };
+
+  const confirmDelete = (userId) => {
+    setDeleteConfirm(userId);
+  };
+
+  const cancelDelete = () => {
+    setDeleteConfirm(null);
+  };
+
+  const changeUserStatus = (userId, state) => {
+    const userIndex = users.findIndex((user) => user.id === userId);
+    if (userIndex !== -1) {
+      const updatedUsers = [...displayedUsers];
+      updatedUsers[userIndex].isActive = state;
+      setDisplayedUsers(updatedUsers);
+    }
+  };
+  const handleDelete = async (userId) => {
+    try {
+      const response = await api.put(`/users/${userId}/deactivate`);
+
+      if (response.data.status === "Successful") {
+        toast.success(response.data.message || "User Deactivated");
+        changeUserStatus(userId, false);
+      } else {
+        toast.error("Failed to delete user");
+      }
+    } catch (error) {
+      console.error("Error deleting", error);
+      if (error.response) {
+        toast.error(error.response.data.detail || "err deleting");
+      } else {
+        toast.error("حدث خطأ ما, حاول مرة اخرى");
+      }
+    } finally {
+      setDeleteConfirm(null);
+    }
+  };
+
+  const handleReactivate = async (userId) => {
+    try {
+      const response = await api.put(`/users/${userId}/reactivate`);
+
+      if (response.data.status === "Successful") {
+        toast.success(response.data.message || "User reactivated");
+        changeUserStatus(userId, true);
+      } else {
+        toast.error("Failed to reactivate user");
+      }
+    } catch (error) {
+      console.error("Error reactivating", error);
+      if (error.response) {
+        toast.error(error.response.data.detail || "err reactivating");
+      } else {
+        toast.error("حدث خطأ ما, حاول مرة اخرى");
+      }
+    }
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="text-xl">جاري التحميل ...</div>
+      </div>
+    );
   }
-  if (isError) {
-    return <div>Error With fetching data</div>;
-  }
-  return (
-    <div className="">
-      <div className="w-full flex justify-between">
-        <h2 className="text-2xl font-semibold">كل المنتجات</h2>
+
+  if (isError && !isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-64">
+        <div className="text-xl text-red-600 mb-4">حدث خطا غير متوقع</div>
         <button
-          className="bg-black text-white text-md px-5 py-1 rounded-lg"
-          onClick={handleAddNavigation}
+          className="bg-teal-500 text-white px-4 py-2 rounded-lg"
+          onClick={fetchUsers}
         >
-          أضافة
+          إعادة تحميل
         </button>
       </div>
-      <div className="flex justify-between items-center">
+    );
+  }
+
+  return (
+    <div className="w-full">
+      <div className="w-full flex justify-between items-center mb-6">
         <div>
-          <button className="bg-[var(--secondary-color)] px-7 py-2 text-lg text-white rounded-lg">
-            Add New
+          <h2 className="text-2xl font-semibold">كل المستخدمين</h2>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setUserType("Admin")}
+              className={`${
+                userType === "Admin" ? "bg-black text-white" : "bg-gary-200"
+              } px-2 py-1 rounded-lg items-center justify-center `}
+            >
+              مشرفين
+            </button>
+            <button
+              onClick={() => setUserType("User")}
+              className={`${
+                userType === "User" ? "bg-black text-white" : "bg-gary-200"
+              } px-2 py-1 rounded-lg items-center justify-center `}
+            >
+              مستخدمين
+            </button>
+            <button
+              onClick={() => setUserType("Supplier")}
+              className={`${
+                userType === "Supplier" ? "bg-black text-white" : "bg-gary-200"
+              } px-2 py-1 rounded-lg items-center justify-center `}
+            >
+              موردين
+            </button>
+          </div>
+        </div>
+        <button
+          className="bg-black px-5 py-2 text-white rounded-lg"
+          onClick={handleAddNavigation}
+        >
+          أضافة مشرف
+        </button>
+      </div>
+
+      {displayedUsers && displayedUsers?.length === 0 ? (
+        <div className="text-center py-10 bg-gray-50 rounded-lg">
+          <p className="text-lg text-gray-500">لا يوجد مستخدمين</p>
+          <button
+            className="mt-4 bg-teal-500 text-white px-4 py-2 rounded-lg"
+            onClick={handleAddNavigation}
+          >
+            أضافة مشرف جديد
           </button>
         </div>
-      </div>
-      <div className="flex flex-col mt-10">
-        <div className="grid grid-cols-12 py-3">
-          <div className="col-span-4">اسم المنتج</div>
-          <div className="col-span-2">الفئة</div>
-          <div className="col-span-2">السعر</div>
-          <div className="col-span-1">المخزون</div>
-          <div className="col-span-1">المبيعات</div>
-          <div className="col-span-2 text-center">الاوامر</div>
-        </div>
-        {data?.data?.items.map((product) => (
-          <div
-            key={product.id}
-            className="grid grid-cols-12 border-t border-gray-300 py-5 gap-5"
-          >
-            <div className="col-span-4 truncate">{product.title}</div>
-            <div className="col-span-2">{product.category || "__"}</div>
-            <div className="col-span-2">{product.price} ج.م</div>
-            <div className="col-span-1">{product.stock || "__"}</div>
-            <div className="col-span-1">{product.sales || "__"}</div>
-            <div className="col-span-2 flex justify-center gap-2">
-              <button className="text-teal-600 text-2xl">
-                <FaRegEdit />
-              </button>
-              <button className="text-red-600 text-2xl">
-                <GoTrash />
-              </button>
-            </div>
+      ) : (
+        <div className="flex flex-col mt-4 overflow-x-auto">
+          <div className="grid grid-cols-12 py-3 bg-gray-100 rounded-t-lg px-4 font-medium">
+            <div className="col-span-4">الاسم</div>
+            <div className="col-span-4">البريد الالكتروني</div>
+            <div className="col-span-2 text-center">الحالة</div>
+            <div className="col-span-2 text-center">الاوامر</div>
           </div>
-        ))}
-      </div>
+
+          <div className=" rounded-b-lg">
+            {displayedUsers &&
+              displayedUsers.length > 0 &&
+              displayedUsers.map((user) => {
+                // console.log(user);
+                return (
+                  <div
+                    key={user.id}
+                    className="grid grid-cols-12 border-t border-gray-200 py-4 px-4 items-center hover:bg-gray-50"
+                  >
+                    <div className="col-span-4 truncate">
+                      {user.fullName || "—"}
+                    </div>
+                    <div className="col-span-4 truncate">
+                      {user.email || "—"}
+                    </div>
+                    <div className="col-span-2 flex justify-center">
+                      <span
+                        className={`${
+                          user.isActive ? "bg-teal-600 px-4" : "bg-red-400 "
+                        } px-2 py-1 rounded-lg text-full text-white `}
+                      >
+                        {user.isActive ? "نشط" : "موقوف"}
+                      </span>
+                    </div>
+
+                    <div className="col-span-2 flex justify-center gap-3 ">
+                      <button
+                        className="text-teal-600 text-xl hover:text-teal-800"
+                        onClick={() => handleEditNavigation(user.id)}
+                        title="Edit user"
+                      >
+                        <FaRegEdit />
+                      </button>
+                      {!user.isActive ? (
+                        <button
+                          className="text-green-600 text-xl hover:text-green-800"
+                          onClick={() => handleReactivate(user.id)}
+                          title="Reactivate user"
+                        >
+                          <TbReload />
+                        </button>
+                      ) : (
+                        <div>
+                          {deleteConfirm === user.id ? (
+                            <div className="flex gap-2 fixed bg-black/20 top-0 end-0 w-full h-dvh  justify-center items-center z-50 p-4">
+                              <div className="bg-white rounded-lg shadow-xl w-xs max-w-md p-4 py-10 flex justify-around items-center  gap-2">
+                                <button
+                                  className="text-red-600 text-sm bg-red-100 px-2 py-1 rounded border border-red-300"
+                                  onClick={() => handleDelete(user.id)}
+                                >
+                                  تأكيد
+                                </button>
+                                <button
+                                  className="text-gray-600 text-sm bg-gray-100 px-2 py-1 rounded border border-gray-300"
+                                  onClick={cancelDelete}
+                                >
+                                  إلغاء
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <button
+                              className="text-red-600 text-xl hover:text-red-800"
+                              onClick={() => confirmDelete(user.id)}
+                              title="Delete user"
+                            >
+                              <GoTrash />
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

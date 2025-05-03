@@ -4,6 +4,10 @@ import { Outlet } from "react-router";
 import DashboardHeader from "../components/adminDashboard/DashboardHeader";
 import AdminSideMenu from "../components/adminDashboard/AdminSideMenu";
 
+// users/id/activate
+// users/id/deactivate
+
+
 export default function AdminDashboard() {
   return (
     <div className="min-h-[100vh] flex gap-10 md:ps-60 flex-col md:flex-row">

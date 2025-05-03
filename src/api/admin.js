@@ -53,3 +53,13 @@ export const uploadProduct = async (productData) => {
     }
   }
 };
+
+// ------------------------------------------
+export const deleteUser = async (userId) => {
+  try {
+    const { data } = await api.delete(`/users/${userId}`);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};

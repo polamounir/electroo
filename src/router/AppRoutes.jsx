@@ -73,6 +73,11 @@ import Test from "../pages/Test";
 import AllProducts from "../pages/AllProducts";
 import Discounts from "../pages/Discounts";
 import Sales from "../pages/Sales";
+import AdminAddNewUser from "../components/adminDashboard/users/AdminAddNewUser";
+import ResetUserPassword from "../pages/ResetUserPassword";
+import AdminOrdersOverview from "../components/adminDashboard/orders/AdminOrdersOverview";
+import AdminOrderDetails from "../components/adminDashboard/orders/AdminOrderDetails";
+import AdminOrdersLayout from "../components/adminDashboard/orders/AdminOrdersLayout";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -117,8 +122,9 @@ const AppRoutes = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/pre-register" element={<PreRegister />} />
             <Route path="/info-supplier" element={<Suppliers />} />
-
             <Route path="/confirm-account" element={<AccountConfirmation />} />
+            <Route path="/reset-password" element={<ResetUserPassword />} />
+
             <Route path="/contact" element={<Contactus />} />
             <Route path="/live-chat" element={<LiveChats />} />
             <Route path="/live-chat/:id" element={<LiveChat />} />
@@ -179,10 +185,13 @@ const AppRoutes = () => {
                 element={<AdminEditProductImages />}
               />
             </Route>
-            <Route path="orders" element={<div>Orders</div>} />
+            <Route path="orders" element={<AdminOrdersLayout />}>
+              <Route index element={<AdminOrdersOverview />} />
+              <Route path=":id" element={<AdminOrderDetails />} />
+            </Route>
             <Route path="users" element={<AdminUsersLayout />}>
               <Route index element={<AdminUsersOverview />} />
-              {/* <Route path="add" element={<AdminAddNewUser />} /> */}
+              <Route path="add" element={<AdminAddNewUser />} />
             </Route>
             <Route path="chats" element={<AdminChatLayout />}>
               <Route index element={<AdminAllChats />} />
