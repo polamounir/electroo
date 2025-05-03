@@ -118,6 +118,8 @@ export const getUserData = createAsyncThunk(
   }
 );
 
+
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -135,6 +137,7 @@ const authSlice = createSlice({
       localStorage.removeItem("email");
       window.location.href = "/";
     },
+    
   },
   extraReducers: (builder) => {
     builder

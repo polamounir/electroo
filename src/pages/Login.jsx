@@ -16,7 +16,7 @@ export default function Login() {
     password: "",
   });
 
-  const { user } = useSelector((state) => state.auth);
+  const {user} = useSelector((state) => state.auth);
   useEffect(() => {
     if (user) {
       if (user.role === "Admin") {
@@ -28,7 +28,7 @@ export default function Login() {
       }
       toast.error("تم تسجيل الدخول بالفعل");
     }
-  }, [ navigate]);
+  }, [navigate, user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

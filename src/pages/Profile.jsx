@@ -25,13 +25,25 @@ function Profile() {
     dispatch(logOut());
   };
 
-  // console.log("user", user);
+  console.log("user", user);
   return (
     <div className="page">
       <div className="">
         <div className="flex flex-col gap-10 px-2 md:px-10 lg:px-20 pt-10 pb-20">
-          <div className="ps-5">
+          <div className="flex justify-between items-center ps-5">
             <h2 className="title text-3xl">حسابي</h2>
+            {
+              user.role === "Admin" && (
+                <Link to="/admin" className="px-5 py-2 bg-black text-white rounded-lg" >Dashboard</Link>
+              )
+            }
+              
+            {
+              user.role === "Supplier" && (
+                <Link to="/supplier" className="px-5 py-2 bg-black text-white rounded-lg" >Dashboard</Link>
+              )
+            }
+              
           </div>
           <div className="border border-gray-400 py-5 px-10 md:py-14 md:px-16 rounded-lg flex flex-col gap-5">
             <div className="flex flex-col lg:flex-row md:gap-10 lg:items-center lg:justify-between">
