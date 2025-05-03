@@ -29,18 +29,30 @@ export default function AdminOrderDetails() {
     }
   };
 
-  const updateItemStatus = async (itemId) => {
-    const itemUpdateData = orderItemsStatus.find((i) => i.id === itemId);
-    try {
-      await api.put(`/orders/order-items/${itemId}/status`, {
-        status: itemUpdateData.status,
-      });
-      toast.success("تم تحديث الحالة بنجاح");
-    } catch (error) {
-      console.error(error);
-      toast.error("فشل في تحديث الحالة");
-    }
-  };
+const updateItemStatus = async (itemId) => {
+  const itemUpdateData = orderItemsStatus.find((i) => i.id === itemId);
+
+  try {
+    await api.put(`/orders/order-items/${itemId}/status`, {
+      status: itemUpdateData.status,
+    });
+
+    // Update the order's item status locally as well
+    const updatedOrderItems = order.orderItems.map((item) =>
+      item.orderItemId === itemId
+        ? { ...item, status: itemUpdateData.status }
+        : item
+    );
+
+    setOrder({ ...order, orderItems: updatedOrderItems });
+
+    toast.success("تم تحديث الحالة بنجاح");
+  } catch (error) {
+    console.error(error);
+    toast.error("فشل في تحديث الحالة");
+  }
+};
+
 
   const itemStatus = [
     {
@@ -113,11 +125,13 @@ export default function AdminOrderDetails() {
         </p>
         <p>
           <span className="font-semibold">الحالة:</span>{" "}
-          {itemStatus
+              <span className="text-red-600">
+          {
+          itemStatus
             .find((i) => i.Value === order.status)
-            ?.optios.map((opt) => (
-              <span className="text-red-600">{opt.Name}</span>
-            ))}
+            ?.Name
+            }
+        </span>
         </p>
         <p>
           <span className="font-semibold">حالة الدفع:</span>{" "}

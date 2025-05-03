@@ -19,11 +19,10 @@ export default function ProtectedRoutes({ children }) {
     if (token && !user) {
       console.log("Found token in cookies, but no user in Redux");
 
-      // You'll need to implement this function to validate the token
-      // and fetch user data from your backend
+
       const validateToken = async () => {
         try {
-          // Example - adjust according to your API
+      
           const response = await fetch("/api/auth/me", {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -32,11 +31,10 @@ export default function ProtectedRoutes({ children }) {
 
           if (response.ok) {
             const userData = await response.json();
-            // Dispatch action to set user in Redux
-            // dispatch(setUser(userData));
+     
             console.log("User data fetched and set in Redux", userData);
           } else {
-            // Invalid token
+         
             Cookies.remove("authToken");
             console.log("Invalid token in cookies");
           }
