@@ -7,11 +7,11 @@ class AuthService {
   static async refreshToken() {
     try {
       const refreshToken = TokenStorageService.getRefreshToken();
-      
+
       if (!refreshToken) {
         throw new Error("No refresh token available");
       }
-      console.log(API_URL)
+      console.log(API_URL);
 
       const response = await axios.post(
         `${API_URL}auth/refresh-token`,
@@ -19,6 +19,7 @@ class AuthService {
         { withCredentials: true }
       );
 
+      console.log(response)
       const {
         accessToken,
         refreshToken: newRefreshToken,
@@ -32,13 +33,12 @@ class AuthService {
       return accessToken;
     } catch (error) {
       console.error("Token refresh failed:", error);
-      TokenStorageService.clearTokens();
+      // TokenStorageService.clearTokens();
       throw error;
     }
   }
 
   static async getAccessToken() {
-
     if (
       TokenStorageService.HasAccessToken() &&
       !TokenStorageService.IsTokenExpired()

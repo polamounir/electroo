@@ -6,27 +6,37 @@ class TokenStorageService {
   static EMAIL_KEY = "email";
 
   static getAccessToken() {
-    return Cookies.get(this.TOKEN_KEY);
+    return Cookies.get("accessToken");
   }
 
   static setAccessToken(token) {
-    Cookies.set(this.TOKEN_KEY, token);
+    Cookies.set("accessToken", token, {
+      secure: true,
+      sameSite: "Strict",
+      path: "/",
+      // expires:1  
+    });
   }
 
   static getRefreshToken() {
-    return Cookies.get(this.REFRESH_TOKEN_KEY);
+    return Cookies.get("refreshToken");
   }
 
   static setRefreshToken(token) {
-    Cookies.set(this.REFRESH_TOKEN_KEY, token);
+    Cookies.set("refreshToken", token,{
+      secure: true,
+      sameSite: "Strict",
+      path: "/",
+      // expires:1  
+    });
   }
 
   static getEmail() {
-    return Cookies.get(this.EMAIL_KEY);
+    return Cookies.get("email");
   }
 
   static setEmail(email) {
-    Cookies.set(this.EMAIL_KEY, email);
+    Cookies.set("email", email);
   }
 
   static HasAccessToken() {
@@ -42,20 +52,21 @@ class TokenStorageService {
     if (!token) return true;
 
     try {
-     
       const payload = JSON.parse(atob(token.split(".")[1]));
-      const expirationTime = payload.exp * 1000; 
+      const expirationTime = payload.exp * 1000;
+      console.log(payload);
+      console.log(expirationTime);
       return Date.now() >= expirationTime;
     } catch (error) {
       console.error("Error checking token expiration:", error);
-      return true; 
+      return true;
     }
   }
 
   static clearTokens() {
-    Cookies.remove(this.TOKEN_KEY);
-    Cookies.remove(this.REFRESH_TOKEN_KEY);
-    Cookies.remove(this.EMAIL_KEY);
+    Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
+    Cookies.remove("email");
   }
 }
 
