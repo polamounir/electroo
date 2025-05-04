@@ -10,12 +10,7 @@ class TokenStorageService {
   }
 
   static setAccessToken(token) {
-    Cookies.set("accessToken", token, {
-      secure: true,
-      sameSite: "Strict",
-      path: "/",
-      // expires:1  
-    });
+    Cookies.set("accessToken", token);
   }
 
   static getRefreshToken() {
@@ -23,12 +18,7 @@ class TokenStorageService {
   }
 
   static setRefreshToken(token) {
-    Cookies.set("refreshToken", token,{
-      secure: true,
-      sameSite: "Strict",
-      path: "/",
-      // expires:1  
-    });
+    Cookies.set("refreshToken", token);
   }
 
   static getEmail() {
@@ -54,8 +44,8 @@ class TokenStorageService {
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
       const expirationTime = payload.exp * 1000;
-      console.log(payload);
-      console.log(expirationTime);
+      // console.log(payload);
+      // console.log(expirationTime);
       return Date.now() >= expirationTime;
     } catch (error) {
       console.error("Error checking token expiration:", error);

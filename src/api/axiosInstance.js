@@ -10,12 +10,33 @@ export const api = axios.create({
   withCredentials: true,
 });
 
-// add the access token to the request
+// Track if a token refresh is in progress
+let isRefreshing = false;
+let refreshSubscribers = [];
+
+// Helper to process queued requests after token refresh
+const processQueue = (error, token = null) => {
+  refreshSubscribers.forEach((callback) => {
+    if (error) {
+      callback.reject(error);
+    } else {
+      callback.resolve(token);
+    }
+  });
+
+  refreshSubscribers = [];
+};
+
+// Add a subscriber to the queue
+const addSubscriber = (resolve, reject) => {
+  refreshSubscribers.push({ resolve, reject });
+};
+
+// Add authorization token to requests
 api.interceptors.request.use(
   (config) => {
     const accessToken = TokenStorageService.getAccessToken();
     if (accessToken) {
-      // console.log("accessToken", accessToken);
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
@@ -23,7 +44,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// refresh token
+// Handle token refresh on 401 responses
 api.interceptors.response.use(
   (response) => {
     return response;
@@ -31,52 +52,53 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    // If 401 error and not already retrying
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
-      try {
-        const newAccessToken = await AuthService.getAccessToken();
+      if (!TokenStorageService.HasRefreshToken()) {
+        // No refresh token available
+        TokenStorageService.clearTokens();
+        return Promise.reject(error);
+      }
 
-        if (newAccessToken) {
-          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+      // If a refresh is already in progress, wait for it
+      if (isRefreshing) {
+        try {
+          const token = await new Promise((resolve, reject) => {
+            addSubscriber(resolve, reject);
+          });
+          originalRequest.headers.Authorization = `Bearer ${token}`;
           return api(originalRequest);
+        } catch (refreshError) {
+          return Promise.reject(refreshError);
         }
+      }
+
+      // Start the refresh process
+      isRefreshing = true;
+
+      try {
+        const newAccessToken = await AuthService.refreshToken();
+        isRefreshing = false;
+
+        // Update the original request header
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+        // Process all queued requests
+        processQueue(null, newAccessToken);
+
+        // Retry the original request
+        return api(originalRequest);
       } catch (refreshError) {
-        console.error("refresh errorrrrr", refreshError);
+        isRefreshing = false;
+        processQueue(refreshError, null);
+        TokenStorageService.clearTokens();
+        console.error("Token refresh failed:", refreshError);
+        return Promise.reject(refreshError);
       }
     }
 
     return Promise.reject(error);
   }
-);
-
-
-api.interceptors.request.use(
-  async (request) => {
-
-    if (
-      !TokenStorageService.HasAccessToken() ||
-      (TokenStorageService.HasAccessToken() &&
-        TokenStorageService.IsTokenExpired() &&
-        TokenStorageService.HasRefreshToken())
-    ) {
-      try {
-        const newAccessToken = await AuthService.getAccessToken();
-        if (newAccessToken) {
-          request.headers.Authorization = `Bearer ${newAccessToken}`;
-        }
-      } catch (error) {
-        console.error("refresh errorrrrr", error);
-      }
-    } else if (
-      TokenStorageService.HasAccessToken() &&
-      !TokenStorageService.IsTokenExpired()
-    ) {
-      request.headers.Authorization = `Bearer ${TokenStorageService.getAccessToken()}`;
-    }
-    // console.log(request)
-
-    return request;
-  },
-  (error) => Promise.reject(error)
 );

@@ -13,13 +13,18 @@ class AuthService {
       }
       console.log(API_URL);
 
-      const response = await axios.post(
-        `${API_URL}auth/refresh-token`,
-        { refreshToken },
-        { withCredentials: true }
-      );
+      const options = {
+        method: "POST",
+        url: "https://ecommerce.markomedhat.com/api/auth/refresh-token",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: { refreshToken: refreshToken },
+      };
 
-      console.log(response)
+      const response = await axios.request(options);
+
+      console.log(response);
       const {
         accessToken,
         refreshToken: newRefreshToken,
