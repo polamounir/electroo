@@ -1,10 +1,20 @@
 import React from "react";
 import { BsCartPlus } from "react-icons/bs";
 import placeholderImg from "../../assets/images/product_placeholder.webp";
+import { useDispatch } from "react-redux";
+import { addProductToCartAsync } from "../../app/slices/cartSlice";
+import { Link } from "react-router-dom";
 
 export default function NewProductCard({ product }) {
+  const dispatch = useDispatch();
+  const addToCart = (id) => {
+    // console.log(id);
+    dispatch(addProductToCartAsync(id));
+  };
+
   return (
-    <div
+    <Link 
+      to={`/product/${product.id}`}
       key={product.id}
       className="w-[140px] sm:w-[200px] md:w-[250px] bg-white rounded-lg p-2 shadow-sm hover:shadow-md transition-shadow duration-200 relative"
     >
@@ -40,13 +50,14 @@ export default function NewProductCard({ product }) {
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
-            // addToCart(id);
+            console.log(product.id);
+            addToCart(product.id);
           }}
           className="text-teal-500 text-sm md:text-2xl border-2 border-teal-500 rounded-full p-2"
         >
           <BsCartPlus />
         </button>
       </div>
-    </div>
+    </Link>
   );
 }

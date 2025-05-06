@@ -1,126 +1,74 @@
-import { useState, useRef, useEffect } from "react";
-import {
-  onMessageReceived,
-  sendMessage,
-  startConnection,
-  stopConnection,
-} from "../services/signalr";
+import React from "react";
 
-export default function Contactus() {
-  const [messages, setMessages] = useState([
-    { text: "مرحبًا! كيف يمكنني مساعدتك اليوم؟", fromMe: false },
-  ]);
-  const [message, setMessage] = useState("");
-  const [rId, setRId] = useState("");
-  const chatContainerRef = useRef(null);
-  const chatEndRef = useRef(null);
-
-  useEffect(() => {
-    const init = async () => {
-      await startConnection();
-      onMessageReceived((id, message) => {
-        console.log(id, message);
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { text: message, fromMe: false },
-        ]);
-      });
-    };
-
-    init();
-    return () => {
-      stopConnection();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (chatContainerRef.current) {
-      const container = chatContainerRef.current;
-      container.scrollTo({
-        top: container.scrollHeight,
-        behavior: "smooth",
-      });
-    }
-  }, [messages]);
-
-  const handleSend = async () => {
-    if (message.trim()) {
-      const res = await sendMessage(message, rId);
-      console.log(res);
-      setMessages([...messages, { text: message, fromMe: true }]);
-      setMessage("");
-    }
-  };
-
+const ContactUs = () => {
   return (
-    <div className="w-full py-10 flex items-center justify-center">
-      <div className="w-full bg-white shadow-lg rounded-lg flex flex-col overflow-hidden border border-gray-200">
-        {/* Header */}
-        <div className="flex items-center p-4 border-b border-gray-400 bg-teal-500 text-white">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/4017/4017991.png"
-            alt="Agent"
-            className="rounded-full w-10 h-10 ml-3"
-          />
-          <div>
-            <div className="font-semibold">خدمة العملاء</div>
-            <div className="text-sm text-white/80">متصل الآن</div>
-          </div>
-        </div>
-
-        {/* Messages */}
-        <div
-          ref={chatContainerRef}
-          className="flex-1  min-h-[50svh]  overflow-y-auto p-4 space-y-3 bg-blue-50 text-right scroll-smooth"
-        >
-          {messages.map((msg, idx) => (
-            <div
-              key={idx}
-              className={`flex ${msg.fromMe ? "justify-end" : "justify-start"}`}
-            >
-              <div
-                className={`max-w-xs px-4 py-2 rounded-lg text-sm ${
-                  msg.fromMe
-                    ? "bg-teal-500 text-white rounded-bl-none"
-                    : "bg-gray-200 text-gray-800 rounded-br-none"
-                }`}
-              >
-                {msg.text}
-              </div>
+    <div className="bg-gray-50 flex items-center justify-center p-6 py-30">
+      <div className="w-full max-w-3xl bg-white rounded-2xl shadow-lg p-8">
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
+          تواصل معنا
+        </h2>
+        <form className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-gray-600 mb-2" htmlFor="name">
+                الاسم
+              </label>
+              <input
+                type="text"
+                id="name"
+                placeholder="اسمك"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              />
             </div>
-          ))}
-          <div ref={chatEndRef} />
-        </div>
+            <div>
+              <label className="block text-gray-600 mb-2" htmlFor="email">
+                البريد الإلكتروني
+              </label>
+              <input
+                type="email"
+                id="email"
+                placeholder="you@example.com"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              />
+            </div>
+          </div>
 
-        {/* Input */}
-        <div className="p-4 border-t border-gray-400 bg-white flex gap-2 items-center">
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="اكتب رسالتك..."
-            className="flex-1 px-4 py-2 border border-gray-400 rounded-full focus:outline-none focus:ring-2 focus:ring-teal-400 text-right"
-            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-          />
-          <button
-            onClick={handleSend}
-            className="bg-teal-500 text-white px-5 py-2 rounded-full hover:bg-teal-600 transition"
-          >
-            إرسال
-          </button>
-        </div>
+          <div>
+            <label className="block text-gray-600 mb-2" htmlFor="subject">
+              الموضوع
+            </label>
+            <input
+              type="text"
+              id="subject"
+              placeholder="موضوع الرسالة"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
+          </div>
 
-        {/* Receiver ID Input
-        <div className="p-4 border-t border-gray-400 bg-white">
-          <input
-            type="text"
-            value={rId}
-            onChange={(e) => setRId(e.target.value)}
-            placeholder="Enter Receiver ID..."
-            className="w-full px-4 py-2 border border-gray-400 rounded-full focus:outline-none focus:ring-2 focus:ring-teal-400"
-          />
-        </div> */}
+          <div>
+            <label className="block text-gray-600 mb-2" htmlFor="message">
+              الرسالة
+            </label>
+            <textarea
+              id="message"
+              rows="5"
+              placeholder="اكتب رسالتك هنا..."
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            ></textarea>
+          </div>
+
+          <div className="text-center">
+            <button
+              type="submit"
+              className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition-all duration-300"
+            >
+              إرسال الرسالة
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
-}
+};
+
+export default ContactUs;

@@ -80,13 +80,13 @@ export default function Home() {
           error={discountError}
           more="/search?HasDiscount=true"
         />
-        <HomeSection
+        {/* <HomeSection
           title="عروض اليوم"
           products={discounts}
           loading={discountLoading}
           error={discountError}
           more="/search?HasDiscount=true"
-        />
+        /> */}
         <HomeSection
           title="الاكثر مبيعاً"
           products={sales}

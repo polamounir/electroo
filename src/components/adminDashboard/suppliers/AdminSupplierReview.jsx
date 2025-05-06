@@ -1,6 +1,87 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { api } from "../../../api/axiosInstance";
 import { useParams } from "react-router-dom";
+
+// Separated ConfirmationModal Component
+const ConfirmationModal = ({
+  confirmAction,
+  rejectionResult,
+  handleRejectionReasonChange,
+  confirmVerify,
+  confirmReject,
+  closeModal,
+}) => (
+  <>
+    {/* Modal Backdrop */}
+    <div
+      className="fixed inset-0 bg-black/20 bg-opacity-50 z-40 flex items-center justify-center"
+      onClick={closeModal}
+    >
+      {/* Modal Content */}
+      <div
+        className="bg-white rounded-xl shadow-xl p-6 max-w-md w-full mx-4 z-50 text-right"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h3 className="text-xl font-bold text-gray-800 mb-4 border-b border-gray-100 pb-3">
+          {confirmAction === "verify"
+            ? "تأكيد قبول المورد"
+            : "تأكيد رفض المورد"}
+        </h3>
+        {confirmAction === "reject" && (
+          <div>
+            <p className="text-gray-600 mb-6">رجاء إدخال سبب الرفض</p>
+
+            <textarea
+              name="rejectionResult"
+              onChange={handleRejectionReasonChange}
+              value={rejectionResult}
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-teal-500 h-20"
+            />
+          </div>
+        )}
+
+        <p className="text-gray-600 mb-6">
+          {confirmAction === "verify"
+            ? "هل أنت متأكد من قبول هذا المورد؟ "
+            : "هل أنت متأكد من رفض هذا المورد؟"}
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-3">
+          <button
+            onClick={confirmAction === "verify" ? confirmVerify : confirmReject}
+            className={`flex-1 font-medium py-3 px-6 rounded-lg shadow-sm ${
+              confirmAction === "verify"
+                ? "bg-teal-500 hover:bg-teal-600 active:bg-teal-700 text-white"
+                : "bg-red-500 hover:bg-red-600 active:bg-red-700 text-white"
+            }`}
+          >
+            تأكيد
+          </button>
+          <button
+            onClick={closeModal}
+            className="flex-1 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition font-medium py-3 px-6 rounded-lg shadow-sm"
+          >
+            إلغاء
+          </button>
+        </div>
+      </div>
+    </div>
+  </>
+);
+
+// Document Component
+const DocumentThumbnail = ({ src, alt, isActive, onClick }) => (
+  <div
+    onClick={() => onClick(src)}
+    className={`cursor-pointer transition-all duration-300 ${
+      isActive
+        ? "ring-2 ring-teal-500 shadow-lg scale-105"
+        : "opacity-70 hover:opacity-100"
+    }`}
+  >
+    <img src={src} alt={alt} className="w-full h-24 object-cover rounded-lg" />
+  </div>
+);
 
 export default function AdminSupplierReview() {
   const { id } = useParams();
@@ -11,6 +92,7 @@ export default function AdminSupplierReview() {
   const [toast, setToast] = useState(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmAction, setConfirmAction] = useState(null);
+  const [rejectionResult, setRejectionResult] = useState("");
 
   const getSupplierData = async () => {
     setIsLoading(true);
@@ -38,30 +120,46 @@ export default function AdminSupplierReview() {
   };
 
   const handleVerify = () => {
-    // Show confirmation modal with "verify" action
     setConfirmAction("verify");
     setShowConfirmModal(true);
   };
 
   const handleReject = () => {
-    // Show confirmation modal with "reject" action
     setConfirmAction("reject");
     setShowConfirmModal(true);
   };
 
-  const confirmVerify = () => {
-    // Close modal
+  const confirmVerify = async () => {
+    try {
+      const { data } = await api.post(`/suppliers/${id}/verify`);
+      console.log(data);
+      showToast("تم قبول المورد بنجاح", "success");
+    } catch (error) {
+      console.log(error);
+      showToast("فشل قبول المورد", "error");
+    }
+    setConfirmAction(null);
     setShowConfirmModal(false);
-    // Execute verification logic
-    showToast("تم قبول المورد بنجاح", "success");
   };
 
-  const confirmReject = () => {
-    // Close modal
+  const confirmReject = async () => {
+    try {
+      const { data } = await api.post(`/suppliers/${id}/reject`, {
+        rejectionResult: rejectionResult,
+      });
+      console.log(data);
+      showToast("تم رفض المورد بنجاح", "success");
+    } catch (error) {
+      console.log(error);
+      showToast("فشل رفض المورد", "error");
+    }
+    setConfirmAction(null);
     setShowConfirmModal(false);
-    // Execute rejection logic
-    showToast("تم رفض المورد", "error");
   };
+
+  const handleRejectionReasonChange = useCallback((e) => {
+    setRejectionResult(e.target.value);
+  }, []);
 
   const closeModal = () => {
     setShowConfirmModal(false);
@@ -93,73 +191,6 @@ export default function AdminSupplierReview() {
     );
   }
 
-  const DocumentThumbnail = ({ src, alt, isActive, onClick }) => (
-    <div
-      onClick={() => onClick(src)}
-      className={`cursor-pointer transition-all duration-300 ${
-        isActive
-          ? "ring-2 ring-teal-500 shadow-lg scale-105"
-          : "opacity-70 hover:opacity-100"
-      }`}
-    >
-      <img
-        src={src}
-        alt={alt}
-        className="w-full h-24 object-cover rounded-lg"
-      />
-    </div>
-  );
-
-  // Confirmation Modal Component
-  const ConfirmationModal = () => (
-    <>
-      {/* Modal Backdrop */}
-      <div
-        className="fixed inset-0 bg-black/20 bg-opacity-50 z-40 flex items-center justify-center"
-        onClick={closeModal}
-      >
-        {/* Modal Content */}
-        <div
-          className="bg-white rounded-xl shadow-xl p-6 max-w-md w-full mx-4 z-50 text-right"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <h3 className="text-xl font-bold text-gray-800 mb-4 border-b border-gray-100 pb-3">
-            {confirmAction === "verify"
-              ? "تأكيد قبول المورد"
-              : "تأكيد رفض المورد"}
-          </h3>
-
-          <p className="text-gray-600 mb-6">
-            {confirmAction === "verify"
-              ? "هل أنت متأكد من قبول هذا المورد؟ سيتم إشعاره وتفعيل حسابه."
-              : "هل أنت متأكد من رفض هذا المورد؟ سيتم إشعاره وإلغاء طلبه."}
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-3">
-            <button
-              onClick={
-                confirmAction === "verify" ? confirmVerify : confirmReject
-              }
-              className={`flex-1 font-medium py-3 px-6 rounded-lg shadow-sm ${
-                confirmAction === "verify"
-                  ? "bg-teal-500 hover:bg-teal-600 active:bg-teal-700 text-white"
-                  : "bg-red-500 hover:bg-red-600 active:bg-red-700 text-white"
-              }`}
-            >
-              تأكيد
-            </button>
-            <button
-              onClick={closeModal}
-              className="flex-1 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition font-medium py-3 px-6 rounded-lg shadow-sm"
-            >
-              إلغاء
-            </button>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-
   return (
     <div className="w-full mx-auto p-6 bg-white rounded-2xl">
       {/* Toast notification */}
@@ -177,7 +208,16 @@ export default function AdminSupplierReview() {
       )}
 
       {/* Confirmation Modal */}
-      {showConfirmModal && <ConfirmationModal />}
+      {showConfirmModal && (
+        <ConfirmationModal
+          confirmAction={confirmAction}
+          rejectionResult={rejectionResult}
+          handleRejectionReasonChange={handleRejectionReasonChange}
+          confirmVerify={confirmVerify}
+          confirmReject={confirmReject}
+          closeModal={closeModal}
+        />
+      )}
 
       {/* Header with status badge */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 pb-6 border-b border-gray-100">
@@ -271,7 +311,7 @@ export default function AdminSupplierReview() {
             </div>
           </div>
 
-          {/* Action Buttons */}
+          {/* Buttons */}
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
             <button
               onClick={handleVerify}

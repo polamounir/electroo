@@ -10,7 +10,7 @@ export default function ProductCard({ product }) {
     product;
 
   const addToCart = (id) => {
-    console.log(id);
+    // console.log(id);
     dispatch(addProductToCartAsync(id));
   };
 

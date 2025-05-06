@@ -1,8 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import imagePlaceholder from "../../assets/images/product_placeholder.webp"; 
+import imagePlaceholder from "../../assets/images/product_placeholder.webp";
+import { BsCartPlus } from "react-icons/bs";
+import { useDispatch } from "react-redux";
+import { addProductToCartAsync } from "../../app/slices/cartSlice";
 
 function ProductCard({ product, isRowView }) {
+  const dispatch = useDispatch();
+
+  const addToCart = (id) => {
+    // console.log(id);
+    dispatch(addProductToCartAsync(id));
+  };
+
   // console.log(product);
   return (
     <Link
@@ -39,6 +49,18 @@ function ProductCard({ product, isRowView }) {
         )}
         {/* <p className="text-teal-600 font-bold"> {product.price} ج.م</p> */}
         <p className="text-gray-600">{product.supplierName}</p>
+        <div className="flex justify-end">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              addToCart(product.id);
+            }}
+            className="text-teal-500 text-lg border-2 border-teal-500 rounded-full p-2"
+          >
+            <BsCartPlus />
+          </button>
+        </div>
       </div>
     </Link>
   );
@@ -59,7 +81,6 @@ export default function SearchProductsContainer({ products }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-
   useEffect(() => {
     const maxCols = maxColumnsAllowed();
     if (columns > maxCols) {
@@ -73,7 +94,6 @@ export default function SearchProductsContainer({ products }) {
     }
   }, [screenWidth, columns]);
 
- 
   const maxColumnsAllowed = () => {
     if (screenWidth < 640) return 1;
     if (screenWidth < 768) return 2;
@@ -81,75 +101,28 @@ export default function SearchProductsContainer({ products }) {
     return 5;
   };
 
-  const handleColumnChange = (num) => {
-    setIsRowView(false);
-    setColumns(num);
-  };
+  // const handleColumnChange = (num) => {
+  //   setIsRowView(false);
+  //   setColumns(num);
+  // };
 
-  const gridColsClass = () => {
-    if (isRowView) return "grid-cols-1";
-    switch (columns) {
-      case 1:
-        return "grid-cols-1 sm:grid-cols-1";
-      case 2:
-        return "grid-cols-1 sm:grid-cols-2";
-      case 3:
-        return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3";
-      case 4:
-        return "grid-cols-1 sm:grid-cols-2 md:grid-cols-4";
-      case 5:
-        return "grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5";
-      default:
-        return "grid-cols-1";
-    }
-  };
-
-  //   const demoProducts = [
-  //     {
-  //       id: 1,
-  //       title: "Wireless Headphones",
-  //       description:
-  //         "High-quality noise cancelling headphones with Bluetooth connectivity.",
-  //       price: 99.99,
-  //       images: [],
-  //     },
-  //     {
-  //       id: 2,
-  //       title: "Smartwatch",
-  //       description: "Track your fitness and receive notifications on the go.",
-  //       price: 149.99,
-  //       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
-  //     },
-  //     {
-  //       id: 3,
-  //       title: "Gaming Mouse",
-  //       description: "Ergonomic mouse with customizable DPI and RGB lighting.",
-  //       price: 49.99,
-  //       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
-  //     },
-  //     {
-  //       id: 4,
-  //       title: "Mechanical Keyboard",
-  //       description:
-  //         "Durable mechanical keyboard with tactile switches and backlighting.",
-  //       price: 89.99,
-  //       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
-  //     },
-  //     {
-  //       id: 5,
-  //       title: "4K Monitor",
-  //       description: "Ultra HD monitor with vibrant colors and sharp details.",
-  //       price: 299.99,
-  //       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
-  //     },
-  //     {
-  //       id: 6,
-  //       title: "Portable Speaker",
-  //       description: "Compact speaker with powerful sound and long battery life.",
-  //       price: 39.99,
-  //       images: ["https://fakeimg.pl/400x400/dbdbdb/909090"],
-  //     },
-  //   ];
+  // const gridColsClass = () => {
+  //   if (isRowView) return "grid-cols-1";
+  //   switch (columns) {
+  //     case 1:
+  //       return "grid-cols-1 sm:grid-cols-1";
+  //     case 2:
+  //       return "grid-cols-1 sm:grid-cols-2";
+  //     case 3:
+  //       return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3";
+  //     case 4:
+  //       return "grid-cols-1 sm:grid-cols-2 md:grid-cols-4";
+  //     case 5:
+  //       return "grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5";
+  //     default:
+  //       return "grid-cols-1";
+  //   }
+  // };
 
   return (
     <div className="px-4 py-6">

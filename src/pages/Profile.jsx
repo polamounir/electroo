@@ -21,9 +21,9 @@ function Profile() {
   const firstName = name?.[0] || "م";
   const lastName = name?.[1] || "ج";
 
-  const handleLogout = () => {
-    dispatch(logOut());
-  };
+  // const handleLogout = () => {
+  //   dispatch(logOut());
+  // };
 
   console.log("user", user);
   return (
@@ -32,18 +32,23 @@ function Profile() {
         <div className="flex flex-col gap-10 px-2 md:px-10 lg:px-20 pt-10 pb-20">
           <div className="flex justify-between items-center ps-5">
             <h2 className="title text-3xl">حسابي</h2>
-            {
-              user.role === "Admin" && (
-                <Link to="/admin" className="px-5 py-2 bg-black text-white rounded-lg" >Dashboard</Link>
-              )
-            }
-              
-            {
-              user.role === "Supplier" && (
-                <Link to="/supplier" className="px-5 py-2 bg-black text-white rounded-lg" >Dashboard</Link>
-              )
-            }
-              
+            {user?.role === "Admin" && (
+              <Link
+                to="/admin"
+                className="px-5 py-2 bg-black text-white rounded-lg"
+              >
+                Dashboard
+              </Link>
+            )}
+
+            {user?.role === "Supplier" && (
+              <Link
+                to="/supplier"
+                className="px-5 py-2 bg-black text-white rounded-lg"
+              >
+                Dashboard
+              </Link>
+            )}
           </div>
           <div className="border border-gray-400 py-5 px-10 md:py-14 md:px-16 rounded-lg flex flex-col gap-5">
             <div className="flex flex-col lg:flex-row md:gap-10 lg:items-center lg:justify-between">
@@ -85,12 +90,13 @@ function Profile() {
             </div>
 
             <div className="flex justify-center lg:justify-end">
-              <button
+              <Link
+                to="/logout"
                 className="btn bg-black text-white border border-sky-950 font-semibold w-52 px-10 py-3 text-center rounded-3xl justify-center"
-                onClick={handleLogout}
+                // onClick={handleLogout}
               >
                 تسجيل الخروج
-              </button>
+              </Link>
             </div>
           </div>
 

@@ -5,8 +5,8 @@ import {
   IoBagOutline,
   IoChatbubbleOutline,
 } from "react-icons/io5";
+import { CiLogout } from "react-icons/ci";
 import { TfiPackage } from "react-icons/tfi";
-
 import { FaRegCircleUser } from "react-icons/fa6";
 import { BsGear } from "react-icons/bs";
 import { AiOutlineDollar } from "react-icons/ai";
@@ -49,10 +49,10 @@ export default function AdminSideMenu() {
     },
     {
       id: 6,
-      name: "الاعدادت",
+      name: "تسجيل خروج",
       title: "settings",
-      link: "/admin/settings",
-      icon: <BsGear />,
+      link: "/logout",
+      icon: <CiLogout />,
     },
     // {
     //   id: 7,
