@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 import { api } from "../../../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { FaRegEdit } from "react-icons/fa";
@@ -38,6 +38,36 @@ export default function OrdersOverview() {
     getAllOrders();
   }, []);
 
+  if (isLoading) {
+    return (
+      <div>
+        <span className=" text-2xl font-semibold text-center flex justify-center items-center gap-2">
+          جاري جلب البيانات ...
+        </span>
+      </div>
+    );
+  }
+  if (isError) {
+    return (
+      <div>
+        <span className=" text-2xl font-semibold text-center flex justify-center items-center gap-2">
+          خطأء في جلب البيانات
+        </span>
+        <div className="flex justify-center items-center gap-2 mt-5">
+          <TbReload className="text-2xl" />
+          <span>لا يمكنك تحميل البيانات</span>
+        </div>
+
+        <button
+          onClick={getAllOrders}
+          className="bg-teal-500 text-white px-4 py-2 rounded-md mt-5"
+        >
+          حاول مرة اخرى
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div>
@@ -67,11 +97,11 @@ export default function OrdersOverview() {
               <table className="w-full border border-gray-300 rounded-lg shadow-lg scrolling">
                 <thead className="bg-gray-100">
                   <tr>
-                    <th className="px-4 py-2 text-left">رقم الطلب</th>
-                    <th className="px-4 py-2 text-left">اسم المستخدم</th>
-                    <th className="px-4 py-2 text-left">تاريخ الطلب</th>
-                    <th className="px-4 py-2 text-left">حالة الطلب</th>
-                    <th className="px-4 py-2 text-left">الاجراءات</th>
+                    <th className="px-4 py-2 text-start">رقم الطلب</th>
+                    <th className="px-4 py-2 text-start">اسم المستخدم</th>
+                    <th className="px-4 py-2 text-start">تاريخ الطلب</th>
+                    <th className="px-4 py-2 text-start">حالة الطلب</th>
+                    <th className="px-4 py-2 text-start">الاجراءات</th>
                   </tr>
                 </thead>
                 <tbody>

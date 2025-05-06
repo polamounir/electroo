@@ -79,6 +79,9 @@ import AdminOrdersOverview from "../components/adminDashboard/orders/AdminOrders
 import AdminOrderDetails from "../components/adminDashboard/orders/AdminOrderDetails";
 import AdminOrdersLayout from "../components/adminDashboard/orders/AdminOrdersLayout";
 import CheckoutSuccess from "../pages/CheckoutSuccess";
+import AdminSuppliersOverview from "../components/adminDashboard/suppliers/AdminSuppliersOverview";
+import AdminSuppliersLayout from "../components/adminDashboard/suppliers/AdminSuppliersLayout";
+import AdminSupplierReview from "../components/adminDashboard/suppliers/AdminSupplierReview";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -194,6 +197,10 @@ const AppRoutes = () => {
             <Route path="users" element={<AdminUsersLayout />}>
               <Route index element={<AdminUsersOverview />} />
               <Route path="add" element={<AdminAddNewUser />} />
+            </Route>
+            <Route path="suppliers" element={<AdminSuppliersLayout />}>
+              <Route index element={<AdminSuppliersOverview />} />
+              <Route path=":id" element={<AdminSupplierReview />} />
             </Route>
             <Route path="chats" element={<AdminChatLayout />}>
               <Route index element={<AdminAllChats />} />

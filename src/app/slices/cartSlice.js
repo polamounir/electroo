@@ -47,14 +47,14 @@ export const addProductToCartAsync = createAsyncThunk(
 
       // console.log(res);
       if (res.status === 200) {
-        toast.success("تمت اضافة المنتج بنجاح");
         dispatch(fetchCartAsync());
+        return toast.success("تمت اضافة المنتج بنجاح");
       }
       if (res.status === 429) {
-        toast.error(" رجاء الانتظار 5 ثواني و جرب مرة اخري ");
+        return toast.error(" رجاء الانتظار 5 ثواني و جرب مرة اخري ");
       }
       if (res?.detail?.includes("max")) {
-        toast.error(" تم الوصول الحد الاقصي");
+        return toast.error(" تم الوصول الحد الاقصي");
       }
 
       return res;

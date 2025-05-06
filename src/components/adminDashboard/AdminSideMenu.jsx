@@ -40,13 +40,13 @@ export default function AdminSideMenu() {
       link: "/admin/users",
       icon: <FaRegCircleUser />,
     },
-    // {
-    //   id: 5,
-    //   name: "المبيعات",
-    //   title: "sales",
-    //   link: "/admin/sales",
-    //   icon: <AiOutlineDollar />,
-    // },
+    {
+      id: 5,
+      name: "الموردين",
+      title: "suppliers",
+      link: "/admin/suppliers",
+      icon: <AiOutlineDollar />,
+    },
     {
       id: 6,
       name: "الاعدادت",

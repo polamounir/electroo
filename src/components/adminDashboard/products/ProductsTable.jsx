@@ -107,20 +107,37 @@ export default function ProductsTable() {
                   </button>
                   <div>
                     {deleteConfirm === product.id ? (
-                      <div className="fixed inset-0 bg-black/20 flex justify-center items-center z-50 p-4">
-                        <div className="bg-white rounded-lg shadow-xl w-xs max-w-md p-4 py-10 flex justify-around items-center gap-2">
-                          <button
-                            className="text-red-600 text-sm bg-red-100 px-3 py-1 rounded border border-red-300"
-                            onClick={() => handleDelete(product.id)}
-                          >
-                            تأكيد
-                          </button>
-                          <button
-                            className="text-gray-600 text-sm bg-gray-100 px-3 py-1 rounded border border-gray-300"
-                            onClick={cancelDelete}
-                          >
-                            إلغاء
-                          </button>
+                      <div
+                        className="fixed inset-0 bg-black/20 bg-opacity-50 z-40 flex items-center justify-center p-4"
+                        onClick={cancelDelete}
+                      >
+                        <div
+                          className="bg-white rounded-xl shadow-xl p-6 max-w-md w-full mx-4 z-50 text-right"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <h3 className="text-xl font-bold text-gray-800 mb-4 border-b border-gray-100 pb-3">
+                            تأكيد حذف المنتج
+                          </h3>
+
+                          <p className="text-gray-600 mb-6">
+                            هل أنت متأكد من حذف هذا المنتج؟ لا يمكن التراجع عن
+                            هذا الإجراء.
+                          </p>
+
+                          <div className="flex flex-col sm:flex-row gap-3">
+                            <button
+                              onClick={() => handleDelete(product.id)}
+                              className="flex-1 font-medium py-3 px-6 rounded-lg shadow-sm bg-red-500 hover:bg-red-600 active:bg-red-700 text-white"
+                            >
+                              تأكيد الحذف
+                            </button>
+                            <button
+                              onClick={cancelDelete}
+                              className="flex-1 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition font-medium py-3 px-6 rounded-lg shadow-sm"
+                            >
+                              إلغاء
+                            </button>
+                          </div>
                         </div>
                       </div>
                     ) : (

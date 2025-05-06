@@ -77,6 +77,9 @@ export default function AddProductReviewModal() {
       reviewData.append("image", formData.image);
     }
 
+    for (let pair of reviewData.entries()) {
+      console.log(pair[0] + ":", pair[1]);
+    }
     try {
       const result = await dispatch(addProductReview(reviewData));
       console.log(result);
@@ -105,10 +108,7 @@ export default function AddProductReviewModal() {
   if (!isOpen) return null;
 
   return (
-    <div
- 
-      className="fixed inset-0 bg-black/20 bg-opacity-50 flex justify-center items-center z-50 p-4"
-    >
+    <div className="fixed inset-0 bg-black/20 bg-opacity-50 flex justify-center items-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
         <div className="flex justify-between items-center border-b border-gray-300 p-4">
           <h2 className="text-xl font-semibold text-gray-800">

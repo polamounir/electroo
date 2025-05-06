@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getProductById } from "../api/product";
 import { useQuery } from "@tanstack/react-query";
@@ -17,6 +17,7 @@ export default function Product() {
   const navigate = useNavigate();
 
   const { activeChat, isMenuOpen } = useSelector((state) => state.chat);
+  const [stockStatus, setStockStatus] = useState(null);
   // const { cartItems } = useSelector((state) => state.cart);
 
   const { id } = useParams();
@@ -27,8 +28,6 @@ export default function Product() {
   // console.log(data, "data");
 
   const [mainImage, setMainImage] = useState(null);
-
-  if (!data) return <LoadingPage />;
 
   const handleImageClick = (img) => {
     setMainImage(img);
@@ -60,7 +59,27 @@ export default function Product() {
   const addToCart = (id) => {
     dispatch(addProductToCartAsync(id));
   };
+  useEffect(() => {
+    const stockStatusVars = [
+      {
+        name: "متبقي اقل من 10 قطع",
+        value: "LowStock",
+      },
+      {
+        name: "متوفر",
+        value: "InStock",
+      },
+      {
+        name: "غير موفر",
+        value: "OutStock",
+      },
+    ];
+    const state = stockStatusVars.filter((s) => s.value === data?.stockStatus);
 
+    setStockStatus(state[0]);
+  }, [id, data]);
+
+  if (!data) return <LoadingPage />;
   return (
     <div className="mx-auto px-4 xl:px-50 py-20 flex justify-center items-center flex-col min-h-[75svh]">
       <AddProductReviewModel />
@@ -71,8 +90,8 @@ export default function Product() {
           <div className="flex-1">
             <div className=" rounded-lg overflow-hidden relative flex justify-center items-center p-5 border border-teal-500 shadow-md">
               <img
-                key={mainImage || data.images[0].url}
-                src={mainImage || data.images[0].url || placeholderImage}
+                key={mainImage || data.images[0]?.url}
+                src={mainImage || data.images[0]?.url || placeholderImage}
                 onError={handleImageError}
                 alt={data.title}
                 className="w-full  max-h-[400px] object-contain transition-all duration-500 ease-in-out opacity-0 animate-fadeIn"
@@ -146,6 +165,7 @@ export default function Product() {
                 <span className="font-semibold text-teal-600">يباع من :</span>{" "}
                 {data.storeName}
               </p>
+              <p className="text-teal-600 mt-2">التقييم: {data.rate} ⭐</p>
               <p>
                 {/* <button
                 onClick={handleChatStart}
@@ -174,13 +194,28 @@ export default function Product() {
                 </span>
               ))}
             </div>
-            {/* Add to Cart Button */}
 
+            {/* Stock Status*/}
+            {stockStatus && (
+              <div className="flex">
+                <p
+                  className={`
+                  ${stockStatus.value == "InStock" && "bg-teal-600"} 
+                  ${
+                    stockStatus.value == "LowStock" && "bg-red-500"
+                  } ${stockStatus.value == "OutStock" && "bg-red-500"}
+                  text-sm text-white font-semibold px-5 py-1 rounded-full`}
+                >
+                  {stockStatus.name}
+                </p>
+              </div>
+            )}
+
+            {/* Add to Cart Button */}
             <button
               className="mt-6 w-full md:w-auto px-6 py-3 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-lg shadow-md transition"
               onClick={() => {
                 addToCart(data.id);
-                toast.success("تمت إضافة المنتج إلى السلة بنجاح");
               }}
             >
               🛒 أضف إلى السلة
@@ -200,26 +235,40 @@ export default function Product() {
               {data.productReviews.map((review, idx) => (
                 <div
                   key={idx}
-                  className="border border-teal-300 p-4 rounded-lg bg-white shadow-sm"
+                  className="border border-teal-300 p-4 rounded-lg bg-white shadow-sm flex justify-between items-start"
                 >
-                  <p className="italic text-gray-700">{review.fullName}</p>
-                  <p className="italic text-gray-700">"{review.reviewText}"</p>
-                  <p className="text-teal-600 mt-2">
-                    التقييم: {review.stars} ⭐
-                  </p>
+                  <div>
+                    <p className="italic text-gray-700">{review.fullName}</p>
+                    <p className="italic text-gray-700">
+                      "{review.reviewText}"
+                    </p>
+                    <p className="text-teal-600 mt-2">
+                      التقييم: {review.stars} ⭐
+                    </p>
+                  </div>
+                  <div>
+                    <img
+                      src={review.reviewImage}
+                      alt="reviewImage"
+                      width={200}
+                      height={200}
+                      className="h-full rounded-lg"
+                    />
+                  </div>
                 </div>
               ))}
             </div>
           ) : (
             <p className="text-gray-500">لا توجد تقييمات حتى الآن</p>
           )}
-
-          <button
-            onClick={() => dispatch(openProductReviewModal(data.id))}
-            className="mt-4 px-4 py-1 bg-teal-600 text-white rounded-full hover:bg-teal-500 transition duration-200"
-          >
-            إضافة تقييم
-          </button>
+          {data.canReview && (
+            <button
+              onClick={() => dispatch(openProductReviewModal(data.id))}
+              className="mt-4 px-4 py-1 bg-teal-600 text-white rounded-full hover:bg-teal-500 transition duration-200"
+            >
+              إضافة تقييم
+            </button>
+          )}
         </div>
       </div>
     </div>
