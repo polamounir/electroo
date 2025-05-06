@@ -16,7 +16,7 @@ export default function AccountConfirmation() {
     };
     try {
       const response = await confirmAccount(data);
-      if (response.isSuccess) {
+      if (response.data.isSuccess) {
         toast.success("تم تأكيد الحساب بنجاح");
         navigate("/login");
         // console.log(response.data.data);

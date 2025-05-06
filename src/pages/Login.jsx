@@ -16,7 +16,7 @@ export default function Login() {
     password: "",
   });
 
-  const {user} = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   useEffect(() => {
     if (user) {
       if (user.role === "Admin") {
@@ -62,6 +62,7 @@ export default function Login() {
       } else if (res.detail === "Wrong email or password") {
         toast.error("اسم المستخدم أو كلمة المرور غير صحيحة");
       } else if (res.title === "EmailNotConfirmedException") {
+        localStorage.setItem("userId", res.UserId);
         navigate("/confirm-account");
       } else {
         toast.error(" برجاء المحاولة في وقت لاحق");
@@ -93,7 +94,7 @@ export default function Login() {
                     className="text-sm text-teal-600 hover:text-teal-500 hover:underline italic "
                   >
                     {" "}
-                    تسجيل دخول كمورد من هنا
+                    تسجيل دخول كتاجر من هنا
                   </Link>
                 </div>
               </div>

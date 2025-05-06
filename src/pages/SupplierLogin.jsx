@@ -81,7 +81,7 @@ export default function SupplierLogin() {
           <div className=" flex justify-center">
             <div className="min-w-xs md:min-w-sm">
               <div className="flex flex-col gap-2 mb-10">
-                <h2 className="text-3xl font-bold">تسجيل دخول مورد</h2>
+                <h2 className="text-3xl font-bold">تسجيل دخول تاجر</h2>
                 <p className="text-md text-gray-700">مرحب برجوعك لينا 👋</p>
                 <div className="-mt-2">
                   <Link

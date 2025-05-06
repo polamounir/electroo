@@ -15,9 +15,7 @@ export default function SupplierDataSummary() {
   const supplierdata = useSelector(
     (state) => state.supplier.supplierRegisterationData
   );
-  const { isLoading } = useSelector(
-    (state) => state.supplier
-  );
+  const { isLoading } = useSelector((state) => state.supplier);
 
   const {
     fullName,
@@ -35,15 +33,15 @@ export default function SupplierDataSummary() {
 
   useEffect(() => {
     if (!fullName || !email || !phoneNumber || !password) {
-      toast.error("رجاء إكمال بيانات المورد");
+      toast.error("رجاء إكمال بيانات التاجر");
       navigate("/supplier-register/base");
       return;
     } else if (!businessName || !storeName || !taxNumber || !nationalId) {
-      toast.error("رجال إكمال بيانات المورد");
+      toast.error("رجال إكمال بيانات التاجر");
       navigate("/supplier-register/business");
       return;
     } else if (!nationalIdFront || !nationalIdBack || !taxCard) {
-      toast.error("رجاء إكمال بيانات المورد");
+      toast.error("رجاء إكمال بيانات التاجر");
       navigate("/supplier-register/nidf");
       return;
     }
@@ -97,7 +95,7 @@ export default function SupplierDataSummary() {
       if (res.data.status === "Successful") {
         toast.success("تم تسجيل حسابك بنجاح");
         navigate("/confirm-account");
-        return
+        return;
       }
       if (res.title == "UserAlreadyExistsException") {
         toast.error(
@@ -222,7 +220,7 @@ export default function SupplierDataSummary() {
         >
           {isLoading ? (
             <div className="flex items-center justify-center h-full">
-             "جاري التسجيل"
+              "جاري التسجيل"
             </div>
           ) : (
             "تأكيد البيانات"

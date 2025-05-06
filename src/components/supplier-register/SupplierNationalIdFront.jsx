@@ -33,11 +33,11 @@ export default function SupplierNationalIdFront() {
   } = supplierdata;
   useEffect(() => {
     if (!fullName || !email || !phoneNumber || !password) {
-      toast.error("رجاء إكمال بيانات المورد");
+      toast.error("رجاء إكمال بيانات التاجر");
       navigate("/supplier-register/base");
       return;
     } else if (!businessName || !storeName || !taxNumber || !nationalId) {
-      toast.error("رجال إكمال بيانات المورد");
+      toast.error("رجال إكمال بيانات التاجر");
       navigate("/supplier-register/business");
       return;
     }
@@ -102,7 +102,7 @@ export default function SupplierNationalIdFront() {
         </div>
 
         <div className="w-full flex flex-col gap-2">
-          <h1>برجاء ارسال بطاقة تحقيق الشخصية  ( الامام )</h1>
+          <h1>برجاء ارسال بطاقة تحقيق الشخصية ( الامام )</h1>
 
           <div
             {...getRootProps()}

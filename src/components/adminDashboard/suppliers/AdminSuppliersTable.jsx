@@ -13,7 +13,6 @@ export default function AdminSuppliersTable() {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
-
   const fetchUsers = async () => {
     setIsLoading(true);
     try {
@@ -36,7 +35,6 @@ export default function AdminSuppliersTable() {
   useEffect(() => {
     setDisplayedUsers(users);
   }, [users]);
-
 
   if (isLoading) {
     return (
@@ -86,7 +84,7 @@ export default function AdminSuppliersTable() {
     <div className="w-full">
       <div className="w-full flex justify-between items-center mb-6">
         <div>
-          <h2 className="text-2xl font-semibold">كل المورديين</h2>
+          <h2 className="text-2xl font-semibold">كل التجار</h2>
         </div>
         {/* <button
           className="bg-black px-5 py-2 text-white rounded-lg"

@@ -83,6 +83,7 @@ import AdminSuppliersOverview from "../components/adminDashboard/suppliers/Admin
 import AdminSuppliersLayout from "../components/adminDashboard/suppliers/AdminSuppliersLayout";
 import AdminSupplierReview from "../components/adminDashboard/suppliers/AdminSupplierReview";
 import Logout from "../components/ui/Logout";
+import SetPassword from "../pages/SetPassword";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -129,6 +130,8 @@ const AppRoutes = () => {
             <Route path="/info-supplier" element={<Suppliers />} />
             <Route path="/confirm-account" element={<AccountConfirmation />} />
             <Route path="/reset-password" element={<ResetUserPassword />} />
+            <Route path="/set-password" element={<SetPassword />} />
+
             <Route path="/logout" element={<Logout />} />
 
             <Route path="/contact" element={<Contactus />} />

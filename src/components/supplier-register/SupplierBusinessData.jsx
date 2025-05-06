@@ -32,7 +32,7 @@ export default function BusinessData() {
 
   useEffect(() => {
     if (!fullName || !email || !phoneNumber || !password) {
-      toast.error("رجاء إكمال بيانات المورد");
+      toast.error("رجاء إكمال بيانات التاجر");
       navigate("/supplier-register/base");
       return;
     }

@@ -178,25 +178,23 @@ export default function SupplierTexCard() {
     nationalIdFront,
     nationalIdBack,
     password,
-    
   } = supplierdata;
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   useEffect(() => {
     if (!fullName || !email || !phoneNumber || !password) {
-      toast.error("رجاء إكمال بيانات المورد");
+      toast.error("رجاء إكمال بيانات التاجر");
       navigate("/supplier-register/base");
       return;
     } else if (!businessName || !storeName || !taxNumber || !nationalId) {
-      toast.error("رجال إكمال بيانات المورد");
+      toast.error("رجال إكمال بيانات التاجر");
       navigate("/supplier-register/business");
       return;
     } else if (!nationalIdFront || !nationalIdBack) {
-      toast.error("رجاء إكمال بيانات المورد");
+      toast.error("رجاء إكمال بيانات التاجر");
       navigate("/supplier-register/nidf");
       return;
     }
-
   }, []);
 
   const onDrop = useCallback(
@@ -218,7 +216,7 @@ export default function SupplierTexCard() {
   const handleDelete = () => {
     setImageFile(null);
     setImagePreview(null);
-    dispatch(setSupplierTexCard(null)); 
+    dispatch(setSupplierTexCard(null));
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

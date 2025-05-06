@@ -42,7 +42,7 @@ export default function AdminSideMenu() {
     },
     {
       id: 5,
-      name: "الموردين",
+      name: "التجار",
       title: "suppliers",
       link: "/admin/suppliers",
       icon: <AiOutlineDollar />,

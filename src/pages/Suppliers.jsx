@@ -10,13 +10,13 @@ export default function Suppliers() {
             <div className="flex flex-col justify-center gap-5 min-w-xs">
               <div>
                 <h1 className="text-3xl md:text-4xl font-semibold">
-                  كن مورداً لنا
+                  كن تاجراً لنا
                 </h1>
               </div>
               <div>
-                <h2 className="text-2xl font-semibold">من هو المورد:</h2>
+                <h2 className="text-2xl font-semibold">من هو التاجر:</h2>
                 <p className="text-lg max-w-xs ">
-                  نحن نقدم خدماتنا لعرض المنتجات الخاصة بالموردين باستخدام نظام
+                  نحن نقدم خدماتنا لعرض المنتجات الخاصة بالتجار باستخدام نظام
                   متكامل من التسجيل و التفعيل و التعديل و الحذف و الاضافة
                   للمنتاجات
                 </p>
@@ -24,9 +24,10 @@ export default function Suppliers() {
               <div className="w-full flex">
                 <Link
                   to="/supplier-register"
-                  className="flex-1 text-center bg-teal-500 hover:bg-teal-600 duration-500 text-white font-bold py-2 px-4 rounded-full">
+                  className="flex-1 text-center bg-teal-500 hover:bg-teal-600 duration-500 text-white font-bold py-2 px-4 rounded-full"
+                >
                   انضم الينا
-                  </Link>
+                </Link>
               </div>
             </div>
             <div>

@@ -31,15 +31,15 @@ export default function SupplierNationalIdBack() {
   } = supplierdata;
   useEffect(() => {
     if (!fullName || !email || !phoneNumber || !password) {
-      toast.error("رجاء إكمال بيانات المورد");
+      toast.error("رجاء إكمال بيانات التاجر");
       navigate("/supplier-register/base");
       return;
     } else if (!businessName || !storeName || !taxNumber || !nationalId) {
-      toast.error("رجال إكمال بيانات المورد");
+      toast.error("رجال إكمال بيانات التاجر");
       navigate("/supplier-register/business");
       return;
     } else if (!nationalIdFront) {
-      toast.error("رجاء إكمال بيانات المورد");
+      toast.error("رجاء إكمال بيانات التاجر");
       navigate("/supplier-register/nidf");
       return;
     }

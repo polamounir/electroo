@@ -24,8 +24,8 @@ const ConfirmationModal = ({
       >
         <h3 className="text-xl font-bold text-gray-800 mb-4 border-b border-gray-100 pb-3">
           {confirmAction === "verify"
-            ? "تأكيد قبول المورد"
-            : "تأكيد رفض المورد"}
+            ? "تأكيد قبول التاجر"
+            : "تأكيد رفض التاجر"}
         </h3>
         {confirmAction === "reject" && (
           <div>
@@ -42,8 +42,8 @@ const ConfirmationModal = ({
 
         <p className="text-gray-600 mb-6">
           {confirmAction === "verify"
-            ? "هل أنت متأكد من قبول هذا المورد؟ "
-            : "هل أنت متأكد من رفض هذا المورد؟"}
+            ? "هل أنت متأكد من قبول هذا التاجر؟ "
+            : "هل أنت متأكد من رفض هذا التاجر؟"}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3">
@@ -133,10 +133,10 @@ export default function AdminSupplierReview() {
     try {
       const { data } = await api.post(`/suppliers/${id}/verify`);
       console.log(data);
-      showToast("تم قبول المورد بنجاح", "success");
+      showToast("تم قبول التاجر بنجاح", "success");
     } catch (error) {
       console.log(error);
-      showToast("فشل قبول المورد", "error");
+      showToast("فشل قبول التاجر", "error");
     }
     setConfirmAction(null);
     setShowConfirmModal(false);
@@ -148,10 +148,10 @@ export default function AdminSupplierReview() {
         rejectionResult: rejectionResult,
       });
       console.log(data);
-      showToast("تم رفض المورد بنجاح", "success");
+      showToast("تم رفض التاجر بنجاح", "success");
     } catch (error) {
       console.log(error);
-      showToast("فشل رفض المورد", "error");
+      showToast("فشل رفض التاجر", "error");
     }
     setConfirmAction(null);
     setShowConfirmModal(false);
@@ -179,7 +179,7 @@ export default function AdminSupplierReview() {
       <div className="bg-red-50 p-6 rounded-lg text-center">
         <div className="text-red-500 text-xl font-bold mb-2">حدث خطأ</div>
         <p className="text-red-700">
-          فشل تحميل بيانات المورد. الرجاء المحاولة مرة أخرى.
+          فشل تحميل بيانات التاجر. الرجاء المحاولة مرة أخرى.
         </p>
         <button
           onClick={getSupplierData}
@@ -222,7 +222,7 @@ export default function AdminSupplierReview() {
       {/* Header with status badge */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 pb-6 border-b border-gray-100">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-800 flex items-center gap-3">
-          مراجعة بيانات المورد
+          مراجعة بيانات التاجر
           <span className="text-sm md:text-base font-normal text-gray-400 mt-1">
             #{supplier.id}
           </span>
@@ -244,7 +244,7 @@ export default function AdminSupplierReview() {
           <div className="bg-gray-50 rounded-xl p-1 mb-4 shadow-sm">
             <img
               src={activeImage}
-              alt="وثيقة المورد"
+              alt="وثيقة التاجر"
               className="w-full h-80 object-contain rounded-lg"
             />
           </div>
@@ -274,7 +274,7 @@ export default function AdminSupplierReview() {
         {/* Right column: Supplier details */}
         <div className="order-1 md:order-2 bg-gray-50 rounded-xl p-6 text-right">
           <h3 className="text-xl font-bold text-gray-800 mb-6 border-b border-gray-200 pb-3">
-            معلومات المورد
+            معلومات التاجر
           </h3>
 
           <div className="space-y-5">

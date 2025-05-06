@@ -51,7 +51,7 @@ export const loginUser = createAsyncThunk(
     // console.log(userData);
     try {
       const response = await loginUserFn(userData);
-      // console.log(response);
+      console.log(response);
       const { accessToken, email, refreshToken } = response.data;
 
       saveAuthData(accessToken, email, refreshToken);

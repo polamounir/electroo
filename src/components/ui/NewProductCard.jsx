@@ -16,7 +16,7 @@ export default function NewProductCard({ product }) {
     <Link 
       to={`/product/${product.id}`}
       key={product.id}
-      className="w-[140px] sm:w-[200px] md:w-[250px] bg-white rounded-lg p-2 shadow-sm hover:shadow-md transition-shadow duration-200 relative"
+      className="block w-[140px] sm:w-[200px] md:w-[250px] bg-white rounded-lg p-2 shadow-sm hover:shadow-md transition-shadow duration-200 relative"
     >
       {/* Discount badge */}
       {product.discountPercentage > 0 && (

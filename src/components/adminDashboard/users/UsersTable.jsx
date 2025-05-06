@@ -132,7 +132,7 @@ export default function UsersTable() {
       <div className="w-full flex justify-between items-center mb-6">
         <div>
           <h2 className="text-2xl font-semibold">كل المستخدمين</h2>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 mt-2">
             <button
               onClick={() => setUserType("Admin")}
               className={`${
@@ -155,7 +155,7 @@ export default function UsersTable() {
                 userType === "Supplier" ? "bg-black text-white" : "bg-gary-200"
               } px-2 py-1 rounded-lg items-center justify-center `}
             >
-              موردين
+            تجار
             </button>
           </div>
         </div>
