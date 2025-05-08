@@ -14,7 +14,8 @@ export default function OrdersOverview() {
   const navigate = useNavigate();
 
   const navigateToProduct = () => {
-    navigate(`/admin/orders/${orderId}`);
+    
+    navigate(`/admin/orders/${orderId.trim()}`);
   };
   const editProduct = (id) => {
     navigate(`/admin/orders/${id}`);

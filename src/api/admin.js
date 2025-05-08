@@ -63,3 +63,14 @@ export const deleteUser = async (userId) => {
     console.error(error);
   }
 };
+
+
+export const getOrderData = async (orderId) => {
+  const response = await api.get(`/orders/${orderId}/details`);
+  return response.data.data;
+};
+export const updateOrderItemStatus = async (itemId, status) => {
+  return await api.put(`/orders/order-items/${itemId}/status`, {
+    status: status,
+  });
+};
