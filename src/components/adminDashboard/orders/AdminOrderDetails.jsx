@@ -23,6 +23,7 @@ export default function AdminOrderDetails() {
     try {
       const response = await api.get(`/orders/${id}/details`);
       const orderData = response.data.data;
+      console.log(orderData);
       setOrder(orderData);
       setOrderItemsStatus(
         orderData.orderItems.map((item) => ({
@@ -40,6 +41,7 @@ export default function AdminOrderDetails() {
 
   const updateItemStatus = async (itemId) => {
     const itemUpdateData = orderItemsStatus.find((i) => i.id === itemId);
+    console.log(orderItemsStatus, itemUpdateData);
 
     try {
       await api.put(`/orders/order-items/${itemId}/status`, {
@@ -67,7 +69,7 @@ export default function AdminOrderDetails() {
       Value: "Pending",
       Name: "قيد الانتظار",
       optios: [
-        { Value: "Pending", Name: "قيد الانتظار" },
+        // { Value: "Pending", Name: "قيد الانتظار" },
         { Value: "Confirmed", Name: "تم التاكيد" },
         { Value: "Shipped", Name: "تم الشحن" },
         { Value: "Delivered", Name: "تم التوصيل " },
@@ -78,7 +80,7 @@ export default function AdminOrderDetails() {
       Value: "Confirmed",
       Name: "تم التاكيد",
       optios: [
-        { Value: "Confirmed", Name: "تم التاكيد" },
+        // { Value: "Confirmed", Name: "تم التاكيد" },
         { Value: "Shipped", Name: "تم الشحن" },
         { Value: "Delivered", Name: "تم التوصيل " },
         { Value: "Cancelled", Name: "تم الالغاء" },
@@ -88,7 +90,7 @@ export default function AdminOrderDetails() {
       Value: "Shipped",
       Name: "تم الشحن",
       optios: [
-        { Value: "Shipped", Name: "تم الشحن" },
+        // { Value: "Shipped", Name: "تم الشحن" },
         { Value: "Delivered", Name: "تم التوصيل " },
         { Value: "Cancelled", Name: "تم الالغاء" },
       ],
@@ -448,10 +450,14 @@ export default function AdminOrderDetails() {
                       <h3 className="text-teal-700 font-bold text-lg">
                         {item.productName}
                       </h3>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
                         <p className="text-sm text-gray-600">
                           <span className="font-medium">السعر:</span>{" "}
                           {item.price.toFixed(2)} ج.م
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          <span className="font-medium">الحالة</span>{" "}
+                          {getStatusBadge(item.status)}
                         </p>
                         <p className="text-sm text-gray-600">
                           <span className="font-medium">الكمية:</span>{" "}
@@ -462,41 +468,55 @@ export default function AdminOrderDetails() {
                           {item.supplierName}
                         </p>
                       </div>
+                      <div>
+                        {!["Delivered", "Cancelled"].includes(item.status) && (
+                          <div className="flex flex-col md:flex-row md:items-center gap-3 mt-4">
+                            <p className="font-medium">تحديث الحالة:</p>
+                            <div className="flex items-center flex-1 gap-3">
+                              <select
+                                value={
+                                  orderItemsStatus.find(
+                                    (i) => i.id === item.orderItemId
+                                  )?.status
+                                }
+                                className="block flex-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-gray-700 bg-white transition"
+                                onChange={(e) => {
+                                  const index = orderItemsStatus.findIndex(
+                                    (i) => i.id === item.orderItemId
+                                  );
+                                  console.log(index);
+                                  const updatedStatuses = [...orderItemsStatus];
+                                  updatedStatuses[index].status =
+                                    e.target.value;
+                                  console.log(updatedStatuses);
+                                  setOrderItemsStatus(updatedStatuses);
 
-                      <div className="flex flex-col md:flex-row md:items-center gap-3 mt-4">
-                        <p className="font-medium">الحالة:</p>
-                        <div className="flex items-center flex-1 gap-3">
-                          <select
-                            value={
-                              orderItemsStatus.find(
-                                (i) => i.id === item.orderItemId
-                              )?.status
-                            }
-                            className="block flex-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-gray-700 bg-white transition"
-                            onChange={(e) => {
-                              const index = orderItemsStatus.findIndex(
-                                (i) => i.id === item.orderItemId
-                              );
-                              const updatedStatuses = [...orderItemsStatus];
-                              updatedStatuses[index].status = e.target.value;
-                              setOrderItemsStatus(updatedStatuses);
-                            }}
-                          >
-                            {itemStatus
-                              .find((i) => i.Value === item.status)
-                              ?.optios.map((opt) => (
-                                <option key={opt.Value} value={opt.Value}>
-                                  {opt.Name}
-                                </option>
-                              ))}
-                          </select>
-                          <button
-                            className="px-4 py-2 bg-teal-600 hover:bg-teal-500 rounded-lg text-white transition shadow-sm"
-                            onClick={() => updateItemStatus(item.orderItemId)}
-                          >
-                            حفظ
-                          </button>
-                        </div>
+                                  console.log(orderItemsStatus);
+                                }}
+                              >
+                                {itemStatus
+                                  .find((i) => i.Value === item.status)
+                                  ?.optios.map((opt) => {
+                                    // console.log(opt);
+                                    return (
+                                      <option key={opt.Value} value={opt.Value}>
+                                        {opt.Name}
+                                      </option>
+                                    );
+                                  })}
+                              </select>
+
+                              <button
+                                className="px-4 py-2 bg-teal-600 hover:bg-teal-500 rounded-lg text-white transition shadow-sm"
+                                onClick={() =>
+                                  updateItemStatus(item.orderItemId)
+                                }
+                              >
+                                حفظ
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
