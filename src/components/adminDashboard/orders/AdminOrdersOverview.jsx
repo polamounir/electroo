@@ -13,10 +13,6 @@ export default function OrdersOverview() {
     navigate(`/admin/orders/${orderId.trim()}`);
   };
 
-  const editProduct = (id) => {
-    navigate(`/admin/orders/${id}`);
-  };
-
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["orders", sortByStatus],
     queryFn: async () => {
@@ -28,6 +24,79 @@ export default function OrdersOverview() {
   });
 
   const orders = data || [];
+
+  const itemStatus = [
+    {
+      Value: "Pending",
+      Name: "قيد الانتظار",
+      optios: [
+        // { Value: "Pending", Name: "قيد الانتظار" },
+        { Value: "Confirmed", Name: "تم التاكيد" },
+        { Value: "Shipped", Name: "تم الشحن" },
+        { Value: "Delivered", Name: "تم التوصيل " },
+        { Value: "Cancelled", Name: "تم الالغاء" },
+      ],
+    },
+    {
+      Value: "Confirmed",
+      Name: "تم التاكيد",
+    },
+    {
+      Value: "Shipped",
+      Name: "تم الشحن",
+    },
+    {
+      Value: "Delivered",
+      Name: "تم التوصيل ",
+    },
+    {
+      Value: "Cancelled",
+      Name: "تم الالغاء",
+    },
+  ];
+
+  const getStatusBadge = (status) => {
+    const statusName =
+      itemStatus.find((s) => s.Value === status)?.Name || status;
+
+    let bgColor = "#fef3c7";
+    let textColor = "#d97706";
+
+    switch (status) {
+      case "Pending":
+        bgColor = "#fef3c7";
+        textColor = "#d97706";
+        break;
+      case "Confirmed":
+        bgColor = "#dbeafe";
+        textColor = "#2563eb";
+        break;
+      case "Shipped":
+        bgColor = "#f3e8ff";
+        textColor = "#9333ea";
+        break;
+      case "Delivered":
+        bgColor = "#d1fae5";
+        textColor = "#059669";
+        break;
+      case "Cancelled":
+        bgColor = "#fee2e2";
+        textColor = "#dc2626";
+        break;
+      default:
+        bgColor = "#f3f4f6";
+        textColor = "#1d1c1c";
+    }
+
+    return (
+      <span
+        className="px-3 py-1 rounded-full text-xs font-semibold"
+        style={{ backgroundColor: bgColor, color: textColor }}
+      >
+        {statusName}
+      </span>
+    );
+  };
 
   if (isError) {
     return (
@@ -69,7 +138,7 @@ export default function OrdersOverview() {
       </div>
 
       <h2 className="text-2xl font-semibold mt-10">الطلبات</h2>
-      <div className="flex items-center gap-3 mt-2">
+      <div className="flex flex-wrap items-center gap-3 mt-2">
         {["Pending", "Confirmed", "Shipped", "Delivered", "Cancelled"].map(
           (status) => (
             <button
@@ -85,55 +154,51 @@ export default function OrdersOverview() {
         )}
       </div>
 
-      <div className="overflow-x-auto mt-5">
-        <table className="w-full border border-gray-300 rounded-lg shadow-lg">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-4 py-2 text-start">رقم الطلب</th>
-              <th className="px-4 py-2 text-start">اسم المستخدم</th>
-              <th className="px-4 py-2 text-start">تاريخ الطلب</th>
-              <th className="px-4 py-2 text-start">حالة الطلب</th>
-              <th className="px-4 py-2 text-start">الاجراءات</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order) => (
-              <tr key={order.orderId} className="border-b border-gray-200">
-                <td className="px-4 py-2">{order.orderId}</td>
-                <td className="px-4 py-2">{order.buyerEmail}</td>
-                <td className="px-4 py-2">
-                  {new Date(order.orderDate).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </td>
-                <td className="px-4 py-2">{order.status}</td>
-                <td className="px-4 py-2 flex gap-3">
-                  <button
-                    className="text-teal-500 hover:text-teal-600"
-                    onClick={() => editProduct(order.orderId)}
-                  >
-                    Info
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="mt-5">
+        {/* Header row */}
+        <div className="grid grid-cols-11 gap-4 bg-gray-200 px-4 py-2 font-semibold border border-gray-300 rounded-t-lg">
+          <div className="col-span-5">رقم الطلب</div>
+          <div className="col-span-2 text-center">اسم المستخدم</div>
+          <div className="col-span-2 text-center">تاريخ الطلب</div>
+          <div className="col-span-2 text-center">حالة الطلب</div>
+        </div>
+
         {isLoading && (
-          <div>
-            <span className="text-2xl pt-10 font-semibold text-center flex justify-center items-center gap-2 text-teal-500">
-              جاري جلب البيانات ...
-            </span>
+          <div className="text-teal-500 text-center text-2xl font-semibold pt-10">
+            جاري جلب البيانات ...
           </div>
         )}
 
         {!isLoading && orders.length === 0 && (
           <div className="text-teal-500 text-center text-xl font-semibold pt-10">
-            <span>لا يوجد طلبات</span>
+            لا يوجد طلبات
           </div>
         )}
+
+        {/* Data rows */}
+        {!isLoading &&
+          orders.map((order, index) => (
+            <div
+              key={order.orderId}
+              className={`grid grid-cols-11 gap-4 px-4 py-3 border-b border-gray-200 items-center ${
+                index % 2 === 0 ? "" : "bg-gray-100"
+              } hover:bg-black/20 duration-300
+              `}
+            >
+              <div className="col-span-5">{order.orderId}</div>
+              <div className="col-span-2 text-center">{order.buyerEmail}</div>
+              <div className="col-span-2 text-center">
+                {new Date(order.orderDate).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </div>
+              <div className="col-span-2 text-center">
+                {getStatusBadge(order.status)}
+              </div>
+            </div>
+          ))}
       </div>
     </div>
   );
