@@ -1,54 +1,69 @@
-import { useEffect, useState } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { FaRegEdit } from "react-icons/fa";
 import { GoTrash } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../../api/axiosInstance";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export default function ProductsTable() {
   const navigate = useNavigate();
-  const [products, setProducts] = useState([]);
-  const [cursor, setCursor] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasMore, setHasMore] = useState(true);
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
 
-  const fetchProducts = async (cursor = null) => {
-    try {
-      const { data } = await api.get(
-        `/supplier-products?Limit=5${cursor ? `&cursor=${cursor}` : ""}`
-      );
-      setProducts((prev) => [...prev, ...data.data.items]);
-
-      setCursor(data.data.cursor);
-      setHasMore(data.data.hasMore);
-    } catch (err) {
-      console.error("Fetching error:", err);
-    } finally {
-      setIsLoading(false);
-    }
+  const fetchProducts = async ({ pageParam = null }) => {
+    const res = await axios.get(
+      `https://ecommerce.markomedhat.com/api/products?Limit=20&Cursor=${pageParam}`
+    );
+    return res.data;
   };
 
-  useEffect(() => {
-    fetchProducts(); 
-    console.log("Products fetched:", products);
-
-  }, []);
-
-  const handleFetchMore = () => {
-    if (hasMore) {
-      fetchProducts(cursor);
-    }
-  };
+  const {
+    data,
+    isLoading,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    refetch,
+  } = useInfiniteQuery({
+    queryKey: ["products"],
+    queryFn: fetchProducts,
+    getNextPageParam: (lastPage) =>
+      lastPage?.data?.hasMore ? lastPage?.data?.cursor : undefined,
+  });
 
   const handleAddNavigation = () => navigate("/supplier/products/add");
-  const handleEditNavigation = (id) =>
-    navigate(`/supplier/products/edit/${id}`);
+  const handleEditNavigation = (id) => navigate(`/supplier/products/edit/${id}`);
+  const confirmDelete = (id) => setDeleteConfirm(id);
+  const cancelDelete = () => setDeleteConfirm(null);
 
-  if (isLoading) return <div>Loading...</div>;
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(
+        `https://ecommerce.markomedhat.com/api/products/${id}`
+      );
+      setDeleteConfirm(null);
+      refetch();
+    } catch (err) {
+      console.error("Delete failed:", err);
+      toast.error("فشل الحذف. حاول مرة أخرى.");
+    }
+  };
+
+  if (isLoading) return <div className="text-center py-10">...جار التحميل</div>;
+  if (isError)
+    return (
+      <div className="text-center text-red-600 py-10">
+        خطأ في تحميل المنتجات
+      </div>
+    );
+
+  const allProducts = data.pages.flatMap((page) => page.data.items);
 
   return (
-    <div className="">
-      <div className="w-full flex justify-between">
+    <div>
+      {/* Header */}
+      <div className="w-full flex justify-between mb-6">
         <h2 className="text-2xl font-semibold">كل المنتجات</h2>
         <button
           className="bg-black text-white text-md px-5 py-1 rounded-lg"
@@ -58,50 +73,104 @@ export default function ProductsTable() {
         </button>
       </div>
 
-      <div className="flex flex-col mt-10">
-        <div className="grid grid-cols-12 py-3 font-bold">
-          <div className="col-span-4">اسم المنتج</div>
-          <div className="col-span-2">الفئة</div>
-          <div className="col-span-2">السعر</div>
-          <div className="col-span-1">المخزون</div>
-          <div className="col-span-1">المبيعات</div>
-          <div className="col-span-2 text-center">الاوامر</div>
-        </div>
-        {products.map((product) => (
-          <div
-            key={product.id}
-            className="grid grid-cols-12 border-t border-gray-300 py-5 gap-5"
-          >
-            <div className="col-span-4 truncate">{product.title}</div>
-            <div className="col-span-2">{product.category || "__"}</div>
-            <div className="col-span-2">{product.price} ج.م</div>
-            <div className="col-span-1">{product.stock || "__"}</div>
-            <div className="col-span-1">{product.sales || "__"}</div>
-            <div className="col-span-2 flex justify-center gap-2">
-              <button
-                className="text-teal-600 text-2xl"
-                onClick={() => handleEditNavigation(product.id)}
-              >
-                <FaRegEdit />
-              </button>
-              <button className="text-red-600 text-2xl">
-                <GoTrash />
-              </button>
-            </div>
-          </div>
-        ))}
+      {/* Table Header */}
+      <div className="grid grid-cols-12 py-3 bg-gray-100 font-semibold text-sm rounded-md px-4 text-gray-700">
+        <div className="col-span-4">اسم المنتج</div>
+        <div className="col-span-2">الفئة</div>
+        <div className="col-span-2">السعر</div>
+        <div className="col-span-1">المخزون</div>
+        <div className="col-span-1">المبيعات</div>
+        <div className="col-span-2 text-center">الأوامر</div>
       </div>
 
-      {hasMore && (
-        <div className="flex justify-center mt-4">
-          <button
-            className="bg-teal-500 px-4 py-2 text-white rounded-2xl"
-            onClick={handleFetchMore}
-          >
-            View more
-          </button>
-        </div>
-      )}
+      {/* Product Rows */}
+      <div className="flex flex-col mt-4">
+        {allProducts.length > 0 ? (
+          <>
+            {allProducts.map((product) => (
+              <div
+                key={product.id}
+                className="grid grid-cols-12 border-t border-gray-300 py-4 gap-5 px-4 text-sm text-gray-800 items-center hover:bg-gray-50"
+              >
+                <div className="col-span-4 truncate">{product.title}</div>
+                <div className="col-span-2">{product.category || "—"}</div>
+                <div className="col-span-2">{product.price} ج.م</div>
+                <div className="col-span-1">{product.stock || "—"}</div>
+                <div className="col-span-1">{product.sales || "—"}</div>
+                <div className="col-span-2 flex justify-center gap-3">
+                  <button
+                    title="تعديل"
+                    className="text-teal-600 text-xl hover:text-teal-800"
+                    onClick={() => handleEditNavigation(product.id)}
+                  >
+                    <FaRegEdit />
+                  </button>
+                  <div>
+                    {deleteConfirm === product.id ? (
+                      <div
+                        className="fixed inset-0 bg-black/20 bg-opacity-50 z-40 flex items-center justify-center p-4"
+                        onClick={cancelDelete}
+                      >
+                        <div
+                          className="bg-white rounded-xl shadow-xl p-6 max-w-md w-full mx-4 z-50 text-right"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <h3 className="text-xl font-bold text-gray-800 mb-4 border-b border-gray-100 pb-3">
+                            تأكيد حذف المنتج
+                          </h3>
+
+                          <p className="text-gray-600 mb-6">
+                            هل أنت متأكد من حذف هذا المنتج؟ لا يمكن التراجع عن
+                            هذا الإجراء.
+                          </p>
+
+                          <div className="flex flex-col sm:flex-row gap-3">
+                            <button
+                              onClick={() => handleDelete(product.id)}
+                              className="flex-1 font-medium py-3 px-6 rounded-lg shadow-sm bg-red-500 hover:bg-red-600 active:bg-red-700 text-white"
+                            >
+                              تأكيد الحذف
+                            </button>
+                            <button
+                              onClick={cancelDelete}
+                              className="flex-1 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition font-medium py-3 px-6 rounded-lg shadow-sm"
+                            >
+                              إلغاء
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <button
+                        className="text-red-600 text-xl hover:text-red-800"
+                        onClick={() => confirmDelete(product.id)}
+                        title="حذف المنتج"
+                      >
+                        <GoTrash />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {/* View More Button */}
+            {hasNextPage && (
+              <div className="mt-6 text-center">
+                <button
+                  onClick={() => fetchNextPage()}
+                  disabled={isFetchingNextPage}
+                  className="px-5 py-2 bg-teal-600 hover:bg-teal-500 rounded-lg text-white"
+                >
+                  {isFetchingNextPage ? "جار التحميل..." : "المزيد"}
+                </button>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="text-center text-gray-500 py-6">لا توجد منتجات</div>
+        )}
+      </div>
     </div>
   );
 }

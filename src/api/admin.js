@@ -1,4 +1,3 @@
-import axios from "axios";
 import { api } from "./axiosInstance";
 
 export const uploadProduct = async (productData) => {
@@ -63,7 +62,6 @@ export const deleteUser = async (userId) => {
     console.error(error);
   }
 };
-
 
 export const getOrderData = async (orderId) => {
   const response = await api.get(`/orders/${orderId}/details`);

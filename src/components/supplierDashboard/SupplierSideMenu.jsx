@@ -29,33 +29,27 @@ export default function SupplierSideMenu() {
       link: "/supplier/products",
       icon: <TfiPackage />,
     },
+
     // {
-    //   id: 4,
-    //   name: "المستخدمين",
-    //   title: "users",
-    //   link: "/supplier/users",
-    //   icon: <FaRegCircleUser />,
+    //   id: 5,
+    //   name: "المبيعات",
+    //   title: "sales",
+    //   link: "/supplier/sales",
+    //   icon: <AiOutlineDollar />,
     // },
-    {
-      id: 5,
-      name: "المبيعات",
-      title: "sales",
-      link: "/supplier/sales",
-      icon: <AiOutlineDollar />,
-    },
-    {
-      id: 6,
-      name: "الاعدادت",
-      title: "settings",
-      link: "/supplier/settings",
-      icon: <BsGear />,
-    },
     {
       id: 7,
       name: "المحادثات",
       title: "chats",
       link: "/supplier/chats",
       icon: <IoChatbubbleOutline />,
+    },
+    {
+      id: 6,
+      name: "تسجيل خروج",
+      title: "logout",
+      link: "/logout",
+      icon: <BsGear />,
     },
   ];
   const [activeLink, setActiveLink] = useState("supplier");

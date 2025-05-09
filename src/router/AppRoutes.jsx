@@ -84,6 +84,9 @@ import AdminSuppliersLayout from "../components/adminDashboard/suppliers/AdminSu
 import AdminSupplierReview from "../components/adminDashboard/suppliers/AdminSupplierReview";
 import Logout from "../components/ui/Logout";
 import SetPassword from "../pages/SetPassword";
+import SupplierOrdersLayout from "../components/supplierDashboard/orders/SupplierOrdersLayout";
+import SupplierOrdersOverview from "../components/supplierDashboard/orders/SupplierOrdersOverview";
+import SupplierOrderDetails from "../components/supplierDashboard/orders/SupplierOrderDetails";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -233,7 +236,10 @@ const AppRoutes = () => {
                 element={<SupplierEditProductImages />}
               />
             </Route>
-            <Route path="orders" element={<div>Orders</div>} />
+            <Route path="orders" element={<SupplierOrdersLayout />}>
+              <Route index element={<SupplierOrdersOverview />} />
+              <Route path=":id" element={<SupplierOrderDetails />} />
+            </Route>
 
             <Route path="chats" element={<SupplierChatLayout />}>
               <Route index element={<SupplierAllChats />} />

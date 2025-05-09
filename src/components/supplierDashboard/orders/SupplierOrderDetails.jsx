@@ -4,9 +4,9 @@ import { api } from "../../../api/axiosInstance";
 import { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import PrintedInVoice from "./components/PrintedInVoice";
+// import PrintedInVoice from "./components/PrintedInVoice";
 
-export default function AdminOrderDetails() {
+export default function SupplierOrderDetails() {
   const { id } = useParams();
   const [order, setOrder] = useState(null);
   const [orderItemsStatus, setOrderItemsStatus] = useState([]);

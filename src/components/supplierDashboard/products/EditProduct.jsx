@@ -9,10 +9,28 @@ import { toast } from "sonner";
 
 export default function EditProduct() {
   const { id } = useParams();
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["product", id],
-    queryFn: () => getProductById(id),
-  });
+  // const { data, isLoading, isError } = useQuery({
+  //   queryKey: ["product", id],
+  //   queryFn: () => getProductById(id),
+  // });
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setIsLoading(true);
+        const data = await getProductById(id);
+        setData(data);
+      } catch (error) {
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
 
   const { data: categories } = useQuery({
     queryKey: ["addcategories"],
@@ -48,6 +66,7 @@ export default function EditProduct() {
     category: "",
   });
   const [productImages, setProductImages] = useState([]);
+  const [previewImages, setPreviewImages] = useState([]);
 
   const [category, setCategory] = useState("");
   const [categoryId, setCategoryId] = useState("");
@@ -68,7 +87,7 @@ export default function EditProduct() {
         title: data.title || "",
         price: data.price || 0,
         discountPercentage: data.discountPercentage || 0,
-        stock: data.stocks || 0,
+        stock: data.stock || 0,
         sku: data.sku || "",
         tags: data.tags || "",
         brand: data.brand || "",
@@ -78,6 +97,7 @@ export default function EditProduct() {
       });
       setingCategoryId(data.category);
       setProductImages(data.images);
+      setPreviewImages(data.images);
     }
   }, [data]);
 
@@ -96,23 +116,15 @@ export default function EditProduct() {
     }
   };
 
-  if (isLoading)
-    return <div className="text-center text-teal-500">Loading...</div>;
-  if (isError)
-    return (
-      <div className="text-center text-red-500">
-        Error loading product data.
-      </div>
-    );
-
   const handleDeleteImage = async (image) => {
     console.log(image);
     let newImages = productImages.filter((img) => {
       return img != image;
     });
     setProductImages(newImages);
+    setPreviewImages((prev) => prev.filter((i) => i !== image));
     try {
-      const imageId = image.id;
+      const imageId = image.split("/media/")[1].split(".")[0];
       const response = await api.delete(`/products/images/${imageId}`);
       console.log("Image deleted successfully:", response.data);
     } catch (error) {
@@ -121,28 +133,49 @@ export default function EditProduct() {
   };
 
   const handleAddImage = async (e) => {
-    const file = e.target.files[0];
-    console.log(file);
-    if (!file) return;
+    const files = e.target.files;
+    console.log(files);
+    if (!files) return;
+
+    const filesArray = Array.from(files);
+    if (previewImages.length + filesArray.length >= 5) {
+      toast.error("لا يمكن اضافة اكثر من 5 صور");
+      return;
+    }
+    const newPreviewUrls = filesArray.map((file) => URL.createObjectURL(file));
+    console.log(newPreviewUrls);
+
+    setPreviewImages((prev) => [...prev, ...newPreviewUrls]);
 
     const formData = new FormData();
-    formData.append("images[0]", file);
+
+    filesArray.forEach((file, index) => {
+      formData.append(`images[${index}]`, file);
+    });
 
     try {
       const response = await api.put(`/products/${id}/images`, formData, {});
 
       console.log("Image uploaded successfully:", response.data);
+      toast.success("Image uploaded successfully");
 
-      if (response.data.status === "Successful") {
-        const newImageUrl = URL.createObjectURL(file);
-         setProductImages((prevImages) => [...prevImages, newImageUrl]);
-         toast.success("تم رفع الصورة بنجاح")
-      }
+      const newImageUrl = response.data.url;
+      setProductImages((prevImages) => [...prevImages, newImageUrl]);
     } catch (error) {
       console.error("Error uploading image:", error);
+      toast.error("Error uploading image");
     }
   };
 
+  // *----------------------------------
+  if (isLoading)
+    return <div className="text-center text-teal-500">Loading...</div>;
+  if (isError)
+    return (
+      <div className="text-center text-red-500">
+        Error loading product data.
+      </div>
+    );
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-3xl font-bold text-teal-500 mb-6">
@@ -292,15 +325,11 @@ export default function EditProduct() {
             الصور
           </label>
           <div className="flex gap-2 flex-wrap">
-            {productImages.map((image, index) => {
+            {previewImages.map((image, index) => {
               console.log(image);
               return (
                 <div className="relative" key={index}>
-                  <img
-                    src={image.url ? image.url : image}
-                    alt="product"
-                    className="w20 h-20"
-                  />
+                  <img src={image.url} alt="product" className="w20 h-20" />
                   <button
                     className="absolute -top-2 -end-2 bg-red-500 text-white p-1 rounded-full"
                     onClick={() => handleDeleteImage(image)}
@@ -314,6 +343,8 @@ export default function EditProduct() {
           <div className="flex justify-center mt-5">
             <input
               type="file"
+              multiple
+              accept="image/png, image/jpeg, image/jpg"
               className="justify-self-center py-2 px-5 bg-teal-500 text-white font-semibold rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50"
               onChange={handleAddImage}
             />
