@@ -1,112 +1,139 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-// import { logoutUser } from "../api/user";
+import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { logOut } from "../app/slices/authSlice";
+import UserOrders from "../components/profile/UserOrders";
 
-function Profile() {
+import Cookies from "js-cookie";
+
+export default function Profile() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
 
-  const user = useSelector((state) => state.auth.user);
   useEffect(() => {
-    if (!user) {
-      toast.error("يجب عليك تسجيل الدخول");
-      navigate("/login");
+    const token = Cookies.get("accessToken")
+    if(!token) {
+      if (!user) {
+        toast.error("يجب عليك تسجيل الدخول");
+        navigate("/login");
+        return;
+      }
     }
-  }, [navigate, user]);
+  }, [ user]);
 
-  const name = user?.fullName?.split(" ");
-  const firstName = name?.[0] || "م";
-  const lastName = name?.[1] || "ج";
+  const getInitials = () => {
+    if (!user?.fullName) return "مج";
 
-  // const handleLogout = () => {
-  //   dispatch(logOut());
-  // };
+    const nameParts = user.fullName.trim().split(" ");
+    if (nameParts.length === 1) {
+      return nameParts[0].charAt(0) || "م";
+    }
 
-  console.log("user", user);
+    return `${nameParts[0].charAt(0) || "م"}${
+      nameParts[nameParts.length - 1].charAt(0) || "ج"
+    }`;
+  };
+
+  // Return early if no user to prevent errors
+  if (!user) return null;
+
   return (
-    <div className="page">
-      <div className="">
-        <div className="flex flex-col gap-10 px-2 md:px-10 lg:px-20 pt-10 pb-20">
-          <div className="flex justify-between items-center ps-5">
-            <h2 className="title text-3xl">حسابي</h2>
-            {user?.role === "Admin" && (
-              <Link
-                to="/admin"
-                className="px-5 py-2 bg-black text-white rounded-lg"
-              >
-                Dashboard
-              </Link>
-            )}
+    <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-8 md:px-16 lg:px-24 font-sans text-right">
+      {/* Header */}
+      <header className="flex justify-between items-center mb-10">
+        <h1 className="text-3xl font-bold text-gray-800">حسابي</h1>
 
-            {user?.role === "Supplier" && (
-              <Link
-                to="/supplier"
-                className="px-5 py-2 bg-black text-white rounded-lg"
-              >
-                Dashboard
-              </Link>
-            )}
-          </div>
-          <div className="border border-gray-400 py-5 px-10 md:py-14 md:px-16 rounded-lg flex flex-col gap-5">
-            <div className="flex flex-col lg:flex-row md:gap-10 lg:items-center lg:justify-between">
-              <div className="flex items-center gap-10">
-                <span className="text-4xl font-bold bg-gray-200 w-32 h-32 rounded-full flex items-center justify-center gap-2">
-                  {firstName[0]} {lastName[0]}
+        {(user?.role === "Admin" || user?.role === "Supplier") && (
+          <Link
+            to={user.role === "Admin" ? "/admin" : "/supplier"}
+            className="bg-teal-600 text-white px-5 py-2 rounded-lg hover:bg-teal-700 transition"
+          >
+            لوحة التحكم
+          </Link>
+        )}
+      </header>
+
+      {/* Profile Card */}
+      <section className="bg-white border border-gray-200 shadow-sm rounded-xl p-6 md:p-8 mb-8 space-y-6">
+        {/* Avatar + Edit */}
+        <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <div
+              className="w-24 h-24 lg:w-28 lg:h-28 rounded-full bg-teal-50 text-4xl font-bold flex items-center justify-center text-teal-700 shadow-sm"
+              aria-label="صورة الملف الشخصي"
+            >
+              {getInitials()}
+            </div>
+            <div className="text-center md:text-right">
+              <h2 className="text-2xl font-semibold text-gray-800">
+                {user.fullName}
+              </h2>
+              <p className="text-gray-500">{user.email}</p>
+              {user.role && (
+                <span className="inline-block mt-1 px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
+                  {user.role}
                 </span>
-                <div className="flex flex-col gap-2"></div>
-              </div>
-              <div className="self-end">
-                <Link to="/edit-profile">
-                  <button className="btn px-5 py-1 rounded-lg bg-teal-600 text-white font-semibold">
-                    Edit
-                  </button>
-                </Link>
-              </div>
-            </div>
-
-            <div>
-              <h2 className="title">البيانات الشخصية</h2>
-              <p className="title-info"></p>
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-              <div className="flex flex-col">
-                <h2 className="text-xl font-bold">الاسم</h2>
-                <h2 className="text-2xl font-semibold">{user?.fullName}</h2>
-              </div>
-
-              <div className="flex flex-col">
-                <h2 className="text-xl font-bold">البريد الالكتروني</h2>
-                <h3 className="text-lg font-medium ps-2">{user?.email}</h3>
-              </div>
-              <div className="flex flex-col">
-                <h2 className="text-xl font-bold">رقم الهاتف</h2>
-                <h3 className="text-lg font-medium ps-2">
-                  {user?.phoneNumber}
-                </h3>
-              </div>
-            </div>
-
-            <div className="flex justify-center lg:justify-end">
-              <Link
-                to="/logout"
-                className="btn bg-black text-white border border-sky-950 font-semibold w-52 px-10 py-3 text-center rounded-3xl justify-center"
-                // onClick={handleLogout}
-              >
-                تسجيل الخروج
-              </Link>
+              )}
             </div>
           </div>
 
-          <div>
-            <h2>الطلبات</h2>
+          <Link to="/edit-profile" className="w-full lg:w-auto">
+            <button className="bg-teal-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-teal-700 transition w-full lg:w-auto">
+              تعديل البيانات
+            </button>
+          </Link>
+        </div>
+
+        {/* Personal Info */}
+        <div>
+          <h3 className="text-xl font-bold text-gray-800 mb-4 border-b pb-2">
+            البيانات الشخصية
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <label className="text-gray-600 text-sm">الاسم الكامل</label>
+              <div className="text-lg font-semibold text-gray-700 mt-1">
+                {user.fullName || "—"}
+              </div>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <label className="text-gray-600 text-sm">البريد الإلكتروني</label>
+              <div className="text-lg font-semibold text-gray-700 mt-1 break-words">
+                {user.email || "—"}
+              </div>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <label className="text-gray-600 text-sm">رقم الهاتف</label>
+              <div className="text-lg font-semibold text-gray-700 mt-1 direction-ltr">
+                {user.phoneNumber || "—"}
+              </div>
+            </div>
+            {user.address && (
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <label className="text-gray-600 text-sm">العنوان</label>
+                <div className="text-lg font-semibold text-gray-700 mt-1">
+                  {user.address}
+                </div>
+              </div>
+            )}
           </div>
         </div>
-      </div>
+
+        {/* Logout */}
+        <div className="flex justify-center md:justify-end pt-6">
+          <Link
+            to="/logout"
+            className="bg-black text-white w-full md:w-48 text-center py-3 rounded-full font-semibold hover:bg-gray-800 transition"
+          >
+            تسجيل الخروج
+          </Link>
+        </div>
+      </section>
+
+      {/* Orders */}
+      <section className="bg-white border border-gray-200 shadow-sm rounded-xl overflow-hidden">
+        <UserOrders />
+      </section>
     </div>
   );
 }
-
-export default Profile;

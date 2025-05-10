@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 // import AddAddressModel from "@/components/checkout/AddAddressModel"
 import {
   createOrder,
-//   fetchDeliveryMethods,
+  //   fetchDeliveryMethods,
   getShippingAddress,
   validateCoupon,
 } from "../api/product";
@@ -22,11 +22,11 @@ import AddAddressModel from "../components/ui/AddAddressModel";
 export default function Checkout() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-//   const { data: deliveryMethods } = useQuery({
-//     queryKey: ["DeliveryMethods"],
-//     queryFn: fetchDeliveryMethods,
-//   });
-//   console.log(deliveryMethods)
+  //   const { data: deliveryMethods } = useQuery({
+  //     queryKey: ["DeliveryMethods"],
+  //     queryFn: fetchDeliveryMethods,
+  //   });
+  //   console.log(deliveryMethods)
   const {
     data: addresses = [],
     isLoading: addressesLoading,
@@ -65,12 +65,12 @@ export default function Checkout() {
     setOrderDetail({ ...orderDetail, address: e.target.value });
   };
 
-//   const handleDeliveryMethodChange = (event) => {
-//     setOrderDetail((prev) => ({
-//       ...prev,
-//       deliveryMethod: event.target.value,
-//     }));
-//   };
+  //   const handleDeliveryMethodChange = (event) => {
+  //     setOrderDetail((prev) => ({
+  //       ...prev,
+  //       deliveryMethod: event.target.value,
+  //     }));
+  //   };
   const handlePaymentMethodChange = (event) => {
     setOrderDetail((prev) => ({
       ...prev,
@@ -152,14 +152,14 @@ export default function Checkout() {
   ];
 
   // ------------------
-  const isModelOpen = useSelector((state) => state.addressModel.isOpen)
+  const isModelOpen = useSelector((state) => state.addressModel.isOpen);
   const openAddAddressModal = () => {
-    dispatch(openAddressModel())
+    dispatch(openAddressModel());
   };
 
-//   const handleShippingPrice = (e) => {
-//    dispatch(setShippingPrice(e)); 
-//   }
+  //   const handleShippingPrice = (e) => {
+  //    dispatch(setShippingPrice(e));
+  //   }
   return (
     <div className="min-h-[75dvh] pb-50">
       {isModelOpen && <AddAddressModel />}
@@ -327,13 +327,17 @@ export default function Checkout() {
               <div>
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center justify-between">
+                    <h2 className="text-gray-400">عدد القطع</h2>
+                    <h2 className="">{cartItems?.length}</h2>
+                  </div>
+                  <div className="flex items-center justify-between">
                     <h2 className="text-gray-400">المجموع الفرعى</h2>
                     <h2 className="">{subTotal - shippingPrice} ج.م</h2>
                   </div>
-                  <div className="flex items-center justify-between">
+                  {/* <div className="flex items-center justify-between">
                     <h2 className="text-gray-400">رسوم التوصيل</h2>
                     <h2 className=""> 30 ج.م</h2>
-                  </div>
+                  </div> */}
                   {couponDetails.discountValue > 0 && (
                     <div className="flex items-center justify-between">
                       <h2 className="text-gray-400">Coupon Discount</h2>
@@ -346,7 +350,7 @@ export default function Checkout() {
                 </div>
                 <hr className="border-gray-300 my-2" />
                 <div className="font-bold flex items-center justify-between">
-                  <h2 className="">Subtotal</h2>
+                  <h2 className="">الاجمالي</h2>
                   <h2 className="">
                     {couponDetails.newDiscountedPrice > 0
                       ? couponDetails.newDiscountedPrice

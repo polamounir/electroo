@@ -15,6 +15,7 @@ const initialState = {
   error: null,
   conversationId: null,
   allChats: [],
+  filterdChats: [],
   activeConversation: null,
 };
 
@@ -107,14 +108,18 @@ const chatSlice = createSlice({
       console.log(state.allChats, "state.allChats");
     },
     updateLastMessage: (state, action) => {
-      const chatIndex = state.allChats.findIndex(
+      const chatIndex = state.filterdChats.findIndex(
         (chat) => chat.id === state.conversationId
       );
       if (chatIndex !== -1) {
-        state.allChats[chatIndex].lastMessage = action.payload;
-        state.allChats[chatIndex].lastMessageTime = new Date().toISOString();
+        state.filterdChats[chatIndex].lastMessage = action.payload;
+        state.filterdChats[chatIndex].lastMessageTime =
+          new Date().toISOString();
       }
-      console.log(state.allChats, "state.allChats");
+      console.log(state.filterdChats, "state.allChats");
+    },
+    setFilterdChats: (state, action) => {
+      state.filterdChats = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -164,6 +169,7 @@ export const {
   openChatingPopup,
   setConversationId,
   setAllChats,
+  setFilterdChats,
   updateLastMessage,
 } = chatSlice.actions;
 

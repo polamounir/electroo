@@ -75,12 +75,12 @@ export default function ProductsTable() {
 
       {/* Table Header */}
       <div className="grid grid-cols-12 py-3 bg-gray-100 font-semibold text-sm rounded-md px-4 text-gray-700">
-        <div className="col-span-4">اسم المنتج</div>
+        <div className="col-span-6">اسم المنتج</div>
         <div className="col-span-2">الفئة</div>
         <div className="col-span-2">السعر</div>
         <div className="col-span-1">المخزون</div>
         <div className="col-span-1">المبيعات</div>
-        <div className="col-span-2 text-center">الأوامر</div>
+        {/* <div className="col-span-2 text-center">الأوامر</div> */}
       </div>
 
       {/* Product Rows */}
@@ -92,12 +92,12 @@ export default function ProductsTable() {
                 key={product.id}
                 className="grid grid-cols-12 border-t border-gray-300 py-4 gap-5 px-4 text-sm text-gray-800 items-center hover:bg-gray-50"
               >
-                <div className="col-span-4 truncate">{product.title}</div>
+                <div className="col-span-6 truncate">{product.title}</div>
                 <div className="col-span-2">{product.category || "—"}</div>
                 <div className="col-span-2">{product.price} ج.م</div>
                 <div className="col-span-1">{product.stock || "—"}</div>
                 <div className="col-span-1">{product.sales || "—"}</div>
-                <div className="col-span-2 flex justify-center gap-3">
+                {/* <div className="col-span-2 flex justify-center gap-3">
                   <button
                     title="تعديل"
                     className="text-teal-600 text-xl hover:text-teal-800"
@@ -150,7 +150,7 @@ export default function ProductsTable() {
                       </button>
                     )}
                   </div>
-                </div>
+                </div> */}
               </div>
             ))}
 

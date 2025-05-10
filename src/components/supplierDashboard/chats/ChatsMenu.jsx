@@ -1,25 +1,34 @@
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { api } from "../../../api/axiosInstance";
 import { Link } from "react-router-dom";
 import { IoSearchOutline } from "react-icons/io5";
-import { setAllChats, setConversationId } from "../../../app/slices/chatSlice";
+import {
+  setAllChats,
+  setConversationId,
+  setFilterdChats,
+} from "../../../app/slices/chatSlice";
 
 import { useQuery } from "@tanstack/react-query";
+import { useChatHub } from "../../../hooks/useChatHub";
 
 export default function ChatsMenu() {
   const dispatch = useDispatch();
+    const { messages } = useChatHub();  
 
-  const [filterdChats, setFilterdChats] = useState([]);
-  const { allChats, conversationId } = useSelector((state) => state.chat);
+  const { allChats, conversationId, filterdChats } = useSelector(
+    (state) => state.chat
+  );
 
   // Fetch chat conversations
   const fetchChats = async () => {
     try {
       const { data } = await api.get("/conversations?page=1&limit=20");
       console.log(data.data.items);
+
       dispatch(setAllChats(data.data.items));
+      dispatch(setFilterdChats(data.data.items));
       return data.data.items;
     } catch (error) {
       console.log(error);
@@ -42,8 +51,7 @@ export default function ChatsMenu() {
   // });
   useEffect(() => {
     fetchChats();
-    setFilterdChats(allChats);
-  }, []);
+  }, [messages]);
 
   const formatDate = (dateString) => {
     const date =
@@ -74,15 +82,15 @@ export default function ChatsMenu() {
       const filtered = allChats.filter((chat) =>
         chat.fullName.toLowerCase().includes(name.toLowerCase())
       );
-      setFilterdChats(filtered);
+      dispatch(setFilterdChats(filtered));
     } else {
-      setFilterdChats(allChats);
+      dispatch(setFilterdChats(allChats));
     }
     console.log(filterdChats);
   };
 
   return (
-    <div className="col-span-4 bg-white h-[55svh]">
+    <div className="col-span-4 bg-white min-h-[55svh]">
       <div>
         <div className="p-5">
           <div className="rounded-full h-12 relative overflow-hidden">
@@ -98,7 +106,7 @@ export default function ChatsMenu() {
           </div>
         </div>
         <div className="overflow-auto overflow-y-auto scrolling h-[60svh] p-5 flex flex-col gap-2">
-          {[...Array(20)].map((_, i) => (
+          {[...Array(1)].map((_, i) => (
             <React.Fragment key={i}>
               {filterdChats?.map((chat) => (
                 <div
@@ -122,7 +130,9 @@ export default function ChatsMenu() {
                         {formatDate(chat.lastMessageTime)}
                       </p>
                     </div>
-                    <p className="text-gray-600 truncate">{chat.lastMessage}</p>
+                    <p className="text-gray-600 truncate">
+                      {chat.lastMessage || "''جديد''"}
+                    </p>
                   </div>
                 </div>
               ))}
