@@ -103,7 +103,7 @@ export default function ChatPopup() {
     <div
       className={`${
         activeChat === "popup" || isMenuOpen ? "flex" : "hidden"
-      } flex flex-col gap-10 items-center fixed border-2 border-gray-200 rounded-lg overflow-hidden shadow-lg shadow-teal-500 bottom-5 right-5 z-[110] max-w-sm min-w-sm `}
+      } flex flex-col gap-10 items-center fixed border-2 border-gray-200 rounded-lg overflow-hidden shadow-lg shadow-teal-500 bottom-5 right-5 z-[110] max-w-sm min-w-sm bg-white`}
     >
       <div className="w-full">
         <div className="chat-header">

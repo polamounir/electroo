@@ -95,6 +95,7 @@ export default function ChatDropdownList({ isPopupOpen }) {
       });
     }
   };
+  console.log(items);
 
   return (
     <div className="scrolling p-6 max-h-[50svh] overflow-y-auto w-sm absolute top-[90%] end-0 bg-white rounded-lg shadow-md border border-gray-300 chat-dropdown-menu">

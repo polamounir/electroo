@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import { getConversation, startConversation } from "../../api/conversation";
 
-
 // Initial state
 const initialState = {
   activeChat: null,
@@ -15,6 +14,8 @@ const initialState = {
   chat: null,
   error: null,
   conversationId: null,
+  allChats: [],
+  activeConversation: null,
 };
 
 // Async thunk
@@ -42,7 +43,6 @@ export const startConversationThunk = createAsyncThunk(
 export const getChatThunk = createAsyncThunk(
   "chat/getChat",
   async (id, { rejectWithValue }) => {
-    
     // console.log(id, "idxxxxxxxxxxxxxxxxxxx");
     try {
       const response = await getConversation(id);
@@ -88,6 +88,33 @@ const chatSlice = createSlice({
       // console.log(action.payload, "action.payload.chat");
       state.supplierName = action.payload.fullName;
       state.conversationId = action.payload.id;
+    },
+    setConversationId: (state, action) => {
+      if (state.conversationId === action.payload) {
+        state.conversationId = null;
+        state.activeConversation = null;
+      } else {
+        state.conversationId = action.payload;
+
+        const chat = state.allChats.filter(
+          (chat) => chat.id === state.conversationId
+        );
+        state.activeConversation = chat[0];
+      }
+    },
+    setAllChats: (state, action) => {
+      state.allChats = action.payload;
+      console.log(state.allChats, "state.allChats");
+    },
+    updateLastMessage: (state, action) => {
+      const chatIndex = state.allChats.findIndex(
+        (chat) => chat.id === state.conversationId
+      );
+      if (chatIndex !== -1) {
+        state.allChats[chatIndex].lastMessage = action.payload;
+        state.allChats[chatIndex].lastMessageTime = new Date().toISOString();
+      }
+      console.log(state.allChats, "state.allChats");
     },
   },
   extraReducers: (builder) => {
@@ -135,6 +162,9 @@ export const {
   closeChat,
   toggleMenu,
   openChatingPopup,
+  setConversationId,
+  setAllChats,
+  updateLastMessage,
 } = chatSlice.actions;
 
 // Selectors

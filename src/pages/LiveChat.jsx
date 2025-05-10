@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { startConversationThunk } from "../app/slices/chatSlice";
 
 export default function LiveChat() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const location = useLocation();
 
@@ -18,15 +18,12 @@ export default function LiveChat() {
   const searchParams = new URLSearchParams(location.search);
   const withParam = searchParams.get('with');
   console.log(withParam)
-  // const dispatch = useDispatch();
+  
 
   const { supplierId, productId, productName, supplierName } = useSelector(
     (state) => state.chat
   );
-  // console.log(supplierId, "sss", productId, productName);
-  // const [messages, setMessages] = useState([
-  //   // { text: "مرحبًا ! ما هو استفسارك بخصوص المنتج " + productName + "؟  ", fromMe: false },
-  // ]);
+
 
   const chatContainerRef = useRef(null);
   const chatEndRef = useRef(null);
