@@ -13,13 +13,12 @@ import {
 import StatusBadge from "../ui/StatusBadge";
 import { Link } from "react-router-dom";
 
-
 const fetchUserOrders = async ({ pageParam = 1 }) => {
   try {
     const { data } = await api.get(`/orders`, {
       params: {
         page: pageParam,
-        limit: 10,
+        limit: 6,
       },
     });
     return data.data;
@@ -46,14 +45,14 @@ export default function UserOrders() {
         : undefined,
 
     retry: 1,
-    staleTime: 5 * 60 * 1000, 
+    staleTime: 5 * 60 * 1000,
   });
 
   const allOrders = data?.pages.flatMap((page) => page.items) || [];
 
   const { ref, inView } = useInView({
     threshold: 0,
-    rootMargin: "200px", 
+    rootMargin: "200px",
   });
 
   React.useEffect(() => {
@@ -76,12 +75,24 @@ export default function UserOrders() {
     }
   };
 
+  const totalOrders = data?.pages?.flatMap((page) => page.totalItems)[0] || 0;
+  //   console.log(totalOrders);
   return (
     <div className="p-6 md:p-8 bg-white rounded-xl space-y-6">
-      <h2 className="text-2xl font-bold text-gray-800 border-b pb-4 flex items-center gap-2">
-        <FaBox className="text-teal-600" />
-        طلباتي
-      </h2>
+      <div>
+        <div className="border-b pb-4 flex items-center justify-between gap-2">
+          <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+            <FaBox className="text-teal-600" />
+            طلباتي
+          </h2>
+          <div>
+            <Link className="px-5 py-1 bg-teal-600 hover:bg-teal-700 text-white rounded-lg duration-300 flex items-center gap-2">
+              الكل
+              <span>{`( ${totalOrders} )`}</span>
+            </Link>
+          </div>
+        </div>
+      </div>
 
       {isLoading ? (
         <div className="py-20 flex flex-col items-center justify-center">
@@ -118,7 +129,7 @@ export default function UserOrders() {
           </Link>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
           {allOrders.map((order) => (
             <div
               key={order.orderId}
@@ -130,11 +141,12 @@ export default function UserOrders() {
                   <span className="font-semibold">رقم الطلب:</span>
                   <span>{order.orderId}</span>
                 </div>
-
-                <StatusBadge status={order.status} size="lg" />
+                <div className="flex justify-end w-full">
+                  <StatusBadge status={order.status} size="lg" />
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+              <div className="grid grid-cols-1  gap-4 mb-4">
                 <div className="flex items-center gap-2 text-gray-700">
                   <FaCalendarAlt className="text-teal-600" />
                   <span className="font-semibold ml-1">التاريخ:</span>
