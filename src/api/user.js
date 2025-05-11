@@ -21,7 +21,6 @@ export const loginSupplierFn = async (userData) => {
 };
 
 export const loginWithGoogle = async (credential) => {
-
   try {
     const res = await api.post("/auth/google-login", {
       credentials: credential,
@@ -134,3 +133,10 @@ export const logoutUser = async () => {
   localStorage.removeItem("email");
   window.location.href = "/";
 };
+
+// -------------------------------------------------------
+
+// export const cancelOrderItem = (id) => {
+  
+//   // return data;
+// };

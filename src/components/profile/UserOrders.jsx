@@ -1,6 +1,5 @@
 import React from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { useInView } from "react-intersection-observer";
+import {  useQuery } from "@tanstack/react-query";
 import { api } from "../../api/axiosInstance";
 import {
   FaMoneyBillWave,
@@ -10,15 +9,17 @@ import {
   FaBox,
   FaTruck,
 } from "react-icons/fa";
+import { HiOutlineViewfinderCircle } from "react-icons/hi2";
 import StatusBadge from "../ui/StatusBadge";
 import { Link } from "react-router-dom";
+import { FcCancel } from "react-icons/fc";
 
-const fetchUserOrders = async ({ pageParam = 1 }) => {
+const fetchUserOrders = async () => {
   try {
-    const { data } = await api.get(`/orders`, {
+    const { data } = await api.get("/orders", {
       params: {
-        page: pageParam,
-        limit: 6,
+        page: 1,
+        limit: 20, // Or higher if you want all items
       },
     });
     return data.data;
@@ -28,40 +29,14 @@ const fetchUserOrders = async ({ pageParam = 1 }) => {
 };
 
 export default function UserOrders() {
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    isError,
-    error,
-  } = useInfiniteQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["userOrders"],
     queryFn: fetchUserOrders,
-    getNextPageParam: (lastPage) =>
-      lastPage.currentPage < lastPage.totalPages
-        ? lastPage.currentPage + 1
-        : undefined,
-
-    retry: 1,
     staleTime: 5 * 60 * 1000,
   });
 
-  const allOrders = data?.pages.flatMap((page) => page.items) || [];
+  const allOrders = data?.items || [];
 
-  const { ref, inView } = useInView({
-    threshold: 0,
-    rootMargin: "200px",
-  });
-
-  React.useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
-
-  // Format date for Arabic locale
   const formatDate = (dateString) => {
     try {
       return new Date(dateString).toLocaleDateString("ar-EG", {
@@ -75,8 +50,17 @@ export default function UserOrders() {
     }
   };
 
-  const totalOrders = data?.pages?.flatMap((page) => page.totalItems)[0] || 0;
-  //   console.log(totalOrders);
+  const totalOrders = data?.totalItems || 0;
+
+  const handleCancelOrderItem = async (id) => {
+    try {
+      const { data } = await api.post(`/orders/cancel-item/${id}`);
+      console.log(data);
+      refetch(); // Refresh the data after canceling
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <div className="p-6 md:p-8 bg-white rounded-xl space-y-6">
       <div>
@@ -122,18 +106,18 @@ export default function UserOrders() {
             ابدأ التسوق الآن واستمتع بتجربة شراء مميزة
           </p>
           <Link
-            to="/products"
+            to="/search?SearchQuery=&Limit=20"
             className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition"
           >
             تصفح المنتجات
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 gap-5">
           {allOrders.map((order) => (
             <div
               key={order.orderId}
-              className="border border-gray-200 rounded-lg p-5 md:p-6 shadow-sm hover:shadow-md transition duration-300 bg-white"
+              className="md:border border-gray-200 rounded-lg sm:p-5 md:p-6 sm:shadow-md hover:shadow-lg transition duration-300 bg-white"
             >
               <div className="flex flex-wrap justify-between items-center gap-4 mb-4 pb-3 border-b">
                 <div className="flex items-center gap-2 text-gray-700">
@@ -141,13 +125,10 @@ export default function UserOrders() {
                   <span className="font-semibold">رقم الطلب:</span>
                   <span>{order.orderId}</span>
                 </div>
-                <div className="flex justify-end w-full">
-                  <StatusBadge status={order.status} size="lg" />
-                </div>
               </div>
 
-              <div className="grid grid-cols-1  gap-4 mb-4">
-                <div className="flex items-center gap-2 text-gray-700">
+              <div className="grid grid-cols-2 lg:grid-cols-4  gap-4 mb-4 text-xs">
+                <div className="flex items-center gap- text-gray-700 ">
                   <FaCalendarAlt className="text-teal-600" />
                   <span className="font-semibold ml-1">التاريخ:</span>
                   <span>{formatDate(order.orderDate)}</span>
@@ -159,6 +140,11 @@ export default function UserOrders() {
                   <span>{order.paymentMethod}</span>
                 </div>
 
+                <div className="flex items-center gap-2 text-gray-700">
+                  <FaMoneyBillWave className="text-teal-600" />
+                  <span className="font-semibold ml-1">العدد:</span>
+                  <span className="font-bold">{order.orderItems.length}</span>
+                </div>
                 <div className="flex items-center gap-2 text-gray-700">
                   <FaMoneyBillWave className="text-teal-600" />
                   <span className="font-semibold ml-1">المبلغ:</span>
@@ -178,6 +164,60 @@ export default function UserOrders() {
                 </div>
               )}
 
+              <div className="flex flex-col gap-5">
+                {order.orderItems?.map((item) => (
+                  <div
+                    key={item.productId}
+                    className="w-full max-w-full p-4 rounded-md sm:shadow-sm bg-white"
+                  >
+                    <div className="flex flex-col md:flex-row gap-4 items-center">
+                      {/* Product Image */}
+                      <img
+                        src={item.imageUrl}
+                        alt={item.productName}
+                        className="w-20 h-20 object-cover rounded"
+                      />
+
+                      {/* Product Info */}
+                      <div className="w-full">
+                        {/* Product Name */}
+                        <h2 className="truncate font-semibold w-[80%] text-xs md:text-md">
+                          {item.productName}
+                        </h2>
+
+                        {/* Actions Row */}
+                        <div className="flex items-center justify-between mt-2">
+                          <div className="flex gap-2">
+                            <Link className="text-white bg-teal-600 hover:bg-teal-700 px-5 py-0.5 rounded-md flex items-center gap-2 duration-300">
+                              <span>تفاصيل</span>
+                              <span className="text-xl">
+                                <HiOutlineViewfinderCircle />
+                              </span>
+                            </Link>
+
+                            {item.status === "Pending" && (
+                              <button
+                                onClick={() =>
+                                  handleCancelOrderItem(item.orderItemId)
+                                }
+                                className="bg-rose-50 hover:bg-rose-100 border border-red-500 text-red-500  px-5 py-0.5 shadow rounded-md flex items-center gap-2 duration-300"
+                              >
+                                <span>الغاء</span>
+                                <span className="text-xl">
+                                  <FcCancel />
+                                </span>
+                              </button>
+                            )}
+                          </div>
+
+                          <StatusBadge status={item.status} size="lg" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
               {/* View Order Details Button */}
               <div className="mt-4 flex justify-end">
                 <Link
@@ -190,15 +230,7 @@ export default function UserOrders() {
             </div>
           ))}
 
-          {/* Intersection Observer Target */}
-          <div ref={ref} className="h-10" />
 
-          {isFetchingNextPage && (
-            <div className="text-center py-4">
-              <div className="w-8 h-8 border-2 border-gray-200 border-t-teal-600 rounded-full animate-spin mx-auto"></div>
-              <p className="text-sm text-gray-500 mt-2">جاري تحميل المزيد...</p>
-            </div>
-          )}
         </div>
       )}
     </div>

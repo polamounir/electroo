@@ -163,9 +163,9 @@ export default function SearchProductsContainer({ products }) {
         className={`grid gap-4  grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5`}
       >
         {products.length > 0 ? (
-          products.map((product) => (
+          products.map((product, index) => (
             <ProductCard
-              key={product.id}
+              key={`${product.id}_${index}`}
               product={product}
               isRowView={isRowView}
             />

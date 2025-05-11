@@ -50,6 +50,7 @@ export default function Checkout() {
     paymentMethod: "Online",
     // deliveryMethod: "9d9e0d7e-a9a8-4d2a-c907-08dd6f6fbed6",
   });
+  const [confirmedCoupon , setConfirmedCoupon] = useState("")
 
   useEffect(() => {
     dispatch(fetchCartAsync());
@@ -85,7 +86,7 @@ export default function Checkout() {
       newDiscountedPrice: 0,
     });
     setOrderCoupon(event.target.value);
-    // console.log(orderCoupon)
+ 
   };
 
   const validateOrderCoupon = async () => {
@@ -96,6 +97,7 @@ export default function Checkout() {
 
     if (res.status == "Successful") {
       setCouponDetails(res.data);
+      setConfirmedCoupon(orderCoupon)
       toast.success("Coupon applied successfully!");
     } else if (res.code === 401) {
       toast.error(res.message);
@@ -107,6 +109,7 @@ export default function Checkout() {
 
   // ------------------------------------------
   const reformOrder = async () => {
+   
     let address = orderDetail.address;
     if (address === "" && addresses?.length > 0) {
       address = addresses[0].id;
@@ -115,6 +118,7 @@ export default function Checkout() {
       ...orderDetail,
       cartId: localStorage.getItem("cartId"),
       address: address,
+      couponCode: confirmedCoupon,
     };
     return updatedOrder;
   };
@@ -340,7 +344,7 @@ export default function Checkout() {
                   </div> */}
                   {couponDetails.discountValue > 0 && (
                     <div className="flex items-center justify-between">
-                      <h2 className="text-gray-400">Coupon Discount</h2>
+                      <h2 className="text-gray-400">خصم الكوبون</h2>
                       <h2 className="text-red-500">
                         {" "}
                         {couponDetails.discountValue} ج.م

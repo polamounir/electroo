@@ -14,33 +14,37 @@ const initialState = {
   OptionGroupName: null,
   OptionValue: null,
   CategoryId: null,
-  
+
   searchResults: [],
   isLoading: false,
   error: null,
   isSearchSidebarOpen: false,
+  Cursor: null,
+  HasMore: true,
 };
 
 export const getSearchResults = createAsyncThunk(
   "search/getSearchResults",
-  async (params, { rejectWithValue }) => {
+  async (params, { rejectWithValue, dispatch, getState }) => {
+    const state = getState();
+    const { Cursor } = state.search;
+
     // console.log("params", params);
     const {
       SearchQuery,
       MinimumPrice = 0,
       MaximumPrice = 10000,
       HasDiscount = false,
-      limit = 20,
+      limit = 50,
       OptionGroupName,
       OptionValue,
       CategoryId,
     } = params;
-    console.log("params", params);
+    // console.log("params", params);
     try {
       const response = await api.get("/products", {
         params: {
           SearchQuery: SearchQuery,
-
           Limit: limit,
           MinimumPrice: MinimumPrice,
           MaximumPrice: MaximumPrice,
@@ -48,11 +52,19 @@ export const getSearchResults = createAsyncThunk(
           OptionGroupName: OptionGroupName,
           OptionValue: OptionValue,
           CategoryId: CategoryId,
+          Cursor: Cursor,
         },
       });
 
       const items = response.data?.data?.items;
-      //   console.log("Fetched Products:", items);
+      dispatch(
+        setCursor({
+          cursor: response.data?.data?.cursor,
+          hasMore: response.data?.data?.hasMore,
+          items: response.data?.data?.items,
+        })
+      );
+      console.log("Fetched Products:", response.data?.data);
       return items;
     } catch (error) {
       console.error("API Error:", error);
@@ -74,9 +86,7 @@ const searchSlice = createSlice({
         MinimumPrice,
         MaximumPrice,
         HasDiscount,
-
         limit,
-        // sort,
         viewMode,
         optionGroup,
         selectedOptionsValue,
@@ -100,6 +110,13 @@ const searchSlice = createSlice({
     setIsSearchSidebarOpen: (state) => {
       state.isSearchSidebarOpen = !state.isSearchSidebarOpen;
     },
+    setCursor: (state, action) => {
+      const { cursor, hasMore, items } = action.payload;
+      console.log(action.payload);
+      state.searchResults = [...state.searchResults, ...items];
+      state.Cursor = cursor;
+      state.HasMore = hasMore;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -121,5 +138,6 @@ const searchSlice = createSlice({
   },
 });
 
-export const { setSearchParams, setIsSearchSidebarOpen } = searchSlice.actions;
+export const { setSearchParams, setIsSearchSidebarOpen, setCursor } =
+  searchSlice.actions;
 export default searchSlice.reducer;

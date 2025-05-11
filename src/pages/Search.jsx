@@ -31,19 +31,19 @@ function Search() {
   const optionValue = params.get("OptionValue") || null;
 
   useEffect(() => {
-    console.log(
-      "search",
-      searchQuery,
-      categoryId,
-      minimumPrice,
-      maximumPrice,
-      hasDiscount,
-      sortBy,
-      // viewMode,
-      limit,
-      optionGroupName,
-      optionValue
-    );
+    // console.log(
+    //   "search",
+    //   searchQuery,
+    //   categoryId,
+    //   minimumPrice,
+    //   maximumPrice,
+    //   hasDiscount,
+    //   sortBy,
+    //   // viewMode,
+    //   limit,
+    //   optionGroupName,
+    //   optionValue
+    // );
     dispatch(
       getSearchResults({
         SearchQuery: searchQuery,
@@ -85,6 +85,23 @@ function Search() {
     optionValue,
   ]);
   // console.log(searchResults);
+
+  const getMore = () => {
+    dispatch(
+      getSearchResults({
+        SearchQuery: searchQuery,
+        Limit: limit,
+        MinimumPrice: minimumPrice,
+        MaximumPrice: maximumPrice,
+        HasDiscount: hasDiscount,
+        SortBy: sortBy,
+        // ViewMode: viewMode,
+        CategoryId: categoryId,
+        OptionGroupName: optionGroupName,
+        OptionValue: optionValue,
+      })
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -137,8 +154,11 @@ function Search() {
             <div className="col-span-1 lg:col-span-3 xl:col-span-2 border-e border-gray-300">
               <SearchFilter />
             </div>
-            <div className="col-span-1 lg:col-span-7 xl:col-span-8">
+            <div className="col-span-1 lg:col-span-7 xl:col-span-8 flex flex-col justify-between">
               <SearchProductsContainer products={searchResults} />
+              <div>
+                <button onClick={getMore}>More</button>
+              </div>
             </div>
           </div>
         )}
