@@ -49,6 +49,13 @@ export default function AdminSideMenu() {
     },
     {
       id: 6,
+      name: "أكواد الخصم",
+      title: "promos",
+      link: "/admin/promos",
+      icon: <AiOutlineDollar />,
+    },
+    {
+      id: 7,
       name: "تسجيل خروج",
       title: "settings",
       link: "/logout",

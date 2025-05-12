@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import { FcCancel } from "react-icons/fc";
 import { toast } from "sonner";
 
-// Confirmation Modal Component
+
 const ConfirmationModal = ({
   isOpen,
   onClose,
@@ -99,7 +99,7 @@ export default function UserOrders() {
     if (allOrders.length > 0) {
       setItemsStatus();
     }
-  }, [ data]);
+  }, [data]);
 
   const formatDate = (dateString) => {
     try {

@@ -87,6 +87,10 @@ import SetPassword from "../pages/SetPassword";
 import SupplierOrdersLayout from "../components/supplierDashboard/orders/SupplierOrdersLayout";
 import SupplierOrdersOverview from "../components/supplierDashboard/orders/SupplierOrdersOverview";
 import SupplierOrderDetails from "../components/supplierDashboard/orders/SupplierOrderDetails";
+import PromoLayout from "../components/adminDashboard/promo/PromoLayout";
+import PromoOverview from "../components/adminDashboard/promo/PromoOverview";
+import AdminAddNewPromo from "../components/adminDashboard/promo/AdminAddNewPromo";
+import AdminEditPromo from "../components/adminDashboard/promo/AdminEditPromo";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -213,6 +217,11 @@ const AppRoutes = () => {
             <Route path="chats" element={<AdminChatLayout />}>
               <Route index element={<AdminAllChats />} />
               <Route path=":id" element={<AdminChat />} />
+            </Route>
+            <Route path="promos" element={<PromoLayout />}>
+              <Route index element={<PromoOverview />} />
+              <Route path="add" element={<AdminAddNewPromo />} />
+              <Route path="edit/:id" element={<AdminEditPromo />} />
             </Route>
             <Route path="sales" element={<div>Sales</div>} />
             <Route path="settings" element={<div>Settings</div>} />
