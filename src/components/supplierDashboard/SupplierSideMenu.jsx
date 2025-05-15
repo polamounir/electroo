@@ -6,6 +6,9 @@ import { TfiPackage } from "react-icons/tfi";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { BsGear } from "react-icons/bs";
 import { AiOutlineDollar } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import { setSupplierSideMenu } from "../../app/slices/dashboardSlice";
+import { IoIosClose } from "react-icons/io";
 export default function SupplierSideMenu() {
   const links = [
     {
@@ -69,8 +72,23 @@ export default function SupplierSideMenu() {
   useEffect(() => {
     handleActiveLink(section);
   }, []);
+  const dispatch = useDispatch();
+  const { supplierSideMenu } = useSelector((state) => state.dashboard);
+
+
+
+
+const toggleSideMenu = () => {
+  dispatch(setSupplierSideMenu(!supplierSideMenu));
+}
+
   return (
-    <div className="hidden md:block fixed start-0 top-0 bottom-0">
+    <div className={`fixed  bg-white z-100 md:block top-0 bottom-0 duration-300 ${supplierSideMenu ? "start-0"  :"start-[-60rem]"} lg:start-0  duration-300`}>
+        <div className="flex justify-end ">
+        <button onClick={toggleSideMenu} className="lg:hidden text-4xl  hover:bg-gray-100 rounded duration-300">
+          <IoIosClose />
+        </button>
+        </div>
       <div className="h-full w-60 bg-[var(--main-color)]  pt-20">
         <div className="flex flex-col gap-10">
           <Link to="/" className="title text-4xl font-bold ps-5">

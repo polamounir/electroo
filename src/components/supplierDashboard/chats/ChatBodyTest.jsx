@@ -224,15 +224,10 @@ export default function ChatBody() {
   }, [handleScroll]);
 
   useEffect(() => {
-    // if (chatEndRef.current) {
-    //   chatEndRef.current.scrollIntoView({ behavior: "smooth" });
-
-    // }
-    const container = chatContainerRef.current;
-    if (container) {
-      container.scrollTop = container.scrollHeight;
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [newMessages , conversationId]);
+  }, [newMessages]);
 
   useEffect(() => {
     if (
@@ -251,19 +246,19 @@ export default function ChatBody() {
   if (!conversationId) {
     return (
       <div className="col-span-8 p-5">
-        <div className="flex flex-col items-center justify-center h-[65svh] text-center pb-25">
+        <div className="flex flex-col items-center justify-center h-[65svh] text-center">
           <img
-           src="https://cdn-icons-png.flaticon.com/512/2936/2936956.png"
+            src="https://cdn-icons-png.flaticon.com/512/3588/3588294.png"
             alt="Start Chat"
             className="w-24 h-24 mb-4"
           />
-          <p className="text-gray-600 text-lg mb-2">اختر المحادثة التي تريدها</p>
-          {/* <button
+          <p className="text-gray-600 text-lg mb-2">ابدأ المحادثة مع المورد</p>
+          <button
             onClick={() => dispatch(setConversationId("d7c2e69a-8f36-48a7-a731-b07fa39c2ae6"))}
             className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
           >
             ابدأ الآن
-          </button> */}
+          </button>
         </div>
       </div>
     );
@@ -283,14 +278,14 @@ export default function ChatBody() {
   );
 
   return (
-    <div className="col-span-8">
+    <div className="col-span-8 p-5">
       <div className="whatsapp-container">
         <div className="border-b border-gray-300 py-2">
-          <div className="flex items-center gap-5 px-5">
+          <div className="flex items-center gap-5">
             <img
               src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"
               alt="chat"
-              className="rounded-2xl h-10"
+              className="rounded-2xl h-15"
             />
             <h2 className="text-2xl font-bold">
               {activeConversation?.fullName || "Name"}
@@ -314,8 +309,7 @@ export default function ChatBody() {
 
           {messages.length > 0 && (
             <div>
-{
-(() => {
+{(() => {
   const sentDate = new Date(latestMessage.sentOn);
   const today = new Date();
 
@@ -330,8 +324,7 @@ export default function ChatBody() {
       <span>اليوم</span>
     </div>
   ) 
-})()
-}
+})()}
               {messages.map((msg, idx) => (
                 <NewChatMessage key={`new-${idx}`} msg={msg} />
               ))}

@@ -1,8 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { api } from "../../../api/axiosInstance";
-import { FaRegEdit } from "react-icons/fa";
-import { GoTrash } from "react-icons/go";
+
 import {
   FiPackage,
   FiUser,
@@ -17,6 +16,7 @@ const fetchOrders = async ({ pageParam = 1 }) => {
 };
 
 export default function SupplierOrdersOverview() {
+
   const {
     data,
     fetchNextPage,

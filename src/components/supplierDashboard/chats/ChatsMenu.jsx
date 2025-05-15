@@ -138,6 +138,7 @@ export default function ChatsMenu() {
               ))}
             </React.Fragment>
           ))}
+     
         </div>
       </div>
     </div>

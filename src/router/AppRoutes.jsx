@@ -91,6 +91,7 @@ import PromoLayout from "../components/adminDashboard/promo/PromoLayout";
 import PromoOverview from "../components/adminDashboard/promo/PromoOverview";
 import AdminAddNewPromo from "../components/adminDashboard/promo/AdminAddNewPromo";
 import AdminEditPromo from "../components/adminDashboard/promo/AdminEditPromo";
+import ChatBodyTest from "../components/supplierDashboard/chats/ChatBodyTest";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -161,7 +162,7 @@ const AppRoutes = () => {
             <Route path="/checkout-success" element={<CheckoutSuccess />} />
 
             {/* TEsting */}
-            <Route path="/test" element={<Test />} />
+            <Route path="/test" element={<ChatBodyTest />} />
             <Route path="/upload" element={<Upload />} />
 
             <Route
