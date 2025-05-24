@@ -11,11 +11,12 @@ import {
   setIsSearchSidebarOpen,
   setSearchParams,
 } from "../app/slices/searchSlice";
+import NoProducts from "../components/search/NoProducts";
 function Search() {
   const dispatch = useDispatch();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const { searchResults, isLoading, error } = useSelector(
+  const { searchResults, isLoading, error, HasMore } = useSelector(
     (state) => state.search
   );
   const searchQuery = params.get("SearchQuery") || null;
@@ -31,19 +32,6 @@ function Search() {
   const optionValue = params.get("OptionValue") || null;
 
   useEffect(() => {
-    // console.log(
-    //   "search",
-    //   searchQuery,
-    //   categoryId,
-    //   minimumPrice,
-    //   maximumPrice,
-    //   hasDiscount,
-    //   sortBy,
-    //   // viewMode,
-    //   limit,
-    //   optionGroupName,
-    //   optionValue
-    // );
     dispatch(
       getSearchResults({
         SearchQuery: searchQuery,
@@ -95,7 +83,6 @@ function Search() {
         MaximumPrice: maximumPrice,
         HasDiscount: hasDiscount,
         SortBy: sortBy,
-        // ViewMode: viewMode,
         CategoryId: categoryId,
         OptionGroupName: optionGroupName,
         OptionValue: optionValue,
@@ -108,7 +95,7 @@ function Search() {
       {" "}
       <div className=" mx-auto px-4 py-8">
         {/* Search Header */}
-        <div className="flex justify-between items-start mb-4 px-1 sm:px-5">
+        {/* <div className="flex justify-between items-start mb-4 px-1 sm:px-5">
           <h1 className="text-xl md:text-2xl lg:text-3xl font-semibold text-gray-800 mb-6 text-right">
             نتائج البحث لـ: <span className="text-teal-600">{searchQuery}</span>
           </h1>
@@ -116,12 +103,11 @@ function Search() {
             <button
               onClick={() => {
                 dispatch(setIsSearchSidebarOpen());
-              }}
-            >
+              }}>
               <LuTextSearch />
             </button>
           </div>
-        </div>
+        </div> */}
         {/* Loading Spinner */}
         {isLoading && (
           <div className="flex justify-center items-center">
@@ -130,20 +116,20 @@ function Search() {
         )}
 
         {/* Error Message */}
-        {error && (
+        {/* {error && (
           <div className="bg-red-100 text-red-700 p-4 rounded-lg mb-4 text-right">
             <p>خطأ: حدث خطأ غير معروف.</p>
           </div>
-        )}
+        )} */}
 
         {/* No Results Message */}
         {!isLoading && searchResults?.length === 0 && (
           <div className="grid grid-cols-1 lg:grid-cols-10 gap-4">
-            <div className="col-span-1 lg:col-span-3 xl:col-span-2 border-e border-gray-300">
+            <div className="col-span-1 lg:col-span-3 xl:col-span-2 ">
               <SearchFilter />
             </div>
-            <div className="col-span-1 lg:col-span-7 xl:col-span-8">
-              <p>لم يتم العثور على نتائج.</p>
+              <div className="col-span-1 lg:col-span-7 xl:col-span-8">
+                <NoProducts />
             </div>
           </div>
         )}
@@ -151,13 +137,22 @@ function Search() {
         {/* Product Results */}
         {searchResults?.length > 0 && (
           <div className="grid grid-cols-1 lg:grid-cols-10 gap-4">
-            <div className="col-span-1 lg:col-span-3 xl:col-span-2 border-e border-gray-300">
+            <div className="col-span-1 lg:col-span-3 xl:col-span-2 min-w-40">
               <SearchFilter />
             </div>
-            <div className="col-span-1 lg:col-span-7 xl:col-span-8 flex flex-col justify-between">
+            <div className="col-span-1 lg:col-span-7 xl:col-span-8 flex flex-col justify-between lg:px-10">
               <SearchProductsContainer products={searchResults} />
-              <div>
-                <button onClick={getMore}>More</button>
+              <div className="flex justify-end">
+                <button
+                  onClick={getMore}
+                  disabled={!HasMore || isLoading}
+                  className="bg-teal-500 text-white px-4 py-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed">
+                  {isLoading
+                    ? "جاري التحميل..."
+                    : HasMore
+                    ? "تحميل المزيد"
+                    : "لا يوجد نتائج أكثر"}
+                </button>
               </div>
             </div>
           </div>

@@ -163,12 +163,11 @@ const AppRoutes = () => {
 
             {/* TEsting */}
             <Route path="/test" element={<ChatBodyTest />} />
-            <Route path="/upload" element={<Upload />} />
+            {/* <Route path="/upload" element={<Upload />} /> */}
 
             <Route
               path="/supplier-register"
-              element={<SupplierRegisteration />}
-            >
+              element={<SupplierRegisteration />}>
               <Route index element={<BasicData />} />
               <Route path="base" element={<BasicData />} />
               <Route path="business" element={<BusinessData />} />
@@ -191,8 +190,7 @@ const AppRoutes = () => {
               <ProtectedRoutes>
                 <AdminLayout />
               </ProtectedRoutes>
-            }
-          >
+            }>
             <Route index element={<AdminOverview />} />
             <Route path="products" element={<AdminProductsLayout />}>
               <Route index element={<AdminProductsOverview />} />
@@ -234,8 +232,7 @@ const AppRoutes = () => {
               <ProtectedRoutes>
                 <SupplierLayout />
               </ProtectedRoutes>
-            }
-          >
+            }>
             <Route index element={<SupplierOverview />} />
             <Route path="products" element={<SupplierProductsLayout />}>
               <Route index element={<SupplierProductsOverview />} />

@@ -147,6 +147,11 @@ export default function Login() {
                           </div>
                         )}
                       </div>
+                      <div className="text-sm text-gray-500">
+                        <Link to="/reset-password">
+                          نسيت كلمة المرور؟
+                        </Link>
+                      </div>
                     </div>
                   </div>
                   <div>
@@ -169,6 +174,7 @@ export default function Login() {
                   </span>
                 </p>
               </div>
+
               <div className="text-center text-gray-500 py-1 relative">او</div>
               <GoogleAuth />
             </div>

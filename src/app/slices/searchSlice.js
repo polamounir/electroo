@@ -4,7 +4,7 @@ import { api } from "../../api/axiosInstance";
 // Initial/default state
 const initialState = {
   page: 1,
-  limit: 20,
+  limit: 10,
   viewMode: "grid",
   SearchQuery: "",
   MinimumPrice: 0,
@@ -14,33 +14,32 @@ const initialState = {
   OptionGroupName: null,
   OptionValue: null,
   CategoryId: null,
-
   searchResults: [],
   isLoading: false,
   error: null,
   isSearchSidebarOpen: false,
   Cursor: null,
   HasMore: true,
+
 };
 
 export const getSearchResults = createAsyncThunk(
   "search/getSearchResults",
-  async (params, { rejectWithValue, dispatch, getState }) => {
+  async (params, { rejectWithValue, getState }) => {
     const state = getState();
-    const { Cursor } = state.search;
+    const { Cursor, HasMore } = state.search;
 
-    // console.log("params", params);
     const {
       SearchQuery,
       MinimumPrice = 0,
       MaximumPrice = 10000,
       HasDiscount = false,
-      limit = 50,
+      limit = 10,
       OptionGroupName,
       OptionValue,
       CategoryId,
     } = params;
-    // console.log("params", params);
+
     try {
       const response = await api.get("/products", {
         params: {
@@ -56,18 +55,12 @@ export const getSearchResults = createAsyncThunk(
         },
       });
 
-      const items = response.data?.data?.items;
-      dispatch(
-        setCursor({
-          cursor: response.data?.data?.cursor,
-          hasMore: response.data?.data?.hasMore,
-          items: response.data?.data?.items,
-        })
-      );
-      console.log("Fetched Products:", response.data?.data);
-      return items;
+      return {
+        items: response.data?.data?.items,
+        cursor: response.data?.data?.cursor,
+        hasMore: response.data?.data?.hasMore,
+      };
     } catch (error) {
-      console.error("API Error:", error);
       return rejectWithValue(
         error.response?.data?.message || "Failed to fetch products"
       );
@@ -90,7 +83,13 @@ const searchSlice = createSlice({
         viewMode,
         optionGroup,
         selectedOptionsValue,
+        CategoryId,
+        SortBy,
       } = action.payload;
+      state.searchResults = [];
+      state.Cursor = null;
+      state.HasMore = true;
+
       if (SearchQuery !== undefined) state.SearchQuery = SearchQuery;
       if (MinimumPrice !== undefined) state.MinimumPrice = MinimumPrice;
       if (MaximumPrice !== undefined) state.MaximumPrice = MaximumPrice;
@@ -100,19 +99,17 @@ const searchSlice = createSlice({
         state.OptionValue = selectedOptionsValue;
 
       if (limit !== undefined) state.limit = limit;
-      //   if (sort !== undefined) state.sort = sort;
+      if (SortBy !== undefined) state.SortBy = SortBy;
       if (viewMode !== undefined) state.viewMode = viewMode;
-      if (action.payload.CategoryId !== undefined)
-        state.CategoryId = action.payload.CategoryId;
+      if (CategoryId !== undefined) state.CategoryId = CategoryId;
 
       state.isSearchSidebarOpen = false;
     },
     setIsSearchSidebarOpen: (state) => {
       state.isSearchSidebarOpen = !state.isSearchSidebarOpen;
     },
-    setCursor: (state, action) => {
+    appendSearchResults: (state, action) => {
       const { cursor, hasMore, items } = action.payload;
-      console.log(action.payload);
       state.searchResults = [...state.searchResults, ...items];
       state.Cursor = cursor;
       state.HasMore = hasMore;
@@ -123,21 +120,22 @@ const searchSlice = createSlice({
       .addCase(getSearchResults.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.isSearchSidebarOpen = false;
       })
       .addCase(getSearchResults.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.searchResults = action.payload;
-        state.isSearchSidebarOpen = false;
+        const { items, cursor, hasMore } = action.payload;
+        state.searchResults = [...state.searchResults, ...items];
+        state.Cursor = cursor;
+        state.HasMore = hasMore;
+        state.error = null;
       })
       .addCase(getSearchResults.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.isSearchSidebarOpen = false;
       });
   },
 });
 
-export const { setSearchParams, setIsSearchSidebarOpen, setCursor } =
+export const { setSearchParams, setIsSearchSidebarOpen, appendSearchResults } =
   searchSlice.actions;
 export default searchSlice.reducer;
