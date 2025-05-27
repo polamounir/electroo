@@ -3,18 +3,15 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
-// import { createOrder, fetchDeliveryMethods, getShippingAddress, validateCoupon } from "../api/products"
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
-// import { openAddressModel } from "@/app/features/slices/addAddressModelSlice"
-// import AddAddressModel from "@/components/checkout/AddAddressModel"
+
 import {
   createOrder,
-  //   fetchDeliveryMethods,
   getShippingAddress,
   validateCoupon,
 } from "../api/product";
-import { fetchCartAsync } from "../app/slices/cartSlice";
+import { fetchCartAsync, resetCart } from "../app/slices/cartSlice";
 import { openAddressModel } from "../app/slices/addAddressModelSlice";
 import AddAddressModel from "../components/ui/AddAddressModel";
 
@@ -22,11 +19,6 @@ import AddAddressModel from "../components/ui/AddAddressModel";
 export default function Checkout() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  //   const { data: deliveryMethods } = useQuery({
-  //     queryKey: ["DeliveryMethods"],
-  //     queryFn: fetchDeliveryMethods,
-  //   });
-  //   console.log(deliveryMethods)
   const {
     data: addresses = [],
     isLoading: addressesLoading,
@@ -35,7 +27,7 @@ export default function Checkout() {
     queryKey: ["userAddresses"],
     queryFn: getShippingAddress,
   });
-  // console.log(addresses)
+
   // -------------------------
 
   const [orderCoupon, setOrderCoupon] = useState("");
@@ -48,7 +40,7 @@ export default function Checkout() {
     couponCode: "",
     address: "",
     paymentMethod: "Online",
-    // deliveryMethod: "9d9e0d7e-a9a8-4d2a-c907-08dd6f6fbed6",
+   
   });
   const [confirmedCoupon , setConfirmedCoupon] = useState("")
 
@@ -66,12 +58,7 @@ export default function Checkout() {
     setOrderDetail({ ...orderDetail, address: e.target.value });
   };
 
-  //   const handleDeliveryMethodChange = (event) => {
-  //     setOrderDetail((prev) => ({
-  //       ...prev,
-  //       deliveryMethod: event.target.value,
-  //     }));
-  //   };
+
   const handlePaymentMethodChange = (event) => {
     setOrderDetail((prev) => ({
       ...prev,
@@ -127,19 +114,26 @@ export default function Checkout() {
     e.preventDefault();
     const updatedOrder = await reformOrder();
 
+
     try {
       const res = await createOrder(updatedOrder);
 
       console.log(res);
       if (res.code === 200) {
-        toast.success("Order is being process/ed.");
-        setTimeout(() => {
-          window.location.href = res.paymentLink;
-        }, 2000);
-        return;
+        toast.success("جاي تنفيذ الطلب");
+        if(res.paymentLink !== "") {
+
+          setTimeout(() => {
+            window.location.href = res.paymentLink;
+          }, 2000);
+          return;
+        }else {
+          navigate("/checkout-success")
+          dispatch(resetCart())
+        }
       }
       if (res.code === 401) {
-        toast.error("Please login first!");
+        toast.error("يرجي تسجيل الدخول اولا ");
         navigate("/login");
       } else {
         // toast.error(res.message);

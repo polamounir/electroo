@@ -207,20 +207,6 @@ export const createOrder = async (data) => {
         code: error.status,
         message: error.response?.data.detail,
       };
-
-      // if (error.status === 401) {
-      //   // console.log("Unauthorized");
-      //   return { code: 401, message: "Please Login first" };
-      // }
-
-      // console.error(
-      //   "Order creation failed:",
-      //   error.response?.data || error.message
-      // );
-
-      // throw new Error(
-      //   error.response?.data?.message || "Failed to create order"
-      // );
     }
     console.error("Unexpected error:", error);
     throw new Error("An unexpected error occurred");

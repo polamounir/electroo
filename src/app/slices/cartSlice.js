@@ -160,6 +160,18 @@ const cartSlice = createSlice({
     setShippingPrice: (state, action) => {
       state.cart.shippingPrice = action.payload;
     },
+    resetCart :(state)=>{
+      state.cart = {
+        cartItems: [],
+        clientSecret: "",
+        deliveryMethodId: "",
+        id: "",
+        paymentIntnetId: "",
+        shippingPrice: 0,
+        subTotal: 0,
+      }
+      localStorage.removeItem("cartId")
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -201,5 +213,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { cartInit, setShippingPrice } = cartSlice.actions;
+export const { cartInit, setShippingPrice , resetCart} = cartSlice.actions;
 export default cartSlice.reducer;

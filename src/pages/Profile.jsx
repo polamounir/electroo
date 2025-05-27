@@ -141,7 +141,7 @@ export default function Profile() {
         </section>
 
         {/* Orders */}
-        {user?.role === "user" && (
+        {user?.role === "User" && (
           <section className="bg-white border border-gray-200 shadow-sm rounded-xl overflow-hidden">
             <UserOrders />
           </section>
