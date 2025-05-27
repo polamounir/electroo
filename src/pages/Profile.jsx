@@ -6,6 +6,13 @@ import UserOrders from "../components/profile/UserOrders";
 
 import Cookies from "js-cookie";
 
+const userRoles = [
+  { role: "User", label: "مستخدم" },
+  { role: "Admin", label: "مدير" },
+  { role: "Supplier", label: "مورد" },
+];
+
+
 export default function Profile() {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
@@ -72,7 +79,7 @@ export default function Profile() {
                 <p className="text-gray-500">{user.email}</p>
                 {user.role && (
                   <span className="inline-block mt-1 px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
-                    {user.role}
+                    {userRoles.find((role) => role.role === user.role)?.label}
                   </span>
                 )}
               </div>
@@ -134,9 +141,11 @@ export default function Profile() {
         </section>
 
         {/* Orders */}
-        <section className="bg-white border border-gray-200 shadow-sm rounded-xl overflow-hidden">
-          <UserOrders />
-        </section>
+        {user?.role === "user" && (
+          <section className="bg-white border border-gray-200 shadow-sm rounded-xl overflow-hidden">
+            <UserOrders />
+          </section>
+        )}
       </div>
     </div>
   );
