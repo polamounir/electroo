@@ -349,7 +349,7 @@ export default function AddNewProduct() {
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <h4 className="text-lg font-semibold mt-6 mb-2">خصائص المنتج</h4>
           {formData.productOptions.map((option, index) => (
             <div
@@ -405,7 +405,7 @@ export default function AddNewProduct() {
           >
             + اضافة خاصية
           </button>
-        </div>
+        </div> */}
 
         <button
           type="submit"

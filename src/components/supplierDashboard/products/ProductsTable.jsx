@@ -64,8 +64,8 @@ export default function ProductsTable() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(
-        `https://ecommerce.markomedhat.com/api/products/${id}`
+      await api.delete(
+        `/products/${id}`
       );
       setDeleteConfirm(null);
       refetch();
