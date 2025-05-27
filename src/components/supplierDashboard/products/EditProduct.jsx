@@ -9,12 +9,12 @@ import ProductImageManager from './ProductImageManger';
 import { useProductImages } from '../../../hooks/useProductImages';
 import ErrorDisplay from '../../ui/ErrorDisplay';
 import LoadingSpinner from '../../ui/LoadingSpinner';
+import { productService } from '../../../services/productService';
 
 
 
 const EditProduct = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
 
@@ -64,7 +64,7 @@ const EditProduct = () => {
     try {
       await productService.updateProduct(id, product);
       toast.success('تم تحديث المنتج بنجاح');
-      navigate('/products'); // Redirect to products list
+ 
     } catch (error) {
       console.error('Error updating product:', error);
       toast.error(error.message || 'خطأ في تحديث المنتج');
