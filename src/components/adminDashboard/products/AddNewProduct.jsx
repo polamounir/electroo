@@ -129,16 +129,14 @@ export default function AddNewProduct() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const finalData = {
-      ...formData,
-      tags: formData.tags.join(","),
-    };
+    console.log(formData , "xxxxxxxxxxxxxxxxxx")
 
-    if (finalData.images.length === 0) {
+
+    if (formData.images.length === 0) {
       return toast.error("يجب اضافة صورة واحدة ع الاقل");
     }
     try {
-      const res = await uploadProduct(finalData);
+      const res = await uploadProduct(formData);
       console.log(res);
       if (res.data.isSuccess) {
         toast.success("تم إضافة المنتج");

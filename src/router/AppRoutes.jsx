@@ -92,6 +92,11 @@ import PromoOverview from "../components/adminDashboard/promo/PromoOverview";
 import AdminAddNewPromo from "../components/adminDashboard/promo/AdminAddNewPromo";
 import AdminEditPromo from "../components/adminDashboard/promo/AdminEditPromo";
 import ChatBodyTest from "../components/supplierDashboard/chats/ChatBodyTest";
+import CategoriesLayout from "../components/adminDashboard/categories/CategoriesLayout";
+import CategoriesTable from "../components/adminDashboard/categories/CategoriesTable";
+import CategoriesOverview from "../components/adminDashboard/categories/CategoriesOverview";
+import AddNewCategories from "../components/adminDashboard/categories/AddNewCategories";
+import EditCategory from "../components/adminDashboard/categories/EditCategory";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -221,6 +226,11 @@ const AppRoutes = () => {
               <Route index element={<PromoOverview />} />
               <Route path="add" element={<AdminAddNewPromo />} />
               <Route path="edit/:id" element={<AdminEditPromo />} />
+            </Route>
+            <Route path="categories" element={<CategoriesLayout />}>
+              <Route index element={<CategoriesOverview />} />
+              <Route path="add" element={<AddNewCategories />} />
+              <Route path="edit/:id" element={<EditCategory />} />
             </Route>
             <Route path="sales" element={<div>Sales</div>} />
             <Route path="settings" element={<div>Settings</div>} />

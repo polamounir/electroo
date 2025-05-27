@@ -44,7 +44,7 @@ export default function AddNewProduct() {
     },
   });
 
-  console.log(categories);
+  // console.log(categories);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -130,8 +130,8 @@ export default function AddNewProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const finalData = {
-      ...formData,
-      tags: formData.tags.join(","),
+      ...formData
+      // tags: formData.tags.join(","),
     };
 
     if (finalData.images.length === 0) {
@@ -287,13 +287,13 @@ export default function AddNewProduct() {
               <option disabled>No categories available.</option>
             )}
           </select>
-          <button
+          {/* <button
             type="button"
             onClick={handleOpenCategoryModel}
             className="text-teal-600 hover:underline"
           >
             أضف فئة جديدة
-          </button>
+          </button> */}
         </div>
         <div
           className="border border-gray-300 rounded-md shadow p-3"

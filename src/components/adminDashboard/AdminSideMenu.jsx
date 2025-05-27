@@ -5,6 +5,7 @@ import {
   IoBagOutline,
   IoChatbubbleOutline,
 } from "react-icons/io5";
+import { BiCategoryAlt } from "react-icons/bi";
 import { CiLogout } from "react-icons/ci";
 import { TfiPackage } from "react-icons/tfi";
 import { FaRegCircleUser } from "react-icons/fa6";
@@ -42,20 +43,27 @@ export default function AdminSideMenu() {
     },
     {
       id: 5,
+      name: " الفئات",
+      title: "categories",
+      link: "/admin/categories",
+      icon: <BiCategoryAlt />,
+    },
+    {
+      id: 6,
       name: "التجار",
       title: "suppliers",
       link: "/admin/suppliers",
       icon: <AiOutlineDollar />,
     },
     {
-      id: 6,
+      id: 7,
       name: "أكواد الخصم",
       title: "promos",
       link: "/admin/promos",
       icon: <AiOutlineDollar />,
     },
     {
-      id: 7,
+      id: 8,
       name: "تسجيل خروج",
       title: "settings",
       link: "/logout",

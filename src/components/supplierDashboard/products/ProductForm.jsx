@@ -50,7 +50,7 @@ const ProductForm = ({
             value={product.price}
             onChange={onChange}
             min="0"
-            step="0.01"
+            step="1"
             className={inputClassName('price')}
             required
           />

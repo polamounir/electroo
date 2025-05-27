@@ -1,7 +1,9 @@
 import { api } from "./axiosInstance";
 
 export const uploadProduct = async (productData) => {
-  console.log(productData.productOptions);
+  // console.log(productData.productOptions);
+  console.log(productData);
+
 
   const formData = new FormData();
 
@@ -12,7 +14,7 @@ export const uploadProduct = async (productData) => {
   formData.append("price", productData.price);
   formData.append("sku", productData.sku);
   formData.append("stock", productData.stock);
-  formData.append("tags", productData.tags);
+  // formData.append("tags", productData.tags);
   formData.append("title", productData.title);
 
   productData.productOptions.forEach((option, index) => {
@@ -27,6 +29,9 @@ export const uploadProduct = async (productData) => {
 
   productData.images.forEach((image, index) => {
     formData.append(`images[${index}]`, image);
+  });
+  productData.tags.forEach((tags, index) => {
+    formData.append(`tags[${index}]`, tags);
   });
 
   formData.forEach((value, key) => {
