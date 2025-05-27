@@ -132,12 +132,12 @@ export default function ProductsTable() {
       {/* Product Rows */}
       {searchedProuducts?.items?.length > 0 ? (
         <div className="flex flex-col mt-4">
-          {searchedProuducts?.items?.map((product) => (
+          {searchedProuducts?.items?.map((product , index) => (
             <div
               key={product.id}
               className="grid grid-cols-12 border-t border-gray-300 py-4 gap-5 px-4 text-sm text-gray-800 items-center hover:bg-gray-50"
             >
-              <div className="col-span-4 truncate">{product.title}</div>
+              <div className="col-span-4 truncate">{index}{" "}{product.title}</div>
               <div className="col-span-2">{product.category || "—"}</div>
               <div className="col-span-2">{product.price} ج.م</div>
               <div className="col-span-1">{product.stock || "—"}</div>
