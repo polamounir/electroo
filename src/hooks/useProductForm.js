@@ -36,7 +36,7 @@ export const useProductForm = (initialData, categories) => {
       
       // Set category ID based on category name
       if (initialData.category) {
-        const matchedCategory = categories.find(cat => cat.name === initialData.category);
+        const matchedCategory = categories?.find(cat => cat.name === initialData.category);
         if (matchedCategory) {
           setCategoryId(matchedCategory.id);
           setProduct(prev => ({ ...prev, categoryId: matchedCategory.id }));
