@@ -97,7 +97,7 @@ const EditProduct = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <div className="mx-auto p-6 bg-white rounded-lg">
       <div className="mb-6">
         <h2 className="text-3xl font-bold text-teal-500 mb-2">
           تعديل بيانات المنتج
