@@ -18,6 +18,7 @@ export default function Navbar() {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { cartItems } = useSelector((state) => state.cart.cart);
 
   const location = useLocation();
   const isHomePage = location.pathname === "/";
@@ -96,10 +97,15 @@ export default function Navbar() {
           </div>
           <div>
             <div className="hidden lg:flex items-center gap-5">
-              <div className="">
+              <div className=" relative cursor-pointer">
                 <Link to="/cart" className="text-3xl">
                   <IoCartOutline />
                 </Link>
+                {cartItems.length !== 0 && (
+                  <span className="absolute -top-2 -start-2 h-5 w-5  bg-teal-600 text-white rounded-full  flex justify-center items-center ">
+                    {cartItems.length > 99 ? "99+" : cartItems.length}
+                  </span>
+                )}
               </div>
               <div
                 className="relative cursor-pointer"

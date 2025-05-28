@@ -32,7 +32,7 @@ export default function FloatingChatMenu() {
 
   return (
     <div className="chat-container">
-      {/* Floating Menu Button */}
+
       {/* <button className="floating-menu-button" onClick={handleToggleMenu}> */}
       <div className="floating-menu-button-container">
         <button className="floating-menu-button" onClick={handleOpenChatBot}>
@@ -40,8 +40,7 @@ export default function FloatingChatMenu() {
         </button>
         <NoteTooltip
           message="ابدأ المحادثة مع المساعد الذكي"
-          classes="chat-tooltip
-          "
+          classes="chat-tooltip"
         />
       </div>
 

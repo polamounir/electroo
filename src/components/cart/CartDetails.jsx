@@ -34,7 +34,7 @@ export default function CartDetails() {
         to="/checkout"
         className="text-center font-semibold px-5 py-2 text-white bg-teal-500 hover:bg-teal-600 rounded-full duration-300 "
       >
-        Checkout
+        الدفع
       </Link>
     </div>
   );

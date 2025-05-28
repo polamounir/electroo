@@ -32,16 +32,18 @@ export const fetchSearchProducts = async (query) => {
   }
 };
 
-export const getCategoryProducts = async (page) => {
-  // const res = await api.get(`/categories/${id}/products`);
+export const getCategoryProducts = async (cursor, CategoryId) => {
   const res = await api.get(`/products/`, {
     params: {
-      Page: page,
-      Limit: 10,
+      Limit: 12,
+      cursor,
+      CategoryId,
     },
   });
+  console.log("Category Products:", res.data);
   return res.data.data;
 };
+
 // --------------------------------
 //  Cart API Logic
 // --------------------------------

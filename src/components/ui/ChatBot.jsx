@@ -30,13 +30,13 @@ const ChatBot = () => {
   }, [messages, currentAIMessage]);
 
   useEffect(() => {
-    // Initialize SignalR connection
+
     connection.current = new HubConnectionBuilder()
       .withUrl("https://ecommerce.markomedhat.com/hubs/aibot")
       .withAutomaticReconnect()
       .build();
 
-    // Start the connection
+  
     connection.current
       .start()
       .then(() => {
@@ -44,11 +44,11 @@ const ChatBot = () => {
       })
       .catch((err) => console.error("SignalR Connection Error: ", err));
 
-    // Handle incoming AI messages
+
     connection.current.on("ReceiveAIMessageStream", (st, message) => {
       setCurrentAIMessage((prev) => prev + message);
 
-      // Reset the timeout on each message
+     
       if (messageTimeoutRef.current) {
         clearTimeout(messageTimeoutRef.current);
       }
@@ -59,7 +59,7 @@ const ChatBot = () => {
       }, 1000);
     });
 
-    // Cleanup on component unmount
+   
     return () => {
       if (connection.current) {
         connection.current.stop();
@@ -107,7 +107,7 @@ const ChatBot = () => {
     }
   };
 
-  // When currentAIMessage changes and is complete, add it to messages
+ 
   useEffect(() => {
     if (currentAIMessage && isMessageComplete) {
       setMessages((prev) => [
@@ -126,6 +126,7 @@ const ChatBot = () => {
     dispatch(closeChat());
   };
 
+  
   return (
     <div className="chat-window">
       <div className="chat-header">

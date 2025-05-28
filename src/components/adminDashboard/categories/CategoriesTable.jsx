@@ -1,19 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { FaRegEdit } from "react-icons/fa";
 import { GoTrash } from "react-icons/go";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "sonner";
+import { api } from "../../../api/axiosInstance";
+import { Link } from "react-router-dom";
 
 export default function CategoriesTable() {
-  const navigate = useNavigate();
   const [deleteConfirm, setDeleteConfirm] = useState(null);
+  const [editingCategoryId, setEditingCategoryId] = useState(null);
+  const [editForm, setEditForm] = useState({ name: "", image: "" });
 
   const fetchCategories = async () => {
-    const res = await axios.get(
-      `https://ecommerce.markomedhat.com/api/categories?Page=1&Limit=50`
-    );
+    const res = await api.get(`/categories?Page=1&Limit=50`);
     return res.data.data.items;
   };
 
@@ -27,14 +26,12 @@ export default function CategoriesTable() {
     queryFn: fetchCategories,
   });
 
-  const handleAddNavigation = () => navigate("/admin/categories/add");
-  const handleEditNavigation = (id) => navigate(`/admin/categories/edit/${id}`);
   const confirmDelete = (id) => setDeleteConfirm(id);
   const cancelDelete = () => setDeleteConfirm(null);
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://ecommerce.markomedhat.com/api/categories/${id}`);
+      await api.delete(`/categories/${id}`);
       setDeleteConfirm(null);
       refetch();
       toast.success("تم حذف الفئة بنجاح");
@@ -44,25 +41,57 @@ export default function CategoriesTable() {
     }
   };
 
+  const startEditing = (category) => {
+    setEditingCategoryId(category.id);
+    setEditForm({ name: category.name, image: category.image });
+  };
+
+  const cancelEdit = () => {
+    setEditingCategoryId(null);
+    setEditForm({ name: "", image: "" });
+  };
+
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setEditForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSave = async (id) => {
+    try {
+      await api.put(`/categories/${id}`, {
+        id,
+        name: editForm.name,
+      });
+      toast.success("تم تعديل الفئة بنجاح");
+      setEditingCategoryId(null);
+      refetch();
+    } catch (err) {
+      console.error("Edit failed:", err);
+      toast.error("فشل التعديل. حاول مرة أخرى.");
+    }
+  };
+
   if (isLoading) return <div className="text-center py-10">...جار التحميل</div>;
   if (isError)
-    return <div className="text-center text-red-600 py-10">خطأ في تحميل الفئات</div>;
+    return (
+      <div className="text-center text-red-600 py-10">خطأ في تحميل الفئات</div>
+    );
 
   return (
     <div>
       {/* Header */}
       <div className="w-full flex justify-between mb-6">
         <h2 className="text-2xl font-semibold">كل الفئات</h2>
-        <button
+        <Link
+          to="/admin/categories/add"
           className="bg-black text-white text-md px-5 py-1 rounded-lg"
-          onClick={handleAddNavigation}
         >
           إضافة
-        </button>
+        </Link>
       </div>
 
       {/* Categories List */}
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
         {categories.length > 0 ? (
           categories.map((category) => (
             <div
@@ -74,21 +103,51 @@ export default function CategoriesTable() {
                 alt={category.name}
                 className="w-24 h-24 object-contain mb-3"
               />
-              <h3 className="text-lg font-medium mb-2">{category.name}</h3>
-              <div className="flex gap-3">
-                <button
-                  onClick={() => handleEditNavigation(category.id)}
-                  className="text-blue-600 hover:text-blue-800"
-                >
-                  <FaRegEdit />
-                </button>
-                <button
-                  onClick={() => confirmDelete(category.id)}
-                  className="text-red-600 hover:text-red-800"
-                >
-                  <GoTrash />
-                </button>
-              </div>
+
+              {editingCategoryId === category.id ? (
+                <div className="w-full">
+                  <input
+                    type="text"
+                    name="name"
+                    value={editForm.name}
+                    onChange={handleEditChange}
+                    className="w-full border rounded p-1 mb-2"
+                  />
+
+                  <div className="flex gap-2 justify-center mt-2">
+                    <button
+                      onClick={() => handleSave(category.id)}
+                      className="bg-green-600 text-white px-3 py-1 rounded"
+                    >
+                      حفظ
+                    </button>
+                    <button
+                      onClick={cancelEdit}
+                      className="bg-gray-200 text-gray-700 px-3 py-1 rounded"
+                    >
+                      إلغاء
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <h3 className="text-lg font-medium mb-2">{category.name}</h3>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => startEditing(category)}
+                      className="text-teal-600 hover:text-teal-800"
+                    >
+                      <FaRegEdit />
+                    </button>
+                    <button
+                      onClick={() => confirmDelete(category.id)}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      <GoTrash />
+                    </button>
+                  </div>
+                </>
+              )}
 
               {deleteConfirm === category.id && (
                 <div className="mt-2 text-sm text-red-600 absolute bg-white bottom-0 py-10 start-0 end-0">

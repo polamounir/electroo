@@ -97,6 +97,8 @@ import CategoriesTable from "../components/adminDashboard/categories/CategoriesT
 import CategoriesOverview from "../components/adminDashboard/categories/CategoriesOverview";
 import AddNewCategories from "../components/adminDashboard/categories/AddNewCategories";
 import EditCategory from "../components/adminDashboard/categories/EditCategory";
+import Categories from "../pages/Categories";
+import About from "../pages/About";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -152,12 +154,14 @@ const AppRoutes = () => {
             <Route path="/live-chat/:id" element={<LiveChat />} />
             <Route path="/chat" element={<ProductConversation />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/about" element={<About />} />
 
             {/* products */}
             <Route path="/all-products" element={<AllProducts />} />
             <Route path="/discounts" element={<Discounts />} />
             <Route path="/sales" element={<Sales />} />
             <Route path="/product/:id" element={<Product />} />
+            <Route path="/categories" element={<Categories />} />
             <Route path="/categories/:id" element={<Category />} />
             <Route path="/search" element={<Search />} />
 
@@ -167,7 +171,7 @@ const AppRoutes = () => {
             <Route path="/checkout-success" element={<CheckoutSuccess />} />
 
             {/* TEsting */}
-            <Route path="/test" element={<ChatBodyTest />} />
+            {/* <Route path="/test" element={<ChatBodyTest />} /> */}
             {/* <Route path="/upload" element={<Upload />} /> */}
 
             <Route

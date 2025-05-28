@@ -20,31 +20,33 @@ export default function Footer() {
             <h6 className="text-gray-400 mb-1">الفئات</h6>
             <ul className="text-sm">
               <li>
-                <a href="#" className="hover:text-gray-300">
+                <Link to="/about" className="hover:text-gray-300">
                   من نحن
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-gray-300">
+                <Link to="/faq" className="hover:text-gray-300">
                   الأسئلة الشائعة
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-gray-300">
+                <Link to="/" className="hover:text-gray-300">
                   سياسات الشحن
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
           <div>
-            <div>
+            <div dir="rtl">
               <h6 className="text-gray-400 mb-1">تواصل معنا:</h6>
               <p className="text-sm">
                 <a
-                  href="mailto:HELLO@ELECTRO.com"
+                  href="mailto:support@electro.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="hover:text-gray-300"
                 >
-                  HELLO@ELECTRO.com
+                  support@electro.com
                 </a>
               </p>
               <p className="text-sm mt-1">رقم الهاتف:</p>
@@ -68,7 +70,7 @@ export default function Footer() {
               <FaWhatsapp />
             </Link>
             <Link to="#" className="hover:opacity-75">
-            <IoChatbubbleEllipsesOutline />
+              <IoChatbubbleEllipsesOutline />
             </Link>
           </div>
         </div>

@@ -71,7 +71,7 @@ export default function Home() {
       {/* <Landing /> */}
       <MainSlider />
       <BrandSlider />
-      <div className="pb-20">
+      <div className="">
         <CategorySlider />
         <NewHomeSection
           title="عروض اليوم"

@@ -16,6 +16,16 @@ const NoteTooltip = ({ message, classes }) => {
     setIsVisible(false);
   };
 
+  useEffect(() => {
+    setIsVisible(false);
+    const timeout = setTimeout(() => {
+      setIsVisible(false);
+    }, 15500);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
+
   if (!isVisible) return null;
 
   return (
