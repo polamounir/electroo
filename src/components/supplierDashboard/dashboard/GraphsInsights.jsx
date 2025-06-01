@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use, useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,6 +11,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line, Pie } from "react-chartjs-2";
+import { useSelector } from "react-redux";
 
 // Register chart components
 ChartJS.register(
@@ -25,28 +26,28 @@ ChartJS.register(
 );
 
 // Line Chart Data & Options
-const lineChartLabels = [
-  "يناير",
-  "فراير",
-  "مارس",
-  "ابريل",
-  "مايو",
-  "يونيو",
-  "يوليو",
-];
+// const lineChartLabels = [
+//   "يناير",
+//   "فراير",
+//   "مارس",
+//   "ابريل",
+//   "مايو",
+//   "يونيو",
+//   "يوليو",
+// ];
 
-const lineChartData = {
-  labels: lineChartLabels,
-  datasets: [
-    {
-      label: "المبيعات",
-      data: [6, 59, 20, 81, 30, 55, 40],
-      fill: false,
-      borderColor: "rgb(0, 203, 218)",
-      tension: 0,
-    },
-  ],
-};
+// const lineChartData = {
+//   labels: lineChartLabels,
+//   datasets: [
+//     {
+//       label: "المبيعات",
+//       data: [6, 59, 20, 81, 30, 55, 40],
+//       fill: false,
+//       borderColor: "rgb(0, 203, 218)",
+//       tension: 0,
+//     },
+//   ],
+// };
 
 const lineChartOptions = {
   responsive: true,
@@ -57,7 +58,7 @@ const lineChartOptions = {
     },
     title: {
       display: true,
-      text: "نظرة عامة للمبيعات",
+      text: "نظرة عامة الفئات",
       align: "start",
       padding: {
         top: 10,
@@ -77,7 +78,7 @@ const pieChartData = {
   labels: ["موصلات", "اسلاك", "ادوات", "شرائح"],
   datasets: [
     {
-      label: "Shared",
+      label: "العدد",
       data: [300, 500, 100, 200],
       backgroundColor: [
         "rgb(0, 203, 218)",
@@ -115,6 +116,57 @@ const pieChartOptions = {
 };
 
 export default function GraphsInsights() {
+  const { salesChart } = useSelector(
+    (state) => state.supplier.loggedInSupplier
+  );
+  console.log("Sales Chart Data:", salesChart);
+
+  const [lineData, setLineData] = useState([]);
+  const [lineLabels, setLineLabels] = useState([]);
+  const [pieData, setPieData] = useState([]);
+  const [pieLabels, setPieLabels] = useState([]);
+  const [pieColor, setPieColor] = useState([]);
+
+  useEffect(() => {
+    salesChart?.map((item) => {
+      setLineLabels((prev) => [...prev, item.categoryName]);
+      setLineData((prev) => [...prev, item.count]);
+    });
+  }, [salesChart]);
+  const lineChartData = {
+    labels: lineLabels,
+    datasets: [
+      {
+        label: "العدد",
+        data: lineData,
+        fill: false,
+        borderColor: "rgb(0, 203, 218)",
+        tension: 0,
+      },
+    ],
+  };
+
+  useEffect(() => {
+    salesChart?.map((item) => {
+      setPieLabels((prev) => [...prev, item.categoryName]);
+      setPieData((prev) => [...prev, item.count]);
+      const randomColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(
+        Math.random() * 256
+      )}, ${Math.floor(Math.random() * 256)})`;
+      setPieColor((prev) => [...prev, randomColor]);
+    });
+  }, [salesChart]);
+  const pieChartData = {
+    labels: pieLabels,
+    datasets: [
+      {
+        label: "العدد",
+        data: pieData,
+        backgroundColor: pieColor,
+        borderWidth: 1,
+      },
+    ],
+  };
   return (
     <div className="grid grid-cols-8 gap-5">
       <div className="col-span-8 lg:col-span-5 h-[400px] p-10 px-15 border border-gray-200 rounded-xl shadow-xl">

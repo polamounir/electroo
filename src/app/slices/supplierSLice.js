@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { registerNewSupplier } from "../../api/user";
 // import {  } from "../../api/user";
 const initialState = {
+  loggedInSupplier: null,
   supplierRegisterationData: {
     fullName: "",
     email: "",
@@ -54,13 +55,13 @@ const supplierSlice = createSlice({
     setSupplierBasicData: (state, action) => {
       const { fullName, email, password, phoneNumber, governorate } =
         action.payload;
-        console.log(fullName, email, password, phoneNumber, governorate);
+      console.log(fullName, email, password, phoneNumber, governorate);
       state.supplierRegisterationData.fullName = fullName;
       state.supplierRegisterationData.email = email;
       state.supplierRegisterationData.password = password;
       state.supplierRegisterationData.phoneNumber = phoneNumber;
       state.supplierRegisterationData.governorate = governorate;
-        console.log(state.supplierRegisterationData);
+      console.log(state.supplierRegisterationData);
     },
     setSupplierBusinessData: (state, action) => {
       const { businessName, storeName, taxNumber, nationalId } = action.payload;
@@ -92,6 +93,10 @@ const supplierSlice = createSlice({
       state.supplierRegisterationData.taxCard = action.payload;
       //   console.log(state.supplierRegisterationData);
     },
+
+    setLogedInSupplier: (state, action) => {
+      state.loggedInSupplier = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -115,5 +120,6 @@ export const {
   setSuppllierIdFront,
   setSupplierIdBack,
   setSupplierTexCard,
+  setLogedInSupplier,
 } = supplierSlice.actions;
 export default supplierSlice.reducer;
