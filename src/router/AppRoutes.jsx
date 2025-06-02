@@ -99,6 +99,7 @@ import AddNewCategories from "../components/adminDashboard/categories/AddNewCate
 import EditCategory from "../components/adminDashboard/categories/EditCategory";
 import Categories from "../pages/Categories";
 import About from "../pages/About";
+import Redirecting from "../pages/Redirecting";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -139,6 +140,8 @@ const AppRoutes = () => {
             <Route index element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/login-supplier" element={<SupplierLogin />} />
+            <Route path="/redirect-user" element={<Redirecting />} />
+
             <Route path="/profile" element={<Profile />} />
             <Route path="/register" element={<Register />} />
             <Route path="/pre-register" element={<PreRegister />} />
@@ -176,7 +179,8 @@ const AppRoutes = () => {
 
             <Route
               path="/supplier-register"
-              element={<SupplierRegisteration />}>
+              element={<SupplierRegisteration />}
+            >
               <Route index element={<BasicData />} />
               <Route path="base" element={<BasicData />} />
               <Route path="business" element={<BusinessData />} />
@@ -199,7 +203,8 @@ const AppRoutes = () => {
               <ProtectedRoutes>
                 <AdminLayout />
               </ProtectedRoutes>
-            }>
+            }
+          >
             <Route index element={<AdminOverview />} />
             <Route path="products" element={<AdminProductsLayout />}>
               <Route index element={<AdminProductsOverview />} />
@@ -246,7 +251,8 @@ const AppRoutes = () => {
               <ProtectedRoutes>
                 <SupplierLayout />
               </ProtectedRoutes>
-            }>
+            }
+          >
             <Route index element={<SupplierOverview />} />
             <Route path="products" element={<SupplierProductsLayout />}>
               <Route index element={<SupplierProductsOverview />} />

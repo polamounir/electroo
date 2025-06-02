@@ -57,8 +57,8 @@ export default function Login() {
       console.log(res);
 
       if (res === "Successful") {
-        toast.success("تم تسجيل حسابك بنجاح");
-        navigate("/");
+        toast.success("تم تسجيل الدخول بنجاح");
+        navigate("/redirect-user");
       } else if (res.detail === "Wrong email or password") {
         toast.error("اسم المستخدم أو كلمة المرور غير صحيحة");
       } else if (res.title === "EmailNotConfirmedException") {

@@ -103,9 +103,9 @@ export default function SupplierSideMenu({ status }) {
     <div
       className={`fixed  bg-white z-100 md:block top-0 bottom-0 duration-300 ${
         supplierSideMenu ? "start-0" : "start-[-60rem]"
-      } lg:start-0  duration-300`}
+      } lg:start-0  duration-300 shadow-sm `}
     >
-      <div className="flex justify-end ">
+      <div className="flex justify-end lg:hidden ">
         <button
           onClick={toggleSideMenu}
           className="lg:hidden text-4xl  hover:bg-gray-100 rounded duration-300"

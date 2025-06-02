@@ -25,10 +25,14 @@ const saveAuthData = (token, email, refreshToken) => {
   Cookies.set(TOKEN_KEY, token);
   Cookies.set(EMAIL_KEY, email);
   Cookies.set(REFRESH_TOKEN_KEY, refreshToken);
+  localStorage.setItem(TOKEN_KEY, token);
+  localStorage.setItem(EMAIL_KEY, email);
+  localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
 };
 const saveUserData = (userId, userName) => {
   localStorage.setItem("userId", userId);
   localStorage.setItem("email", userName);
+  // Cookies.set(USER_ID_KEY, userId);
 };
 
 export const registerUser = createAsyncThunk(

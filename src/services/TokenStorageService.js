@@ -6,27 +6,55 @@ class TokenStorageService {
   static EMAIL_KEY = "email";
 
   static getAccessToken() {
-    return Cookies.get("accessToken");
+    Cookies.get("accessToken");
+    localStorage.getItem("accessToken");
+    if (Cookies.get("accessToken")) {
+      return Cookies.get("accessToken");
+    }
+    if (localStorage.getItem("accessToken")) {
+      return localStorage.getItem("accessToken");
+    }
+    return;
   }
 
   static setAccessToken(token) {
     Cookies.set("accessToken", token);
+    localStorage.setItem("accessToken", token);
   }
 
   static getRefreshToken() {
-    return Cookies.get("refreshToken");
+    Cookies.get("refreshToken");
+    localStorage.getItem("refreshToken");
+    if (Cookies.get("refreshToken")) {
+      return Cookies.get("refreshToken");
+    }
+    if (localStorage.getItem("refreshToken")) {
+      return localStorage.getItem("refreshToken");
+    }
+    return;
   }
 
   static setRefreshToken(token) {
     Cookies.set("refreshToken", token);
+    localStorage.setItem("refreshToken", token);
   }
 
   static getEmail() {
-    return Cookies.get("email");
+    Cookies.get("email");
+    localStorage.getItem("email");
+    if (Cookies.get("email")) {
+      return Cookies.get("email");
+    }
+
+    if (localStorage.getItem("email")) {
+      return localStorage.getItem("email");
+    }
+    return;
   }
 
   static setEmail(email) {
     Cookies.set("email", email);
+    localStorage.setItem("email", email);
   }
 
   static HasAccessToken() {
@@ -57,6 +85,9 @@ class TokenStorageService {
     Cookies.remove("accessToken");
     Cookies.remove("refreshToken");
     Cookies.remove("email");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("email");
   }
 }
 
