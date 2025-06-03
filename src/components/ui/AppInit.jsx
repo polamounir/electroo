@@ -28,7 +28,6 @@ export default function AppInit() {
 
     if (token) {
       // dispatch(getUserData());
-      alert("تم تسجيل الدخول بنجاح");
       getUserData();
     }
 
