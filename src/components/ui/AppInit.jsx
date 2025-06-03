@@ -24,9 +24,11 @@ export default function AppInit() {
   };
 
   useEffect(() => {
-    const token = Cookies.get("accessToken");
+    const token = Cookies.get("accessToken") || localStorage.getItem("accessToken");
+
     if (token) {
       // dispatch(getUserData());
+      alert("تم تسجيل الدخول بنجاح");
       getUserData();
     }
 
