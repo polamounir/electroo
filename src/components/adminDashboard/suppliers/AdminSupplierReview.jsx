@@ -2,7 +2,6 @@ import React, { useEffect, useState, useCallback } from "react";
 import { api } from "../../../api/axiosInstance";
 import { useParams } from "react-router-dom";
 
-// Separated ConfirmationModal Component
 const ConfirmationModal = ({
   confirmAction,
   rejectionResult,
@@ -12,12 +11,10 @@ const ConfirmationModal = ({
   closeModal,
 }) => (
   <>
-    {/* Modal Backdrop */}
     <div
       className="fixed inset-0 bg-black/20 bg-opacity-50 z-40 flex items-center justify-center"
       onClick={closeModal}
     >
-      {/* Modal Content */}
       <div
         className="bg-white rounded-xl shadow-xl p-6 max-w-md w-full mx-4 z-50 text-right"
         onClick={(e) => e.stopPropagation()}
@@ -69,7 +66,6 @@ const ConfirmationModal = ({
   </>
 );
 
-// Document Component
 const DocumentThumbnail = ({ src, alt, isActive, onClick }) => (
   <div
     onClick={() => onClick(src)}
@@ -83,6 +79,12 @@ const DocumentThumbnail = ({ src, alt, isActive, onClick }) => (
   </div>
 );
 
+const suppliersStatus = {
+  Pending: "قيد المراجعة",
+  Verified: "تم التحقق",
+  Rejected: "تم الرفض",
+  Banned: "محظور",
+};
 export default function AdminSupplierReview() {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -228,13 +230,24 @@ export default function AdminSupplierReview() {
           </span>
         </h2>
         <div
-          className={`mt-2 md:mt-0 px-4 py-1.5 rounded-full text-sm font-medium ${
-            supplier.isVerified
-              ? "bg-green-100 text-green-800"
-              : "bg-amber-100 text-amber-800"
-          }`}
+          className={`mt-2 md:mt-0 px-4 py-1.5 rounded-full text-sm font-medium  ${
+            supplier.verificationStatus === "Verified" &&
+            "bg-teal-600 text-white"
+          }
+                          ${
+                            supplier.verificationStatus === "Rejected" &&
+                            "bg-red-400 text-white"
+                          }
+                          ${
+                            supplier.verificationStatus === "Pending" &&
+                            "bg-yellow-600"
+                          }
+                          ${
+                            supplier.verificationStatus === "Banned" &&
+                            "bg-black text-white"
+                          }`}
         >
-          {supplier.isVerified ? "✓ تم التحقق" : "⟳ في انتظار المراجعة"}
+          {suppliersStatus[supplier.verificationStatus]}
         </div>
       </div>
 
@@ -312,20 +325,22 @@ export default function AdminSupplierReview() {
           </div>
 
           {/* Buttons */}
-          <div className="mt-8 flex flex-col sm:flex-row gap-3">
-            <button
-              onClick={handleVerify}
-              className="flex-1 bg-teal-500 hover:bg-teal-600 active:bg-teal-700 transition text-white font-medium py-3 px-6 rounded-lg shadow-sm"
-            >
-              قبول الطلب
-            </button>
-            <button
-              onClick={handleReject}
-              className="flex-1 bg-white border border-red-200 text-red-500 hover:bg-red-50 active:bg-red-100 transition font-medium py-3 px-6 rounded-lg shadow-sm"
-            >
-              رفض الطلب
-            </button>
-          </div>
+          {supplier.verificationStatus === "Pending" && (
+            <div className="mt-8 flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={handleVerify}
+                className="flex-1 bg-teal-500 hover:bg-teal-600 active:bg-teal-700 transition text-white font-medium py-3 px-6 rounded-lg shadow-sm"
+              >
+                قبول الطلب
+              </button>
+              <button
+                onClick={handleReject}
+                className="flex-1 bg-white border border-red-200 text-red-500 hover:bg-red-50 active:bg-red-100 transition font-medium py-3 px-6 rounded-lg shadow-sm"
+              >
+                رفض الطلب
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

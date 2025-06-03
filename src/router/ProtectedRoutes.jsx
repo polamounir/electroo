@@ -14,7 +14,8 @@ export default function ProtectedRoutes({ children }) {
 
   useEffect(() => {
     // Check for token in cookies
-    const token = Cookies.get("accessToken"); // Using the correct token key from your auth slice
+    const token =
+      Cookies.get("accessToken") || localStorage.getItem("accessToken"); 
 
     if (token && !user) {
      
@@ -32,7 +33,7 @@ export default function ProtectedRoutes({ children }) {
     );
   }
 
-  const token = Cookies.get("accessToken");
+  const token = Cookies.get("accessToken") || localStorage.getItem("accessToken");
   if (!isAuthenticated && !token) {
     console.log("No user in Redux and no valid token in cookies");
     toast.error("يرجى تسجيل الدخول اولاً");

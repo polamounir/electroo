@@ -5,6 +5,13 @@ import { Link } from "react-router-dom";
 import { api } from "../../../api/axiosInstance";
 import { toast } from "sonner";
 import { TbReload } from "react-icons/tb";
+
+const suppliersStatus = {
+  Pending: "قيد المراجعة",
+  Verified: "تم التحقق",
+  Rejected: "تم الرفض",
+  Banned: "محظور",
+};
 export default function AdminSuppliersTable() {
   // const navigate = useNavigate();
 
@@ -135,20 +142,32 @@ export default function AdminSuppliersTable() {
                     </div>
                     <div className="col-span-2 flex justify-center">
                       <span
-                        className={`${
-                          user.isVerified ? "bg-teal-600 px-4" : "bg-red-400 "
-                        } px-2 py-1 rounded-lg text-full text-white text-xs`}
+                        className={`
+                          ${
+                            user.verificationStatus === "Verified" &&
+                            "bg-teal-600"
+                          }
+                          ${
+                            user.verificationStatus === "Rejected" &&
+                            "bg-red-400"
+                          }
+                          ${
+                            user.verificationStatus === "Pending" &&
+                            "bg-yellow-600"
+                          }
+                          ${user.verificationStatus === "Banned" && "bg-black"}
+                           px-2 py-1 rounded-lg text-full text-white text-xs`}
                       >
-                        {user?.isVerified ? "تم التحقق" : "لم يتم التحقق"}
+                        {suppliersStatus[user.verificationStatus]}
                       </span>
                     </div>
 
                     <div className="col-span-2 flex justify-center gap-3 ">
-                      {!user?.isVerified ? (
+                      {user?.verificationStatus === "Pending" ? (
                         <div>
                           <Link
                             to={`/admin/suppliers/${user.supplierId}`}
-                            className="bg-black text-white px-2 py-1 rounded-xl"
+                            className="bg-black text-white px-2 py-1 rounded-xl text-xs"
                           >
                             {" "}
                             مراجعة
@@ -158,10 +177,10 @@ export default function AdminSuppliersTable() {
                         <div className="">
                           <Link
                             to={`/admin/suppliers/${user.supplierId}`}
-                            className="bg-gray-400 text-white px-2 py-1 rounded-xl"
+                            className="bg-gray-400 text-white px-2 py-1 rounded-xl text-xs"
                           >
                             {" "}
-                            مراجعة
+                            عرض التفاصيل
                           </Link>
                         </div>
                       )}
