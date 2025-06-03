@@ -148,13 +148,13 @@ export default function SupplierOrdersOverview() {
                   className="h-full w-full object-cover rounded-md shadow-sm"
                 />
               </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="font-medium text-lg text-gray-900 mb-1 line-clamp-2">
+              <div className="flex-1 min-w-0 ms-5">
+                <h3 className="font-medium text-gray-900 mb-1 line-clamp-2 text-start">
                   {order.productName}
                 </h3>
-                <div className="flex items-center text-sm text-gray-500">
+                <div className="flex items-center text-sm text-gray-500 ">
                   <FiCalendar className="ml-1" size={14} />
-                  <span dir="ltr">
+                  <span>
                     {new Date(order.orderDate).toLocaleDateString("ar-EG")}
                   </span>
                 </div>
@@ -163,7 +163,7 @@ export default function SupplierOrdersOverview() {
 
             {/*details*/}
             <div className="p-4 space-y-3">
-              <div className="flex items-center text-sm">
+              {/* <div className="flex items-center text-sm">
                 <div className="w-8">
                   <FiUser className="text-gray-400" />
                 </div>
@@ -173,9 +173,9 @@ export default function SupplierOrdersOverview() {
                     {order.buyerName}
                   </div>
                 </div>
-              </div>
+              </div> */}
 
-              <div className="flex items-center text-sm">
+              {/* <div className="flex items-center text-sm">
                 <div className="w-8">
                   <FiMail className="text-gray-400" />
                 </div>
@@ -197,7 +197,7 @@ export default function SupplierOrdersOverview() {
                     {order.shippingAddress}
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               <div className="flex items-center text-sm mt-4">
                 <div className="w-8">

@@ -136,6 +136,9 @@ const authSlice = createSlice({
       localStorage.removeItem("cartId");
       localStorage.removeItem("userId");
       localStorage.removeItem("email");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+ 
       window.location.href = "/";
     },
     setUserInitData: (state, action) => {

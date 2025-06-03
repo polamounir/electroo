@@ -9,7 +9,7 @@ export default function MainInsightsCard({ title, value, icon: Icon  , iconBgCol
     <div className="border border-gray-200 p-5 py-10 shadow-xl rounded-xl">
       <div className="flex justify-between">
         <div className="flex flex-col justify-center">
-          <h2 className="text-2xl font-semibold"> {value} ج.م </h2>
+          <h2 className="text-2xl font-semibold"> {value} </h2>
           <p className="text-xl">{title}</p>
         </div>
         <div>

@@ -43,14 +43,14 @@ export const getSearchResults = createAsyncThunk(
     try {
       const response = await api.get("/products", {
         params: {
-          SearchQuery: SearchQuery,
-          Limit: limit,
-          MinimumPrice: MinimumPrice,
-          MaximumPrice: MaximumPrice,
-          HasDiscount: HasDiscount,
-          OptionGroupName: OptionGroupName,
-          OptionValue: OptionValue,
-          CategoryId: CategoryId,
+          SearchQuery: SearchQuery|| "",
+          Limit: limit || 10,
+          MinimumPrice: MinimumPrice || 0,
+          MaximumPrice: MaximumPrice|| 10000,
+          HasDiscount: HasDiscount || false,
+          OptionGroupName: OptionGroupName|| null,
+          OptionValue: OptionValue|| null,
+          CategoryId: CategoryId || null,
           Cursor: Cursor,
         },
       });
@@ -67,6 +67,53 @@ export const getSearchResults = createAsyncThunk(
     }
   }
 );
+
+export const getfilterSearchResults = createAsyncThunk(
+  "search/getfilterSearchResults",
+  async (params, { rejectWithValue, getState , dispatch }) => {
+    const state = getState();
+    const { Cursor, HasMore } = state.search;
+
+    const {
+      SearchQuery,
+      MinimumPrice = 0,
+      MaximumPrice = 10000,
+      HasDiscount = false,
+      limit = 10,
+      OptionGroupName,
+      OptionValue,
+      CategoryId,
+    } = params;
+
+    try {
+      const response = await api.get("/products", {
+        params: {
+          SearchQuery: SearchQuery || "",
+          Limit: limit || 10,
+          MinimumPrice: MinimumPrice || 0,
+          MaximumPrice: MaximumPrice || 10000,
+          HasDiscount: HasDiscount || false,
+          OptionGroupName: OptionGroupName || null,
+          OptionValue: OptionValue || null,
+          CategoryId: CategoryId || null,
+          Cursor: Cursor,
+        },
+      });
+
+      return {
+        items: response.data?.data?.items,
+        cursor: response.data?.data?.cursor,
+        hasMore: response.data?.data?.hasMore,
+      };
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to fetch products"
+      );
+    }
+  }
+);
+
+
 
 // Slice
 const searchSlice = createSlice({
@@ -114,6 +161,11 @@ const searchSlice = createSlice({
       state.Cursor = cursor;
       state.HasMore = hasMore;
     },
+    clearSearchResults: (state) => {
+      state.searchResults = [];
+      state.Cursor = null;
+      state.HasMore = true;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -132,10 +184,31 @@ const searchSlice = createSlice({
       .addCase(getSearchResults.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(getfilterSearchResults.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getfilterSearchResults.fulfilled, (state, action) => {
+        state.isLoading = false;
+        console.log("getfilterSearchResults fulfilled with items: xxxxxxxxxxxxxxxxxxxx", action.payload.items);
+        const { items, cursor, hasMore } = action.payload;
+        state.searchResults = items;
+        state.Cursor = cursor;
+        state.HasMore = hasMore;
+        state.error = null;
+      })
+      .addCase(getfilterSearchResults.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export const { setSearchParams, setIsSearchSidebarOpen, appendSearchResults } =
-  searchSlice.actions;
+export const {
+  setSearchParams,
+  setIsSearchSidebarOpen,
+  appendSearchResults,
+  clearSearchResults,
+} = searchSlice.actions;
 export default searchSlice.reducer;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import imagePlaceholder from "../../assets/images/product_placeholder.webp";
 import { BsCartPlus } from "react-icons/bs";
@@ -17,7 +17,7 @@ function ProductCard({ product, isRowView }) {
   return (
     <Link
       to={`/product/${product.id}`}
-      className={`p-4 rounded hover:shadow-sm duration-300 transition-all bg-white ${
+      className={`p-4 rounded hover:shadow-sm duration-300 transition-all bg-white relative overflow-hidden ${
         isRowView ? "flex flex-col sm:flex-row gap-4" : ""
       }`}
     >
@@ -33,7 +33,9 @@ function ProductCard({ product, isRowView }) {
         }}
       />
       <div className="flex-1 text-xs ">
-        <h3 className="font-semibold truncate">{product.title}</h3>
+        <h3 className="font-semibold truncate sm:max-w-[80%]">
+          {product.title}
+        </h3>
         {/* <p className="text-gray-600 text-sm mb-2">{product.description}</p> */}
         {product.discountPercentage > 0 ? (
           <div className="flex items-center gap-2 my-1">
@@ -49,7 +51,11 @@ function ProductCard({ product, isRowView }) {
         )}
         {/* <p className="text-teal-600 font-bold"> {product.price} ج.م</p> */}
         <p className="text-gray-600">{product.supplierName}</p>
-        <div className="flex justify-end">
+        <div
+          className={`flex justify-end ${
+            isRowView && "sm:absolute sm:bottom-5 sm:end-5"
+          } `}
+        >
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -66,7 +72,8 @@ function ProductCard({ product, isRowView }) {
   );
 }
 
-export default function SearchProductsContainer({ products }) {
+export  function SearchProductsContainer({ products }) {
+  console.log("SearchProductsContainer rendered with products: 000000000000", products);
   const [isRowView, setIsRowView] = useState(false);
 
   const toggleView = () => {
@@ -101,10 +108,13 @@ export default function SearchProductsContainer({ products }) {
           ))
         ) : (
           <div className="col-span-full text-center text-gray-500">
-            No products found.
+            <p className="text-lg">لا توجد نتائج للبحث</p>
+            <p className="mt-2">حاول تعديل معايير البحث أو البحث بكلمات مختلفة.</p>
           </div>
         )}
       </div>
     </div>
   );
 }
+
+export default React.memo(SearchProductsContainer);
