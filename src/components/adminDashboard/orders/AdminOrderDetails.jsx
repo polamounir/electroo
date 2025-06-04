@@ -39,7 +39,7 @@ export default function AdminOrderDetails() {
           return {
             id: item.orderItemId,
             currentStatus: item.status,
-            status: firstAvailableStatus, 
+            status: firstAvailableStatus,
           };
         })
       );
@@ -65,7 +65,6 @@ export default function AdminOrderDetails() {
         status: itemUpdateData.status,
       });
 
-  
       const updatedOrderItems = order.orderItems.map((item) =>
         item.orderItemId === itemId
           ? { ...item, status: itemUpdateData.status }
@@ -74,7 +73,6 @@ export default function AdminOrderDetails() {
 
       setOrder({ ...order, orderItems: updatedOrderItems });
 
-      
       setOrderItemsStatus((prevStatus) =>
         prevStatus.map((item) =>
           item.id === itemId
@@ -370,26 +368,28 @@ export default function AdminOrderDetails() {
                       {new Date(order.orderDate).toLocaleString("ar-EG")}
                     </span>
                   </div>
-                  <div className="flex justify-between">
+                  {/* <div className="flex justify-between">
                     <span className="font-medium text-gray-600">الحالة:</span>
                     {getStatusBadge(order.status)}
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium text-gray-600">
-                      حالة الدفع:
-                    </span>
-                    <span
-                      className={
-                        order.paymentStatus === "Paid"
-                          ? "text-green-600 font-medium"
-                          : "text-amber-600 font-medium"
-                      }
-                    >
-                      {order.paymentStatus === "Paid"
-                        ? "تم الدفع"
-                        : "لم يتم الدفع"}
-                    </span>
-                  </div>
+                  </div> */}
+                  {order.paymentMethod === "Online" && (
+                    <div className="flex justify-between">
+                      <span className="font-medium text-gray-600">
+                        حالة الدفع:
+                      </span>
+                      <span
+                        className={
+                          order.paymentStatus === "Paid"
+                            ? "text-green-600 font-medium"
+                            : "text-amber-600 font-medium"
+                        }
+                      >
+                        {order.paymentStatus === "Paid"
+                          ? "تم الدفع"
+                          : "لم يتم الدفع"}
+                      </span>
+                    </div>
+                  )}
                   <div className="flex justify-between">
                     <span className="font-medium text-gray-600">
                       طريقة الدفع:

@@ -6,6 +6,7 @@ import UserOrders from "../components/profile/UserOrders";
 
 import Cookies from "js-cookie";
 import Loader from "../components/ui/Loader";
+import UserAddressBook from "../components/profile/UserAddressBook";
 
 const userRoles = [
   { role: "User", label: "مستخدم" },
@@ -42,11 +43,12 @@ export default function Profile() {
   };
 
   // Return early if no user to prevent errors
-  if (!user) return (
-    <div className=" flex items-center justify-center">
-      <Loader />
-    </div>
-  );
+  if (!user)
+    return (
+      <div className=" flex items-center justify-center">
+        <Loader />
+      </div>
+    );
 
   return (
     <div className="min-h-[85svh] bg-gray-50 py-10 px-4 sm:px-8 md:px-16 lg:px-24 font-sans text-right">
@@ -144,6 +146,12 @@ export default function Profile() {
           </div>
         </section>
 
+        {/* Addresses */}
+        {user?.role === "User" && (
+          <section className="bg-white border border-gray-200 shadow-sm rounded-xl overflow-hidden">
+            <UserAddressBook />
+          </section>
+        )}
         {/* Orders */}
         {user?.role === "User" && (
           <section className="bg-white border border-gray-200 shadow-sm rounded-xl overflow-hidden">
