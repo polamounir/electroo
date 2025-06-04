@@ -11,7 +11,7 @@ import {
 } from "react-icons/fi";
 
 const fetchOrders = async ({ pageParam = 1 }) => {
-  const res = await api.get(`/suppliers/order-items?Page=${pageParam}&Limit=2`);
+  const res = await api.get(`/suppliers/order-items?Page=${pageParam}&Limit=6`);
   return res.data.data;
 };
 
@@ -40,6 +40,7 @@ export default function SupplierOrdersOverview() {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasNextPage) {
+          
           fetchNextPage();
         }
       },

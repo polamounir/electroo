@@ -28,7 +28,6 @@ export default function AdminOrderDetails() {
       console.log(orderData);
       setOrder(orderData);
 
-      // Initialize with the first available next status for each item
       setOrderItemsStatus(
         orderData.orderItems.map((item) => {
           const currentStatusConfig = itemStatus.find(
@@ -39,8 +38,8 @@ export default function AdminOrderDetails() {
 
           return {
             id: item.orderItemId,
-            currentStatus: item.status, // Keep track of current status
-            status: firstAvailableStatus, // Set to first available next status
+            currentStatus: item.status,
+            status: firstAvailableStatus, 
           };
         })
       );
@@ -56,7 +55,6 @@ export default function AdminOrderDetails() {
     const itemUpdateData = orderItemsStatus.find((i) => i.id === itemId);
     console.log(orderItemsStatus, itemUpdateData);
 
-    // Check if the status has actually changed
     if (itemUpdateData.status === itemUpdateData.currentStatus) {
       toast.error("يرجى اختيار حالة جديدة");
       return;
@@ -67,7 +65,7 @@ export default function AdminOrderDetails() {
         status: itemUpdateData.status,
       });
 
-      // Update the order's item status locally as well
+  
       const updatedOrderItems = order.orderItems.map((item) =>
         item.orderItemId === itemId
           ? { ...item, status: itemUpdateData.status }
@@ -76,7 +74,7 @@ export default function AdminOrderDetails() {
 
       setOrder({ ...order, orderItems: updatedOrderItems });
 
-      // Update the orderItemsStatus to reflect the new current status
+      
       setOrderItemsStatus((prevStatus) =>
         prevStatus.map((item) =>
           item.id === itemId
