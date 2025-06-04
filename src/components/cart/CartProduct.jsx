@@ -58,7 +58,7 @@ export default function CartProduct({ item }) {
         <div className="lg:col-span-11 xl:col-span-5 flex flex-col gap-2 lg:flex-row justify-between xl:pe-5 items-start lg:items-center">
           <div className="text-gray-700">
             <span className="lg:hidden">السعر : </span>
-            {item.price} ج.م
+            {item.discountedPrice} ج.م
           </div>
           <div className="flex items-end rounded-full overflow-hidden border border-gray-400">
             <button
@@ -84,7 +84,7 @@ export default function CartProduct({ item }) {
           </div>
           <div className="text-gray-700 font-medium">
             <span className="lg:hidden">الاجمالي : </span>
-            {item.quantity * item.price} ج.م
+            {item.quantity * item.discountedPrice} ج.م
           </div>
           <div>
             <button

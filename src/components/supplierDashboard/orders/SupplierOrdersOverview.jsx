@@ -16,7 +16,6 @@ const fetchOrders = async ({ pageParam = 1 }) => {
 };
 
 export default function SupplierOrdersOverview() {
-
   const {
     data,
     fetchNextPage,
@@ -29,8 +28,19 @@ export default function SupplierOrdersOverview() {
     queryKey: ["supplierOrders"],
     queryFn: fetchOrders,
     getNextPageParam: (lastPage, pages) => {
-      const nextPage = pages.length + 1;
-      return lastPage.items.length < lastPage.totalItems ? nextPage : undefined;
+      // Calculate total items fetched so far
+      const totalFetched = pages.reduce(
+        (sum, page) => sum + page.items.length,
+        0
+      );
+
+      // If we've fetched all items, return undefined (no more pages)
+      if (totalFetched >= lastPage.totalItems) {
+        return undefined;
+      }
+
+      // Otherwise, return the next page number
+      return pages.length + 1;
     },
   });
 
@@ -39,8 +49,8 @@ export default function SupplierOrdersOverview() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasNextPage) {
-          
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          console.log("Fetching next page...", hasNextPage);
           fetchNextPage();
         }
       },
@@ -51,7 +61,8 @@ export default function SupplierOrdersOverview() {
     return () => {
       if (observerRef.current) observer.unobserve(observerRef.current);
     };
-  }, [fetchNextPage, hasNextPage]);
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
   // -------------------------------------------------
   const getStatusBadgeClass = (status) => {
     switch (status) {
@@ -110,7 +121,7 @@ export default function SupplierOrdersOverview() {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800">الطلبات</h2>
         <div className="bg-teal-50 text-teal-700 px-4 py-1 rounded-full text-sm font-medium">
-          {data.pages[0].totalItems || 0} طلب
+          {data?.pages?.[0]?.totalItems || 0} طلب
         </div>
       </div>
 
@@ -164,42 +175,6 @@ export default function SupplierOrdersOverview() {
 
             {/*details*/}
             <div className="p-4 space-y-3">
-              {/* <div className="flex items-center text-sm">
-                <div className="w-8">
-                  <FiUser className="text-gray-400" />
-                </div>
-                <div className="flex-1">
-                  <div className="text-gray-500 mb-0.5">المشتري</div>
-                  <div className="font-medium text-gray-900">
-                    {order.buyerName}
-                  </div>
-                </div>
-              </div> */}
-
-              {/* <div className="flex items-center text-sm">
-                <div className="w-8">
-                  <FiMail className="text-gray-400" />
-                </div>
-                <div className="flex-1">
-                  <div className="text-gray-500 mb-0.5">البريد الإلكتروني</div>
-                  <div className="font-medium text-gray-900 truncate" dir="ltr">
-                    {order.buyerEmail}
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center text-sm">
-                <div className="w-8">
-                  <FiMapPin className="text-gray-400" />
-                </div>
-                <div className="flex-1">
-                  <div className="text-gray-500 mb-0.5">العنوان</div>
-                  <div className="font-medium text-gray-900 line-clamp-2">
-                    {order.shippingAddress}
-                  </div>
-                </div>
-              </div> */}
-
               <div className="flex items-center text-sm mt-4">
                 <div className="w-8">
                   <FiPackage className="text-gray-400" />
@@ -225,17 +200,6 @@ export default function SupplierOrdersOverview() {
                 </div>
               </div>
             </div>
-
-            {/* <div className="px-4 py-3 bg-gray-50 flex justify-end gap-2 border-t border-gray-100">
-              <button className="flex items-center gap-1 px-3 py-1.5 rounded-md bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors text-sm">
-                <FaRegEdit size={14} />
-                <span>تعديل</span>
-              </button>
-              <button className="flex items-center gap-1 px-3 py-1.5 rounded-md bg-white border border-red-200 text-red-500 hover:bg-red-50 transition-colors text-sm">
-                <GoTrash size={14} />
-                <span>حذف</span>
-              </button>
-            </div> */}
           </div>
         ))}
       </div>
