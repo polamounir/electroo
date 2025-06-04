@@ -5,13 +5,13 @@ import { toast } from "sonner";
 import UserOrders from "../components/profile/UserOrders";
 
 import Cookies from "js-cookie";
+import Loader from "../components/ui/Loader";
 
 const userRoles = [
   { role: "User", label: "مستخدم" },
   { role: "Admin", label: "مدير" },
   { role: "Supplier", label: "مورد" },
 ];
-
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -42,11 +42,15 @@ export default function Profile() {
   };
 
   // Return early if no user to prevent errors
-  if (!user) return null;
+  if (!user) return (
+    <div className=" flex items-center justify-center">
+      <Loader />
+    </div>
+  );
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-8 md:px-16 lg:px-24 font-sans text-right">
-      <div className=" lg:w-[65%] m-auto">
+    <div className="min-h-[85svh] bg-gray-50 py-10 px-4 sm:px-8 md:px-16 lg:px-24 font-sans text-right">
+      <div className=" lg:w-[70%] m-auto min-h-[85svh]">
         {/* Header */}
         <header className="flex justify-between items-center mb-10">
           <h1 className="text-3xl font-bold text-gray-800">حسابي</h1>

@@ -56,29 +56,28 @@ const ConfirmationModal = ({
   );
 };
 
-const fetchUserOrders = async () => {
+const fetchUserOrders = async (page = 1) => {
   try {
     const { data } = await api.get("/orders", {
-      params: {
-        page: 1,
-        limit: 20,
-      },
+      params: { page, limit: 2 },
     });
     return data.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || "فشل في تحميل الطلبات");
   }
 };
-
 export default function UserOrders() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemToCancel, setItemToCancel] = useState(null);
   const [orderIdToCancel, setOrderIdToCancel] = useState(null);
   const [orderItemsStatuses, setOrderItemsStatuses] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 2; 
 
   const { data, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ["userOrders"],
-    queryFn: fetchUserOrders,
+    queryKey: ["userOrders", currentPage],
+    queryFn: () => fetchUserOrders(currentPage),
+    keepPreviousData: true,
     staleTime: 5 * 60 * 1000,
   });
 
@@ -373,6 +372,56 @@ export default function UserOrders() {
               </div>
             </div>
           ))}
+
+          {/* -------------- Pagination ----------- */}
+          <div>
+            {totalOrders > itemsPerPage && (
+              <div className="flex justify-center items-center gap-2 mt-6 text-sm md:text-base">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  }
+                  className="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded disabled:opacity-50"
+                >
+                  &lt;
+                </button>
+
+                {Array.from({
+                  length: Math.ceil(totalOrders / itemsPerPage),
+                }).map((_, idx) => {
+                  const pageNum = idx + 1;
+                  return (
+                    <button
+                      key={pageNum}
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`px-3 py-1 rounded ${
+                        currentPage === pageNum
+                          ? "bg-teal-600 text-white"
+                          : "bg-gray-100 hover:bg-gray-200"
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                })}
+
+                <button
+                  disabled={
+                    currentPage === Math.ceil(totalOrders / itemsPerPage)
+                  }
+                  onClick={() =>
+                    setCurrentPage((prev) =>
+                      Math.min(prev + 1, Math.ceil(totalOrders / itemsPerPage))
+                    )
+                  }
+                  className="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded disabled:opacity-50"
+                >
+                  &gt;
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>

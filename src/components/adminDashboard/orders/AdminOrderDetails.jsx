@@ -10,6 +10,7 @@ export default function AdminOrderDetails() {
   const { id } = useParams();
   const [order, setOrder] = useState(null);
   const [orderItemsStatus, setOrderItemsStatus] = useState([]);
+  console.log(orderItemsStatus, "orderItemsStatus");
   const [isLoading, setIsLoading] = useState(true);
   const [isPrinting, setIsPrinting] = useState(false);
   const orderRef = useRef();
@@ -26,11 +27,22 @@ export default function AdminOrderDetails() {
       const orderData = response.data.data;
       console.log(orderData);
       setOrder(orderData);
+
+      // Initialize with the first available next status for each item
       setOrderItemsStatus(
-        orderData.orderItems.map((item) => ({
-          id: item.orderItemId,
-          status: item.status,
-        }))
+        orderData.orderItems.map((item) => {
+          const currentStatusConfig = itemStatus.find(
+            (s) => s.Value === item.status
+          );
+          const firstAvailableStatus =
+            currentStatusConfig?.optios[0]?.Value || item.status;
+
+          return {
+            id: item.orderItemId,
+            currentStatus: item.status, // Keep track of current status
+            status: firstAvailableStatus, // Set to first available next status
+          };
+        })
       );
     } catch (error) {
       console.error("Error fetching order:", error);
@@ -43,6 +55,12 @@ export default function AdminOrderDetails() {
   const updateItemStatus = async (itemId) => {
     const itemUpdateData = orderItemsStatus.find((i) => i.id === itemId);
     console.log(orderItemsStatus, itemUpdateData);
+
+    // Check if the status has actually changed
+    if (itemUpdateData.status === itemUpdateData.currentStatus) {
+      toast.error("يرجى اختيار حالة جديدة");
+      return;
+    }
 
     try {
       await api.put(`/orders/order-items/${itemId}/status`, {
@@ -58,6 +76,21 @@ export default function AdminOrderDetails() {
 
       setOrder({ ...order, orderItems: updatedOrderItems });
 
+      // Update the orderItemsStatus to reflect the new current status
+      setOrderItemsStatus((prevStatus) =>
+        prevStatus.map((item) =>
+          item.id === itemId
+            ? {
+                ...item,
+                currentStatus: itemUpdateData.status,
+                status:
+                  itemStatus.find((s) => s.Value === itemUpdateData.status)
+                    ?.optios[0]?.Value || itemUpdateData.status,
+              }
+            : item
+        )
+      );
+
       toast.success("تم تحديث الحالة بنجاح");
     } catch (error) {
       console.error(error);
@@ -70,7 +103,6 @@ export default function AdminOrderDetails() {
       Value: "Pending",
       Name: "قيد الانتظار",
       optios: [
-        // { Value: "Pending", Name: "قيد الانتظار" },
         { Value: "Confirmed", Name: "تم التاكيد" },
         { Value: "Shipped", Name: "تم الشحن" },
         { Value: "Delivered", Name: "تم التوصيل " },
@@ -81,7 +113,6 @@ export default function AdminOrderDetails() {
       Value: "Confirmed",
       Name: "تم التاكيد",
       optios: [
-        // { Value: "Confirmed", Name: "تم التاكيد" },
         { Value: "Shipped", Name: "تم الشحن" },
         { Value: "Delivered", Name: "تم التوصيل " },
         { Value: "Cancelled", Name: "تم الالغاء" },
@@ -91,7 +122,6 @@ export default function AdminOrderDetails() {
       Value: "Shipped",
       Name: "تم الشحن",
       optios: [
-        // { Value: "Shipped", Name: "تم الشحن" },
         { Value: "Delivered", Name: "تم التوصيل " },
         { Value: "Cancelled", Name: "تم الالغاء" },
       ],
@@ -225,7 +255,6 @@ export default function AdminOrderDetails() {
       pdf.addImage(
         canvas.toDataURL("image/jpeg", 1.0),
         "JPEG",
-
         0,
         position,
         imgWidth,
@@ -432,98 +461,98 @@ export default function AdminOrderDetails() {
                 المنتجات ({order.orderItems?.length})
               </h2>
               <div className="space-y-4">
-                {order.orderItems?.map((item) => (
-                  <div
-                    key={item.orderItemId}
-                    className="flex flex-col md:flex-row md:items-center gap-4 p-4 bg-white border rounded-lg shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <div className="w-24 h-24 flex-shrink-0">
-                      <img
-                        src={item.imageUrl}
-                        alt={item.productName}
-                        className="w-full h-full object-cover rounded-md"
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src =
-                            "https://via.placeholder.com/100?text=No+Image";
-                        }}
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-teal-700 font-bold text-lg">
-                        {item.productName}
-                      </h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
-                        <p className="text-sm text-gray-600">
-                          <span className="font-medium">السعر:</span>{" "}
-                          {item.price.toFixed(2)} ج.م
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          <span className="font-medium">الحالة</span>{" "}
-                          {getStatusBadge(item.status)}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          <span className="font-medium">الكمية:</span>{" "}
-                          {item.quantity}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          <span className="font-medium">المورّد:</span>{" "}
-                          {item.supplierName}
-                        </p>
-                      </div>
-                      <div>
-                        {!["Delivered", "Cancelled"].includes(item.status) && (
-                          <div className="flex flex-col md:flex-row md:items-center gap-3 mt-4">
-                            <p className="font-medium">تحديث الحالة:</p>
-                            <div className="flex items-center flex-1 gap-3">
-                              <select
-                                value={
-                                  orderItemsStatus.find(
-                                    (i) => i.id === item.orderItemId
-                                  )?.status
-                                }
-                                className="block flex-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-gray-700 bg-white transition"
-                                onChange={(e) => {
-                                  const index = orderItemsStatus.findIndex(
-                                    (i) => i.id === item.orderItemId
-                                  );
-                                  console.log(index);
-                                  const updatedStatuses = [...orderItemsStatus];
-                                  updatedStatuses[index].status =
-                                    e.target.value;
-                                  console.log(updatedStatuses);
-                                  setOrderItemsStatus(updatedStatuses);
+                {order.orderItems?.map((item) => {
+                  const itemStatusData = orderItemsStatus.find(
+                    (i) => i.id === item.orderItemId
+                  );
+                  const currentStatusConfig = itemStatus.find(
+                    (s) => s.Value === item.status
+                  );
 
-                                  console.log(orderItemsStatus);
-                                }}
-                              >
-                                {itemStatus
-                                  .find((i) => i.Value === item.status)
-                                  ?.optios.map((opt) => {
-                                    // console.log(opt);
-                                    return (
-                                      <option key={opt.Value} value={opt.Value}>
-                                        {opt.Name}
-                                      </option>
+                  return (
+                    <div
+                      key={item.orderItemId}
+                      className="flex flex-col md:flex-row md:items-center gap-4 p-4 bg-white border rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                    >
+                      <div className="w-24 h-24 flex-shrink-0">
+                        <img
+                          src={item.imageUrl}
+                          alt={item.productName}
+                          className="w-full h-full object-cover rounded-md"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src =
+                              "https://via.placeholder.com/100?text=No+Image";
+                          }}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-teal-700 font-bold text-lg">
+                          {item.productName}
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+                          <p className="text-sm text-gray-600">
+                            <span className="font-medium">السعر:</span>{" "}
+                            {item.price.toFixed(2)} ج.م
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            <span className="font-medium">الحالة الحالية:</span>{" "}
+                            {getStatusBadge(item.status)}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            <span className="font-medium">الكمية:</span>{" "}
+                            {item.quantity}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            <span className="font-medium">المورّد:</span>{" "}
+                            {item.supplierName}
+                          </p>
+                        </div>
+                        <div>
+                          {!["Delivered", "Cancelled"].includes(
+                            item.status
+                          ) && (
+                            <div className="flex flex-col md:flex-row md:items-center gap-3 mt-4">
+                              <p className="font-medium">تحديث الحالة إلى:</p>
+                              <div className="flex items-center flex-1 gap-3">
+                                <select
+                                  value={itemStatusData?.status || ""}
+                                  className="block flex-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-gray-700 bg-white transition"
+                                  onChange={(e) => {
+                                    const index = orderItemsStatus.findIndex(
+                                      (i) => i.id === item.orderItemId
                                     );
-                                  })}
-                              </select>
+                                    const updatedStatuses = [
+                                      ...orderItemsStatus,
+                                    ];
+                                    updatedStatuses[index].status =
+                                      e.target.value;
+                                    setOrderItemsStatus(updatedStatuses);
+                                  }}
+                                >
+                                  {currentStatusConfig?.optios.map((opt) => (
+                                    <option key={opt.Value} value={opt.Value}>
+                                      {opt.Name}
+                                    </option>
+                                  ))}
+                                </select>
 
-                              <button
-                                className="px-4 py-2 bg-teal-600 hover:bg-teal-500 rounded-lg text-white transition shadow-sm"
-                                onClick={() =>
-                                  updateItemStatus(item.orderItemId)
-                                }
-                              >
-                                حفظ
-                              </button>
+                                <button
+                                  className="px-4 py-2 bg-teal-600 hover:bg-teal-500 rounded-lg text-white transition shadow-sm"
+                                  onClick={() =>
+                                    updateItemStatus(item.orderItemId)
+                                  }
+                                >
+                                  حفظ
+                                </button>
+                              </div>
                             </div>
-                          </div>
-                        )}
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -539,7 +568,7 @@ export default function AdminOrderDetails() {
         </div>
       </div>
 
-      {/* PDF.....  */}
+      {/* -----------------PDF-------------  */}
       <div className="hidden">
         <div ref={printableRef} className="w-full">
           <PrintedInVoice order={order} itemStatus={itemStatus} />
