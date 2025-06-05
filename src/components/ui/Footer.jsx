@@ -1,9 +1,13 @@
-import React from "react";
+
 import { FaFacebookF, FaWhatsapp } from "react-icons/fa";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 export default function Footer() {
+  const path = useLocation()
+  if (path.pathname === "/login" || path.pathname === "/register" || path.pathname === "/search") {
+    return null; 
+  }
   return (
     <footer className="bg-black text-white py-6 px-4 md:px-8 lg:px-16">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">

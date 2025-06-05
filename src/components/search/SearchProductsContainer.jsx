@@ -7,9 +7,7 @@ import { addProductToCartAsync } from "../../app/slices/cartSlice";
 
 function ProductCard({ product, isRowView }) {
   const dispatch = useDispatch();
-
   const addToCart = (id) => {
-
     dispatch(addProductToCartAsync(id));
   };
 
@@ -72,25 +70,25 @@ function ProductCard({ product, isRowView }) {
   );
 }
 
-export  function SearchProductsContainer({ products }) {
-  console.log("SearchProductsContainer rendered with products: 000000000000", products);
-  const [isRowView, setIsRowView] = useState(false);
+export  function SearchProductsContainer({ products, isRowView }) {
+  // console.log("SearchProductsContainer rendered with products: 000000000000", products);
+  // const [isRowView, setIsRowView] = useState(false);
 
-  const toggleView = () => {
-    setIsRowView(!isRowView);
-  };
+  // const toggleView = () => {
+  //   setIsRowView(!isRowView);
+  // };
 
   return (
     <div className="px-4 py-6">
-      <div className="flex justify-end mb-4">
+      {/* <div className="flex justify-end mb-4">
         <button
           onClick={toggleView}
-          className="px-3 py-1 border rounded text-sm text-gray-700 hover:bg-gray-100"
+          className="px-3 py-1 border border-gray-200 rounded text-sm text-teal-700 hover:bg-gray-100"
         >
           تغيير العرض {isRowView ? "صورة" : "قائمة"}
         </button>
-      </div>
-      
+      </div> */}
+
       <div
         className={`gap-4 ${
           isRowView
@@ -109,7 +107,9 @@ export  function SearchProductsContainer({ products }) {
         ) : (
           <div className="col-span-full text-center text-gray-500">
             <p className="text-lg">لا توجد نتائج للبحث</p>
-            <p className="mt-2">حاول تعديل معايير البحث أو البحث بكلمات مختلفة.</p>
+            <p className="mt-2">
+              حاول تعديل معايير البحث أو البحث بكلمات مختلفة.
+            </p>
           </div>
         )}
       </div>

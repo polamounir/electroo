@@ -139,7 +139,7 @@ export default function SearchFilter() {
 
   return (
     <div
-      className={`bg-white  fixed lg:static0 w-xs z-[200] lg:overflow-y-auto lg:h-svh  pt-10 lg:pt-20 flex flex-col p-6 lg:px-2 rounded-lg top-0 lg:right-0 duration-500  text-gray-100  h-[100svh] overflow-y-auto scrolling shadow-xl ${
+      className={`bg-white fixed lg:static0 w-xs z-[1000] lg:z-[200] lg:overflow-y-auto lg:h-svh  pt-10 lg:pt-20 flex flex-col p-6 lg:px-2 rounded-lg top-0 lg:right-0 duration-500  text-gray-100  h-[100svh] overflow-y-auto scrolling shadow-xl ${
         isSearchSidebarOpen ? "-right-0" : "-right-full"
       }`}
       dir="rtl"

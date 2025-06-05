@@ -163,12 +163,14 @@ export default function Checkout() {
       {isModelOpen && <AddAddressModel />}
       {cartItems?.length === 0 && (
         <div className="flex flex-col gap-5 justify-center items-center h-[60dvh] pb-20">
-          <h2 className="font-bold text-3xl">Your Cart is Empty</h2>
+          <h2 className="font-bold text-3xl">
+            عربة التسوق فارغة
+          </h2>
           <Link
             to="/"
             className="px-5 py-2 font-bold bg-teal-500 text-white rounded-md"
           >
-            Go to Shop
+            ابدأ
           </Link>
         </div>
       )}
@@ -276,8 +278,10 @@ export default function Checkout() {
                       key={option.id}
                       className=" p-3 flex justify- w-full items-center rounded-lg border border-transparent cursor-pointer hover:bg-slate-200 has-[:checked]:border-teal-500 has-[:checked]:text-teal-900 has-[:checked]:bg-teal-50 has-[:checked]:font-bold"
                     >
-                      <div className="relative z-10 inline-flex items-center justify-center gap-2 w-full">
-                        <p className=" inset-0 w-full ">{option.name}</p>
+                      <div className="relative z-10 inline-flex items-center flex-col justify-center gap-2 w-full">
+
+                        <p className=" inset-0 w-full text-start ">{option.name === "Online" && "دفع اونلاين"}</p>
+                        <p className=" inset-0 w-full text-start ">{option.name === "Cash" && "الدفع عند الاسلام"}</p>
                       </div>
                       <input
                         type="radio"
