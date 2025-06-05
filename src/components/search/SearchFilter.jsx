@@ -73,8 +73,8 @@ export default function SearchFilter() {
     }
   };
 
-  const updateSearchParams = () => {
-    dispatch(clearSearchResults());
+  const updateSearchParams = async () => {
+    await dispatch(clearSearchResults());
     const MinimumPrice = rangeValues[0];
     const MaximumPrice = rangeValues[1];
     const HasDiscount = showDiscounts;
@@ -96,19 +96,19 @@ export default function SearchFilter() {
     //     CategoryId,
     //   })
     // );
-    // dispatch(
-    //   getfilterSearchResults({
-    //     SearchQuery: search,
-    //     MinimumPrice,
-    //     MaximumPrice,
-    //     HasDiscount,
-    //     SortBy,
-    //     ViewMode,
-    //     OptionGroupName,
-    //     OptionValue,
-    //     CategoryId,
-    //   })
-    // );
+   await dispatch(
+      getfilterSearchResults({
+        SearchQuery: search,
+        MinimumPrice,
+        MaximumPrice,
+        HasDiscount,
+        SortBy,
+        ViewMode,
+        OptionGroupName,
+        OptionValue,
+        CategoryId,
+      })
+    );
 
     // const searhLink = `/search?SearchQuery=${search}&CategoryId=${CategoryId}&MinimumPrice=${MinimumPrice}&MaximumPrice=${MaximumPrice}&HasDiscount=${HasDiscount}&SortBy=${SortBy}&Limit=${limit}&OptionGroupName=${optionGroup}&OptionValue=${selectedOptionsValue}`;
     const searhLink = `/search?${search !== "" ? `SearchQuery=${search}& `:""}${

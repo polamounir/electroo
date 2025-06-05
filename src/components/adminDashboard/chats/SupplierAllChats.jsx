@@ -6,7 +6,7 @@ export default function SupplierAllChats() {
   const fetchChats = async () => {
     try {
       const { data } = await api.get("/conversations?page=1&limit=10");
-      console.log(data);
+      // console.log(data);
       setItems(data.data.items);
     } catch (error) {
       console.error(error);

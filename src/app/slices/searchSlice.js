@@ -4,7 +4,7 @@ import { api } from "../../api/axiosInstance";
 // Initial/default state
 const initialState = {
   page: 1,
-  limit: 10,
+  limit: 20,
   viewMode: "grid",
   SearchQuery: "",
   MinimumPrice: 0,
@@ -34,7 +34,7 @@ export const getSearchResults = createAsyncThunk(
       MinimumPrice = 0,
       MaximumPrice = 10000,
       HasDiscount = false,
-      limit = 10,
+      limit = 20,
       OptionGroupName,
       OptionValue,
       CategoryId,
@@ -89,7 +89,7 @@ export const getfilterSearchResults = createAsyncThunk(
       const response = await api.get("/products", {
         params: {
           SearchQuery: SearchQuery || "",
-          Limit: limit || 10,
+          Limit: limit || 20,
           MinimumPrice: MinimumPrice || 0,
           MaximumPrice: MaximumPrice || 10000,
           HasDiscount: HasDiscount || false,
@@ -191,7 +191,7 @@ const searchSlice = createSlice({
       })
       .addCase(getfilterSearchResults.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log("getfilterSearchResults fulfilled with items: xxxxxxxxxxxxxxxxxxxx", action.payload.items);
+        // console.log("getfilterSearchResults fulfilled with items: xxxxxxxxxxxxxxxxxxxx", action.payload.items);
         const { items, cursor, hasMore } = action.payload;
         state.searchResults = items;
         state.Cursor = cursor;

@@ -25,7 +25,7 @@ export default function AdminOrderDetails() {
     try {
       const response = await api.get(`/orders/${id}/details`);
       const orderData = response.data.data;
-      console.log(orderData);
+      // console.log(orderData);
       setOrder(orderData);
 
       setOrderItemsStatus(
@@ -53,7 +53,7 @@ export default function AdminOrderDetails() {
 
   const updateItemStatus = async (itemId) => {
     const itemUpdateData = orderItemsStatus.find((i) => i.id === itemId);
-    console.log(orderItemsStatus, itemUpdateData);
+    // console.log(orderItemsStatus, itemUpdateData);
 
     if (itemUpdateData.status === itemUpdateData.currentStatus) {
       toast.error("يرجى اختيار حالة جديدة");

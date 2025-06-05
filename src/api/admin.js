@@ -2,7 +2,7 @@ import { api } from "./axiosInstance";
 
 export const uploadProduct = async (productData) => {
   // console.log(productData.productOptions);
-  console.log(productData);
+  // console.log(productData);
 
 
   const formData = new FormData();
@@ -35,7 +35,7 @@ export const uploadProduct = async (productData) => {
   });
 
   formData.forEach((value, key) => {
-    console.log(`${key}:`, value);
+    // console.log(`${key}:`, value);
   });
 
   // const options = {
@@ -45,7 +45,7 @@ export const uploadProduct = async (productData) => {
 
   try {
     const { data } = await api.post("/products", formData);
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (error) {
     if (error.response) {

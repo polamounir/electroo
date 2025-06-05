@@ -111,7 +111,7 @@ export const getUserData = createAsyncThunk(
     try {
       const response = await getUserDataFn();
 
-      console.log(response);
+      // console.log(response);
 
       return response.data;
     } catch (error) {
@@ -186,9 +186,9 @@ const authSlice = createSlice({
       })
       .addCase(getUserData.fulfilled, (state, action) => {
         state.loading = false;
-        console.log(action.payload);
+        // console.log(action.payload);
         state.user = action.payload;
-        console.log(state.user);
+        // console.log(state.user);
         state.isAuthenticated = true;
       })
       .addCase(getUserData.rejected, (state) => {

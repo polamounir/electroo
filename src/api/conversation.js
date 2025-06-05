@@ -2,10 +2,10 @@ import { api } from "./axiosInstance";
 
 export const startConversation = async (data) => {
   try {
-    console.log(data, "data");
+    // console.log(data, "data");
     const response = await api.post("/conversations/start", data);
-    console.log(response);
-    console.log(response.data);
+    // console.log(response);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);

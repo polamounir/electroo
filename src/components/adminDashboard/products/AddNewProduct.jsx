@@ -44,7 +44,7 @@ export default function AddNewProduct() {
     },
   });
 
-  console.log(categories);
+  // console.log(categories);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -129,7 +129,7 @@ export default function AddNewProduct() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData , "xxxxxxxxxxxxxxxxxx")
+    // console.log(formData , "xxxxxxxxxxxxxxxxxx")
 
 
     if (formData.images.length === 0) {
@@ -137,7 +137,7 @@ export default function AddNewProduct() {
     }
     try {
       const res = await uploadProduct(formData);
-      console.log(res);
+      // console.log(res);
       if (res.data.isSuccess) {
         toast.success("تم إضافة المنتج");
         setFormData({
@@ -164,7 +164,7 @@ export default function AddNewProduct() {
       toast.error("فشل اضافة المنتج");
     }
 
-    console.log("Submitted Data:", finalData);
+    // console.log("Submitted Data:", finalData);
   };
 
   const handleOpenCategoryModel = () => {

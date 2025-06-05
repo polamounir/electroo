@@ -119,21 +119,23 @@ function Search() {
   return (
     <div className="min-h-[92.5svh] bg-gray-50">
       <div className=" mx-auto px-4 py-8">
-        <div className="flex justify-end items-center">
+        <div className="flex justify-end items-center w-full px-5 lg:px-10">
           <button
             onClick={toggleView}
             className="px-3 py-1 border border-gray-200 rounded text-sm text-teal-700 hover:bg-gray-100"
           >
             تغيير العرض {isRowView ? "صورة" : "قائمة"}
           </button>
-          <button
-            onClick={toggleSidebar}
-            className="px-3 py-1 hover:bg-gray-100  lg:hidden"
-          >
-            <span className="flex items-center justify-center text-teal-500 text-2xl ">
-              <HiMenuAlt2 />
-            </span>
-          </button>
+          <div className=" lg:hidden">
+            <button
+              onClick={toggleSidebar}
+              className="px-3 py-1 hover:bg-gray-100 "
+            >
+              <span className="flex items-center justify-center text-teal-500 text-2xl ">
+                <HiMenuAlt2 />
+              </span>
+            </button>
+          </div>
         </div>
         {/* Loading Spinner */}
         {isLoading && (

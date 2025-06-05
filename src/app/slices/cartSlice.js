@@ -116,7 +116,7 @@ export const deleteProductAsync = createAsyncThunk(
         cartId: localStorage.getItem("cartId"),
         quantity: 0,
       });
-      console.log(res);
+      // console.log(res);
       dispatch(fetchCartAsync());
       if (res.status == 200) {
         toast.success("تم الحذف");

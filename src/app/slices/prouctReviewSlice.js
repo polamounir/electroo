@@ -16,10 +16,10 @@ export const addProductReview = createAsyncThunk(
     const { productId } = getState().productReview;
     formData.append("productId", productId);
 
-    console.log(formData.get("image"));
-    console.log(formData.get("stars"));
-    console.log(formData.get("reviewText"));
-    console.log(productId);
+    // console.log(formData.get("image"));
+    // console.log(formData.get("stars"));
+    // console.log(formData.get("reviewText"));
+    // console.log(productId);
     try {
       const response = await api.post("/reviews", formData);
       return response.data;
