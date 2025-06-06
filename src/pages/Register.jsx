@@ -6,6 +6,7 @@ import { registerUser } from "../app/slices/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
+import Cookies from "js-cookie";
 export default function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -13,9 +14,11 @@ export default function Register() {
   const { loading } = useSelector((state) => state.auth);
   const user = useSelector((state) => state.auth.user);
   useEffect(() => {
-    if (user) {
-      navigate("/");
-      toast.error("تم تسجيل الدخول بالفعل");
+    const token =
+      Cookies.get("accessToken") || localStorage.getItem("accessToken");
+    if (user || token) {
+      navigate("/redirect-user");
+      toast.info("يرجي تسجيل الخروج اولاً ");
     }
   }, [navigate]);
   // ------------------------------------
