@@ -196,7 +196,8 @@ export const validateCoupon = async (couponData) => {
 export const createOrder = async (data) => {
   try {
     const res = await api.post(`/orders/create-order`, data);
-    // console.log(res);
+    console.log(res);
+    
     return {
       code: res.status,
       message: res.data.message,

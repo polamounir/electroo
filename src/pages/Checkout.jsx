@@ -114,34 +114,40 @@ export default function Checkout() {
     e.preventDefault();
     const updatedOrder = await reformOrder();
 
+    console.log(updatedOrder)
 
-    try {
-      const res = await createOrder(updatedOrder);
-
-      console.log(res);
-      if (res.code === 200) {
-        toast.success("جاي تنفيذ الطلب");
-        if(res.paymentLink !== "") {
-
-          setTimeout(() => {
-            window.location.href = res.paymentLink;
-          }, 2000);
-          return;
-        }else {
-          navigate("/checkout-success")
-          dispatch(resetCart())
-        }
-      }
-      if (res.code === 401) {
-        toast.error("يرجي تسجيل الدخول اولا ");
-        navigate("/login");
-      } else {
-        // toast.error(res.message);
-      }
-    } catch (error) {
-      console.error("Error during order creation:", error);
-      // toast.error("An error occurred while creating the order.");
+    if (updatedOrder.address === "" || !updatedOrder.address) {
+      return(
+        toast.error("برجاء اضافة عنوان")
+      )
     }
+      try {
+        const res = await createOrder(updatedOrder);
+
+        console.log(res);
+
+        if (res.code === 200) {
+          toast.success("جاي تنفيذ الطلب");
+          if (res.paymentLink !== "") {
+            setTimeout(() => {
+              window.location.href = res.paymentLink;
+            }, 2000);
+            return;
+          } else {
+            navigate("/checkout-success");
+            dispatch(resetCart());
+          }
+        }
+        if (res.code === 401) {
+          toast.error("يرجي تسجيل الدخول اولا ");
+          navigate("/login");
+        } else {
+          // toast.error(res.message);
+        }
+      } catch (error) {
+        console.error("Error during order creation:", error);
+        // toast.error("An error occurred while creating the order.");
+      }
   };
 
   const paymentMethods = [
@@ -158,6 +164,8 @@ export default function Checkout() {
   //   const handleShippingPrice = (e) => {
   //    dispatch(setShippingPrice(e));
   //   }
+
+  console.log(orderDetail)
   return (
     <div className="min-h-[75dvh] pb-50">
       {isModelOpen && <AddAddressModel />}
@@ -227,8 +235,8 @@ export default function Checkout() {
                           value={option.id}
                           className="hidden"
                           checked={
-                            (addresses.length === 1 && index === 0) ||
-                            orderDetail.address === option.id
+                            (addresses?.length >= 1 && index === 0) ||
+                            (orderDetail?.address === option.id)
                           }
                           onChange={handleAddressChange}
                         />
@@ -295,34 +303,7 @@ export default function Checkout() {
                   ))}
                 </div>
               </div>
-              {/* <div className="border border-gray-300 rounded-2xl">
-                <div className="p-5 flex justify-between items-center">
-                  <h2 className="font-semibold text-lg">طرق الشحن</h2>
-                </div>
-                <hr className="border-gray-300" />
-                <div className="text-md p-5 text-black flex flex-col gap-3">
-                  {deliveryMethods?.map((option) => (
-                    <label
-                      key={option.id}
-                      className=" p-3 flex justify- w-full items-center rounded-lg border border-transparent cursor-pointer hover:bg-slate-200 has-[:checked]:border-teal-500 has-[:checked]:text-teal-900 has-[:checked]:bg-teal-50 has-[:checked]:font-bold"
-                    >
-                      <div className="relative z-10 inline-flex items-center justify-center gap-2 w-full">
-                        <p className=" inset-0 w-full ">{option.name}</p>
-                      </div>
-                      <input
-                        type="radio"
-                        name="deliveryMethod"
-                        value={option.id}
-                        className="hidden"
-                        checked={orderDetail.deliveryMethod === option.id}
-                        onChange={()=> {
-                            handleDeliveryMethodChange
-                            handleShippingPrice(option.price)}}
-                      />
-                    </label>
-                  ))}
-                </div>
-              </div> */}
+              {/* -------------------------------- */}
             </div>
             <div className="lg:col-span-2 p-10 flex flex-col gap-5 border border-gray-300 rounded-2xl">
               <h2 className="font-bold text-lg">ملخص الطلب </h2>

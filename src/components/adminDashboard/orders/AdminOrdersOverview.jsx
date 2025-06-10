@@ -101,27 +101,34 @@ export default function OrdersOverview() {
 
       <h2 className="text-2xl font-semibold mt-10">الطلبات</h2>
       <div className="flex flex-wrap items-center gap-3 mt-2">
-        {["Pending", "Confirmed", "Shipped", "Delivered", "Cancelled"].map(
-          (value) => (
-            <button
-              key={value}
-              className={`px-5 py-1 rounded-lg border border-gray-300 ${
-                sortByStatus === value ? "bg-black text-white" : ""
-              }`}
-              onClick={() => setSortByStatus(value)}
-            >
+        
+        {[
+          "Pending",
+          // "Confirmed",
+          // "Shipped",
+          // "Delivered",
+          "Cancelled",
+          "Completed",
+        ].map((value) => (
+          <button
+            key={value}
+            className={`px-5 py-1 rounded-lg border border-gray-300 ${
+              sortByStatus === value ? "bg-black text-white" : ""
+            }`}
+            onClick={() => setSortByStatus(value)}
+          >
+            {
               {
-                {
-                  Pending: "قيد الانتظار",
-                  Confirmed: "تم التأكيد",
-                  Shipped: "تم الشحن",
-                  Delivered: "تم التسليم",
-                  Cancelled: "تم الإلغاء",
-                }[value]
-              }
-            </button>
-          )
-        )}
+                Pending: "قيد الانتظار",
+                Confirmed: "تم التأكيد",
+                Shipped: "تم الشحن",
+                Delivered: "تم التسليم",
+                Cancelled: "تم الإلغاء",
+                Completed: "تم ",
+              }[value]
+            }
+          </button>
+        ))}
       </div>
 
       <div className="mt-5">
