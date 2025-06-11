@@ -147,7 +147,7 @@ export default function PromoTable() {
   // console.log(displayedPromos);
   return (
     <div className="w-full">
-      <div className="flex gap-5 text-lg font-semibold items-center mt-5 relative overflow-hidden rounded-full border border-gray-300 mb-5">
+      <div className="flex gap-5 text-lg font-semibold items-center mt-5 relative overflow-hidden rounded-lg border border-gray-300 mb-5">
         <input
           type="text"
           placeholder="بحث  ..."

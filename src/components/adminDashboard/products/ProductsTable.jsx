@@ -4,6 +4,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { GoTrash } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import placeholderImage from "../../../assets/images/product_placeholder.webp"
 import { toast } from "sonner";
 
 export default function ProductsTable() {
@@ -33,22 +34,6 @@ export default function ProductsTable() {
   });
 
   const handleAddNavigation = () => navigate("/admin/products/add");
-  const handleEditNavigation = (id) => navigate(`/admin/products/edit/${id}`);
-  const confirmDelete = (id) => setDeleteConfirm(id);
-  const cancelDelete = () => setDeleteConfirm(null);
-
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(
-        `https://ecommerce.markomedhat.com/api/products/${id}`
-      );
-      setDeleteConfirm(null);
-      refetch();
-    } catch (err) {
-      console.error("Delete failed:", err);
-      toast.error("فشل الحذف. حاول مرة أخرى.");
-    }
-  };
 
   if (isLoading) return <div className="text-center py-10">...جار التحميل</div>;
   if (isError)
@@ -92,65 +77,20 @@ export default function ProductsTable() {
                 key={product.id}
                 className="grid grid-cols-12 border-t border-gray-300 py-4 gap-5 px-4 text-sm text-gray-800 items-center hover:bg-gray-50"
               >
-                <div className="col-span-6 truncate">{product.title}</div>
+                <div className="col-span-6 flex items-center gap-5">
+                  <div>
+                    <img
+                      src={product.images[0] || placeholderImage }
+                      alt=""
+                      width={30}
+                    />
+                  </div>
+                  <div className="col-span-6 truncate">{product.title}</div>
+                </div>
                 <div className="col-span-2">{product.category || "—"}</div>
                 <div className="col-span-2">{product.price} ج.م</div>
                 <div className="col-span-1">{product.stock || "—"}</div>
                 <div className="col-span-1">{product.sales || "—"}</div>
-                {/* <div className="col-span-2 flex justify-center gap-3">
-                  <button
-                    title="تعديل"
-                    className="text-teal-600 text-xl hover:text-teal-800"
-                    onClick={() => handleEditNavigation(product.id)}
-                  >
-                    <FaRegEdit />
-                  </button>
-                  <div>
-                    {deleteConfirm === product.id ? (
-                      <div
-                        className="fixed inset-0 bg-black/20 bg-opacity-50 z-40 flex items-center justify-center p-4"
-                        onClick={cancelDelete}
-                      >
-                        <div
-                          className="bg-white rounded-xl shadow-xl p-6 max-w-md w-full mx-4 z-50 text-right"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <h3 className="text-xl font-bold text-gray-800 mb-4 border-b border-gray-100 pb-3">
-                            تأكيد حذف المنتج
-                          </h3>
-
-                          <p className="text-gray-600 mb-6">
-                            هل أنت متأكد من حذف هذا المنتج؟ لا يمكن التراجع عن
-                            هذا الإجراء.
-                          </p>
-
-                          <div className="flex flex-col sm:flex-row gap-3">
-                            <button
-                              onClick={() => handleDelete(product.id)}
-                              className="flex-1 font-medium py-3 px-6 rounded-lg shadow-sm bg-red-500 hover:bg-red-600 active:bg-red-700 text-white"
-                            >
-                              تأكيد الحذف
-                            </button>
-                            <button
-                              onClick={cancelDelete}
-                              className="flex-1 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition font-medium py-3 px-6 rounded-lg shadow-sm"
-                            >
-                              إلغاء
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <button
-                        className="text-red-600 text-xl hover:text-red-800"
-                        onClick={() => confirmDelete(product.id)}
-                        title="حذف المنتج"
-                      >
-                        <GoTrash />
-                      </button>
-                    )}
-                  </div>
-                </div> */}
               </div>
             ))}
 

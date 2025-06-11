@@ -1,278 +1,254 @@
-import { useMemo, useCallback, useState, memo } from "react";
-import { FaRegEdit } from "react-icons/fa";
+import { useMemo, useCallback, useState, useEffect } from "react";
+import { FaRegEdit, FaSearch, FaPlus } from "react-icons/fa";
 import { GoTrash } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../api/axiosInstance";
 import { toast } from "sonner";
 import { TbReload } from "react-icons/tb";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import debounce from "lodash.debounce";
 
-const UserTypeButton = memo(({ type, label, activeType, onClick }) => (
+// Constants
+const USER_TYPES = [
+  { type: "Admin", label: "مشرفين" },
+  { type: "User", label: "مستخدمين" },
+  { type: "Supplier", label: "تجار" },
+];
+const PAGE_SIZE = 10;
+
+// Sub-components
+const UserTypeButton = ({ type, label, activeType, onClick }) => (
   <button
     onClick={() => onClick(type)}
     className={`${
       activeType === type ? "bg-black text-white" : "bg-gray-200"
-    } px-2 py-1 rounded-lg items-center justify-center`}
+    } px-3 py-1 rounded-lg transition-colors duration-200`}
   >
     {label}
   </button>
-));
-
-const UserRow = memo(
-  ({
-    user,
-    deleteConfirm,
-    onEdit,
-    onDelete,
-    onReactivate,
-    onConfirmDelete,
-    onCancelDelete,
-  }) => {
-    return (
-      <div className="grid grid-cols-12 border-t border-gray-200 py-4 px-4 items-center hover:bg-gray-50">
-        <div className="col-span-4 truncate">{user.fullName || "—"}</div>
-        <div className="col-span-4 truncate">{user.email || "—"}</div>
-        <div className="col-span-2 flex justify-center">
-          <span
-            className={`${
-              user.isActive ? "bg-teal-600 px-4" : "bg-red-400 "
-            } px-2 py-1 rounded-lg text-full text-white`}
-          >
-            {user.isActive ? "نشط" : "موقوف"}
-          </span>
-        </div>
-
-        <div className="col-span-2 flex justify-center gap-3">
-          <button
-            className="text-teal-600 text-xl hover:text-teal-800"
-            onClick={() => onEdit(user.id)}
-            title="Edit user"
-          >
-            <FaRegEdit />
-          </button>
-          {!user.isActive ? (
-            <button
-              className="text-green-600 text-xl hover:text-green-800"
-              onClick={() => onReactivate(user.id)}
-              title="Reactivate user"
-            >
-              <TbReload />
-            </button>
-          ) : (
-            <div>
-              {deleteConfirm === user.id ? (
-                <DeleteConfirmationModal
-                  onConfirm={() => onDelete(user.id)}
-                  onCancel={onCancelDelete}
-                />
-              ) : (
-                <button
-                  className="text-red-600 text-xl hover:text-red-800"
-                  onClick={() => onConfirmDelete(user.id)}
-                  title="Delete user"
-                >
-                  <GoTrash />
-                </button>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  },
-  (prevProps, nextProps) => {
-    return (
-      prevProps.user.id === nextProps.user.id &&
-      prevProps.user.isActive === nextProps.user.isActive &&
-      prevProps.deleteConfirm === nextProps.deleteConfirm
-    );
-  }
 );
 
-const DeleteConfirmationModal = memo(({ onConfirm, onCancel }) => (
-  <div
-    className="fixed inset-0 bg-black/20 bg-opacity-50 z-40 flex items-center justify-center"
-    onClick={onCancel}
+const UserStatusBadge = ({ isActive }) => (
+  <span
+    className={`${
+      isActive ? "bg-teal-600" : "bg-red-400"
+    } px-3 py-1 rounded-lg text-white`}
   >
-    <div
-      className="bg-white rounded-xl shadow-xl p-6 max-w-md w-full mx-4 z-50 text-right"
-      onClick={(e) => e.stopPropagation()}
-    >
+    {isActive ? "نشط" : "موقوف"}
+  </span>
+);
+
+const DeleteConfirmationModal = ({ onConfirm, onCancel }) => (
+  <div className="fixed inset-0 bg-black/20 z-40 flex items-center justify-center">
+    <div className="bg-white rounded-xl shadow-xl p-6 max-w-md w-full mx-4 text-right">
       <h3 className="text-xl font-bold text-gray-800 mb-4 border-b border-gray-100 pb-3">
         تأكيد حذف المستخدم
       </h3>
-
       <p className="text-gray-600 mb-6">
         هل أنت متأكد من حذف هذا المستخدم؟ لا يمكن التراجع عن هذا الإجراء.
       </p>
-
       <div className="flex flex-col sm:flex-row gap-3">
         <button
           onClick={onConfirm}
-          className="flex-1 font-medium py-3 px-6 rounded-lg shadow-sm bg-red-500 hover:bg-red-600 active:bg-red-700 text-white"
+          className="flex-1 font-medium py-2 px-4 rounded-lg bg-red-500 hover:bg-red-600 text-white"
         >
           تأكيد الحذف
         </button>
         <button
           onClick={onCancel}
-          className="flex-1 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition font-medium py-3 px-6 rounded-lg shadow-sm"
+          className="flex-1 border border-gray-200 text-gray-700 hover:bg-gray-50 font-medium py-2 px-4 rounded-lg"
         >
           إلغاء
         </button>
       </div>
     </div>
   </div>
-));
+);
 
-const PaginationControls = memo(({ totalItems, page, onNext, onPrev }) => {
-  const showNext = totalItems > page * 10;
-  const showPrev = page > 1;
-
-  if (!showNext && !showPrev) return null;
-
+const UserRow = ({
+  user,
+  isDeleteConfirm,
+  onEdit,
+  onDelete,
+  onReactivate,
+  onConfirmDelete,
+  onCancelDelete,
+}) => {
   return (
-    <div className="flex justify-end gap-5 mt-5">
-      <button
-        onClick={onNext}
-        disabled={!showNext}
-        className="bg-teal-500 hover:bg-teal-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50 disabled:bg-teal-300 disabled:cursor-not-allowed"
-      >
-        التالي
-      </button>
-
-      <button
-        onClick={onPrev}
-        disabled={!showPrev}
-        className="bg-black hover:bg-teal-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50 disabled:bg-gray-700 disabled:cursor-not-allowed"
-      >
-        السابق
-      </button>
+    <div className="grid grid-cols-12 border-t border-gray-200 py-3 px-4 items-center hover:bg-gray-50 transition-colors">
+      <div className="col-span-4 truncate">{user.fullName || "—"}</div>
+      <div className="col-span-4 truncate">{user.email || "—"}</div>
+      <div className="col-span-2 flex justify-center">
+        <UserStatusBadge isActive={user.isActive} />
+      </div>
+      <div className="col-span-2 flex justify-center gap-3">
+        <button
+          className="text-teal-600 hover:text-teal-800 transition-colors"
+          onClick={() => onEdit(user.id)}
+          aria-label="Edit user"
+        >
+          <FaRegEdit size={18} />
+        </button>
+        {!user.isActive ? (
+          <button
+            className="text-green-600 hover:text-green-800 transition-colors"
+            onClick={() => onReactivate(user.id)}
+            aria-label="Reactivate user"
+          >
+            <TbReload size={18} />
+          </button>
+        ) : (
+          <button
+            className="text-red-600 hover:text-red-800 transition-colors"
+            onClick={() => onConfirmDelete(user.id)}
+            aria-label="Delete user"
+          >
+            <GoTrash size={18} />
+          </button>
+        )}
+      </div>
+      {isDeleteConfirm && (
+        <DeleteConfirmationModal
+          onConfirm={() => onDelete(user.id)}
+          onCancel={onCancelDelete}
+        />
+      )}
     </div>
   );
-});
+};
 
-export default function UsersTable() {
+const PaginationControls = ({
+  totalItems,
+  currentPage,
+  onPageChange,
+  isLoading,
+}) => {
+  const totalPages = Math.ceil(totalItems / PAGE_SIZE);
+  const canGoPrev = currentPage > 1;
+  const canGoNext = currentPage < totalPages;
+
+  if (totalPages <= 1) return null;
+
+  return (
+    <div className="flex items-center mt-5">
+      {/* <div className="text-sm text-gray-600">
+        عرض {(currentPage - 1) * PAGE_SIZE + 1}-
+        {Math.min(currentPage * PAGE_SIZE, totalItems)} من {totalItems}
+      </div> */}
+      <div className="flex gap-2 justify-between w-full">
+        <button
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={!canGoPrev || isLoading}
+          className="px-3 py-1 border rounded-lg disabled:opacity-50"
+        >
+          السابق
+        </button>
+        {/* <span className="px-3 py-1 bg-gray-100 rounded-lg">{currentPage}</span> */}
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={!canGoNext || isLoading}
+          className="px-3 py-1 border rounded-lg disabled:opacity-50"
+        >
+          التالي
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const UsersTable = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [page, setPage] = useState(1);
-  const [deleteConfirm, setDeleteConfirm] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [deleteConfirmId, setDeleteConfirmId] = useState(null);
   const [userType, setUserType] = useState("Admin");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
 
-  // Fetch users with React Query
+
+  useEffect(() => {
+    const debounceTimer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+      setCurrentPage(1); 
+    }, 5000);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchQuery]);
+
+  const getSearchUsers = ()=> {
+    setDebouncedSearchQuery(searchQuery);
+    setCurrentPage(1); 
+  }
+
+
   const {
     data: usersData,
     isLoading,
     isError,
-    refetch,
+    isFetching,
   } = useQuery({
-    queryKey: ["users", userType, page],
+    queryKey: ["users", userType, currentPage, debouncedSearchQuery],
     queryFn: async () => {
-      const { data } = await api.get(
-        `/users?UsersType=${userType}&page=${page}&limit=10`
-      );
+      const params = {
+        UsersType: userType,
+        page: currentPage,
+        limit: PAGE_SIZE,
+      };
+      if (debouncedSearchQuery) {
+        params.SearchQuery = debouncedSearchQuery;
+      }
+
+      const { data } = await api.get("/users", { params });
       return data.data;
     },
-    staleTime: 5 * 60 * 1000, 
-    cacheTime: 10 * 60 * 1000, 
     keepPreviousData: true,
+    staleTime: 5 * 60 * 1000,
   });
 
-
-  const users = useMemo(() => usersData?.items || [], [usersData?.items]);
-  const totalItems = useMemo(
-    () => usersData?.totalItems || 0,
-    [usersData?.totalItems]
-  );
+  const users = usersData?.items || [];
+  const totalItems = usersData?.totalItems || 0;
 
 
-  const deactivateUserMutation = useMutation({
-    mutationFn: (userId) => api.put(`/users/${userId}/deactivate`),
-    onSuccess: (response, userId) => {
-      toast.success(response.data.message || "User Deactivated");
-      queryClient.setQueryData(["users", userType, page], (old) => ({
-        ...old,
-        items: old.items.map((user) =>
-          user.id === userId ? { ...user, isActive: false } : user
-        ),
-      }));
-      setDeleteConfirm(null);
+  const toggleUserStatus = useMutation({
+    mutationFn: ({ userId, activate }) =>
+      api.put(`/users/${userId}/${activate ? "reactivate" : "deactivate"}`),
+    onSuccess: (response, { userId, activate }) => {
+      toast.success(
+        response.data.message ||
+          `User ${activate ? "reactivated" : "deactivated"}`
+      );
+      queryClient.invalidateQueries(["users"]);
+      setDeleteConfirmId(null);
     },
     onError: (error) => {
-      console.error("Error deleting", error);
-      if (error.response) {
-        toast.error(error.response.data.detail || "Error deleting");
-      } else {
-        toast.error("حدث خطأ ما, حاول مرة اخرى");
-      }
+      const errorMessage =
+        error.response?.data?.detail || "حدث خطأ ما, حاول مرة اخرى";
+      toast.error(errorMessage);
     },
   });
 
-  const reactivateUserMutation = useMutation({
-    mutationFn: (userId) => api.put(`/users/${userId}/reactivate`),
-    onSuccess: (response, userId) => {
-      toast.success(response.data.message || "User reactivated");
-      queryClient.setQueryData(["users", userType, page], (old) => ({
-        ...old,
-        items: old.items.map((user) =>
-          user.id === userId ? { ...user, isActive: true } : user
-        ),
-      }));
-    },
-    onError: (error) => {
-      console.error("Error reactivating", error);
-      if (error.response) {
-        toast.error(error.response.data.detail || "Error reactivating");
-      } else {
-        toast.error("حدث خطأ ما, حاول مرة اخرى");
-      }
-    },
-  });
 
-  // Memoized handlers
-  const handleUserTypeChange = useCallback((type) => {
+  const handleUserTypeChange = (type) => {
     setUserType(type);
-    setPage(1);
-  }, []);
+    setCurrentPage(1);
+  };
 
-  const handleAddNavigation = useCallback(() => {
-    navigate("/admin/users/add");
-  }, [navigate]);
+  const handlePageChange = (page) => setCurrentPage(page);
 
-  const handleEditNavigation = useCallback(
-    (userId) => {
-      navigate(`/admin/users/edit/${userId}`);
-    },
-    [navigate]
-  );
+  const handleAddUser = () => navigate("/admin/users/add");
+  const handleEditUser = (userId) => navigate(`/admin/users/edit/${userId}`);
 
-  const confirmDelete = useCallback((userId) => {
-    setDeleteConfirm(userId);
-  }, []);
+  const handleDeleteUser = (userId) => {
+    toggleUserStatus.mutate({ userId, activate: false });
+  };
 
-  const cancelDelete = useCallback(() => {
-    setDeleteConfirm(null);
-  }, []);
+  const handleReactivateUser = (userId) => {
+    toggleUserStatus.mutate({ userId, activate: true });
+  };
 
-  const handleDelete = useCallback(
-    (userId) => {
-      deactivateUserMutation.mutate(userId);
-    },
-    [deactivateUserMutation]
-  );
+  const handleSearchChange = (e) => setSearchQuery(e.target.value);
 
-  const handleReactivate = useCallback(
-    (userId) => {
-      reactivateUserMutation.mutate(userId);
-    },
-    [reactivateUserMutation]
-  );
-
-  const handleNextPage = useCallback(() => setPage((p) => p + 1), []);
-  const handlePrevPage = useCallback(
-    () => setPage((p) => Math.max(1, p - 1)),
-    []
-  );
-
+  // Loading and error states
   if (isLoading && !usersData) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -281,13 +257,13 @@ export default function UsersTable() {
     );
   }
 
-  if (isError && !isLoading) {
+  if (isError) {
     return (
       <div className="flex flex-col items-center justify-center h-64">
-        <div className="text-xl text-red-600 mb-4">حدث خطا غير متوقع</div>
+        <div className="text-xl text-red-600 mb-4">حدث خطأ غير متوقع</div>
         <button
           className="bg-teal-500 text-white px-4 py-2 rounded-lg"
-          onClick={refetch}
+          onClick={() => queryClient.refetchQueries(["users"])}
         >
           إعادة تحميل
         </button>
@@ -296,83 +272,109 @@ export default function UsersTable() {
   }
 
   return (
-    <div className="w-full">
-      <div className="w-full flex justify-between items-center mb-6">
-        <div>
-          <h2 className="text-2xl font-semibold">كل المستخدمين</h2>
-          <div className="flex items-center gap-2 mt-2">
-            <UserTypeButton
-              type="Admin"
-              label="مشرفين"
-              activeType={userType}
-              onClick={handleUserTypeChange}
+    <div className="w-full space-y-6">
+      {/* Search Section */}
+      <div className="border border-teal-600 rounded-2xl overflow-hidden">
+        <div className="bg-teal-600 p-3 text-center text-white">
+          <h2 className="text-lg font-medium">بحث عن مستخدم</h2>
+        </div>
+        <div className="p-4">
+          <div className="relative rounded-lg overflow-hidden border border-gray-300 focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+            <input
+              type="text"
+              placeholder="ابحث باسم المستخدم أو البريد الإلكتروني"
+              className="w-full px-4 py-2 pr-10 "
+              value={searchQuery}
+              onChange={handleSearchChange}
+              disabled={isFetching}
             />
-            <UserTypeButton
-              type="User"
-              label="مستخدمين"
-              activeType={userType}
-              onClick={handleUserTypeChange}
-            />
-            <UserTypeButton
-              type="Supplier"
-              label="تجار"
-              activeType={userType}
-              onClick={handleUserTypeChange}
-            />
+            <FaSearch className="absolute right-3 top-3 text-gray-400" />
+            <button
+              className="bg-teal-500 text-white absolute end-0 top-0 h-full px-5 "
+              onClick={getSearchUsers}
+            >
+              بحث
+            </button>
           </div>
         </div>
-        <button
-          className="bg-black px-5 py-2 text-white rounded-lg"
-          onClick={handleAddNavigation}
-        >
-          أضافة مشرف
-        </button>
       </div>
 
-      {users.length === 0 ? (
-        <div className="text-center py-10 bg-gray-50 rounded-lg">
-          <p className="text-lg text-gray-500">لا يوجد مستخدمين</p>
+      {/* Users Table Section */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 border-b border-gray-200">
+          <div className="mb-4 sm:mb-0">
+            <h2 className="text-xl font-semibold mb-5">إدارة المستخدمين</h2>
+            <div className="flex gap-2 mt-2">
+              {USER_TYPES.map(({ type, label }) => (
+                <UserTypeButton
+                  key={type}
+                  type={type}
+                  label={label}
+                  activeType={userType}
+                  onClick={handleUserTypeChange}
+                />
+              ))}
+            </div>
+          </div>
           <button
-            className="mt-4 bg-teal-500 text-white px-4 py-2 rounded-lg"
-            onClick={handleAddNavigation}
+            className="flex items-center gap-2 bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-lg transition-colors"
+            onClick={handleAddUser}
           >
-            أضافة مشرف جديد
+            <FaPlus /> أضافة مشرف
           </button>
         </div>
-      ) : (
-        <div className="flex flex-col mt-4 overflow-x-auto">
-          <div className="grid grid-cols-12 py-3 bg-gray-100 rounded-t-lg px-4 font-medium">
-            <div className="col-span-4">الاسم</div>
-            <div className="col-span-4">البريد الالكتروني</div>
-            <div className="col-span-2 text-center">الحالة</div>
-            <div className="col-span-2 text-center">الاوامر</div>
-          </div>
 
-          <div className="rounded-b-lg">
-            {users.map((user) => (
-              <UserRow
-                key={user.id}
-                user={user}
-                deleteConfirm={deleteConfirm}
-                onEdit={handleEditNavigation}
-                onDelete={handleDelete}
-                onReactivate={handleReactivate}
-                onConfirmDelete={confirmDelete}
-                onCancelDelete={cancelDelete}
-              />
-            ))}
+        {/* Table */}
+        {users.length === 0 ? (
+          <div className="p-8 text-center text-gray-500">
+            لا يوجد مستخدمين متطابقين مع معايير البحث
+            {!debouncedSearchQuery && (
+              <button
+                className="mt-4 block mx-auto bg-teal-500 text-white px-4 py-2 rounded-lg"
+                onClick={handleAddUser}
+              >
+                أضافة مستخدم جديد
+              </button>
+            )}
           </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-12 py-3 bg-gray-50 px-4 font-medium text-gray-600">
+              <div className="col-span-4">الاسم</div>
+              <div className="col-span-4">البريد الإلكتروني</div>
+              <div className="col-span-2 text-center">الحالة</div>
+              <div className="col-span-2 text-center">الإجراءات</div>
+            </div>
+            <div className="divide-y divide-gray-200">
+              {users.map((user) => (
+                <UserRow
+                  key={user.id}
+                  user={user}
+                  isDeleteConfirm={deleteConfirmId === user.id}
+                  onEdit={handleEditUser}
+                  onDelete={handleDeleteUser}
+                  onReactivate={handleReactivateUser}
+                  onConfirmDelete={setDeleteConfirmId}
+                  onCancelDelete={() => setDeleteConfirmId(null)}
+                />
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* Pagination */}
+        <div className="p-4 border-t border-gray-200">
+          <PaginationControls
+            totalItems={totalItems}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+            isLoading={isFetching}
+          />
         </div>
-      )}
-
-      {users.length > 0 && (
-        <PaginationControls
-          totalItems={totalItems}
-          page={page}
-          onNext={handleNextPage}
-          onPrev={handlePrevPage}
-        />
-      )}
+      </div>
     </div>
   );
-}
+};
+
+export default UsersTable;
