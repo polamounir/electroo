@@ -11,6 +11,9 @@ import { TfiPackage } from "react-icons/tfi";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { BsGear } from "react-icons/bs";
 import { AiOutlineDollar } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import { IoIosClose } from "react-icons/io";
+import { setSupplierSideMenu } from "../../app/slices/dashboardSlice";
 export default function AdminSideMenu() {
   const links = [
     {
@@ -94,42 +97,90 @@ export default function AdminSideMenu() {
   useEffect(() => {
     handleActiveLink(section);
   }, []);
+    const dispatch = useDispatch();
+    const { supplierSideMenu } = useSelector((state) => state.dashboard);
+  
+    const toggleSideMenu = () => {
+      dispatch(setSupplierSideMenu(!supplierSideMenu));
+    };
   return (
-    <div className="hidden md:block fixed start-0 top-0 bottom-0">
-      <div className="h-full w-60 bg-[var(--main-color)]  pt-20">
-        <div className="flex flex-col gap-10">
-          <Link to="/" className="title text-4xl font-bold ps-5">
-            الكـــــــتروو
-          </Link>
-          <div className=" pe-10 flex flex-col gap-5">
-            {links.map((link) => (
-              <Link
-                key={link.id}
-                to={link.link}
-                className="py-3 rounded-bl-full rounded-tl-full text-lg font-semibold ps-5 duration-400 flex items-center gap-5"
-                style={
-                  activeLink === link.title ||
-                  (!activeLink && link.title == "admin")
-                    ? activeLinkStyles
-                    : null
-                }
-                onClick={() => handleActiveLink(link.title)}
-              >
-                <span
-                  className={`text-2xl ${
-                    activeLink === link.title
-                      ? "text-white"
-                      : "text-[var(--secondary-color)]"
-                  }`}
-                >
-                  {link.icon}
-                </span>
-                <span>{link.name}</span>
-              </Link>
-            ))}
+     <div
+        className={`fixed  bg-white z-100 md:block top-0 bottom-0 duration-300 ${
+          supplierSideMenu ? "start-0" : "start-[-60rem]"
+        } lg:start-0  duration-300 shadow-sm `}
+      >
+        <div className="flex justify-end lg:hidden ">
+          <button
+            onClick={toggleSideMenu}
+            className="lg:hidden text-4xl  hover:bg-gray-100 rounded duration-300"
+          >
+            <IoIosClose />
+          </button>
+        </div>
+        <div className="h-full w-60 bg-[var(--main-color)]  pt-20">
+          <div className="flex flex-col gap-10">
+            <Link to="/" className="title text-4xl font-bold ps-5">
+              الكـــــــتروو
+            </Link>
+            {!status === "Verified" ? (
+              <div className=" pe-10 flex flex-col gap-5">
+                {tempLinks.map((link) => (
+                  <Link
+                    key={link.id}
+                    to={link.link}
+                    className="py-3 rounded-bl-full rounded-tl-full text-lg font-semibold ps-5 duration-400 flex items-center gap-5"
+                    style={
+                      activeLink === link.title ||
+                      (!activeLink && link.title == "supplier")
+                        ? activeLinkStyles
+                        : null
+                    }
+                    onClick={() => handleActiveLink(link.title)}
+                  >
+                    <span
+                      className={`text-2xl ${
+                        activeLink === link.title
+                          ? "text-white"
+                          : "text-[var(--secondary-color)]"
+                      }`}
+                    >
+                      {link.icon}
+                    </span>
+                    <span>{link.name}</span>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <div className=" pe-10 flex flex-col gap-5">
+                {links.map((link) => (
+                  <Link
+                    key={link.id}
+                    to={link.link}
+                    className="py-3 rounded-bl-full rounded-tl-full text-lg font-semibold ps-5 duration-400 flex items-center gap-5"
+                    style={
+                      activeLink === link.title ||
+                      (!activeLink && link.title == "supplier")
+                        ? activeLinkStyles
+                        : null
+                    }
+                    onClick={() => handleActiveLink(link.title)}
+                  >
+                    <span
+                      className={`text-2xl ${
+                        activeLink === link.title
+                          ? "text-white"
+                          : "text-[var(--secondary-color)]"
+                      }`}
+                    >
+                      {link.icon}
+                    </span>
+                    <span>{link.name}</span>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
-    </div>
   );
 }

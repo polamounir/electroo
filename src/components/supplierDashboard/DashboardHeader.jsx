@@ -1,5 +1,5 @@
 import { IoIosMenu, IoIosNotificationsOutline } from "react-icons/io";
-import { useSelector , useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { setSupplierSideMenu } from "../../app/slices/dashboardSlice";
 export default function DashboardHeader() {
   const { user } = useSelector((state) => state.auth);
@@ -7,15 +7,14 @@ export default function DashboardHeader() {
   const { supplierSideMenu } = useSelector((state) => state.dashboard);
   const toggleSideMenu = () => {
     dispatch(setSupplierSideMenu(!supplierSideMenu));
-  }
+  };
   // console.log(user);
   return (
     <div className="w-full bg-red-30 flex items-center justify-between gap-5 pt-10">
       <div className="lg:hidden">
-
-      <button onClick={toggleSideMenu} >
-        <IoIosMenu className="text-3xl" />
-      </button>
+        <button onClick={toggleSideMenu}>
+          <IoIosMenu className="text-3xl" />
+        </button>
       </div>
       <div>
         {/* <button>

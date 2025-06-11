@@ -275,6 +275,7 @@ const AppRoutes = () => {
             <Route path="sales" element={<div>Sales</div>} />
             <Route path="settings" element={<div>Settings</div>} />
           </Route>
+          
         </Routes>
       </Suspense>
     </Router>

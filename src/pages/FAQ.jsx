@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import image1 from "../assets/images/search.jpg"
+import image2 from "../assets/images/questions.jpg";
 export default function FAQ() {
   const [expandedItem, setExpandedItem] = useState(null);
 
@@ -86,11 +88,7 @@ export default function FAQ() {
           ))}
         </div>
         <div className="lg:col-span-1 flex justify-center items-center">
-          <img
-            src="/api/placeholder/300/300"
-            alt="FAQ"
-            className="max-w-full"
-          />
+          <img src={image1} alt="FAQ" className="max-w-full" width={400} />
         </div>
 
         <div className="lg:col-span-1">
@@ -126,11 +124,7 @@ export default function FAQ() {
           ))}
         </div>
         <div className="lg:col-span-1 flex justify-center items-center">
-          <img
-            src="/api/placeholder/300/300"
-            alt="FAQ"
-            className="max-w-full"
-          />
+          <img src={image2} alt="FAQ" className="max-w-full" width={400} />
         </div>
       </div>
 

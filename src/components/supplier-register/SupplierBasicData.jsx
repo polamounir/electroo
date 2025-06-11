@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import image from "../../assets/images/supplier1.svg";
+import image from "../../assets/images/form.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setSupplierBasicData,
@@ -132,14 +132,6 @@ export default function BasicData() {
     <div className="">
       <div className="flex flex-col-reverse items-center lg:flex-row justify-center gap-10 lg:gap-20 p-3 lg:p-5">
         <div>
-          <img
-            src={image}
-            alt="supplier"
-            width={400}
-            className="scale-in-out"
-          />
-        </div>
-        <div>
           <div>
             <div className="min-w-xs lg:w-md p-3 flex flex-col gap-3">
               <div>
@@ -242,6 +234,14 @@ export default function BasicData() {
               </button>
             </div>
           </div>
+        </div>
+        <div>
+          <img
+            src={image}
+            alt="supplier"
+            width={400}
+            className="scale-in-out"
+          />
         </div>
       </div>
     </div>

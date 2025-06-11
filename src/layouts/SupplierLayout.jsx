@@ -37,7 +37,7 @@ const AdminLayout = () => {
   console.log("Supplier Data:", userData);
 
   return (
-    <div className="min-h-[100vh] flex gap-10 lg:ps-60 flex-col md:flex-row">
+    <div className="min-h-[100svh] flex gap-10 lg:ps-60 flex-col md:flex-row">
       <SupplierSideMenu status={supplierStatus} />
       <div className="w-full px-1 md:px-10 xl:px-15 py-10 flex flex-col gap-10">
         <DashboardHeader />
@@ -63,10 +63,7 @@ const AdminLayout = () => {
               status="Pending"
               message="يتم مراجعة طلبك من قبل فريقنا. يرجى الانتظار حتى يتم التحقق من حسابك."
             />
-            {/* <AccountStatusCard
-              status={supplierStatus}
-              message="Your business license was expired"
-            /> */}
+  
           </div>
         )}
       </div>
