@@ -201,9 +201,9 @@ export default function Product() {
                 <p
                   className={`
                   ${stockStatus.value == "InStock" && "bg-teal-600"} 
-                  ${
-                    stockStatus.value == "LowStock" && "bg-red-500"
-                  } ${stockStatus.value == "OutStock" && "bg-red-500"}
+                  ${stockStatus.value == "LowStock" && "bg-red-500"} ${
+                    stockStatus.value == "OutStock" && "bg-red-500"
+                  }
                   text-sm text-white font-semibold px-5 py-1 rounded-full`}
                 >
                   {stockStatus.name}
@@ -220,6 +220,15 @@ export default function Product() {
             >
               🛒 أضف إلى السلة
             </button>
+
+            {/* Bids */}
+            <div>
+              {data?.isAuction && (
+                
+                  <div>ddd</div>
+                
+              )}
+            </div>
           </div>
           {/* Reviews */}
         </div>

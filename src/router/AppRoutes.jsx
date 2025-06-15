@@ -100,6 +100,7 @@ import EditCategory from "../components/adminDashboard/categories/EditCategory";
 import Categories from "../pages/Categories";
 import About from "../pages/About";
 import Redirecting from "../pages/Redirecting";
+import SpinningWheel from "../pages/SpinningWheel";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -176,6 +177,7 @@ const AppRoutes = () => {
             {/* TEsting */}
             {/* <Route path="/test" element={<ChatBodyTest />} /> */}
             {/* <Route path="/upload" element={<Upload />} /> */}
+            <Route path="/spinning-wheel" element={<SpinningWheel />} />
 
             <Route
               path="/supplier-register"
@@ -275,7 +277,6 @@ const AppRoutes = () => {
             <Route path="sales" element={<div>Sales</div>} />
             <Route path="settings" element={<div>Settings</div>} />
           </Route>
-          
         </Routes>
       </Suspense>
     </Router>

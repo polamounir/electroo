@@ -20,7 +20,11 @@ export default function AddNewProduct() {
     brand: "",
     description: "",
     categoryId: "",
+    isAuction: false,
+    auctionExpirationDate: null,
+    minimumBidPrice: 1,
     images: [],
+
     productOptions: [{ optionGroupName: "", optionName: "", optionPrice: 1 }],
   });
 
@@ -130,7 +134,7 @@ export default function AddNewProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const finalData = {
-      ...formData
+      ...formData,
       // tags: formData.tags.join(","),
     };
 
@@ -153,6 +157,9 @@ export default function AddNewProduct() {
           description: "",
           categoryId: "",
           images: [],
+          isAuction: false,
+          auctionExpirationDate: null,
+          minimumBidPrice: 1,
           productOptions: [
             { optionGroupName: "", optionName: "", optionPrice: 1 },
           ],
@@ -185,44 +192,109 @@ export default function AddNewProduct() {
           required
           className="w-full border border-gray-300 rounded-md shadow p-2"
         />
-        <input
-          name="price"
-          type="number"
-          min={1}
-          placeholder="سعر المنتح"
-          value={formData.price}
-          onChange={handleChange}
-          required
-          className="w-full border border-gray-300 rounded-md shadow p-2"
-        />
-        <input
-          name="discountPercentage"
-          type="number"
-          min={0}
-          placeholder="خصم % "
-          value={formData.discountPercentage}
-          onChange={handleChange}
-          className="w-full border border-gray-300 rounded-md shadow p-2"
-          required
-        />
-        <input
-          name="stock"
-          type="number"
-          min={1}
-          placeholder="الكمية"
-          value={formData.stock}
-          onChange={handleChange}
-          className="w-full border border-gray-300 rounded-md shadow p-2"
-          required
-        />
-        <input
-          name="sku"
-          placeholder="SKU"
-          value={formData.sku}
-          onChange={handleChange}
-          className="w-full border border-gray-300 rounded-md shadow p-2"
-          required
-        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+          <input
+            name="price"
+            type="number"
+            min={1}
+            placeholder="سعر المنتح"
+            value={formData.price}
+            onChange={handleChange}
+            required
+            className="w-full border border-gray-300 rounded-md shadow p-2"
+          />
+          <input
+            name="discountPercentage"
+            type="number"
+            min={0}
+            placeholder="خصم % "
+            value={formData.discountPercentage}
+            onChange={handleChange}
+            className="w-full border border-gray-300 rounded-md shadow p-2"
+            required
+          />
+          <input
+            name="stock"
+            type="number"
+            min={1}
+            placeholder="الكمية"
+            value={formData.stock}
+            onChange={handleChange}
+            className="w-full border border-gray-300 rounded-md shadow p-2"
+            required
+          />
+          <input
+            name="sku"
+            placeholder="SKU"
+            value={formData.sku}
+            onChange={handleChange}
+            className="w-full border border-gray-300 rounded-md shadow p-2"
+            required
+          />
+        </div>
+
+        {/* <div>
+          <button
+            type="button"
+            className={` px-5 py-1 rounded transition-colors duration-200
+              ${
+                formData.isAuction
+                  ? "bg-black hover:bg-black text-white border border-black"
+                  : "bg-teal-600 hover:bg-teal-500 text-white border border-teal-600"
+              }
+              `}
+            onClick={() => {
+              setFormData((prev) => ({
+                ...prev,
+                isAuction: !prev.isAuction,
+              }));
+            }}
+          >
+            {formData.isAuction ? "إغلاق المزايدة" : "مزايدة"}
+          </button>
+
+          <div className="space-y-4 flex gap-2 ">
+            <div className="flex-1 flex flex-col items-start">
+              <label
+                htmlFor="minimumBidPrice"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                سعر المزايدة الأدنى
+              </label>
+              <input
+                type="number"
+                id="minimumBidPrice"
+                name="minimumBidPrice"
+                min="0"
+                step="10"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                placeholder="0.00"
+                disabled={!formData.isAuction}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="flex-1 flex flex-col items-start">
+              <label
+                htmlFor="auctionExpirationDate"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                تاريخ انتهاء المزايدة
+              </label>
+              <input
+                type="date"
+                id="auctionExpirationDate"
+                name="auctionExpirationDate"
+                onChange={handleChange}
+                min={new Date().toISOString().split("T")[0]}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                disabled={!formData.isAuction}
+              />
+            </div>
+          </div>
+        </div>
+ */}
+
         <input
           name="tagsInput"
           placeholder="اضف كلمات تعبر عن المنتح ( اضغط Enter )"
@@ -295,6 +367,7 @@ export default function AddNewProduct() {
             أضف فئة جديدة
           </button> */}
         </div>
+
         <div
           className="border border-gray-300 rounded-md shadow p-3"
           onDragOver={(e) => e.preventDefault()}
