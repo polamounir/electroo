@@ -11,6 +11,8 @@ import AddProductReviewModel from "../components/product/AddProductReviewModel";
 import LoadingPage from "./LoadingPage";
 import { toast } from "sonner";
 import { addProductToCartAsync } from "../app/slices/cartSlice";
+import BidModel from "../components/product/BidModel";
+import BidTableModel from "../components/product/BidTableModel";
 
 export default function Product() {
   const dispatch = useDispatch();
@@ -213,7 +215,7 @@ export default function Product() {
 
             {/* Add to Cart Button */}
             <button
-              className="mt-6 w-full md:w-auto px-6 py-3 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-lg shadow-md transition"
+              className="mt-6 w-full md:w-auto px-6 py-3 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-lg shadow-md duration-300 transition"
               onClick={() => {
                 addToCart(data.id);
               }}
@@ -222,12 +224,9 @@ export default function Product() {
             </button>
 
             {/* Bids */}
+            <div>{data?.isAuction && <BidModel product={data} />}</div>
             <div>
-              {data?.isAuction && (
-                
-                  <div>ddd</div>
-                
-              )}
+              {/* {data?.isAuction && <BidTableModel data={data.productBids} />} */}
             </div>
           </div>
           {/* Reviews */}
