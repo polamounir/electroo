@@ -128,7 +128,7 @@ const AppRoutes = () => {
     <Router>
       <AppInit />
       {isChatPopupOpen && <ChatPopup />}
-      {isSpinModelOpen && <SpinningWheelModel />}
+      <SpinningWheelModel isOpended={isSpinModelOpen} />
 
       <Toaster
         position="top-left"
