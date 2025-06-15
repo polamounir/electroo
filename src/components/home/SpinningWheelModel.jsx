@@ -1,45 +1,47 @@
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
+import { closeSpinModel } from "../../app/slices/chatSlice";
+import { useDispatch } from "react-redux";
 
-const SpinningWheel = ({
+const SpinningWheelModel = ({
   options = [
     {
-      option: "Option 1 text  text  text  text ",
+      option: "خصم 10% على طلبك القادم!",
       color: "#FF6B6B",
       textColor: "#FFFFFF",
     },
     {
-      option: "Option 2 text  text  text  text ",
+      option: "كابل شحن مجاني مع كل طلب!",
       color: "#4ECDC4",
       textColor: "#FFFFFF",
     },
     {
-      option: "Option 3 text  text  text  text ",
+      option: "شحن مجاني لأي طلب اليوم!",
       color: "#45B7D1",
       textColor: "#FFFFFF",
     },
     {
-      option: "Option 4 text  text  text  text ",
+      option: "خصم 15% على قطع التبديل!",
       color: "#96CEB4",
       textColor: "#1B1B1B",
     },
     {
-      option: "Option 5 text  text  text  text ",
+      option: "هدية مفاجأة في طلبك القادم!",
       color: "#FFEAA7",
       textColor: "#1B1B1B",
     },
     {
-      option: "Option 6 text  text  text  text ",
+      option: "احصل على خصم 20 ريال!",
       color: "#DDA0DD",
       textColor: "#1B1B1B",
     },
     {
-      option: "Option 7 text  text  text  text ",
+      option: "خصم 5% على جميع المنتجات!",
       color: "#98D8C8",
       textColor: "#1B1B1B",
     },
     {
-      option: "Option 8 text  text  text  text ",
+      option: "لا توجد جائزة – حظاً أوفر!",
       color: "#F7DC6F",
       textColor: "#1B1B1B",
     },
@@ -73,6 +75,7 @@ const SpinningWheel = ({
     return () => window.removeEventListener("resize", updateDimensions);
   }, []);
 
+  const dispatch = useDispatch();
   const [isSpinning, setIsSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [result, setResult] = useState("");
@@ -126,29 +129,19 @@ const SpinningWheel = ({
     setTooltip((prev) => ({ ...prev, show: false }));
   };
 
-  //   const addSegment = () => {
-  //     if (newSegment.trim() && segments.length < 10) {
-  //       setSegments([
-  //         ...segments,
-  //         { option: newSegment.trim(), color: newColor },
-  //       ]);
-  //       setNewSegment("");
-  //       setNewColor("#FF6B6B");
-  //     }
-  //   };
-
-  //   const removeSegment = (index) => {
-  //     setSegments(segments.filter((_, i) => i !== index));
-  //   };
-
   const segmentAngle = 360 / (segments.length || 1);
   const centerX = width / 2;
   const centerY = height / 2;
   const radius = Math.min(width, height) / 2 - 10;
 
+  const handleOpenSpinModel = () => {
+    dispatch(closeSpinModel());
+  };
+
+  console.log(result);
   return (
     <div
-      className="min-h-[90svh] flex flex-col items-center justify-center p-4 relative overflow-hidden"
+      className="h-screen flex flex-col items-center justify-center p-4 fixed top-0 w-full overflow-hidden z-[1000] bg-black/30"
       onMouseMove={(e) =>
         tooltip.show &&
         setTooltip((prev) => ({ ...prev, x: e.clientX, y: e.clientY }))
@@ -167,7 +160,14 @@ const SpinningWheel = ({
         </div>
       )}
 
-      <div className="bg-white/10 backdrop-blur-lg rounded-3xl py-5 shadow-2xl border border-white/20 w-full max-w-2xl">
+      <div className="bg-white/80 backdrop-blur-lg rounded-3xl py-5 shadow-2xl border border-white/20 w-full max-w-2xl">
+        <button
+          onClick={handleOpenSpinModel}
+          className="absolute top-3 left-3 text-black font-bold hover:text-teal-700 transition text-2xl"
+          aria-label="Close"
+        >
+          ✕
+        </button>
         <h1 className="text-4xl font-bold text-black text-center mb-8">
           {title}
         </h1>
@@ -273,11 +273,11 @@ const SpinningWheel = ({
           {/* Spin Button */}
           <button
             onClick={spin}
-            disabled={isSpinning || segments.length === 0}
-            className={`mt-6 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 transform ${
-              isSpinning || segments.length === 0
+            disabled={isSpinning || segments.length === 0 || result !== ""}
+            className={`mt-6 px-8 py-2 rounded-full font-bold text-lg transition-all duration-300 transform ${
+              isSpinning || segments.length === 0 || result === ""
                 ? "bg-gray-500 text-gray-300 cursor-not-allowed"
-                : "bg-gradient-to-r from-yellow-400 to-pink-500 text-white hover:from-yellow-500 hover:to-pink-600 active:scale-95 shadow-lg hover:shadow-xl"
+                : "bg-teal-600 text-white active:scale-95 shadow-lg hover:shadow-xl"
             }`}
             aria-label="Spin the wheel"
           >
@@ -287,7 +287,7 @@ const SpinningWheel = ({
       </div>
 
       {/* Result Modal */}
-      {showResult && (
+      {(showResult || result !== "") && (
         <div
           className="fixed inset-0 flex items-center justify-center z-50 modal-bg bg-black/50"
           onClick={(e) =>
@@ -296,7 +296,7 @@ const SpinningWheel = ({
         >
           <div className="bg-white rounded-3xl p-8 shadow-2xl border border-white/20 relative max-w-md w-full mx-4">
             <button
-              onClick={() => setShowResult(false)}
+              onClick={handleOpenSpinModel}
               className="absolute top-3 left-3 text-teal-500 hover:text-teal-700 transition text-2xl"
               aria-label="Close"
             >
@@ -307,7 +307,7 @@ const SpinningWheel = ({
               {result}
             </div>
             <button
-              onClick={() => setShowResult(false)}
+              onClick={handleOpenSpinModel}
               className="w-full py-3 bg-teal-500 text-white rounded-full hover:bg-teal-600 transition flex justify-center items-center"
             >
               اغلاق
@@ -319,69 +319,4 @@ const SpinningWheel = ({
   );
 };
 
-// SpinningWheel.propTypes = {
-//   width: PropTypes.number,
-//   height: PropTypes.number,
-//   options: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       option: PropTypes.string.isRequired,
-//       color: PropTypes.string.isRequired,
-//       textColor: PropTypes.string,
-//     })
-//   ),
-//   title: PropTypes.string,
-//   spinButtonText: PropTypes.string,
-//   waitingText: PropTypes.string,
-
-// };
-
-export default SpinningWheel;
-
-{
-  /* Segment Management */
-}
-//    <div className="mt-6">
-//      <div className="flex gap-2 mb-4">
-//        <input
-//          type="text"
-//          value={newSegment}
-//          onChange={(e) => setNewSegment(e.target.value)}
-//          placeholder="Add new option"
-//          className="flex-1 px-4 py-2 rounded-lg border border-gray-300"
-//          disabled={segments.length >= 10}
-//          onKeyPress={(e) => e.key === "Enter" && addSegment()}
-//        />
-//        <input
-//          type="color"
-//          value={newColor}
-//          onChange={(e) => setNewColor(e.target.value)}
-//          className="w-12 h-12 cursor-pointer"
-//          disabled={segments.length >= 10}
-//        />
-//        <button
-//          onClick={addSegment}
-//          disabled={!newSegment.trim() || segments.length >= 10}
-//          className="px-4 py-2 bg-green-500 text-white rounded-lg disabled:bg-gray-400"
-//        >
-//          Add
-//        </button>
-//      </div>
-//      <div className="flex flex-wrap gap-2">
-//        {segments.map((segment, index) => (
-//          <div
-//            key={index}
-//            className="flex items-center bg-gray-100 rounded-full px-3 py-1"
-//            style={{ backgroundColor: `${segment.color}20` }}
-//          >
-//            <span className="mr-2">{segment.option}</span>
-//            <button
-//              onClick={() => removeSegment(index)}
-//              className="text-red-500 hover:text-red-700"
-//              aria-label={`Remove ${segment.option}`}
-//            >
-//              ×
-//            </button>
-//          </div>
-//        ))}
-//      </div>
-//    </div>;
+export default SpinningWheelModel;

@@ -6,6 +6,7 @@ import { getConversation, startConversation } from "../../api/conversation";
 const initialState = {
   activeChat: null,
   isMenuOpen: false,
+  isSpinModelOpen: false,
   supplierId: null,
   productId: null,
   supplierName: null,
@@ -73,6 +74,16 @@ const chatSlice = createSlice({
       state.isMenuOpen = false;
     },
     closeChat: (state) => {
+      state.activeChat = null;
+      state.isMenuOpen = false;
+    },
+    openSpinModel: (state) => {
+      state.isSpinModelOpen = true;
+      state.activeChat = null;
+      state.isMenuOpen = false;
+    },
+    closeSpinModel: (state) => {
+      state.isSpinModelOpen = false;
       state.activeChat = null;
       state.isMenuOpen = false;
     },
@@ -171,6 +182,8 @@ export const {
   setAllChats,
   setFilterdChats,
   updateLastMessage,
+  openSpinModel,
+  closeSpinModel,
 } = chatSlice.actions;
 
 // Selectors

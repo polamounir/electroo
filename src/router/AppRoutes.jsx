@@ -101,6 +101,7 @@ import Categories from "../pages/Categories";
 import About from "../pages/About";
 import Redirecting from "../pages/Redirecting";
 import SpinningWheel from "../pages/SpinningWheel";
+import SpinningWheelModel from "../components/home/SpinningWheelModel";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -122,10 +123,13 @@ const ScrollToTop = () => {
 
 const AppRoutes = () => {
   const { isChatPopupOpen } = useSelector((state) => state.userChatsMenu);
+  const { isSpinModelOpen } = useSelector((state) => state.chat);
   return (
     <Router>
       <AppInit />
       {isChatPopupOpen && <ChatPopup />}
+      {isSpinModelOpen && <SpinningWheelModel />}
+
       <Toaster
         position="top-left"
         richColors={true}
