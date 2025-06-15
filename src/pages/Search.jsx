@@ -33,7 +33,6 @@ function Search() {
   const optionValue = params.get("OptionValue") || null;
 
   useEffect(() => {
-    // Make new search request
     dispatch(
       getSearchResults({
         SearchQuery: searchQuery,
