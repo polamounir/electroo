@@ -5,14 +5,14 @@ export default function SpinningWheel() {
   const [rotation, setRotation] = useState(0);
   const [result, setResult] = useState("");
   const [segments, setSegments] = useState([
-    "Option 1 Option Option Option Option Option end",
-    "Option 2 Option Option Option Option Option end",
-    "Option 3 Option Option Option Option Option end",
-    "Option 4 Option Option Option Option Option end",
-    "Option 5 Option Option Option Option Option end",
-    "Option 6 Option Option Option Option Option end",
-    "Option 7 Option Option Option Option Option end",
-    "Option 8 Option Option Option Option Option end",
+    "Option 1 text text text text texttexttext textv v v v text",
+    "Option 2 text text text text texttexttext textv v v v text",
+    "Option 3 text text text text texttexttext textv v v v text",
+    "Option 4 text text text text texttexttext textv v v v text",
+    "Option 5 text text text text texttexttext textv v v v text",
+    "Option 6 text text text text texttexttext textv v v v text",
+    "Option 7 text text text text texttexttext textv v v v text",
+    "Option 8 text text text text texttexttext textv v v v text",
   ]);
   const [newSegment, setNewSegment] = useState("");
   const wheelRef = useRef(null);
@@ -34,72 +34,61 @@ export default function SpinningWheel() {
 
     setIsSpinning(true);
     setResult("");
+    setTooltip({ ...tooltip, show: false }); // Hide tooltip during spin
 
-    // Generate random spin (3-6 full rotations plus random angle)
     const spins = Math.random() * 3 + 3;
     const finalAngle = Math.random() * 360;
     const totalRotation = rotation + spins * 360 + finalAngle;
 
     setRotation(totalRotation);
 
-    // Calculate which segment wins
     const segmentAngle = 360 / segments.length;
     const normalizedAngle = (360 - (totalRotation % 360)) % 360;
     const winningIndex = Math.floor(normalizedAngle / segmentAngle);
 
     setTimeout(() => {
       setIsSpinning(false);
-      setResult(segments[winningIndex] || segments[0]);
+      setResult(segments[winningIndex]);
     }, 3000);
   };
 
-  const addSegment = () => {
-    if (newSegment.trim() && segments.length < 12) {
-      setSegments([...segments, newSegment.trim()]);
-      setNewSegment("");
-    }
-  };
-
-  const removeSegment = (index) => {
-    if (segments.length > 2) {
-      setSegments(segments.filter((_, i) => i !== index));
-    }
-  };
-
-  const handleMouseEnter = (e, text) => {
+  const handleMouseEnter = (segment) => {
+    if (isSpinning) return;
     setTooltip({
       show: true,
-      text,
-      x: e.clientX,
-      y: e.clientY,
+      text: segment,
     });
   };
 
   const handleMouseMove = (e) => {
-    if (tooltip.show) {
-      setTooltip({
-        ...tooltip,
+    if (tooltip.show && !isSpinning) {
+      setTooltip((prev) => ({
+        ...prev,
         x: e.clientX,
         y: e.clientY,
-      });
+      }));
     }
   };
 
   const handleMouseLeave = () => {
-    setTooltip({ ...tooltip, show: false });
+    setTooltip((prev) => ({ ...prev, show: false }));
   };
 
   const segmentAngle = 360 / segments.length;
 
   return (
-    <div className="min-h-[90svh] bg-gradient-to-br from-teal-400 via-teal-600 to-teal-900 flex flex-col items-center justify-center p-4">
+    <div
+      className="min-h-[90svh] bg-gradient-to-br from-teal-400 via-teal-600 to-teal-900 flex flex-col items-center justify-center p-4"
+      onMouseMove={handleMouseMove}
+    >
       {/* Tooltip */}
       {tooltip.show && (
         <div
-          className="fixed z-50 px-3 py-2 bg-gray-900 text-white text-sm rounded-md pointer-events-none"
+          className="fixed z-50 px-3 py-2 bg-gray-900 text-white text-sm rounded-md pointer-events-none shadow-lg max-w-xs break-words"
           style={{
-            left: `${tooltip.x + 10}px`,
-            top: `${tooltip.y + 10}px`,
+            left: `${tooltip.x + 15}px`,
+            top: `${tooltip.y + 15}px`,
+            transform: "translateX(-50%)", // Center horizontally
           }}
         >
           {tooltip.text}
@@ -107,7 +96,7 @@ export default function SpinningWheel() {
       )}
 
       <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
-        <h1 className="text-4xl font-bold text-white text-center mb-8 bg-gradient-to-r from-yellow-400 to-pink-400 bg-clip-text ">
+        <h1 className="text-4xl font-bold text-white text-center mb-8 bg-gradient-to-r from-yellow-400 to-pink-400 bg-clip-text">
           عجلة الحظ
         </h1>
 
@@ -155,8 +144,7 @@ export default function SpinningWheel() {
                 return (
                   <g
                     key={index}
-                    onMouseEnter={(e) => handleMouseEnter(e, segment)}
-                    onMouseMove={handleMouseMove}
+                    onMouseEnter={() => handleMouseEnter(segment)}
                     onMouseLeave={handleMouseLeave}
                   >
                     <path
@@ -164,7 +152,9 @@ export default function SpinningWheel() {
                       fill={colors[index % colors.length]}
                       stroke="white"
                       strokeWidth="2"
-                      className="hover:brightness-110 transition-all duration-200 cursor-pointer"
+                      className={`transition-all duration-200 ${
+                        isSpinning ? "" : "cursor-pointer hover:brightness-110"
+                      }`}
                     />
                     <text
                       x={textX}
