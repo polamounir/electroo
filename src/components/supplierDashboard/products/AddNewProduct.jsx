@@ -233,7 +233,7 @@ export default function AddNewProduct() {
           />
         </div>
 
-        {/* <div>
+        <div>
           <button
             type="button"
             className={` px-5 py-1 rounded transition-colors duration-200
@@ -293,7 +293,7 @@ export default function AddNewProduct() {
             </div>
           </div>
         </div>
- */}
+
 
         <input
           name="tagsInput"
