@@ -244,10 +244,19 @@ export default function AddNewProduct() {
               }
               `}
             onClick={() => {
-              setFormData((prev) => ({
-                ...prev,
-                isAuction: !prev.isAuction,
-              }));
+              if (formData.isAuction) {
+                setFormData((prev) => ({
+                  ...prev,
+                  isAuction: !prev.isAuction,
+                  minimumBidPrice: 1,
+                  auctionExpirationDate: new Date().toISOString().split("T")[0],
+                }));
+              } else {
+                setFormData((prev) => ({
+                  ...prev,
+                  isAuction: !prev.isAuction,
+                }));
+              }
             }}
           >
             {formData.isAuction ? "إغلاق المزايدة" : "مزايدة"}
@@ -267,6 +276,7 @@ export default function AddNewProduct() {
                 name="minimumBidPrice"
                 min="0"
                 step="10"
+                value={formData.minimumBidPrice}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
                 placeholder="0.00"
                 disabled={!formData.isAuction}
@@ -286,6 +296,7 @@ export default function AddNewProduct() {
                 id="auctionExpirationDate"
                 name="auctionExpirationDate"
                 onChange={handleChange}
+                value={formData.auctionExpirationDate}
                 min={new Date().toISOString().split("T")[0]}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
                 disabled={!formData.isAuction}
@@ -293,7 +304,6 @@ export default function AddNewProduct() {
             </div>
           </div>
         </div>
-
 
         <input
           name="tagsInput"

@@ -16,6 +16,10 @@ export const uploadProduct = async (productData) => {
   formData.append("stock", productData.stock);
   // formData.append("tags", productData.tags);
   formData.append("title", productData.title);
+  formData.append("isAuction", productData.isAuction);
+  formData.append("minimumBidPrice", productData.minimumBidPrice);
+  formData.append("auctionExpirationDate", productData.auctionExpirationDate);
+
 
   productData.productOptions.forEach((option, index) => {
     formData.append(

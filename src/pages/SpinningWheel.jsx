@@ -5,17 +5,18 @@ export default function SpinningWheel() {
   const [rotation, setRotation] = useState(0);
   const [result, setResult] = useState("");
   const [segments, setSegments] = useState([
-    "Option 1",
-    "Option 2",
-    "Option 3",
-    "Option 4",
-    "Option 5",
-    "Option 6",
-    "Option 7",
-    "Option 8",
+    "Option 1 Option Option Option Option Option end",
+    "Option 2 Option Option Option Option Option end",
+    "Option 3 Option Option Option Option Option end",
+    "Option 4 Option Option Option Option Option end",
+    "Option 5 Option Option Option Option Option end",
+    "Option 6 Option Option Option Option Option end",
+    "Option 7 Option Option Option Option Option end",
+    "Option 8 Option Option Option Option Option end",
   ]);
   const [newSegment, setNewSegment] = useState("");
   const wheelRef = useRef(null);
+  const [tooltip, setTooltip] = useState({ show: false, text: "", x: 0, y: 0 });
 
   const colors = [
     "#FF6B6B",
@@ -65,10 +66,46 @@ export default function SpinningWheel() {
     }
   };
 
+  const handleMouseEnter = (e, text) => {
+    setTooltip({
+      show: true,
+      text,
+      x: e.clientX,
+      y: e.clientY,
+    });
+  };
+
+  const handleMouseMove = (e) => {
+    if (tooltip.show) {
+      setTooltip({
+        ...tooltip,
+        x: e.clientX,
+        y: e.clientY,
+      });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setTooltip({ ...tooltip, show: false });
+  };
+
   const segmentAngle = 360 / segments.length;
 
   return (
     <div className="min-h-[90svh] bg-gradient-to-br from-teal-400 via-teal-600 to-teal-900 flex flex-col items-center justify-center p-4">
+      {/* Tooltip */}
+      {tooltip.show && (
+        <div
+          className="fixed z-50 px-3 py-2 bg-gray-900 text-white text-sm rounded-md pointer-events-none"
+          style={{
+            left: `${tooltip.x + 10}px`,
+            top: `${tooltip.y + 10}px`,
+          }}
+        >
+          {tooltip.text}
+        </div>
+      )}
+
       <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
         <h1 className="text-4xl font-bold text-white text-center mb-8 bg-gradient-to-r from-yellow-400 to-pink-400 bg-clip-text ">
           عجلة الحظ
@@ -116,13 +153,18 @@ export default function SpinningWheel() {
                 const textY = 160 + 100 * Math.sin((textAngle * Math.PI) / 180);
 
                 return (
-                  <g key={index}>
+                  <g
+                    key={index}
+                    onMouseEnter={(e) => handleMouseEnter(e, segment)}
+                    onMouseMove={handleMouseMove}
+                    onMouseLeave={handleMouseLeave}
+                  >
                     <path
                       d={`M 160 160 L ${x1} ${y1} A 145 145 0 ${largeArcFlag} 1 ${x2} ${y2} Z`}
                       fill={colors[index % colors.length]}
                       stroke="white"
                       strokeWidth="2"
-                      className="hover:brightness-110 transition-all duration-200"
+                      className="hover:brightness-110 transition-all duration-200 cursor-pointer"
                     />
                     <text
                       x={textX}
@@ -178,9 +220,16 @@ export default function SpinningWheel() {
             </div>
           </div>
         )}
+      </div>
+    </div>
+  );
+}
 
-        {/* Segment Management */}
-        {/* <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+{
+  /* Segment Management */
+}
+{
+  /* <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
           <h3 className="text-xl font-semibold text-white mb-4">
             Manage Options
           </h3>
@@ -233,8 +282,5 @@ export default function SpinningWheel() {
           <div className="text-sm text-white/60 mt-2">
             {segments.length}/12 options • Minimum 2 required
           </div>
-        </div> */}
-      </div>
-    </div>
-  );
+        </div> */
 }
