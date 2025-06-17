@@ -13,6 +13,7 @@ import {
 } from "../../app/slices/userChatsSlicce";
 import { logOut } from "../../app/slices/authSlice";
 import { useLocation } from "react-router-dom";
+
 export default function Navbar() {
   const dispatch = useDispatch();
 
@@ -39,6 +40,7 @@ export default function Navbar() {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
   const user = useSelector((state) => state.auth.user);
 
   const links = [
@@ -50,10 +52,6 @@ export default function Navbar() {
       name: "المحفوظات",
       link: "/",
     },
-    // {
-    //   name: "الموردين",
-    //   link: "/info-supplier",
-    // },
     {
       name: "تواصل معنا",
       link: "/contact",
@@ -65,22 +63,32 @@ export default function Navbar() {
   const openChatDropdown = () => {
     dispatch(openUserChatsMenu());
   };
+
   const closeChatDropdown = () => {
     setTimeout(() => {
       dispatch(closeUserChatsMenu());
     }, 500);
   };
 
+  // Dynamic className based on scroll state and page
+  const getNavbarClasses = () => {
+    let baseClasses =
+      "border-b fixed top-0 left-0 right-0 z-[999] shadow-md transition-all duration-300";
+
+    if (isHomePage && !isScrolled) {
+      // Homepage, not scrolled - transparent with white text
+      return `${baseClasses} bg-black/10 text-white border-gray-700`;
+    } else if (isHomePage && isScrolled) {
+      // Homepage, scrolled - solid black background
+      return `${baseClasses} bg-black text-white border-gray-700`;
+    } else {
+      // Other pages - always white background
+      return `${baseClasses} bg-white text-black border-gray-100`;
+    }
+  };
+
   return (
-    <div
-      className={`border-b ${
-        isHomePage
-          ? "bg-black text-white border-gray-700"
-          : "bg-white text-black border-gray-100"
-      } sticky top-0 left-0 right-0 z-[999] shadow-md duration-700 ${
-        isScrolled ? "bg-black" : ""
-      }`}
-    >
+    <div className={getNavbarClasses()}>
       <div className="px-5 py-3 w-full md:w-[85%] mx-auto">
         <div className="flex justify-between gap-10">
           <div className="flex items-center gap-5">
@@ -112,10 +120,6 @@ export default function Navbar() {
                 onClick={openChatDropdown}
                 onMouseLeave={closeChatDropdown}
               >
-                {/* <Link to="/live-chat" className=" md:hidden">
-                  <LuMessageCircleMore />
-                </Link> */}
-
                 <div className=" text-3xl">
                   <LuMessageCircleMore />
                 </div>
