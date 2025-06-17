@@ -77,7 +77,7 @@ export default function Login() {
     setShowPassword(!showPassword);
   };
   return (
-    <div className="w-full md:w-[85%] mx-auto">
+    <div className="w-full md:w-[85%] mx-auto pt-20">
       <div className="min-h-[70dvh] px-10 flex justify-center items-center">
         <div className="flex items-center gap-10 ">
           <div className="hidden lg:block">
@@ -148,9 +148,7 @@ export default function Login() {
                         )}
                       </div>
                       <div className="text-sm text-gray-500">
-                        <Link to="/reset-password">
-                          نسيت كلمة المرور؟
-                        </Link>
+                        <Link to="/reset-password">نسيت كلمة المرور؟</Link>
                       </div>
                     </div>
                   </div>

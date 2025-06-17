@@ -12,7 +12,7 @@ import { HiOutlineLightningBolt } from "react-icons/hi";
 
 const About = () => {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 text-right" dir="rtl">
+    <div className="max-w-4xl mx-auto px-4  text-right py-20 pt-30" dir="rtl">
       <header className="mb-10 text-center">
         <h1 className="text-3xl font-bold mb-3 text-teal-500">
           <HiOutlineLightningBolt className="inline mr-2" />

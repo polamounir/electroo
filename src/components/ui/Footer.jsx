@@ -1,12 +1,19 @@
-
 import { FaFacebookF, FaWhatsapp } from "react-icons/fa";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 
 import { Link, useLocation } from "react-router-dom";
 export default function Footer() {
-  const path = useLocation()
-  if (path.pathname === "/login" || path.pathname === "/register" || path.pathname === "/search") {
-    return null; 
+  const path = useLocation();
+  if (
+    path.pathname === "/login" ||
+    path.pathname === "/register" ||
+    path.pathname === "/supplier-register" ||
+    path.pathname === "/pre-register" ||
+    path.pathname === "/cart" ||
+    path.pathname === "/checkout" ||
+    path.pathname === "/search"
+  ) {
+    return null;
   }
   return (
     <footer className="bg-black text-white py-6 px-4 md:px-8 lg:px-16">

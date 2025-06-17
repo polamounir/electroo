@@ -3,7 +3,7 @@ import supplierImage from "../assets/images/supplier.svg";
 
 export default function Suppliers() {
   return (
-    <div className="min-h-[70dvh] flex justify-center items-center">
+    <div className="min-h-[70dvh] flex justify-center items-center pt-20">
       <div className="w-full lg:w-[85%] m-auto">
         <div className=" p-2 py-10">
           <div className="flex flex-col md:flex-row gap-10 justify-around items-center">

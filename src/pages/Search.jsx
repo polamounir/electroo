@@ -116,7 +116,7 @@ function Search() {
     setIsRowView(!isRowView);
   };
   return (
-    <div className="min-h-[92.5svh] bg-gray-50">
+    <div className="min-h-[92.5svh] bg-gray-50 pt-15">
       <div className=" mx-auto px-4 py-8">
         <div className="flex justify-end items-center w-full px-5 lg:px-10">
           <button

@@ -72,8 +72,8 @@ export default function SupplierLogin() {
     setShowPassword(!showPassword);
   };
   return (
-    <div className="w-full md:w-[85%] mx-auto">
-      <div className="min-h-[70dvh] px-10 flex justify-center items-center">
+    <div className="w-full md:w-[85%] mx-auto pt-15">
+      <div className="min-h-[75dvh] px-10 flex justify-center items-center">
         <div className="flex items-center gap-10 ">
           <div className="hidden lg:block">
             <img src={image} alt="Register Image" width={550} height={550} />

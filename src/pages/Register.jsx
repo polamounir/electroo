@@ -129,7 +129,7 @@ export default function Register() {
   // ---------------------------------
 
   return (
-    <div className="w-full md:w-[85%] mx-auto">
+    <div className="w-full md:w-[85%] mx-auto pt-15">
       <div className="min-h-[90dvh] px-10 flex justify-center items-center">
         <div className="flex items-center gap-10">
           <div className="hidden lg:block">

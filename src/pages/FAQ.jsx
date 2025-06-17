@@ -49,7 +49,7 @@ export default function FAQ() {
   };
 
   return (
-    <div className="pt-10 pb-20 px-4 md:px-10 lg:px-20  mx-auto min-h-[90svh]">
+    <div className="pt-30 pb-20 px-4 md:px-10 lg:px-20  mx-auto min-h-[90svh]">
       <h1 className="text-xl font-bold text-red-500 mb-8 text-right">
         بعض الأسئلة الشائعة
       </h1>

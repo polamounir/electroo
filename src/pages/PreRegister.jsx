@@ -40,7 +40,7 @@ export default function PreRegister() {
   }, [navigate]);
 
   return (
-    <main className="min-h-[70svh] pt-20">
+    <main className="min-h-[70svh] pt-40 pb-40">
       <section className="flex flex-col items-center p-6 max-w-3xl mx-auto">
         <header className="w-full text-right mb-6">
           <h1 className="text-2xl font-bold mb-2">هل أنت مستخدم أم تاجر؟</h1>

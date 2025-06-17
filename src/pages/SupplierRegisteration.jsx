@@ -5,7 +5,7 @@ export default function SupplierRegisteration() {
   const { progress } = useSelector((state) => state.supplier);
 
   return (
-    <div className="min-h-[70vh]  p-10">
+    <div className="min-h-[70vh] p-10 pt-30">
       <div className="w-full md:w-[85%] m-auto">
         <strong> ‼️ رجاء التاكد من صحة البيانات </strong>
         {/* <h2>{progress}</h2> */}

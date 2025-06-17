@@ -40,9 +40,8 @@ export default function Checkout() {
     couponCode: "",
     address: "",
     paymentMethod: "Online",
-   
   });
-  const [confirmedCoupon , setConfirmedCoupon] = useState("")
+  const [confirmedCoupon, setConfirmedCoupon] = useState("");
 
   useEffect(() => {
     dispatch(fetchCartAsync());
@@ -58,7 +57,6 @@ export default function Checkout() {
     setOrderDetail({ ...orderDetail, address: e.target.value });
   };
 
-
   const handlePaymentMethodChange = (event) => {
     setOrderDetail((prev) => ({
       ...prev,
@@ -73,7 +71,6 @@ export default function Checkout() {
       newDiscountedPrice: 0,
     });
     setOrderCoupon(event.target.value);
- 
   };
 
   const validateOrderCoupon = async () => {
@@ -84,7 +81,7 @@ export default function Checkout() {
 
     if (res.status == "Successful") {
       setCouponDetails(res.data);
-      setConfirmedCoupon(orderCoupon)
+      setConfirmedCoupon(orderCoupon);
       toast.success("Coupon applied successfully!");
     } else if (res.code === 401) {
       toast.error(res.message);
@@ -96,7 +93,6 @@ export default function Checkout() {
 
   // ------------------------------------------
   const reformOrder = async () => {
-   
     let address = orderDetail.address;
     if (address === "" && addresses?.length > 0) {
       address = addresses[0].id;
@@ -114,40 +110,38 @@ export default function Checkout() {
     e.preventDefault();
     const updatedOrder = await reformOrder();
 
-    console.log(updatedOrder)
+    console.log(updatedOrder);
 
     if (updatedOrder.address === "" || !updatedOrder.address) {
-      return(
-        toast.error("برجاء اضافة عنوان")
-      )
+      return toast.error("برجاء اضافة عنوان");
     }
-      try {
-        const res = await createOrder(updatedOrder);
+    try {
+      const res = await createOrder(updatedOrder);
 
-        console.log(res);
+      console.log(res);
 
-        if (res.code === 200) {
-          toast.success("جاي تنفيذ الطلب");
-          if (res.paymentLink !== "") {
-            setTimeout(() => {
-              window.location.href = res.paymentLink;
-            }, 2000);
-            return;
-          } else {
-            navigate("/checkout-success");
-            dispatch(resetCart());
-          }
-        }
-        if (res.code === 401) {
-          toast.error("يرجي تسجيل الدخول اولا ");
-          navigate("/login");
+      if (res.code === 200) {
+        toast.success("جاي تنفيذ الطلب");
+        if (res.paymentLink !== "") {
+          setTimeout(() => {
+            window.location.href = res.paymentLink;
+          }, 2000);
+          return;
         } else {
-          // toast.error(res.message);
+          navigate("/checkout-success");
+          dispatch(resetCart());
         }
-      } catch (error) {
-        console.error("Error during order creation:", error);
-        // toast.error("An error occurred while creating the order.");
       }
+      if (res.code === 401) {
+        toast.error("يرجي تسجيل الدخول اولا ");
+        navigate("/login");
+      } else {
+        // toast.error(res.message);
+      }
+    } catch (error) {
+      console.error("Error during order creation:", error);
+      // toast.error("An error occurred while creating the order.");
+    }
   };
 
   const paymentMethods = [
@@ -165,15 +159,13 @@ export default function Checkout() {
   //    dispatch(setShippingPrice(e));
   //   }
 
-  console.log(orderDetail)
+  console.log(orderDetail);
   return (
-    <div className="min-h-[75dvh] pb-50">
+    <div className="min-h-[75dvh] pb-50 pt-20">
       {isModelOpen && <AddAddressModel />}
       {cartItems?.length === 0 && (
         <div className="flex flex-col gap-5 justify-center items-center h-[60dvh] pb-20">
-          <h2 className="font-bold text-3xl">
-            عربة التسوق فارغة
-          </h2>
+          <h2 className="font-bold text-3xl">عربة التسوق فارغة</h2>
           <Link
             to="/"
             className="px-5 py-2 font-bold bg-teal-500 text-white rounded-md"
@@ -236,7 +228,7 @@ export default function Checkout() {
                           className="hidden"
                           checked={
                             (addresses?.length >= 1 && index === 0) ||
-                            (orderDetail?.address === option.id)
+                            orderDetail?.address === option.id
                           }
                           onChange={handleAddressChange}
                         />
@@ -287,9 +279,12 @@ export default function Checkout() {
                       className=" p-3 flex justify- w-full items-center rounded-lg border border-transparent cursor-pointer hover:bg-slate-200 has-[:checked]:border-teal-500 has-[:checked]:text-teal-900 has-[:checked]:bg-teal-50 has-[:checked]:font-bold"
                     >
                       <div className="relative z-10 inline-flex items-center flex-col justify-center gap-2 w-full">
-
-                        <p className=" inset-0 w-full text-start ">{option.name === "Online" && "دفع اونلاين"}</p>
-                        <p className=" inset-0 w-full text-start ">{option.name === "Cash" && "الدفع عند الاسلام"}</p>
+                        <p className=" inset-0 w-full text-start ">
+                          {option.name === "Online" && "دفع اونلاين"}
+                        </p>
+                        <p className=" inset-0 w-full text-start ">
+                          {option.name === "Cash" && "الدفع عند الاسلام"}
+                        </p>
                       </div>
                       <input
                         type="radio"

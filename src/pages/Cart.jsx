@@ -12,8 +12,8 @@ const Cart = () => {
   }, [dispatch]);
   const { cartItems } = useSelector((state) => state.cart.cart);
   return (
-    <div className="min-h-[75dvh] py-15 px-2 md:p-10 lg:p-15 lg:w-[90%] mx-auto">
-      <div className="pb-20">
+    <div className="min-h-[75dvh] py-15 px-2 md:p-10 lg:p-15 lg:w-[90%] mx-auto ">
+      <div className="pb-20 pt-20">
         <h2 className="text-3xl font-bold title py-5 text-center bg-teal-600 text-white rounded-3xl mb-10 shadow-xl">
           السلــــــــة
         </h2>
