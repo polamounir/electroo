@@ -72,7 +72,12 @@ export default function Home() {
       <MainSlider />
       <BrandSlider />
       <div className="">
+        <div className="h-5 w-full"></div>
+
         <CategorySlider />
+
+        <div className="h-10 w-full"></div>
+
         <NewHomeSection
           title="عروض اليوم"
           products={discounts}
@@ -87,6 +92,8 @@ export default function Home() {
           error={discountError}
           more="/search?HasDiscount=true"
         /> */}
+        <div className="h-10 w-full"></div>
+
         <HomeSection
           title="الاكثر مبيعاً"
           products={sales}
@@ -94,6 +101,7 @@ export default function Home() {
           error={salesError}
           more="/search?"
         />
+        <div className="h-10 w-full"></div>
         <HomeSection
           title="كل المنتجات "
           products={newProducts}
