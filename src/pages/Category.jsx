@@ -47,7 +47,7 @@ export default function Category() {
 
   if (error) {
     return (
-      <div className="container mx-auto px-4 py-8 min-h-svh">
+      <div className="container mx-auto px-4 py-8 min-h-svh pt-20">
         <div className="flex flex-col items-center justify-center py-12 bg-red-50 rounded-lg">
           <FaExclamationTriangle className="text-red-500 text-4xl mb-4" />
           <p className="text-red-600 font-medium">
