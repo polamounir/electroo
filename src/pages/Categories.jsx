@@ -25,7 +25,7 @@ export default function Categories() {
   });
 
   return (
-    <div className="container mx-auto px-4 py-8 min-h-svh">
+    <div className="container mx-auto px-4 py-8 min-h-svh pt-25 pb-20">
       <h1 className="text-3xl font-bold mb-8 text-teal-500 border-b-2 border-teal-500 pb-2">
         تصنيفات المنتجات
       </h1>

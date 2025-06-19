@@ -47,7 +47,7 @@ export default function Category() {
 
   if (error) {
     return (
-      <div className="container mx-auto px-4 py-8 min-h-svh pt-20">
+      <div className="container mx-auto px-4 py-8 min-h-svh pt-20 pb-15">
         <div className="flex flex-col items-center justify-center py-12 bg-red-50 rounded-lg">
           <FaExclamationTriangle className="text-red-500 text-4xl mb-4" />
           <p className="text-red-600 font-medium">
@@ -65,7 +65,7 @@ export default function Category() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 min-h-svh">
+    <div className="container mx-auto px-4 py-8 min-h-svh pt-25 pb-20">
       <h1 className="text-3xl font-bold mb-8 text-teal-500 border-b-2 border-teal-500 pb-2">
         {products[0]?.category || "المنتجات"}
       </h1>
@@ -81,7 +81,7 @@ export default function Category() {
           </div>
 
           {hasMoreItems && (
-            <div className="flex justify-center mt-10">
+            <div className="flex justify-center mt-10 ">
               <button
                 onClick={handleLoadMore}
                 disabled={isFetching}
