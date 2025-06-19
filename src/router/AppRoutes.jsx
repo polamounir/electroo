@@ -72,7 +72,7 @@ import { useSelector } from "react-redux";
 import Test from "../pages/Test";
 import AllProducts from "../pages/AllProducts";
 import Discounts from "../pages/Discounts";
-import Sales from "../pages/Sales";
+// import Sales from "../pages/Sales";
 import AdminAddNewUser from "../components/adminDashboard/users/AdminAddNewUser";
 import ResetUserPassword from "../pages/ResetUserPassword";
 import AdminOrdersOverview from "../components/adminDashboard/orders/AdminOrdersOverview";
@@ -167,7 +167,7 @@ const AppRoutes = () => {
             {/* products */}
             <Route path="/all-products" element={<AllProducts />} />
             <Route path="/discounts" element={<Discounts />} />
-            <Route path="/sales" element={<Sales />} />
+            {/* <Route path="/sales" element={<Sales />} /> */}
             <Route path="/product/:id" element={<Product />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/categories/:id" element={<Category />} />
