@@ -23,7 +23,7 @@ export default function Home() {
           Page: 1,
           Limit: 20,
           HasDiscount: true,
-          SearchQuery: "2",
+          // SearchQuery: "2",
         },
       });
       return res.data;
@@ -41,7 +41,7 @@ export default function Home() {
           Page: 1,
           Limit: 20,
           HasDiscount: false,
-          SearchQuery: "2",
+          // SearchQuery: "2",
         },
       });
       return res.data;

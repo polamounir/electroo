@@ -128,7 +128,7 @@ export default function Navbar() {
             <div className="hidden lg:flex items-center gap-5">
               <div
                 className=" relative cursor-pointer"
-                onMouseEnter={openCartDropdown}
+                onClick={openCartDropdown}
                 onMouseLeave={closeCartDropdown}
               >
                 <Link to="/cart" className="text-3xl">
