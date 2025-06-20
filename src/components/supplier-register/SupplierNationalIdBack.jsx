@@ -105,7 +105,7 @@ export default function SupplierNationalIdBack() {
               src={cam}
               alt="supplier"
               width={400}
-              className="scale-in-out"
+              className="scale-in-out hidden lg:block"
             />
           </div>
 

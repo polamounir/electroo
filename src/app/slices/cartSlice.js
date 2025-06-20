@@ -8,6 +8,7 @@ import {
   fetchCart,
 } from "../../api/product";
 import { toast } from "sonner";
+import { api } from "../../api/axiosInstance";
 
 // -----------------------
 export const fetchCartAsync = createAsyncThunk(
@@ -109,7 +110,6 @@ export const decreaseProductQuantityAsync = createAsyncThunk(
 export const deleteProductAsync = createAsyncThunk(
   "cart/deleteProductAsync",
   async (id, { dispatch, rejectWithValue }) => {
-
     try {
       const res = await deleteFromCart({
         productId: id,
@@ -129,6 +129,20 @@ export const deleteProductAsync = createAsyncThunk(
   }
 );
 
+export const getStoredCartAsync = createAsyncThunk(
+  "cart/getStoredCartAsync",
+  async (_, { rejectWithValue }) => {
+    const id = localStorage.getItem("cartId") || "";
+    try {
+      const { data } = await api.get(`/cart/${id}`);
+      console.log(data.data.cart);
+      return data.data.cart;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 const initialState = {
   cart: {
     cartItems: [],
@@ -141,6 +155,7 @@ const initialState = {
   },
   status: "idle",
   error: null,
+  isCartMenuOpen: false,
 };
 
 const cartSlice = createSlice({
@@ -160,7 +175,7 @@ const cartSlice = createSlice({
     setShippingPrice: (state, action) => {
       state.cart.shippingPrice = action.payload;
     },
-    resetCart :(state)=>{
+    resetCart: (state) => {
       state.cart = {
         cartItems: [],
         clientSecret: "",
@@ -169,9 +184,15 @@ const cartSlice = createSlice({
         paymentIntnetId: "",
         shippingPrice: 0,
         subTotal: 0,
-      }
-      localStorage.removeItem("cartId")
-    }
+      };
+      localStorage.removeItem("cartId");
+    },
+    openCartMenu: (state) => {
+      state.isCartMenuOpen = true;
+    },
+    closeCartMenu: (state) => {
+      state.isCartMenuOpen = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -209,9 +230,27 @@ const cartSlice = createSlice({
       .addCase(changeProductQuantityAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to change product quantity";
+      })
+      .addCase(getStoredCartAsync.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(getStoredCartAsync.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.cart.cartItems = action.payload.cartItems || [];
+        state.cart.subTotal = action.payload.subTotal || 0;
+      })
+      .addCase(getStoredCartAsync.rejected, (state, action) => {
+        state.status = "failed";
       });
   },
 });
 
-export const { cartInit, setShippingPrice , resetCart} = cartSlice.actions;
+export const {
+  cartInit,
+  setShippingPrice,
+  resetCart,
+  openCartMenu,
+  closeCartMenu,
+} = cartSlice.actions;
 export default cartSlice.reducer;

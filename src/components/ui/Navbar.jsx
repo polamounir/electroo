@@ -1,7 +1,7 @@
 import { IoCartOutline } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoIosMenu } from "react-icons/io";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,9 +13,12 @@ import {
 } from "../../app/slices/userChatsSlicce";
 import { logOut } from "../../app/slices/authSlice";
 import { useLocation } from "react-router-dom";
+import { closeCartMenu, openCartMenu } from "../../app/slices/cartSlice";
+import CartDropdownMenu from "./CartDropdownMenu";
 
 export default function Navbar() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -42,6 +45,9 @@ export default function Navbar() {
   };
 
   const user = useSelector((state) => state.auth.user);
+  useEffect(() => {
+    setIsSidebarOpen(false);
+  }, [navigate]);
 
   const links = [
     {
@@ -59,6 +65,7 @@ export default function Navbar() {
   ];
 
   const { isChatMenuOpen } = useSelector((state) => state.userChatsMenu);
+  const { isCartMenuOpen } = useSelector((state) => state.cart);
 
   const openChatDropdown = () => {
     dispatch(openUserChatsMenu());
@@ -67,6 +74,15 @@ export default function Navbar() {
   const closeChatDropdown = () => {
     setTimeout(() => {
       dispatch(closeUserChatsMenu());
+    }, 500);
+  };
+  const openCartDropdown = () => {
+    dispatch(openCartMenu());
+  };
+
+  const closeCartDropdown = () => {
+    setTimeout(() => {
+      dispatch(closeCartMenu());
     }, 500);
   };
 
@@ -88,7 +104,12 @@ export default function Navbar() {
   };
 
   return (
-    <div className={getNavbarClasses()}>
+    <div
+      className={getNavbarClasses()}
+      onBlur={() => {
+        setIsSidebarOpen(false);
+      }}
+    >
       <div className="px-5 py-3 w-full md:w-[85%] mx-auto">
         <div className="flex justify-between gap-10">
           <div className="flex items-center gap-5">
@@ -105,7 +126,11 @@ export default function Navbar() {
           </div>
           <div>
             <div className="hidden lg:flex items-center gap-5">
-              <div className=" relative cursor-pointer">
+              <div
+                className=" relative cursor-pointer"
+                onMouseEnter={openCartDropdown}
+                onMouseLeave={closeCartDropdown}
+              >
                 <Link to="/cart" className="text-3xl">
                   <IoCartOutline />
                 </Link>
@@ -114,6 +139,7 @@ export default function Navbar() {
                     {cartItems.length > 99 ? "99+" : cartItems.length}
                   </span>
                 )}
+                {isCartMenuOpen && <CartDropdownMenu />}
               </div>
               <div
                 className="relative cursor-pointer"

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
 
 // import { getUserData } from "../../app/slices/authSlice";
-import { cartInit } from "../../app/slices/cartSlice";
+import { cartInit, getStoredCartAsync } from "../../app/slices/cartSlice";
 import { generateNewSessionId } from "../../app/slices/chatbotSlice";
 import { api } from "../../api/axiosInstance";
 import { setUserInitData } from "../../app/slices/authSlice";
@@ -24,7 +24,8 @@ export default function AppInit() {
   };
 
   useEffect(() => {
-    const token = Cookies.get("accessToken") || localStorage.getItem("accessToken");
+    const token =
+      Cookies.get("accessToken") || localStorage.getItem("accessToken");
 
     if (token) {
       // dispatch(getUserData());
@@ -32,6 +33,7 @@ export default function AppInit() {
     }
 
     dispatch(cartInit());
+    dispatch(getStoredCartAsync());
     dispatch(generateNewSessionId());
   }, [dispatch]);
 

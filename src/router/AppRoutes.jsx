@@ -179,7 +179,7 @@ const AppRoutes = () => {
             <Route path="/checkout-success" element={<CheckoutSuccess />} />
 
             {/* TEsting */}
-            {/* <Route path="/test" element={<ChatBodyTest />} /> */}
+            <Route path="/test" element={<Test />} />
             {/* <Route path="/upload" element={<Upload />} /> */}
             <Route path="/spinning-wheel" element={<SpinningWheel />} />
 

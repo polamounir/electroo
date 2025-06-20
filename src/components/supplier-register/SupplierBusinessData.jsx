@@ -104,7 +104,7 @@ export default function BusinessData() {
             src={image}
             alt="supplier"
             width={400}
-            className="scale-in-out"
+            className="scale-in-out hidden lg:block"
           />
         </div>
         <div>

@@ -11,7 +11,6 @@ export default function ChatDropdownList({ isPopupOpen }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Fetch chat conversations
   const fetchChats = async () => {
     try {
       const { data } = await api.get("/conversations?page=1&limit=20");
@@ -25,7 +24,6 @@ export default function ChatDropdownList({ isPopupOpen }) {
     }
   };
 
-  // React Query hook
   const {
     data: items = [],
     isLoading,
@@ -41,15 +39,10 @@ export default function ChatDropdownList({ isPopupOpen }) {
     refetchInterval: false,
   });
 
-  // Color options for avatars
   const bgColors = [
-    { bg: "bg-red-500", text: "text-white" },
-    { bg: "bg-sky-400", text: "text-white" },
-    { bg: "bg-indigo-600", text: "text-white" },
     { bg: "bg-teal-500", text: "text-white" },
   ];
 
-  // Memoize color assignment by chat ID
   const colorMap = useMemo(() => {
     const map = new Map();
     items.forEach((chat) => {
@@ -61,7 +54,6 @@ export default function ChatDropdownList({ isPopupOpen }) {
     return map;
   }, [items]);
 
-  // Memoized open chat handler
   const openChatPopup = useCallback(
     (chat) => {
       dispatch(openChatingPopup(chat));
@@ -71,7 +63,6 @@ export default function ChatDropdownList({ isPopupOpen }) {
     [dispatch]
   );
 
-  // Format date for messages
   const formatDate = (dateString) => {
     const date =
       dateString.endsWith("Z") || dateString.includes("+")
@@ -95,62 +86,74 @@ export default function ChatDropdownList({ isPopupOpen }) {
       });
     }
   };
-  console.log(items);
 
   return (
-    <div className="scrolling p-6 max-h-[50svh] overflow-y-auto w-sm absolute top-[90%] end-0 bg-white rounded-lg shadow-md border border-gray-300 chat-dropdown-menu">
-      <h1 className="text-2xl font-bold mb-6">المحادثات</h1>
+    <div className="absolute end-0 top-full w-80 bg-white border border-gray-200 rounded-md shadow-lg z-50 p-4">
+      <div className="flex justify-between items-center mb-3 pb-2 border-b border-gray-100">
+        <h3 className="font-medium text-gray-900">المحادثات</h3>
+        <span className="text-sm text-gray-500">
+          {items?.length} {items.length === 1 ? "محادثة" : "محادثات"}
+        </span>
+      </div>
 
       {isLoading && (
-        <div className="flex items-center justify-center h-full">
-          <p className="text-gray-500">جاري تحميل المحادثات...</p>
+        <div className="text-center py-5 text-gray-500">
+          جاري تحميل المحادثات...
         </div>
       )}
 
       {isError && (
-        <div>
-          <p className="text-red-500">خطأ في تحميل المحادثات</p>
+        <div className="text-center py-5 text-red-500">
+          حصل خطأ أثناء تحميل المحادثات
         </div>
       )}
 
-      {items.length === 0 && !isLoading && (
-        <div className="flex items-center justify-center h-full">
-          <p className="text-gray-500">لا يوجد محادثات حاليا</p>
+      {!isLoading && items.length === 0 && (
+        <div className="text-center py-5 text-gray-500">
+          لا يوجد محادثات حاليًا
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-4">
-        {items.map((chat) => {
-          const color = colorMap.get(chat.id);
-          return (
-            <div
-              key={chat.id}
-              className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 p-5 px-5 cursor-pointer"
-              onClick={() => openChatPopup(chat)}
-            >
-              <div className="flex items-start gap-5">
-                <div>
-                  <span
-                    className={`rounded-full w-15 h-15 flex items-center justify-center text-2xl font-bold ${color.bg} ${color.text}`}
-                  >
-                    {chat.fullName?.[0] ?? ""}
-                    {chat.fullName?.[1] ?? ""}
-                  </span>
+      {items.length > 0 && (
+        <div className="max-h-60 overflow-y-auto divide-y divide-gray-100">
+          {items.map((chat) => {
+            const color = colorMap.get(chat.id);
+            const initials =
+              chat.fullName
+                ?.split(" ")
+                .map((word) => word[0])
+                .join("")
+                .slice(0, 2) ?? "؟";
+
+            return (
+              <div
+                key={chat.id}
+                onClick={() => openChatPopup(chat)}
+                className="flex items-start py-3 cursor-pointer hover:bg-gray-50 transition-colors"
+              >
+                <div
+                  className={`flex items-center justify-center w-10 h-10 rounded-full shrink-0 ${color.bg} ${color.text} font-bold me-2`}
+                >
+                  {initials}
                 </div>
-                <div className="flex-1 flex flex-col justify-between gap-3">
-                  <div className="flex items-center justify-between">
-                    <p className="font-semibold text-lg">{chat.fullName}</p>
-                    <p className="text-sm text-gray-500">
+                <div className="ml-3 flex-1">
+                  <div className="flex justify-between items-center mb-1">
+                    <p className="text-sm font-medium text-gray-900">
+                      {chat.fullName}
+                    </p>
+                    <p className="text-xs text-gray-400">
                       {formatDate(chat.lastMessageTime)}
                     </p>
                   </div>
-                  <p className="text-gray-600 truncate">{chat.lastMessage}</p>
+                  <p className="text-sm text-gray-600 truncate">
+                    {chat.lastMessage || "لا توجد رسائل بعد"}
+                  </p>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

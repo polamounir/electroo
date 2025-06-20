@@ -51,7 +51,7 @@ export default function Profile() {
     );
 
   return (
-    <div className="min-h-[85svh] bg-gray-50 py-10 px-4 sm:px-8 md:px-16 lg:px-24 font-sans text-right">
+    <div className="min-h-[85svh] bg-gray-50 py-10 px-4 sm:px-8 md:px-16 lg:px-24 font-sans text-right pt-20">
       <div className=" lg:w-[70%] m-auto min-h-[85svh]">
         {/* Header */}
         <header className="flex justify-between items-center mb-10">

@@ -98,7 +98,12 @@ export default function SupplierNationalIdFront() {
     <div>
       <div className="flex flex-col-reverse items-center lg:flex-row-reverse justify-center gap-10 lg:gap-20 p-3 lg:p-5">
         <div className="w-full">
-          <img src={cam} alt="supplier" width={400} className="scale-in-out" />
+          <img
+            src={cam}
+            alt="supplier"
+            width={400}
+            className="scale-in-out hidden lg:block"
+          />
         </div>
 
         <div className="w-full flex flex-col gap-2">
