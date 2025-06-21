@@ -18,7 +18,10 @@ export default function ProductCard({ product }) {
   };
 
   return (
-    <div className="relative group bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden transition duration-200">
+    <div
+      className="relative group bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden transition duration-200"
+      dir="rtl"
+    >
       {discountPercentage > 0 && (
         <div className="absolute top-3 right-3 bg-red-500 text-white text-xs px-2 py-1 rounded z-10">
           -{discountPercentage}%

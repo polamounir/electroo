@@ -35,7 +35,7 @@ export default function NewHomeSection({
       y: 0,
       scale: 1,
       transition: {
-        duration: 0.6,
+        duration: 0.3,
         ease: "easeOut",
       },
     },
@@ -47,7 +47,7 @@ export default function NewHomeSection({
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.8,
+        duration: 0.4,
         ease: "easeOut",
         staggerChildren: 0.1,
       },
@@ -58,7 +58,7 @@ export default function NewHomeSection({
     hidden: {
       opacity: 0,
       y: 30,
-      scale: 0.9,
+      scale: 0.7,
     },
     visible: {
       opacity: 1,
@@ -82,7 +82,7 @@ export default function NewHomeSection({
       y: 0,
       scale: 1,
       transition: {
-        duration: 0.6,
+        duration: 0.3,
         ease: "easeOut",
         delay: 0.3,
       },
@@ -95,7 +95,7 @@ export default function NewHomeSection({
       opacity: 1,
       scale: 1,
       transition: {
-        duration: 0.5,
+        duration: 0.3,
         ease: "easeOut",
       },
     },
@@ -130,7 +130,7 @@ export default function NewHomeSection({
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
       >
         <div className="w-full lg:w-[100%] m-auto shadow-none">
           <div className="slider-container">
