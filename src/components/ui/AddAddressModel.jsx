@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { closeAddressModel } from "../../app/slices/addAddressModelSlice";
 import { addAddress } from "../../api/user";
+import { governorates } from "../../utils/constants";
 
 export default function AddAddressModel() {
   const dispatch = useDispatch();
@@ -91,41 +92,13 @@ export default function AddAddressModel() {
     }
   };
 
-  const governorates = [
-    { name: "Alexandria", title: "الإسكندرية" },
-    { name: "Aswan", title: "أسوان" },
-    { name: "Asyut", title: "أسيوط" },
-    { name: "Beheira", title: "البحيرة" },
-    { name: "BeniSuef", title: "بني سويف" },
-    { name: "Cairo", title: "القاهرة" },
-    { name: "Dakahlia", title: "الدقهلية" },
-    { name: "Damietta", title: "دمياط" },
-    { name: "Fayoum", title: "الفيوم" },
-    { name: "Gharbia", title: "الغربية" },
-    { name: "Giza", title: "الجيزة" },
-    { name: "Ismailia", title: "الإسماعيلية" },
-    { name: "KafrElSheikh", title: "كفر الشيخ" },
-    { name: "Luxor", title: "الأقصر" },
-    { name: "Matrouh", title: "مطروح" },
-    { name: "Minya", title: "المنيا" },
-    { name: "Monufia", title: "المنوفية" },
-    { name: "NewValley", title: "الوادي الجديد" },
-    { name: "NorthSinai", title: "شمال سيناء" },
-    { name: "PortSaid", title: "بورسعيد" },
-    { name: "Qalyubia", title: "القليوبية" },
-    { name: "Qena", title: "قنا" },
-    { name: "RedSea", title: "البحر الأحمر" },
-    { name: "Sharqia", title: "الشرقية" },
-    { name: "Sohag", title: "سوهاج" },
-    { name: "SouthSinai", title: "جنوب سيناء" },
-    { name: "Suez", title: "السويس" },
-  ];
+
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center p-4 overflow-y-auto">
       <div
-        className="bg-white rounded-lg shadow-xl w-full max-w-md relative"
-        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+        className="bg-white rounded-lg shadow-xl w-full max-w-md relative animate-fadeIn"
+        onClick={(e) => e.stopPropagation()}
       >
         <button
           className="absolute top-4 left-4 text-gray-500 hover:text-gray-700 transition-colors"
@@ -242,7 +215,9 @@ export default function AddAddressModel() {
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <span className="text-gray-500 " dir="ltr">+20</span>
+                    <span className="text-gray-500 " dir="ltr">
+                      +20
+                    </span>
                   </div>
                   <input
                     type="tel"

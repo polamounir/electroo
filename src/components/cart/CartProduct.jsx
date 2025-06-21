@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   addProductToCartAsync,
   changeProductQuantityAsync,
@@ -42,17 +43,25 @@ export default function CartProduct({ item }) {
 
   return (
     <div className="w-full flex justify-between gap-5 items-center border border-gray-300 p-2 rounded-2xl mx-auto shadow-md">
-      <div className="min-w-25 sm:max-w-50 sm:min-w-50 h-32 mx-auto sm:mx-0">
+      <Link
+        to={`/product/${item.id}`}
+        className="min-w-25 sm:max-w-50 sm:min-w-50 h-32 mx-auto sm:mx-0 block"
+      >
         <img
           src={item.imageUrl}
           alt={item.title}
-          className="w-full h-full object-contain rounded-lg"
+          className="w-full h-full object-contain rounded-lg hover:opacity-90 transition-opacity duration-200"
         />
-      </div>
+      </Link>
 
-      <div className=" grow grid grid-cols-1 lg:grid-cols-11 xl:grid-cols-12 gap-5 xl:gap-10 text-sm">
+      <div className="grow grid grid-cols-1 lg:grid-cols-11 xl:grid-cols-12 gap-5 xl:gap-10 text-sm">
         <div className="lg:col-span-11 xl:col-span-7 font-semibold text-gray-800 truncate">
-          {item.title}
+          <Link
+            to={`/product/${item.id}`}
+            className="hover:underline hover:text-blue-600 transition-colors duration-200"
+          >
+            {item.title}
+          </Link>
         </div>
 
         <div className="lg:col-span-11 xl:col-span-5 flex flex-col gap-2 lg:flex-row justify-between xl:pe-5 items-start lg:items-center">
@@ -92,7 +101,7 @@ export default function CartProduct({ item }) {
               className="text-gray-500 hover:text-red-500 duration-300"
             >
               <FaTrash />
-            </button>{" "}
+            </button>
           </div>
         </div>
       </div>

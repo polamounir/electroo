@@ -9,6 +9,15 @@
       opacity: 1;
     }
   }
+  .animate-fadeOut {
+    animation: fadeOut 0.5s ease forwards;
+  }
+
+  @keyframes fadeOut {
+    to {
+      opacity: 0;
+    }
+  }
 }
 :root {
   direction: rtl;
@@ -166,4 +175,10 @@ input {
   left: 0;
   width: 100%;
   height: 100%;
+}
+/* ---------------------------------------------------------------- */
+
+
+.AddAddressModel {
+  
 }
