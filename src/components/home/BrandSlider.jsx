@@ -28,7 +28,7 @@ export default function BrandSlider() {
   ];
 
   return (
-    <div className="bg-black">
+    <div className="bg-[#0c0c0c]">
       <div className="slider">
         <div className="slider-track hidden md:flex">
           {items.map((item, index) => (

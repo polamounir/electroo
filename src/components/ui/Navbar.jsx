@@ -93,7 +93,7 @@ export default function Navbar() {
 
     if (isHomePage && !isScrolled) {
       // Homepage, not scrolled - transparent with white text
-      return `${baseClasses} bg-black/10 text-white border-gray-700`;
+      return `${baseClasses} backdrop-blur-xs bg-white/0 text-white border-white/0`;
     } else if (isHomePage && isScrolled) {
       // Homepage, scrolled - solid black background
       return `${baseClasses} bg-black text-white border-gray-700`;

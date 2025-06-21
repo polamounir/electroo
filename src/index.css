@@ -10,7 +10,6 @@
     }
   }
 }
-
 :root {
   direction: rtl;
   --color-primary: #03a18e;
@@ -22,16 +21,26 @@
   --color-black: #030303;
   --color-accent: #b31312;
 }
+*{
+  font-family: "Cairo", sans-serif;
 
+}
 .ar-font-m {
   font-family: "Marhey", sans-serif;
+  font-family: "Cairo", sans-serif;
   font-optical-sizing: auto;
 }
 .ar-font-s,
 .title {
-  font-family: "Marhey", sans-serif;
+  /* font-family: "Marhey", sans-serif; */
   font-optical-sizing: auto;
   /* font-size: 2.5rem; */
+  font-family: "Cairo", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+  font-variation-settings:
+    "slnt" 0;
 }
 .ar-font-s,
 .logo {
@@ -42,7 +51,7 @@
 input {
   /* font-family: "Marhey", sans-serif; */
   outline: none;
-  & ::placeholder {
+  &::placeholder {
     /* font-family: "Marhey", sans-serif; */
   }
   &:focus {

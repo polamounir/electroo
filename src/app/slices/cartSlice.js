@@ -128,17 +128,23 @@ export const deleteProductAsync = createAsyncThunk(
     }
   }
 );
-
 export const getStoredCartAsync = createAsyncThunk(
   "cart/getStoredCartAsync",
-  async (_, { rejectWithValue }) => {
+  async (_, { getState, rejectWithValue }) => {
+    const state = getState();
+    const isCartFetched = state.cart.isCartFetched;
+
+    if (isCartFetched) {
+      return;
+    }
+
     const id = localStorage.getItem("cartId") || "";
     try {
       const { data } = await api.get(`/cart/${id}`);
-      console.log(data.data.cart);
       return data.data.cart;
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      return rejectWithValue(error.response?.data || "Failed to fetch cart");
     }
   }
 );
@@ -156,6 +162,7 @@ const initialState = {
   status: "idle",
   error: null,
   isCartMenuOpen: false,
+  isCartFetched: false,
 };
 
 const cartSlice = createSlice({

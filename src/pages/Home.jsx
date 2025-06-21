@@ -36,7 +36,7 @@ export default function Home() {
   } = useQuery({
     queryKey: ["home", "sales"],
     queryFn: async () => {
-      const res = await api.get("/products", {
+      const res = await api.get("/products/most-sold", {
         params: {
           Page: 1,
           Limit: 20,
@@ -44,7 +44,8 @@ export default function Home() {
           // SearchQuery: "2",
         },
       });
-      return res.data;
+      // console.log(res.data.data)
+      return res.data.data;
     },
   });
   const {
@@ -62,7 +63,7 @@ export default function Home() {
           SearchQuery: "ال",
         },
       });
-      return res.data;
+      return res.data.data.items;
     },
   });
 
@@ -78,6 +79,13 @@ export default function Home() {
 
         <div className="h-10 w-full"></div>
 
+        <HomeSection
+          title="الاكثر مبيعاً"
+          products={sales}
+          loading={salesLoading}
+          error={salesError}
+          more="/search?"
+        />
         <NewHomeSection
           title="عروض اليوم"
           products={discounts}
@@ -94,13 +102,6 @@ export default function Home() {
         /> */}
         <div className="h-10 w-full"></div>
 
-        <HomeSection
-          title="الاكثر مبيعاً"
-          products={sales}
-          loading={salesLoading}
-          error={salesError}
-          more="/search?"
-        />
         <div className="h-10 w-full"></div>
         <HomeSection
           title="كل المنتجات "

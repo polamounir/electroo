@@ -11,7 +11,7 @@ class AuthService {
       if (!refreshToken) {
         throw new Error("No refresh token available");
       }
-      console.log(API_URL);
+   
 
       const options = {
         method: "POST",
@@ -24,7 +24,7 @@ class AuthService {
 
       const response = await axios.request(options);
 
-      console.log(response);
+      // console.log(response);
       const {
         accessToken,
         refreshToken: newRefreshToken,
