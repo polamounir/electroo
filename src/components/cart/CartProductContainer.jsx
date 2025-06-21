@@ -62,7 +62,7 @@ export default function CartProductContainer() {
                 scale: 1.02,
                 transition: { duration: 0.2 },
               }}
-              whileTap={{ scale: 0.98 }}
+              // whileTap={{ scale: 0.98 }}
             >
               <CartProduct item={item} />
             </motion.div>

@@ -131,9 +131,9 @@ export default function Navbar() {
                 onClick={openCartDropdown}
                 onMouseLeave={closeCartDropdown}
               >
-                <Link to="/cart" className="text-3xl">
+                <button to="/cart" className="text-3xl">
                   <IoCartOutline />
-                </Link>
+                </button>
                 {cartItems.length !== 0 && (
                   <span className="absolute -top-2 -start-2 h-5 w-5  bg-teal-600 text-white rounded-full  flex justify-center items-center ">
                     {cartItems.length > 99 ? "99+" : cartItems.length}

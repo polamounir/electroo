@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { closeCartMenu } from "../../app/slices/cartSlice";
+import { closeCartMenu, deleteProductAsync } from "../../app/slices/cartSlice";
 
 export default function CartDropdownMenu() {
   const dispatch = useDispatch();
@@ -11,6 +11,11 @@ export default function CartDropdownMenu() {
     dispatch(closeCartMenu());
     navigate("/cart");
   };
+
+  
+    const deleteProduct = (id) => {
+      dispatch(deleteProductAsync(id));
+    };
 
   return (
     <div className="absolute end-0 top-full w-80 bg-white border border-gray-200 rounded-md shadow-lg z-50 p-4">
@@ -72,7 +77,11 @@ export default function CartDropdownMenu() {
                       </span>
                       <button
                         className="text-xs text-red-500 hover:text-red-700"
-                        onClick={(e) => e.preventDefault()}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          deleteProduct(item.id)
+                        }}
                       >
                         إزالة
                       </button>
