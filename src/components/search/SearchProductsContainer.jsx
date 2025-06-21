@@ -4,63 +4,104 @@ import imagePlaceholder from "../../assets/images/product_placeholder.webp";
 import { BsCartPlus } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { addProductToCartAsync } from "../../app/slices/cartSlice";
+import WishlistButton from "../ui/WishlistButton";
 
-function ProductCard({ product, isRowView }) {
+function ProductCard({ product, isRowView = false }) {
   const dispatch = useDispatch();
-  const addToCart = (id) => {
+
+  const {
+    id,
+    title,
+    images,
+    price,
+    discountedPrice,
+    discountPercentage,
+    supplierName,
+  } = product;
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     dispatch(addProductToCartAsync(id));
   };
 
-
   return (
     <Link
-      to={`/product/${product.id}`}
-      className={`p-4 rounded hover:shadow-sm duration-300 transition-all bg-white relative overflow-hidden ${
-        isRowView ? "flex flex-col sm:flex-row gap-4" : ""
+      to={`/product/${id}`}
+      className={`group bg-white relative overflow-hidden rounded-2xl border border-gray-200 hover:shadow-md transition-all duration-200 ${
+        isRowView ? "flex flex-col sm:flex-row gap-4 p-4" : "p-4"
       }`}
     >
-      <img
-        src={product.images?.[0] || imagePlaceholder}
-        alt={product.title || "Product image"}
-        className={`rounded-xl object-contain  ${
-          isRowView ? "w-full sm:w-48 h-48 me-2" : "w-full aspect-square"
+      {/* Discount Badge */}
+      {discountPercentage > 0 && (
+        <div className="absolute top-3 right-3 bg-red-500 text-white text-xs px-2 py-1 rounded z-10">
+          -{discountPercentage}%
+        </div>
+      )}
+
+      {/* Wishlist */}
+      <div className="absolute top-3 left-3 z-10">
+        <div
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+        >
+          <WishlistButton productId={id} />
+        </div>
+      </div>
+
+      {/* Product Image */}
+      <div
+        className={`bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center ${
+          isRowView ? "w-full sm:w-48 h-48" : "w-full aspect-square"
         }`}
-        onError={(e) => {
-          e.target.onerror = null;
-          e.target.src = imagePlaceholder;
-        }}
-      />
-      <div className="flex-1 text-xs ">
-        <h3 className="font-semibold truncate sm:max-w-[80%]">
-          {product.title}
+      >
+        <img
+          src={images?.[0] || imagePlaceholder}
+          alt={title}
+          loading="lazy"
+          className="object-contain w-full h-full group-hover:scale-105 transition-transform duration-300"
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = imagePlaceholder;
+          }}
+        />
+      </div>
+
+      {/* Product Info */}
+      <div className="flex-1 text-xs relative">
+        <h3 className="font-semibold truncate text-gray-800 mb-1 sm:max-w-[80%]">
+          {title}
         </h3>
-        {/* <p className="text-gray-600 text-sm mb-2">{product.description}</p> */}
-        {product.discountPercentage > 0 ? (
-          <div className="flex items-center gap-2 my-1">
-            <p className="text-teal-600 font-bold ">
-              {product.discountedPrice} ج.م
-            </p>
-            <p className="text-red-700 font-bold line-through">
-              {product.price} ج.م
-            </p>
-          </div>
-        ) : (
-          <p className="text-teal-600 font-bold ">{product.price} ج.م</p>
-        )}
-        {/* <p className="text-teal-600 font-bold"> {product.price} ج.م</p> */}
-        <p className="text-gray-600">{product.supplierName}</p>
+
+        {/* Price */}
+        <div className="flex items-center gap-2 my-1">
+          {discountPercentage > 0 ? (
+            <>
+              <p className="text-teal-600 font-bold">{discountedPrice} ج.م</p>
+              <p className="text-red-500 font-semibold line-through">
+                {price} ج.م
+              </p>
+            </>
+          ) : (
+            <p className="text-teal-600 font-bold">{price} ج.م</p>
+          )}
+        </div>
+
+        {/* Supplier */}
+        <p className="text-gray-500 text-xs mb-2">{supplierName}</p>
+
+        {/* Add to Cart Button */}
         <div
           className={`flex justify-end ${
-            isRowView && "sm:absolute sm:bottom-5 sm:end-5"
-          } `}
+            isRowView ? "sm:absolute sm:bottom-4 sm:right-4" : ""
+          }`}
         >
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              addToCart(product.id);
-            }}
-            className="text-teal-500 text-lg border-2 border-teal-500 rounded-full p-2"
+            onClick={handleAddToCart}
+            className="text-teal-600 hover:text-white hover:bg-teal-600 border-2 border-teal-500 transition-all duration-200 rounded-full p-2 text-lg"
+            aria-label="Add to cart"
           >
             <BsCartPlus />
           </button>
@@ -69,6 +110,9 @@ function ProductCard({ product, isRowView }) {
     </Link>
   );
 }
+
+
+
 
 export  function SearchProductsContainer({ products, isRowView }) {
   // console.log("SearchProductsContainer rendered with products: 000000000000", products);

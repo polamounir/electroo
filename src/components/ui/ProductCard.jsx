@@ -4,75 +4,80 @@ import { useDispatch } from "react-redux";
 import { addProductToCartAsync } from "../../app/slices/cartSlice";
 import { Link } from "react-router-dom";
 import placeholderImage from "../../assets/images/product_placeholder.webp";
+import WishlistButton from "./WishlistButton";
+
 export default function ProductCard({ product }) {
   const dispatch = useDispatch();
   const { title, images, discountPercentage, discountedPrice, price, id } =
     product;
 
-  const addToCart = (id) => {
-    // console.log(id);
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     dispatch(addProductToCartAsync(id));
   };
 
   return (
-    <div className="relative bg-white border border-gray-200 rounded-lg shadow-lg p-4 text-center">
+    <div className="relative group bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden transition duration-200">
       {discountPercentage > 0 && (
-        <div className="absolute top-4 end-4 bg-red-500 text-white text-sm px-2 py-1 rounded">
-          {discountPercentage} %
+        <div className="absolute top-3 right-3 bg-red-500 text-white text-xs px-2 py-1 rounded z-10">
+          -{discountPercentage}%
         </div>
       )}
 
-      <Link to={`/product/${id}`}>
-        <div className="flex justify-center items-center min-h-60">
-          <div className="w-full h-full overflow-hidden rounded-lg flex justify-center">
-            <img
-              src={images[0] || placeholderImage}
-              alt={title}
-              className="h-full aspect-square"
-              width={200}
-              height={200}
-              loading="lazy"
-            />
-          </div>
+      <div className="absolute top-3 left-3 z-10">
+        <WishlistButton product={product} />
+      </div>
+
+      <Link to={`/product/${id}`} className="block">
+        <div className=" flex justify-center items-center h-56 overflow-hidden">
+          <img
+            src={images?.[0] || placeholderImage}
+            alt={title}
+            loading="lazy"
+            className="object-contain h-full transition-transform duration-300"
+          />
         </div>
 
-        <div className="text-gray-700 text-sm mb-2 truncate">{title}</div>
-        <div className="text-yellow-400 mb-2 flex">
-          <GoStarFill />
-          <GoStarFill />
-          <GoStarFill />
-          <GoStarFill />
-          <GoStarFill />
-        </div>
-      </Link>
+        <div className="p-4 text-left">
+          <h3 className="text-gray-800 font-semibold text-sm truncate mb-1">
+            {title}
+          </h3>
 
-      <Link to={`/product/${id}`} className="flex justify-between gap-3">
-        <div className="text-sm">
-          <div
-            className={`text-gray-800 font-bold ${
-              discountPercentage > 0 && "line-through text-red-500"
-            }`}
-          >
-            {price} جنيه
+          <div className="flex items-center text-yellow-400 text-sm mb-2">
+            {Array(5)
+              .fill(0)
+              .map((_, i) => (
+                <GoStarFill key={i} />
+              ))}
           </div>
-          {discountPercentage > 0 && (
-            <div className="text-gray-800  font-bold">
-              {discountedPrice} جنيه
+
+          <div className="flex items-center justify-between">
+            <div>
+              <p
+                className={`text-sm ${
+                  discountPercentage > 0
+                    ? "line-through text-red-500"
+                    : "text-gray-800 font-bold"
+                }`}
+              >
+                {price} جنيه
+              </p>
+              {discountPercentage > 0 && (
+                <p className="text-gray-800 font-bold text-sm">
+                  {discountedPrice} جنيه
+                </p>
+              )}
             </div>
-          )}
-        </div>
 
-        <div className="flex">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault(); 
-              addToCart(id);
-            }}
-            className="mt-4 text-teal-500 text-sm md:text-2xl border-2 border-teal-500 rounded-full p-2"
-          >
-            <BsCartPlus />
-          </button>
+            <button
+              onClick={handleAddToCart}
+              className="text-teal-600 hover:text-white hover:bg-teal-600 border-2 border-teal-500 transition-colors duration-200 rounded-full p-2 text-lg"
+              aria-label="Add to cart"
+            >
+              <BsCartPlus />
+            </button>
+          </div>
         </div>
       </Link>
     </div>

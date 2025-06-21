@@ -102,6 +102,7 @@ import About from "../pages/About";
 import Redirecting from "../pages/Redirecting";
 import SpinningWheel from "../pages/SpinningWheel";
 import SpinningWheelModel from "../components/home/SpinningWheelModel";
+import WishlistPage from "../pages/WishlistPage";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -172,6 +173,7 @@ const AppRoutes = () => {
             <Route path="/categories" element={<Categories />} />
             <Route path="/categories/:id" element={<Category />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/wishlist" element={<WishlistPage />} />
 
             {/* Order */}
             <Route path="/cart" element={<Cart />} />

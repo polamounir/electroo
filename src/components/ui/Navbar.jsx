@@ -56,7 +56,7 @@ export default function Navbar() {
     },
     {
       name: "المحفوظات",
-      link: "/",
+      link: "/wishlist",
     },
     {
       name: "تواصل معنا",

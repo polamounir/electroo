@@ -8,7 +8,10 @@ import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-
+import {
+  getSearchResults,
+  setSearchParams,
+} from "../../app/slices/searchSlice";
 
 export default function MainSlider() {
   const dispatch = useDispatch();
@@ -58,7 +61,20 @@ export default function MainSlider() {
   }, []);
 
   const handleSearch = () => {
-    
+    dispatch(setSearchParams({ SearchQuery: search }));
+    dispatch(
+      getSearchResults({
+        SearchQuery: search,
+        Page: 1,
+        Limit: 10,
+        MinimumPrice: 0,
+        MaximumPrice: 10000,
+        HasDiscount: false,
+        SortBy: "price-low-high",
+        ViewMode: "grid",
+      })
+    );
+    navigate(`/search?SearchQuery=${search}&Page=1&Limit=20`);
   };
 
   const handleSearchInput = (e) => {
@@ -81,7 +97,13 @@ export default function MainSlider() {
               className={`flex justify-center items-center min-h-[550px] lg:h-[75svh] text-white shadow-lg bg-cover bg-right ${slide.className} `}
             >
               <div className="main-slider-content relative w-full min-h-[550px] lg:h-[75svh]  bg-black/50">
-       
+                {/* <div className={`main-slider-text ${slide.textPostion} w-[80%] lg:w-[500px] mx-auto  static lg:absolute`}>
+                                    <div className="mt-20 lg:mt-0 flex flex-col items-center text-center lg:items-start lg:text-start gap-5 ">
+                                        <h2 className="text-3xl lg:text-5xl">{slide.title}</h2>
+                                        <p> {slide.desc}</p>
+                                        <button className="" aria-label="view more button"><Link to="" className="px-10 py-3 font-semibold rounded duration-500">View Details</Link></button>
+                                    </div>
+                                </div> */}
                 <div
                   className="p-5 md:p-15 py-15 flex flex-col gap-5 lg:gap-20"
                   dir="rtl"
