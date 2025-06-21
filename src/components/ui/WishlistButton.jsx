@@ -31,7 +31,7 @@ const WishlistButton = ({ product }) => {
     <button
       onClick={toggleWishlist}
       aria-label="Toggle wishlist"
-      className="text-xl p-1 transition-colors duration-200 hover:scale-110 focus:outline-none"
+      className="text-xl p-1 transition-colors duration-3000 hover:scale-110 "
     >
       {isWishlisted ? (
         <FaHeart className="text-red-500" />

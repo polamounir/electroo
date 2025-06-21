@@ -13,6 +13,10 @@ import { toast } from "sonner";
 import { addProductToCartAsync } from "../app/slices/cartSlice";
 import BidModel from "../components/product/BidModel";
 import BidTableModel from "../components/product/BidTableModel";
+import { motion } from "framer-motion";
+import { FaStar, FaRegStar, FaQuoteLeft, FaEdit, FaUser } from "react-icons/fa";
+import { IoIosArrowDown } from "react-icons/io";
+import WishlistButton from "../components/ui/WishlistButton";
 
 export default function Product() {
   const dispatch = useDispatch();
@@ -81,6 +85,15 @@ export default function Product() {
     setStockStatus(state[0]);
   }, [id, data]);
 
+  const reviewVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.1, duration: 0.4 },
+    }),
+  };
+
   if (!data) return <LoadingPage />;
   return (
     <div className="mx-auto px-4 xl:px-50 py-20 flex justify-center items-center flex-col min-h-[75svh]">
@@ -89,7 +102,10 @@ export default function Product() {
       <div className="w-full p-6 md:p-8 rounded-xl ">
         <div className="flex flex-col md:flex-row-reverse gap-10  ">
           {/* Image Gallery */}
-          <div className="flex-1">
+          <div className="flex-1 relative">
+            <div className="absolute end-5 top-5 z-10">
+              <WishlistButton product={data} />
+            </div>
             <div className=" rounded-lg overflow-hidden relative flex justify-center items-center p-5 border border-teal-500 shadow-md">
               <img
                 key={mainImage || data.images[0]?.url}
@@ -232,50 +248,133 @@ export default function Product() {
           {/* Reviews */}
         </div>
       </div>
-      <div className="w-full ">
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold text-teal-600 mb-2">
-            التقييمات
-          </h2>
+      {/* ------------------------------------------------------- */}
+      <div className="w-full">
+        <div className="mt-12">
+          {/* Modern header with decorative elements */}
+          <div className="flex items-center mb-8 gap-3">
+            <div className="h-1 w-8 bg-teal-500 rounded-full"></div>
+            <h2 className="text-3xl font-bold text-gray-800">
+              تقييمات المستخدمين
+            </h2>
+            <div className="h-1 flex-1 bg-gradient-to-r from-teal-100 to-transparent"></div>
+          </div>
 
           {data.productReviews && data.productReviews.length > 0 ? (
-            <div className="space-y-4 max-h-64 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-teal-400 scrollbar-track-gray-200">
+            <div className="space-y-6 max-h-[33rem] overflow-y-auto pr-3 custom-scrollbar px-10">
               {data.productReviews.map((review, idx) => (
-                <div
+                <motion.div
                   key={idx}
-                  className="border border-teal-300 p-4 rounded-lg bg-white shadow-sm flex justify-between items-start"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    delay: idx * 0.08,
+                    duration: 0.5,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  whileHover={{ y: -3 }}
+                  className="relative bg-white p-6 rounded-2xl shadow-sm flex flex-col md:flex-row gap-6 transition-all duration-300 hover:shadow-lg border border-gray-100 group"
                 >
-                  <div>
-                    <p className="italic text-gray-700">{review.fullName}</p>
-                    <p className="italic text-gray-700">
-                      "{review.reviewText}"
-                    </p>
-                    <p className="text-teal-600 mt-2">
-                      التقييم: {review.stars} ⭐
-                    </p>
+                  {/* Decorative accent */}
+                  <div className="absolute top-0 right-0 w-1 h-full bg-gradient-to-b from-teal-400 to-teal-600 rounded-r-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                  {/* Avatar with user icon */}
+                  <div className="flex items-start">
+                    <div className="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 text-xl flex-shrink-0">
+                      {review.fullName ? (
+                        review.fullName.charAt(0)
+                      ) : (
+                        <FaUser className="text-teal-500" />
+                      )}
+                    </div>
                   </div>
-                  <div>
-                    <img
-                      src={review.reviewImage}
-                      alt="reviewImage"
-                      width={200}
-                      height={200}
-                      className="h-full rounded-lg"
-                    />
+
+                  {/* Text content */}
+                  <div className="flex-1">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                      <p className="text-xl font-bold text-gray-800">
+                        {review.fullName || "مستخدم"}
+                      </p>
+
+                      {/* Interactive star rating */}
+                      <div className="flex items-center gap-1">
+                        {[...Array(5)].map((_, i) =>
+                          i < review.stars ? (
+                            <FaStar key={i} className="text-yellow-400" />
+                          ) : (
+                            <FaRegStar key={i} className="text-gray-300" />
+                          )
+                        )}
+                        <span className="text-sm text-gray-500 mr-1">
+                          ({review.stars}.0)
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Review text with quote icon */}
+                    <div className="relative mt-3">
+                      <FaQuoteLeft className="absolute -right-4 -top-2 text-2xl text-gray-200" />
+                      <p className="text-gray-600 leading-relaxed text-lg pr-4">
+                        {review.reviewText}
+                      </p>
+                    </div>
+
+                    {/* Review date */}
+                    {review.date && (
+                      <p className="text-sm text-gray-400 mt-3">
+                        {new Date(review.date).toLocaleDateString("ar-EG")}
+                      </p>
+                    )}
                   </div>
-                </div>
+
+                  {/* Image with hover effect */}
+                  {review.reviewImage && (
+                    <motion.div
+                      className="w-full md:w-25 h-25 flex-shrink-0 overflow-hidden rounded-xl relative"
+                      whileHover={{ scale: 1.02 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <img
+                        src={review.reviewImage}
+                        alt="مراجعة المستخدم"
+                        className="w-full h-full object-cover rounded-xl"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </motion.div>
+                  )}
+                </motion.div>
               ))}
             </div>
           ) : (
-            <p className="text-gray-500">لا توجد تقييمات حتى الآن</p>
-          )}
-          {data.canReview && (
-            <button
-              onClick={() => dispatch(openProductReviewModal(data.id))}
-              className="mt-4 px-4 py-1 bg-teal-600 text-white rounded-full hover:bg-teal-500 transition duration-200"
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-12"
             >
-              إضافة تقييم
-            </button>
+              <div className="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                <FaQuoteLeft className="text-4xl text-gray-400" />
+              </div>
+              <p className="text-gray-500 text-lg mb-6">
+                لا توجد تقييمات حتى الآن.
+              </p>
+            </motion.div>
+          )}
+
+          {data.canReview && (
+            <motion.div
+              className="text-center mt-8"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <button
+                onClick={() => dispatch(openProductReviewModal(data.id))}
+                className="px-6 py-3 bg-gradient-to-r from-teal-500 to-teal-600 text-white rounded-full hover:shadow-lg transition-all duration-300 font-medium flex items-center gap-2 mx-auto shadow-md hover:shadow-teal-200"
+              >
+                <FaEdit className="text-lg" />
+                <span>إضافة تقييم</span>
+              </button>
+            </motion.div>
           )}
         </div>
       </div>

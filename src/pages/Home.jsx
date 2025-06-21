@@ -68,7 +68,7 @@ export default function Home() {
   });
 
   return (
-    <div className="">
+    <div className="overflow-hidden">
       {/* <Landing /> */}
       <MainSlider />
       <BrandSlider />
@@ -86,6 +86,7 @@ export default function Home() {
           error={salesError}
           more="/search?"
         />
+        <div className="h-10 w-full"></div>
         <NewHomeSection
           title="عروض اليوم"
           products={discounts}
@@ -100,7 +101,6 @@ export default function Home() {
           error={discountError}
           more="/search?HasDiscount=true"
         /> */}
-        <div className="h-10 w-full"></div>
 
         <div className="h-10 w-full"></div>
         <HomeSection
