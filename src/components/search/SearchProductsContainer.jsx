@@ -47,7 +47,7 @@ function ProductCard({ product, isRowView = false }) {
             e.stopPropagation();
           }}
         >
-          <WishlistButton productId={id} />
+          <WishlistButton product={product} />
         </div>
       </div>
 
@@ -111,10 +111,7 @@ function ProductCard({ product, isRowView = false }) {
   );
 }
 
-
-
-
-export  function SearchProductsContainer({ products, isRowView }) {
+export function SearchProductsContainer({ products, isRowView }) {
   // console.log("SearchProductsContainer rendered with products: 000000000000", products);
   // const [isRowView, setIsRowView] = useState(false);
 

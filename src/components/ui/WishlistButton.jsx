@@ -7,17 +7,18 @@ const WishlistButton = ({ product }) => {
 
   useEffect(() => {
     const storedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-    const found = storedWishlist.some((item) => item.id === productId);
+    const found = storedWishlist.some((item) => item?.id === productId);
     setIsWishlisted(found);
   }, [productId]);
 
   const toggleWishlist = () => {
     const storedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-    const exists = storedWishlist.some((item) => item.id === productId);
+    console.log(productId, product);
+    const exists = storedWishlist.some((item) => item?.id === productId);
     let updatedWishlist;
 
     if (exists) {
-      updatedWishlist = storedWishlist.filter((item) => item.id !== productId);
+      updatedWishlist = storedWishlist.filter((item) => item?.id !== productId);
       setIsWishlisted(false);
     } else {
       updatedWishlist = [...storedWishlist, product];
