@@ -44,7 +44,7 @@ const AdminLayout = () => {
         {loading && <div className="text-center">Loading...</div>}
         {error && <div className="text-red-500 text-center">{error}</div>}
         {!loading && !error && supplierStatus === "Verified" && (
-          <div className="text-center">
+          <div className="text-center pt-20">
             <Outlet />
           </div>
         )}

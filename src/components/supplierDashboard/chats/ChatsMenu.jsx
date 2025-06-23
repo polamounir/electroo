@@ -113,7 +113,7 @@ export default function ChatsMenu() {
                   key={`${chat.id}-${i}`}
                   className={` rounded-lg p-2 hover:bg-black/10 duration-300 ${
                     conversationId === chat.id
-                      ? "bg-orange-300/50 shadow-lg"
+                      ? "bg-teal-100 shadow-lg"
                       : "bg-gray-50"
                   }`}
                 >
@@ -130,7 +130,7 @@ export default function ChatsMenu() {
                         {formatDate(chat.lastMessageTime)}
                       </p>
                     </div>
-                    <p className="text-gray-600 truncate">
+                    <p className="text-gray-600 truncate  text-start ">
                       {chat.lastMessage || "''جديد''"}
                     </p>
                   </div>
@@ -138,7 +138,6 @@ export default function ChatsMenu() {
               ))}
             </React.Fragment>
           ))}
-     
         </div>
       </div>
     </div>

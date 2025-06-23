@@ -246,7 +246,7 @@ export default function Product() {
             </button>
 
             {/* Bids */}
-            <div>{data?.isAuction && <BidModel product={data} />}</div>
+            {/* <div>{data?.isAuction && <BidModel product={data} />}</div> */}
             <div>
               {/* {data?.isAuction && <BidTableModel data={data.productBids} />} */}
             </div>

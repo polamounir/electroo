@@ -2,6 +2,8 @@ import { IoIosMenu, IoIosNotificationsOutline } from "react-icons/io";
 import { useSelector, useDispatch } from "react-redux";
 import { setSupplierSideMenu } from "../../app/slices/dashboardSlice";
 import { useEffect, useState } from "react";
+import {HiInformationCircle, HiMail} from 'react-icons/hi';
+
 import { api } from "../../api/axiosInstance";
 export default function DashboardHeader() {
   const { user } = useSelector((state) => state.auth);
@@ -51,82 +53,77 @@ export default function DashboardHeader() {
                 <IoIosNotificationsOutline className="w-5 h-5" />
               </button>
             </div>
-
             <div className="absolute z-[200] top-7 end-0 mt-1 w-64 md:w-xs bg-white shadow-lg rounded-md overflow-hidden hidden group-hover:block scrolling">
               <div className="p-2 border-b border-gray-200 bg-teal-700">
                 <h3 className="font-semibold text-white">الاشعارات</h3>
               </div>
               <ul className="max-h-60 overflow-y-auto divide-y divide-gray-100">
-                <li className="p-3 hover:bg-gray-50 transition-colors duration-150">
-                  <div className="flex items-start gap-2 ">
-                    <div className="flex-shrink-0 pt-0.5">
-                      <div className="h-8 w-8 rounded-full bg-amber-100 flex items-center justify-center">
-                        <svg
-                          className="h-5 w-5 text-amber-600"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                    <div className="ml-3 flex-1">
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium text-gray-900">
-                          رسالة جديدة
-                        </p>
-                        <span className="text-xs text-gray-400">
-                          منذ دقيقتين
-                        </span>
-                      </div>
-                      <p className="text-sm text-gray-500 mt-1">
-                        تم إرسال رسالة من أحمد محمد
-                      </p>
-                      <div className="mt-2 flex space-x-2 space-x-reverse">
-                        <button className="text-xs bg-amber-50 text-amber-600 px-2 py-1 rounded hover:bg-amber-100">
-                          عرض التفاصيل
-                        </button>
-                        <button className="text-xs bg-gray-50 text-gray-500 px-2 py-1 rounded hover:bg-gray-100">
-                          تجاهل
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </li>
+                {isLoading ? (
+                  <li className="p-3 text-center text-sm text-gray-500">
+                    جارٍ التحميل...
+                  </li>
+                ) : isError ? (
+                  <li className="p-3 text-center text-sm text-red-500">
+                    حدث خطأ أثناء جلب البيانات
+                  </li>
+                ) : adminNotes?.length > 0 ? (
+                  adminNotes.map((note, index) => {
+                    const { notificationType, payload, date } = note;
 
-                <li className="p-3 hover:bg-gray-50 transition-colors duration-150">
-                  <div className="flex items-start gap-2">
-                    <div className="flex-shrink-0 pt-0.5">
-                      <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
-                        <svg
-                          className="h-5 w-5 text-blue-600"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                          <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                        </svg>
-                      </div>
-                    </div>
-                    <div className="ml-3 flex-1">
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium text-gray-900">
-                          طلب تواصل
-                        </p>
-                        <span className="text-xs text-gray-400">منذ ساعة</span>
-                      </div>
-                      <p className="text-sm text-gray-500 mt-1">
-                        لديك ٣ طلبات تواصل جديدة
-                      </p>
-                    </div>
-                  </div>
-                </li>
+                    // Choose icon and background color based on type
+                    const isOrder = notificationType === "Order";
+                    const icon = isOrder ? (
+                      <HiInformationCircle className="h-5 w-5 text-amber-600" />
+                    ) : (
+                      <HiMail className="h-5 w-5 text-blue-600" />
+                    );
+                    const iconBg = isOrder ? "bg-amber-100" : "bg-blue-100";
+
+                    return (
+                      <li
+                        key={index}
+                        className="p-3 hover:bg-gray-50 transition-colors duration-150"
+                      >
+                        <div className="flex items-start gap-2">
+                          <div className="flex-shrink-0 pt-0.5">
+                            <div
+                              className={`h-8 w-8 rounded-full ${iconBg} flex items-center justify-center`}
+                            >
+                              {icon}
+                            </div>
+                          </div>
+                          <div className="ml-3 flex-1">
+                            <div className="flex items-center justify-between">
+                              <p className="text-sm font-medium text-gray-900">
+                                {isOrder
+                                  ? `طلب جديد من ${payload.buyerName}`
+                                  : "رسالة جديدة"}
+                              </p>
+                              <span className="text-xs text-gray-400">
+                                {new Date(date).toLocaleString("ar-EG", {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  day: "2-digit",
+                                  month: "short",
+                                })}
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-500 mt-1">
+                              {isOrder
+                                ? `عدد المنتجات المطلوبة: ${payload.itemsCount}`
+                                : "لديك رسالة جديدة"}
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })
+                ) : (
+                  <li className="p-3 text-center text-sm text-gray-500">
+                    لا توجد إشعارات
+                  </li>
+                )}
               </ul>
-
               <div className="p-2 bg-gray-50 text-center">
                 <button className="text-sm text-teal-600 hover:text-teal-800">
                   عرض كل الاشعارات

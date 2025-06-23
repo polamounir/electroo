@@ -233,7 +233,7 @@ export default function AddNewProduct() {
           />
         </div>
 
-        <div>
+        {/* <div>
           <button
             type="button"
             className={` px-5 py-1 rounded transition-colors duration-200
@@ -303,7 +303,7 @@ export default function AddNewProduct() {
               />
             </div>
           </div>
-        </div>
+        </div> */}
 
         <input
           name="tagsInput"
@@ -314,7 +314,7 @@ export default function AddNewProduct() {
           className="w-full border border-gray-300 rounded-md shadow p-2"
         />
 
-        <div className="flex flex-wrap gap-2 mt-2">
+        <div className="flex flex-wrap gap-2">
           {formData.tags.map((tag, index) => (
             <div
               key={index}
