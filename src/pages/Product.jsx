@@ -214,7 +214,7 @@ export default function Product() {
               ))}
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center justify-between">
               {/* Stock Status*/}
               {stockStatus && (
                 <div className="flex">
@@ -231,7 +231,7 @@ export default function Product() {
                 </div>
               )}
               {/* Viewer */}
-              <div className="ms-10">
+              <div className="">
                 <ViewrsList data={id} />
               </div>
             </div>

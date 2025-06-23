@@ -16,17 +16,14 @@ export const useProductViewers = (productId) => {
       .withAutomaticReconnect()
       .build();
 
-    connection.on("UpdateProductViewCount", (productId, usernames) => {
-      setViewers((prevUsers) => {
-        const filtered = prevUsers.filter((v) => v.productId !== productId);
-        return [...filtered, { productId, users: usernames }];
-      });
+    connection.on("UpdateProductViewCount", (usernames) => {
+      setViewers(usernames);
     });
 
     connection
       .start()
       .then(() => {
-        console.log(productId, "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        // console.log(productId, "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         connection.invoke("ViewProduct", productId);
       })
       .catch((err) => console.error("SignalR Connection Error:", err));
