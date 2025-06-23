@@ -3,7 +3,7 @@ import "./App.css";
 import AppRoutes from "./router/AppRoutes";
 import store from "./app/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import FloatingChatMenu from "./components/ui/FloatingChatMenu";
+// import FloatingChatMenu from "./components/ui/FloatingChatMenu";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 const queryClient = new QueryClient();
@@ -16,7 +16,6 @@ function App() {
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <AppRoutes />
-          <FloatingChatMenu />
         </QueryClientProvider>
       </Provider>
     </GoogleOAuthProvider>
