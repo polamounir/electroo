@@ -1,6 +1,8 @@
 import { IoIosMenu, IoIosNotificationsOutline } from "react-icons/io";
 import { useSelector, useDispatch } from "react-redux";
 import { setSupplierSideMenu } from "../../app/slices/dashboardSlice";
+import { useEffect, useState } from "react";
+import { api } from "../../api/axiosInstance";
 export default function DashboardHeader() {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -8,6 +10,27 @@ export default function DashboardHeader() {
   const toggleSideMenu = () => {
     dispatch(setSupplierSideMenu(!supplierSideMenu));
   };
+
+  const [adminNotes, setAdminNotes] = useState(null);
+
+  const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState(null);
+  
+    useEffect(() => {
+      const fetchAdminNotes = async () => {
+        try {
+          setIsLoading(true);
+          const { data } = await api.get("/notifications");
+          console.log(data);
+          setAdminNotes(data.data);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      fetchAdminNotes();
+    }, []);
   return (
     <div className="w-full bg-slate-50  fixed z-10 top-0 end-0 flex justify-center items-center py-5 px-5 md:px-10 lg:px-15">
       <div className="flex items-center justify-between gap-5 w-full ">
@@ -20,7 +43,6 @@ export default function DashboardHeader() {
         </div>
         <div className="flex items-center gap-5">
           <div className="relative group">
-
             <div>
               <button
                 className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -29,13 +51,12 @@ export default function DashboardHeader() {
                 <IoIosNotificationsOutline className="w-5 h-5" />
               </button>
             </div>
-            
+
             <div className="absolute z-[200] top-7 end-0 mt-1 w-64 md:w-xs bg-white shadow-lg rounded-md overflow-hidden hidden group-hover:block scrolling">
               <div className="p-2 border-b border-gray-200 bg-teal-700">
                 <h3 className="font-semibold text-white">الاشعارات</h3>
               </div>
               <ul className="max-h-60 overflow-y-auto divide-y divide-gray-100">
-           
                 <li className="p-3 hover:bg-gray-50 transition-colors duration-150">
                   <div className="flex items-start gap-2 ">
                     <div className="flex-shrink-0 pt-0.5">
@@ -77,7 +98,6 @@ export default function DashboardHeader() {
                   </div>
                 </li>
 
-           
                 <li className="p-3 hover:bg-gray-50 transition-colors duration-150">
                   <div className="flex items-start gap-2">
                     <div className="flex-shrink-0 pt-0.5">

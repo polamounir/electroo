@@ -12,7 +12,6 @@ import {
 } from "chart.js";
 import { Line, Pie } from "react-chartjs-2";
 
-// Register chart components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -23,54 +22,6 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
-// Line Chart Data & Options
-const lineChartLabels = [
-  "يناير",
-  "فراير",
-  "مارس",
-  "ابريل",
-  "مايو",
-  "يونيو",
-  "يوليو",
-];
-
-const lineChartData = {
-  labels: lineChartLabels,
-  datasets: [
-    {
-      label: "المبيعات",
-      data: [6, 59, 20, 81, 30, 55, 40],
-      fill: false,
-      borderColor: "rgb(0, 203, 218)",
-      tension: 0,
-    },
-  ],
-};
-
-const lineChartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      display: false,
-    },
-    title: {
-      display: true,
-      text: "نظرة عامة للمبيعات",
-      align: "start",
-      padding: {
-        top: 10,
-        bottom: 30,
-      },
-      color: "rgb(0, 0, 0)",
-      font: {
-        size: 25,
-        weight: "700",
-      },
-    },
-  },
-};
 
 // Pie Chart Data & Options
 const pieChartData = {
@@ -114,7 +65,98 @@ const pieChartOptions = {
   },
 };
 
-export default function GraphsInsights() {
+export default function GraphsInsights({ data }) {
+  // console.log(data, "0000000000000");
+  const { usersReport, totalUsersCount, totalSuppliersCount, adminUsersCount } =
+    data || {};
+
+  const lineLabels = Array.isArray(usersReport)
+    ? usersReport.map((e) => e.date)
+    : [];
+
+  const lineData = Array.isArray(usersReport)
+    ? usersReport.map((e) => e.registeredUsersCount)
+    : [];
+
+  // console.log(lineLabels, lineData);
+
+  const lineChartData = {
+    labels: lineLabels,
+    datasets: [
+      {
+        label: "المبيعات",
+        data: lineData,
+        fill: false,
+        borderColor: "rgb(0, 203, 218)",
+        tension: 0,
+      },
+    ],
+  };
+
+  const lineChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: true,
+        text: "عدد الحسابات الجديدة",
+        align: "start",
+        padding: {
+          top: 10,
+          bottom: 30,
+        },
+        color: "rgb(0, 0, 0)",
+        font: {
+          size: 25,
+          weight: "700",
+        },
+      },
+    },
+  };
+
+  const pieChartData = {
+    labels: ["المسؤلين", "الموردين", "المستخدمين"],
+    datasets: [
+      {
+        label: "Shared",
+        data: [adminUsersCount, totalSuppliersCount, totalUsersCount],
+        backgroundColor: [
+          "rgb(0, 203, 218)",
+          "rgb(255, 99, 132)",
+          "rgb(255, 205, 86)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const pieChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: "bottom",
+      },
+      title: {
+        display: true,
+        text: "انواع المستخدمين",
+        align: "start",
+        padding: {
+          top: 10,
+          bottom: 20,
+        },
+        color: "#333",
+        font: {
+          size: 20,
+          weight: "700",
+        },
+      },
+    },
+  };
+
   return (
     <div className="grid grid-cols-8 gap-5">
       <div className="col-span-8 lg:col-span-5 h-[400px] p-10 px-15 border border-gray-200 rounded-xl shadow-xl">
