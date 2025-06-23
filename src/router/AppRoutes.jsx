@@ -127,6 +127,8 @@ const ScrollToTop = () => {
 const AppRoutes = () => {
   const { isChatPopupOpen } = useSelector((state) => state.userChatsMenu);
   const { isSpinModelOpen } = useSelector((state) => state.chat);
+
+
   return (
     <Router>
       <AppInit />

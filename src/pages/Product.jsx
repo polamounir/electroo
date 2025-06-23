@@ -17,6 +17,7 @@ import { motion } from "framer-motion";
 import { FaStar, FaRegStar, FaQuoteLeft, FaEdit, FaUser } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import WishlistButton from "../components/ui/WishlistButton";
+import ViewrsList from "../components/product/ViewrsList";
 
 export default function Product() {
   const dispatch = useDispatch();
@@ -96,7 +97,7 @@ export default function Product() {
 
   if (!data) return <LoadingPage />;
   return (
-    <div className="mx-auto px-4 xl:px-50 py-20 flex justify-center items-center flex-col min-h-[75svh]">
+    <div className="mx-auto px-4 xl:px-50 py-30 pb-20 flex justify-center items-center flex-col min-h-[75svh]">
       <AddProductReviewModel />
       {activeChat === "popup" && isMenuOpen && <ChatPopup />}
       <div className="w-full p-6 md:p-8 rounded-xl ">
@@ -213,22 +214,27 @@ export default function Product() {
               ))}
             </div>
 
-            {/* Stock Status*/}
-            {stockStatus && (
-              <div className="flex">
-                <p
-                  className={`
+            <div className="flex items-center">
+              {/* Stock Status*/}
+              {stockStatus && (
+                <div className="flex">
+                  <p
+                    className={`
                   ${stockStatus.value == "InStock" && "bg-teal-600"} 
                   ${stockStatus.value == "LowStock" && "bg-red-500"} ${
-                    stockStatus.value == "OutStock" && "bg-red-500"
-                  }
+                      stockStatus.value == "OutStock" && "bg-red-500"
+                    }
                   text-sm text-white font-semibold px-5 py-1 rounded-full`}
-                >
-                  {stockStatus.name}
-                </p>
+                  >
+                    {stockStatus.name}
+                  </p>
+                </div>
+              )}
+              {/* Viewer */}
+              <div className="ms-10">
+                <ViewrsList data={id} />
               </div>
-            )}
-
+            </div>
             {/* Add to Cart Button */}
             <button
               className="mt-6 w-full md:w-auto px-6 py-3 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-lg shadow-md duration-300 transition"

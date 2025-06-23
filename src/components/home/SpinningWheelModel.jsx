@@ -30,7 +30,7 @@ const SpinningWheelModel = ({
   const { data, isLoading, error } = useQuery({
     queryKey: ["wheel-options"],
     queryFn: async () => {
-      const { data } = await api.get("/wheel");
+      const { data } = await api.get("/wheel/rewards");
       console.log(data.data?.rewards);
       return data.data?.rewards || [];
     },
@@ -95,7 +95,7 @@ const SpinningWheelModel = ({
   const callSpinAPI = async () => {
     try {
       setIsWaitingForServer(true);
-      const response = await api.post("/spin-wheel");
+      const response = await api.post("/wheel/spin");
 
       if (response.data && response.data.data) {
         const { reward, value } = response.data.data;
@@ -105,18 +105,19 @@ const SpinningWheelModel = ({
           success: response.data.data.success,
         });
       }
+      setIsWaitingForServer(false);
     } catch (error) {
       console.error("Error calling spin API:", error);
 
       console.log(error.response.data.detail);
-      const randomIndex = Math.floor(Math.random() * segments.length);
+      const randomIndex = 2;
       setServerResult({
         reward: segments[randomIndex].option,
         value: error.response.data.detail,
         success: false,
       });
-    } finally {
       setIsWaitingForServer(false);
+      setShowResult(true);
     }
   };
 
@@ -152,20 +153,34 @@ const SpinningWheelModel = ({
     const spins = Math.random() * 4 + 4;
     const targetAngle = 360 - segmentCenter;
 
+    console.log(rotation + spins * 360 + targetAngle, "DDDDDDDDDDDDDDD");
     return rotation + spins * 360 + targetAngle;
   };
 
   useEffect(() => {
     if (serverResult && !isWaitingForServer && isSpinning) {
       const targetSegmentIndex = getServerResultIndex();
-      const totalRotation = calculateRotationForSegment(targetSegmentIndex);
+      
+      // console.log(serverResult);
+      
+      if (!serverResult.success) {
+    
+        setRotation(100);
 
-      setRotation(totalRotation);
-      setTimeout(() => {
-        setIsSpinning(false);
-        setResult(serverResult.reward);
-        setShowResult(true);
-      }, 3000);
+        setTimeout(() => {
+          setIsSpinning(false);
+          setResult(serverResult.reward);
+          setShowResult(true);
+        }, 100);
+      } else {
+        const totalRotation = calculateRotationForSegment(targetSegmentIndex);
+        setRotation(totalRotation);
+        setTimeout(() => {
+          setIsSpinning(false);
+          setResult(serverResult.reward);
+          setShowResult(true);
+        }, 3000);
+      }
     }
   }, [serverResult, isWaitingForServer]);
 
@@ -174,7 +189,7 @@ const SpinningWheelModel = ({
       return;
 
     setIsSpinning(true);
-    setHasSpun(true);
+    // setHasSpun(true);
     setResult("");
     setShowResult(false);
     setServerResult(null);
@@ -403,7 +418,7 @@ const SpinningWheelModel = ({
             </button>
             <h2 className="text-2xl font-bold mb-4 text-center">النتيجة</h2>
             <div className="text-center bg-teal-100 text-teal-800 px-6 py-4 rounded-lg text-lg font-bold mb-6">
-              {serverResult.success ? { result } : "عذراً"}
+              {serverResult?.success ? <spa>{result}</spa> : "عذراً"}
             </div>
             {serverResult && serverResult.value && (
               <div className="text-center text-sm text-gray-600 mb-4">
@@ -413,7 +428,7 @@ const SpinningWheelModel = ({
             <div className="flex gap-3">
               <button
                 onClick={handleCloseModal}
-                className="w-full py-3 bg-teal-500 text-white rounded-full hover:bg-teal-600 transition"
+                className="w-full py-3 bg-teal-500 text-white rounded-full hover:bg-teal-600 transition justify-center "
               >
                 اغلاق
               </button>

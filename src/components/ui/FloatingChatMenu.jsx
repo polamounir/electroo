@@ -14,6 +14,8 @@ import {
   // selectIsMenuOpen,
 } from "../../app/slices/chatSlice";
 import NoteTooltip from "./NoteTooltip";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function FloatingChatMenu() {
   const dispatch = useDispatch();
@@ -24,6 +26,9 @@ export default function FloatingChatMenu() {
   //   dispatch(toggleMenu());
   // };
 
+  // const handleOpenChatPopup = () => {
+  //   dispatch(openChatPopup());
+  // };
   const handleOpenChatBot = () => {
     dispatch(openChatBot());
   };
@@ -31,12 +36,8 @@ export default function FloatingChatMenu() {
     dispatch(openSpinModel());
   };
 
-  // const handleOpenChatPopup = () => {
-  //   dispatch(openChatPopup());
-  // };
-
   return (
-    <div className="chat-container">
+    <div className={`chat-container`}>
       {/* <button className="floating-menu-button" onClick={handleToggleMenu}> */}
       <div className="floating-menu-button-container"></div>
       <div className="floating-menu-button-container">
