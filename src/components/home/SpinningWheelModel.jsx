@@ -2,68 +2,52 @@ import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { closeSpinModel } from "../../app/slices/chatSlice";
 import { useDispatch } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "../../api/axiosInstance";
 
 const SpinningWheelModel = ({
-  options = [
-    {
-      option: "خصم 10% على طلبك القادم!",
-      color: "#FF6B6B",
-      textColor: "#FFFFFF",
-    },
-    {
-      option: "كابل شحن مجاني مع كل طلب!",
-      color: "#4ECDC4",
-      textColor: "#FFFFFF",
-    },
-    {
-      option: "شحن مجاني لأي طلب اليوم!",
-      color: "#45B7D1",
-      textColor: "#FFFFFF",
-    },
-    {
-      option: "خصم 15% على قطع التبديل!",
-      color: "#96CEB4",
-      textColor: "#1B1B1B",
-    },
-    {
-      option: "هدية مفاجأة في طلبك القادم!",
-      color: "#FFEAA7",
-      textColor: "#1B1B1B",
-    },
-    {
-      option: "احصل على خصم 20 جنيه!",
-      color: "#DDA0DD",
-      textColor: "#1B1B1B",
-    },
-    {
-      option: "خصم 5% على جميع المنتجات!",
-      color: "#98D8C8",
-      textColor: "#1B1B1B",
-    },
-    {
-      option: "لا توجد جائزة – حظاً أوفر!",
-      color: "#F7DC6F",
-      textColor: "#1B1B1B",
-    },
-  ],
   title = "عجلة الحظ",
   spinButtonText = "لف الان",
   waitingText = "انتظر ...",
   isOpended = false,
-  // New props for server-controlled result
-  onSpinStart = null, // Callback when spin starts - use this to call your server API
-  serverResult = null, // The result received from server (text or index)
-  isWaitingForServer = false, // Loading state while waiting for server response
 }) => {
   const [width, setWidth] = useState(200);
   const [height, setHeight] = useState(200);
+
+  const colorPalette = [
+    { color: "#FF6B6B", textColor: "#FFFFFF" },
+    { color: "#4ECDC4", textColor: "#FFFFFF" },
+    { color: "#45B7D1", textColor: "#FFFFFF" },
+    { color: "#96CEB4", textColor: "#1B1B1B" },
+    { color: "#FFEAA7", textColor: "#1B1B1B" },
+    { color: "#DDA0DD", textColor: "#1B1B1B" },
+    { color: "#98D8C8", textColor: "#1B1B1B" },
+    { color: "#F7DC6F", textColor: "#1B1B1B" },
+    { color: "#FF9FF3", textColor: "#1B1B1B" },
+    { color: "#54A0FF", textColor: "#FFFFFF" },
+  ];
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["wheel-options"],
+    queryFn: async () => {
+      const { data } = await api.get("/wheel");
+      console.log(data.data?.rewards);
+      return data.data?.rewards || [];
+    },
+  });
+
+  const fetchedOptions = data || [];
+
+  const options = fetchedOptions.map((reward, index) => ({
+    option: reward,
+    color: colorPalette[index % colorPalette.length].color,
+    textColor: colorPalette[index % colorPalette.length].textColor,
+  }));
 
   useEffect(() => {
     const updateDimensions = () => {
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
-
-      // Calculate dimensions based on screen size
       let newWidth = Math.min(400, screenWidth * 0.6);
       let newHeight = Math.min(200, screenHeight * 0.6);
 
@@ -74,7 +58,6 @@ const SpinningWheelModel = ({
         newHeight = Math.min(400, screenHeight * 0.6);
       }
 
-      // Ensure wheel is square for proper circular appearance
       const size = Math.min(newWidth, newHeight);
       setWidth(size);
       setHeight(size);
@@ -89,71 +72,104 @@ const SpinningWheelModel = ({
   const [isSpinning, setIsSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [result, setResult] = useState("");
-  const [segments] = useState(options.slice(0, 10));
+  const [segments, setSegments] = useState([]);
+
+  useEffect(() => {
+    if (fetchedOptions.length > 0) {
+      const newOptions = fetchedOptions.map((reward, index) => ({
+        option: reward,
+        color: colorPalette[index % colorPalette.length].color,
+        textColor: colorPalette[index % colorPalette.length].textColor,
+      }));
+      setSegments(newOptions.slice(0, 10));
+    }
+  }, [fetchedOptions]);
+
   const [hasSpun, setHasSpun] = useState(false);
   const wheelRef = useRef(null);
   const [tooltip, setTooltip] = useState({ show: false, text: "", x: 0, y: 0 });
   const [showResult, setShowResult] = useState(false);
-  const [pendingSpin, setPendingSpin] = useState(false); // Track if we're waiting for server result
+  const [isWaitingForServer, setIsWaitingForServer] = useState(false);
+  const [serverResult, setServerResult] = useState(null);
 
-  // Effect to handle server result
-  useEffect(() => {
-    if (pendingSpin && serverResult !== null && !isWaitingForServer) {
-      // Server has responded with result, now animate to that result
-      const targetSegmentIndex = getServerResultIndex();
-      const totalRotation = calculateRotationForSegment(targetSegmentIndex);
+  const callSpinAPI = async () => {
+    try {
+      setIsWaitingForServer(true);
+      const response = await api.post("/spin-wheel");
 
-      setRotation(totalRotation);
-
-      // Complete the spin after animation
-      setTimeout(() => {
-        setIsSpinning(false);
-        setPendingSpin(false);
-        setResult(segments[targetSegmentIndex].option);
-        setShowResult(true);
-      }, 3000);
-    }
-  }, [serverResult, isWaitingForServer, pendingSpin]);
-
-  // Function to get server result index
-  const getServerResultIndex = () => {
-    // If serverResult is a number, treat it as index
-    if (
-      typeof serverResult === "number" &&
-      serverResult >= 0 &&
-      serverResult < segments.length
-    ) {
-      return serverResult;
-    }
-
-    // If serverResult is a string, find matching option
-    if (typeof serverResult === "string") {
-      const foundIndex = segments.findIndex(
-        (segment) => segment.option === serverResult
-      );
-      if (foundIndex !== -1) {
-        return foundIndex;
+      if (response.data && response.data.data) {
+        const { reward, value } = response.data.data;
+        setServerResult({
+          reward,
+          value,
+          success: response.data.data.success,
+        });
       }
+    } catch (error) {
+      console.error("Error calling spin API:", error);
+
+      console.log(error.response.data.detail);
+      const randomIndex = Math.floor(Math.random() * segments.length);
+      setServerResult({
+        reward: segments[randomIndex].option,
+        value: error.response.data.detail,
+        success: false,
+      });
+    } finally {
+      setIsWaitingForServer(false);
+    }
+  };
+
+  const getServerResultIndex = () => {
+    if (!serverResult || !serverResult.reward) return 0;
+    const exactMatchIndex = segments.findIndex(
+      (segment) => segment.option && segment.option === serverResult.reward
+    );
+
+    if (exactMatchIndex !== -1) {
+      return exactMatchIndex;
     }
 
-    // Fallback to random if server result is invalid
+    const partialMatchIndex = segments.findIndex((segment) => {
+      if (!segment.option || !serverResult.reward) return false;
+      return (
+        segment.option.includes(serverResult.reward) ||
+        serverResult.reward.includes(segment.option)
+      );
+    });
+
+    if (partialMatchIndex !== -1) {
+      return partialMatchIndex;
+    }
+
     return Math.floor(Math.random() * segments.length);
   };
 
-  // Function to calculate rotation needed to land on specific segment
   const calculateRotationForSegment = (segmentIndex) => {
     const segmentAngle = 360 / segments.length;
     const segmentCenter = segmentIndex * segmentAngle + segmentAngle / 2;
 
-    // The pointer is at the top (0 degrees), so we need to calculate
-    // how much to rotate to get the desired segment under the pointer
-    const spins = Math.random() * 4 + 4; // Random number of full spins for effect
-    const targetAngle = 360 - segmentCenter; // Reverse calculation for pointer position
+    const spins = Math.random() * 4 + 4;
+    const targetAngle = 360 - segmentCenter;
 
     return rotation + spins * 360 + targetAngle;
   };
 
-  const spin = () => {
+  useEffect(() => {
+    if (serverResult && !isWaitingForServer && isSpinning) {
+      const targetSegmentIndex = getServerResultIndex();
+      const totalRotation = calculateRotationForSegment(targetSegmentIndex);
+
+      setRotation(totalRotation);
+      setTimeout(() => {
+        setIsSpinning(false);
+        setResult(serverResult.reward);
+        setShowResult(true);
+      }, 3000);
+    }
+  }, [serverResult, isWaitingForServer]);
+
+  const spin = async () => {
     if (isSpinning || segments.length === 0 || hasSpun || isWaitingForServer)
       return;
 
@@ -161,38 +177,9 @@ const SpinningWheelModel = ({
     setHasSpun(true);
     setResult("");
     setShowResult(false);
+    setServerResult(null);
     setTooltip({ ...tooltip, show: false });
-
-    // If we have a callback to get server result, call it
-    if (onSpinStart) {
-      setPendingSpin(true);
-      // Start spinning animation while waiting for server
-      const continuousSpins = 8; // More spins to give server time to respond
-      const tempRotation = rotation + continuousSpins * 360;
-      setRotation(tempRotation);
-
-      // Call the server
-      onSpinStart();
-    } else {
-      // Original random logic if no server callback
-      const spins = Math.random() * 4 + 4;
-      const finalAngle = Math.random() * 360;
-      const totalRotation = rotation + spins * 360 + finalAngle;
-      setRotation(totalRotation);
-
-      const segmentAngle = 360 / segments.length;
-
-      setTimeout(() => {
-        const finalAngleNormalized = totalRotation % 360;
-        const pointerAngle = (360 - finalAngleNormalized) % 360;
-        const resultSegmentIndex =
-          Math.floor(pointerAngle / segmentAngle) % segments.length;
-
-        setIsSpinning(false);
-        setResult(segments[resultSegmentIndex].option);
-        setShowResult(true);
-      }, 3000);
-    }
+    await callSpinAPI();
   };
 
   const handleMouseEnter = (segment, e) => {
@@ -229,6 +216,8 @@ const SpinningWheelModel = ({
   const handleResetResult = () => {
     setShowResult(false);
     setResult("");
+    setHasSpun(false);
+    setServerResult(null);
   };
 
   return (
@@ -345,8 +334,8 @@ const SpinningWheelModel = ({
                       transform={`rotate(${textAngle}, ${textX}, ${textY})`}
                       className="pointer-events-none select-none drop-shadow-sm"
                     >
-                      {segment.option.length > 12
-                        ? segment.option.substring(0, 10) + "..."
+                      {segment.option?.length > 12
+                        ? segment.option?.substring(0, 10) + "..."
                         : segment.option}
                     </text>
                   </g>
@@ -414,8 +403,13 @@ const SpinningWheelModel = ({
             </button>
             <h2 className="text-2xl font-bold mb-4 text-center">النتيجة</h2>
             <div className="text-center bg-teal-100 text-teal-800 px-6 py-4 rounded-lg text-lg font-bold mb-6">
-              {result}
+              {serverResult.success ? { result } : "عذراً"}
             </div>
+            {serverResult && serverResult.value && (
+              <div className="text-center text-sm text-gray-600 mb-4">
+                {serverResult.value}
+              </div>
+            )}
             <div className="flex gap-3">
               <button
                 onClick={handleCloseModal}
@@ -432,21 +426,10 @@ const SpinningWheelModel = ({
 };
 
 SpinningWheelModel.propTypes = {
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      option: PropTypes.string.isRequired,
-      color: PropTypes.string.isRequired,
-      textColor: PropTypes.string,
-    })
-  ),
   title: PropTypes.string,
   spinButtonText: PropTypes.string,
   waitingText: PropTypes.string,
   isOpended: PropTypes.bool,
-  // New PropTypes for server-controlled results
-  onSpinStart: PropTypes.func,
-  serverResult: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  isWaitingForServer: PropTypes.bool,
 };
 
 export default SpinningWheelModel;

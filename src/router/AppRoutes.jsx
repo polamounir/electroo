@@ -103,6 +103,8 @@ import Redirecting from "../pages/Redirecting";
 import SpinningWheel from "../pages/SpinningWheel";
 import SpinningWheelModel from "../components/home/SpinningWheelModel";
 import WishlistPage from "../pages/WishlistPage";
+import SpinWheelLayout from "../components/adminDashboard/spinWheel/SpinWheelLayout";
+import SpinWheel from "../components/adminDashboard/spinWheel/SpinWheel";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -248,6 +250,9 @@ const AppRoutes = () => {
               <Route index element={<CategoriesOverview />} />
               <Route path="add" element={<AddNewCategories />} />
               <Route path="edit/:id" element={<EditCategory />} />
+            </Route>
+            <Route path="spin-wheel" element={<SpinWheelLayout />}>
+              <Route index element={<SpinWheel />} />
             </Route>
             <Route path="sales" element={<div>Sales</div>} />
             <Route path="settings" element={<div>Settings</div>} />

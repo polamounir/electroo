@@ -67,6 +67,13 @@ export default function AdminSideMenu() {
     },
     {
       id: 8,
+      name: "عجلة الحظ",
+      title: "spin-wheel",
+      link: "/admin/spin-wheel",
+      icon: <AiOutlineDollar />,
+    },
+    {
+      id: 9,
       name: "تسجيل خروج",
       title: "settings",
       link: "/logout",
@@ -159,7 +166,7 @@ export default function AdminSideMenu() {
                     className="py-3 rounded-bl-full rounded-tl-full text-lg font-semibold ps-5 duration-400 flex items-center gap-5"
                     style={
                       activeLink === link.title ||
-                      (!activeLink && link.title == "supplier")
+                      (!activeLink && link.title == "admin")
                         ? activeLinkStyles
                         : null
                     }

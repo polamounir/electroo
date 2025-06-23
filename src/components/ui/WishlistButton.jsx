@@ -13,7 +13,7 @@ const WishlistButton = ({ product }) => {
 
   const toggleWishlist = () => {
     const storedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-    console.log(productId, product);
+    // console.log(productId, product);
     const exists = storedWishlist.some((item) => item?.id === productId);
     let updatedWishlist;
 
