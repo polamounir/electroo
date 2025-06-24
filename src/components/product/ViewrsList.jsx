@@ -50,7 +50,7 @@ export default function ViewrsList({ data }) {
       </div>
       <ul className="flex ">
         {displayedViewrs?.map((viewer, i) => {
-          //   console.log(viewer);
+            console.log(viewer);
           return (
             <li
               key={i}
@@ -58,7 +58,7 @@ export default function ViewrsList({ data }) {
               style={{ background: `${colors[i]}` }}
             >
               <span className="text-white text-2xl">
-                {viewer ? <FaUserSecret /> : <FaUserAlt />}
+                {viewer ? <FaUserAlt /> : <FaUserSecret />}
               </span>
 
               <span className=" absolute -top-10 right-5 hidden group-hover:flex bg-teal-200 text-sm px-5 py-2 rounded-es-0 rounded-ss-2xl rounded-se-2xl rounded-ee-2xl text-nowrap">

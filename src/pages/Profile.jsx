@@ -1,12 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import UserOrders from "../components/profile/UserOrders";
 
 import Cookies from "js-cookie";
 import Loader from "../components/ui/Loader";
 import UserAddressBook from "../components/profile/UserAddressBook";
+import EditUserModal from "../components/profile/EditUserModal";
 
 const userRoles = [
   { role: "User", label: "مستخدم" },
@@ -16,6 +17,7 @@ const userRoles = [
 
 export default function Profile() {
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
@@ -51,7 +53,14 @@ export default function Profile() {
     );
 
   return (
-    <div className="min-h-[85svh] bg-gray-50 py-10 px-4 sm:px-8 md:px-16 lg:px-24 font-sans text-right pt-20">
+    <div className="min-h-[85svh] bg-gray-50 py-10 px-4 sm:px-8 md:px-16 lg:px-24 font-sans text-right pt-30">
+      {showModal && (
+        <EditUserModal
+          userData={user}
+          onClose={() => setShowModal(false)}
+    
+        />
+      )}
       <div className=" lg:w-[70%] m-auto min-h-[85svh]">
         {/* Header */}
         <header className="flex justify-between items-center mb-10">
@@ -91,11 +100,14 @@ export default function Profile() {
               </div>
             </div>
 
-            <Link to="/edit-profile" className="w-full lg:w-auto">
-              <button className="bg-teal-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-teal-700 transition w-full lg:w-auto">
+            <div className="w-full lg:w-auto">
+              <button
+                onClick={() => setShowModal(true)}
+                className="bg-teal-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-teal-700 transition w-full lg:w-auto"
+              >
                 تعديل البيانات
               </button>
-            </Link>
+            </div>
           </div>
 
           {/* Personal Info */}

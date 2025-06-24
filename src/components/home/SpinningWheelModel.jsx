@@ -148,30 +148,31 @@ const SpinningWheelModel = ({
 
   const calculateRotationForSegment = (segmentIndex) => {
     const segmentAngle = 360 / segments.length;
-    const segmentCenter = segmentIndex * segmentAngle + segmentAngle / 2;
 
-    const spins = Math.random() * 4 + 4;
-    const targetAngle = 360 - segmentCenter;
+    // Angle to move the center of the desired segment to the top (i.e., -90 degrees)
+    const targetSegmentCenter = segmentIndex * segmentAngle + segmentAngle / 2;
 
-    console.log(rotation + spins * 360 + targetAngle, "DDDDDDDDDDDDDDD");
-    return rotation + spins * 360 + targetAngle;
+    // Since the top of the wheel is at -90 degrees, the rotation needed is:
+    const desiredRotation = 360 - targetSegmentCenter + 90;
+
+    // Add full rotations (4–6 times for dramatic effect)
+    const fullRotations = Math.floor(Math.random() * 3 + 4) * 360;
+
+    // Final rotation is current + full spins + alignment correction
+    return rotation + fullRotations + desiredRotation;
   };
-
   useEffect(() => {
     if (serverResult && !isWaitingForServer && isSpinning) {
       const targetSegmentIndex = getServerResultIndex();
-      
-      // console.log(serverResult);
-      
-      if (!serverResult.success) {
-    
-        setRotation(100);
 
+      if (!serverResult.success) {
+        // For unsuccessful spins, just do a small rotation
+        setRotation((prev) => prev + 360);
         setTimeout(() => {
           setIsSpinning(false);
           setResult(serverResult.reward);
           setShowResult(true);
-        }, 100);
+        }, 1000);
       } else {
         const totalRotation = calculateRotationForSegment(targetSegmentIndex);
         setRotation(totalRotation);
@@ -183,7 +184,6 @@ const SpinningWheelModel = ({
       }
     }
   }, [serverResult, isWaitingForServer]);
-
   const spin = async () => {
     if (isSpinning || segments.length === 0 || hasSpun || isWaitingForServer)
       return;
@@ -285,8 +285,11 @@ const SpinningWheelModel = ({
             <svg
               ref={wheelRef}
               viewBox={`0 0 ${width} ${height}`}
-              className="w-full h-full drop-shadow-2xl transition-transform duration-[3000ms] ease-out"
-              style={{ transform: `rotate(${rotation}deg)` }}
+              className="w-full h-full drop-shadow-2xl transition-transform duration-[3000ms] cubic-bezier(0.2, 0.8, 0.3, 1)"
+              style={{
+                transform: `rotate(${rotation}deg)`,
+                transformOrigin: "center",
+              }}
               aria-label="Spinning wheel"
             >
               {/* Outer ring */}
@@ -418,7 +421,7 @@ const SpinningWheelModel = ({
             </button>
             <h2 className="text-2xl font-bold mb-4 text-center">النتيجة</h2>
             <div className="text-center bg-teal-100 text-teal-800 px-6 py-4 rounded-lg text-lg font-bold mb-6">
-              {serverResult?.success ? <spa>{result}</spa> : "عذراً"}
+              {serverResult?.success ? <span>{result}</span> : "عذراً"}
             </div>
             {serverResult && serverResult.value && (
               <div className="text-center text-sm text-gray-600 mb-4">

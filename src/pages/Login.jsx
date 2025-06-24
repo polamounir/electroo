@@ -17,18 +17,16 @@ export default function Login() {
   });
 
   const { user } = useSelector((state) => state.auth);
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
-    if (user) {
-      if (user.role === "Admin") {
-        navigate("/admin");
-      } else if (user.role === "Supplier") {
-        navigate("/supplier");
-      } else {
-        navigate("/");
-      }
+    if (user || token) {
       toast.error("تم تسجيل الدخول بالفعل");
+      navigate("/redirect-user");
     }
-  }, [navigate]);
+  }, [user, token, navigate]);
+
+  if (user || token) return null;
 
   const handleChange = (e) => {
     const { name, value } = e.target;

@@ -15,7 +15,7 @@ import { useChatHub } from "../../../hooks/useChatHub";
 
 export default function ChatsMenu() {
   const dispatch = useDispatch();
-    const { messages } = useChatHub();  
+  const { messages } = useChatHub();
 
   const { allChats, conversationId, filterdChats } = useSelector(
     (state) => state.chat

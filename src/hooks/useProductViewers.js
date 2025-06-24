@@ -17,6 +17,7 @@ export const useProductViewers = (productId) => {
       .build();
 
     connection.on("UpdateProductViewCount", (usernames) => {
+      console.log(usernames);
       setViewers(usernames);
     });
 

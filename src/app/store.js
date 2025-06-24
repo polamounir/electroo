@@ -12,6 +12,7 @@ import productReviewReducer from "./slices/prouctReviewSlice";
 import userSaplierChatReducer from "./slices/UserSaplierChat";
 import userChatsReducer from "./slices/userChatsSlicce";
 import dashboardReducer from "./slices/dashboardSlice";
+import productSearchReducer from "./slices/productSearchSlice";
 const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -27,6 +28,7 @@ const store = configureStore({
     userSaplierChat: userSaplierChatReducer,
     userChatsMenu: userChatsReducer,
     dashboard: dashboardReducer,
+    productSearch: productSearchReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

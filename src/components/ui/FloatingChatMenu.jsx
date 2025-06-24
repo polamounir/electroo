@@ -29,18 +29,24 @@ export default function FloatingChatMenu() {
     dispatch(openSpinModel());
   };
 
+  const { user } = useSelector((state) => state.auth);
+  const token = localStorage.getItem("accessToken");
+
   return (
     <div className={`chat-container`}>
       <div className="floating-menu-button-container"></div>
       <div className="floating-menu-button-container">
-        <div className=" relative">
-          <button
-            className="floating-menu-button"
-            onClick={handleOpenSpinModel}
-          >
-            <RxColorWheel className="text-3xl" />
-          </button>
-        </div>
+        {user && token && user.role === "User" && (
+          <div className=" relative">
+            <button
+              className="floating-menu-button"
+              onClick={handleOpenSpinModel}
+            >
+              <RxColorWheel className="text-3xl" />
+            </button>
+          </div>
+        )}
+
         <div className=" relative">
           <button className="floating-menu-button" onClick={handleOpenChatBot}>
             <RiRobot2Line className="text-3xl" />
