@@ -180,10 +180,34 @@ export default function Product() {
                 </span>{" "}
                 {data.brand}
               </p>
-              <p>
-                <span className="font-semibold text-teal-600">يباع من :</span>{" "}
-                {data.storeName}
-              </p>
+              <div className="flex items-center gap-2 p-3">
+                <span className="text-teal-600">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 10l1-2m0 0l7.293-7.293a1 1 0 011.414 0L21 10m-1 2v7a2 2 0 01-2 2H6a2 2 0 01-2-2v-7m0 0l9 9"
+                    />
+                  </svg>
+                </span>
+                <p className="text-sm text-gray-700">
+                  <span className="font-semibold text-teal-600">يباع من:</span>{" "}
+                  <Link
+                    to={`/supplier-products/${data.supplierId}`}
+                    className="text-blue-600 hover:underline hover:text-blue-800 transition"
+                  >
+                    {data.storeName}
+                  </Link>
+                </p>
+              </div>
+
               <p className="text-teal-600 mt-2">التقييم: {data.rate} ⭐</p>
               <p>
                 {/* <button

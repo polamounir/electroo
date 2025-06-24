@@ -16,7 +16,7 @@ export default function ProductCard({ product }) {
     e.stopPropagation();
     dispatch(addProductToCartAsync(id));
   };
-
+  if (!product) return null;
   return (
     <div
       className="relative group bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden transition duration-200"

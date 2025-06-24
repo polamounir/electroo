@@ -103,6 +103,7 @@ import Redirecting from "../pages/Redirecting";
 import SpinningWheel from "../pages/SpinningWheel";
 import SpinningWheelModel from "../components/home/SpinningWheelModel";
 import WishlistPage from "../pages/WishlistPage";
+import SupplierProducts from "../pages/SupplierProducts";
 import SpinWheelLayout from "../components/adminDashboard/spinWheel/SpinWheelLayout";
 import SpinWheel from "../components/adminDashboard/spinWheel/SpinWheel";
 // Lazy-loaded
@@ -127,7 +128,6 @@ const ScrollToTop = () => {
 const AppRoutes = () => {
   const { isChatPopupOpen } = useSelector((state) => state.userChatsMenu);
   const { isSpinModelOpen } = useSelector((state) => state.chat);
-
 
   return (
     <Router>
@@ -176,6 +176,10 @@ const AppRoutes = () => {
             <Route path="/product/:id" element={<Product />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/categories/:id" element={<Category />} />
+            <Route
+              path="/supplier-products/:id"
+              element={<SupplierProducts />}
+            />
             <Route path="/search" element={<Search />} />
             <Route path="/wishlist" element={<WishlistPage />} />
 

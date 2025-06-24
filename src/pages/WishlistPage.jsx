@@ -93,19 +93,21 @@ export default function WishlistPage() {
             exit="exit"
           >
             <AnimatePresence>
-              {wishlistItems.map((product) => (
-                <motion.div
-                  key={product.id}
-                  variants={cardVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  transition={{ duration: 0.3 }}
-                  layout
-                >
-                  <ProductCard product={product} />
-                </motion.div>
-              ))}
+              {wishlistItems &&
+                wishlistItems.length > 0 &&
+                wishlistItems.map((product) => (
+                  <motion.div
+                    key={product?.id}
+                    variants={cardVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    transition={{ duration: 0.3 }}
+                    layout
+                  >
+                    <ProductCard product={product} />
+                  </motion.div>
+                ))}
             </AnimatePresence>
           </motion.div>
         )}

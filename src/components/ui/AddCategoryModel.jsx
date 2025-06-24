@@ -6,9 +6,9 @@ import { toast } from "sonner";
 
 const AddCategoryModel = () => {
   const dispatch = useDispatch();
-  const [categoryName, setCategoryName] = useState("");
   const isOpen = useSelector((state) => state.categoryModel.isOpen);
-
+  
+  const [categoryName, setCategoryName] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
 

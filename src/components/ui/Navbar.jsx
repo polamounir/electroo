@@ -129,7 +129,8 @@ export default function Navbar() {
               <div
                 className=" relative cursor-pointer"
                 onClick={openCartDropdown}
-                onMouseLeave={closeCartDropdown}
+                onBlurCapture={closeCartDropdown}
+                onBlur={closeCartDropdown}
               >
                 <button to="/cart" className="text-3xl">
                   <IoCartOutline />

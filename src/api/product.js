@@ -32,10 +32,21 @@ export const fetchSearchProducts = async (query) => {
   }
 };
 
+export const getSupplierProducts = async (cursor, SupplierId) => {
+  const res = await api.get(`/products/`, {
+    params: {
+      Limit: 20,
+      cursor,
+      SupplierId,
+    },
+  });
+  // console.log("Category Products:", res.data);
+  return res.data.data;
+};
 export const getCategoryProducts = async (cursor, CategoryId) => {
   const res = await api.get(`/products/`, {
     params: {
-      Limit: 12,
+      Limit: 20,
       cursor,
       CategoryId,
     },
