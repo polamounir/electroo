@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FaToggleOn,
   FaToggleOff,
@@ -19,6 +19,20 @@ export default function SpinWheel() {
   });
   const [editingIndex, setEditingIndex] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
+  const getSavedOptions = async() =>{
+    try {
+      const { data } = await api.get("/wheel/details");
+      console.log(data)
+      if(data?.data?.length > 0) {
+        setOptions(data.data)
+      }
+    } catch (error) {
+      toast.error("عفوا حدث خطا ")
+    }
+  }
+  useEffect(() => {
+    getSavedOptions()
+  }, []);
 
   const resetNewOption = () =>
     setNewOption({
@@ -105,11 +119,10 @@ export default function SpinWheel() {
     (options.length >= 8 && editingIndex === null);
 
   const saveOptions = async () => {
-    if (options.length !== 8 ) {
+    if (options.length !== 8) {
       toast.error("يرجى إضافة 8 خيارات ");
       return;
     }
-
 
     const totalProbability = options.reduce(
       (sum, option) => sum + option.probability,
