@@ -55,11 +55,7 @@ export default function Profile() {
   return (
     <div className="min-h-[85svh] bg-gray-50 py-10 px-4 sm:px-8 md:px-16 lg:px-24 font-sans text-right pt-30">
       {showModal && (
-        <EditUserModal
-          userData={user}
-          onClose={() => setShowModal(false)}
-    
-        />
+        <EditUserModal userData={user} onClose={() => setShowModal(false)} />
       )}
       <div className=" lg:w-[70%] m-auto min-h-[85svh]">
         {/* Header */}
@@ -100,14 +96,16 @@ export default function Profile() {
               </div>
             </div>
 
-            <div className="w-full lg:w-auto">
-              <button
-                onClick={() => setShowModal(true)}
-                className="bg-teal-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-teal-700 transition w-full lg:w-auto"
-              >
-                تعديل البيانات
-              </button>
-            </div>
+            {(user?.role === "User") && (
+              <div className="w-full lg:w-auto">
+                <button
+                  onClick={() => setShowModal(true)}
+                  className="bg-teal-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-teal-700 transition w-full lg:w-auto"
+                >
+                  تعديل البيانات
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Personal Info */}
