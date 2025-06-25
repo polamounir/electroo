@@ -19,19 +19,19 @@ export default function SpinWheel() {
   });
   const [editingIndex, setEditingIndex] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
-  const getSavedOptions = async() =>{
+  const getSavedOptions = async () => {
     try {
       const { data } = await api.get("/wheel/details");
-      console.log(data)
-      if(data?.data?.length > 0) {
-        setOptions(data.data)
+      console.log(data);
+      if (data?.data?.length > 0) {
+        setOptions(data.data);
       }
     } catch (error) {
-      toast.error("عفوا حدث خطا ")
+      toast.error("عفوا حدث خطا ");
     }
-  }
+  };
   useEffect(() => {
-    getSavedOptions()
+    getSavedOptions();
   }, []);
 
   const resetNewOption = () =>
@@ -40,6 +40,7 @@ export default function SpinWheel() {
       value: "",
       probability: 0.01,
       isExtraChance: false,
+      extraRetries: 1,
     });
 
   const handleAddOption = () => {
@@ -90,6 +91,7 @@ export default function SpinWheel() {
       value: optionToEdit.value,
       probability: optionToEdit.probability,
       isExtraChance: optionToEdit.isExtraChance,
+      extraRetries: 1,
     });
     setEditingIndex(index);
   };
@@ -141,7 +143,7 @@ export default function SpinWheel() {
     try {
       setIsSaving(true);
 
-      const { data } = await api.post("/wheel-rewards", {
+      const { data } = await api.post("/wheel ", {
         wheelRewards: options,
       });
 

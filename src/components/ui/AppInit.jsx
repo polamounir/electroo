@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 
 // import { getUserData } from "../../app/slices/authSlice";
@@ -16,12 +16,15 @@ export default function AppInit() {
       const { data } = await api.get("/auth/me");
       // console.log(data.data);
       const user = data.data;
+
       dispatch(setUserInitData(user));
     } catch (error) {
       console.log(error);
       toast.error("حدث خطأ غير معروف");
     }
   };
+
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     const token =
@@ -32,8 +35,11 @@ export default function AppInit() {
       getUserData();
     }
 
-    dispatch(cartInit());
-    dispatch(getStoredCartAsync());
+    if (user?.role === "User") {
+      dispatch(cartInit());
+      dispatch(getStoredCartAsync());
+    }
+
     dispatch(generateNewSessionId());
   }, [dispatch]);
 

@@ -10,22 +10,28 @@ export default function CategoriesTable() {
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [editingCategoryId, setEditingCategoryId] = useState(null);
   const [editForm, setEditForm] = useState({ name: "", image: "" });
+  const [page, setPage] = useState(1);
+  const limit = 20;
 
   const fetchCategories = async () => {
-    const res = await api.get(`/categories?Page=1&Limit=50`);
-    return res.data.data.items;
+    const res = await api.get(`/categories?page=${page}&limit=${limit}`);
+    return {
+      items: res.data.data.items,
+      totalItems: res.data.data.totalItems,
+    };
   };
 
   const {
-    data: categories = [],
+    data: { items: categories = [], totalItems } = {},
     isLoading,
     isError,
     refetch,
   } = useQuery({
-    queryKey: ["categories"],
+    queryKey: ["categories", page],
     queryFn: fetchCategories,
   });
 
+  console.log(totalItems);
   const confirmDelete = (id) => setDeleteConfirm(id);
   const cancelDelete = () => setDeleteConfirm(null);
 
@@ -68,6 +74,12 @@ export default function CategoriesTable() {
     } catch (err) {
       console.error("Edit failed:", err);
       toast.error("فشل التعديل. حاول مرة أخرى.");
+    }
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= Math.ceil(totalItems / limit)) {
+      setPage(newPage);
     }
   };
 
@@ -176,6 +188,49 @@ export default function CategoriesTable() {
           </div>
         )}
       </div>
+
+      {/* Pagination */}
+      {totalItems / limit > limit * limit && (
+        <div className="flex items-center justify-between mt-6 px-4 py-3 bg-white border-t border-gray-200 sm:px-6">
+          <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+            <div></div>
+            <div>
+              <nav
+                className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+                aria-label="Pagination"
+              >
+                <button
+                  onClick={() => handlePageChange(page - 1)}
+                  disabled={page === 1}
+                  className={`relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium ${
+                    page === 1
+                      ? "text-gray-300 cursor-not-allowed"
+                      : "text-gray-500 hover:bg-gray-50"
+                  }`}
+                >
+                  <span className="sr-only">السابق</span>
+                  السابق
+                </button>
+                <span className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                  {page} من {Math.ceil(totalItems / limit)}
+                </span>
+                <button
+                  onClick={() => handlePageChange(page + 1)}
+                  disabled={page >= Math.ceil(totalItems / limit)}
+                  className={`relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium ${
+                    page >= Math.ceil(totalItems / limit)
+                      ? "text-gray-300 cursor-not-allowed"
+                      : "text-gray-500 hover:bg-gray-50"
+                  }`}
+                >
+                  <span className="sr-only">التالي</span>
+                  التالي
+                </button>
+              </nav>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -104,6 +104,11 @@ export default function Register() {
           "البريد الإلكتروني مستخدم بالفعل. يمكنك إعادة تعيين كلمة المرور."
         );
       }
+      if (res.title == "PhoneNumberAlreadyExistsException") {
+        toast.error(
+          " رقم الهاتف مستخدم بالفعل. يمكنك إعادة تعيين كلمة المرور. "
+        );
+      }
       if (res.title == "EmailAlreadyExistsException") {
         toast.error(
           "البريد الإلكتروني مستخدم بالفعل. يمكنك إعادة تعيين كلمة المرور."
@@ -129,7 +134,7 @@ export default function Register() {
   // ---------------------------------
 
   return (
-    <div className="w-full md:w-[85%] mx-auto pt-15">
+    <div className="w-full md:w-[85%] mx-auto pt-25 pb-15">
       <div className="min-h-[90dvh] px-10 flex justify-center items-center">
         <div className="flex items-center gap-10">
           <div className="hidden lg:block">
@@ -201,12 +206,12 @@ export default function Register() {
                       >
                         كلمةالمرور
                       </label>
-                      <div className="relative">
+                      <div className="relative w-full ">
                         <input
                           type={showPassword ? "text" : "password"}
                           name="password"
                           id="password"
-                          className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                          className="w-full bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
                           onChange={handleChange}
                           placeholder="********"
                         />
@@ -230,12 +235,12 @@ export default function Register() {
                       >
                         تاكيد كلمة المرور
                       </label>
-                      <div className="relative">
+                      <div className="relative w-full ">
                         <input
                           type={showConfirmPassword ? "text" : "password"}
                           name="confirmPassword"
                           id="confirmPassword"
-                          className="bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                          className="w-full bg-[var(--color-light-gray)] px-3 py-2 rounded-md border border-gray-300  focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
                           onChange={(e) => setConfirmPassword(e.target.value)}
                           placeholder="********"
                         />

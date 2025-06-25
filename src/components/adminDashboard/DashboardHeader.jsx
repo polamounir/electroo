@@ -11,26 +11,26 @@ export default function DashboardHeader() {
     dispatch(setSupplierSideMenu(!supplierSideMenu));
   };
 
-  const [adminNotes, setAdminNotes] = useState(null);
+  // const [adminNotes, setAdminNotes] = useState(null);
 
-  const [isLoading, setIsLoading] = useState(false);
-    const [isError, setIsError] = useState(null);
+  // const [isLoading, setIsLoading] = useState(false);
+  //   const [isError, setIsError] = useState(null);
   
-    useEffect(() => {
-      const fetchAdminNotes = async () => {
-        try {
-          setIsLoading(true);
-          const { data } = await api.get("/notifications");
-          console.log(data);
-          setAdminNotes(data.data);
-        } catch (error) {
-          console.log(error);
-        } finally {
-          setIsLoading(false);
-        }
-      };
-      fetchAdminNotes();
-    }, []);
+  //   useEffect(() => {
+  //     const fetchAdminNotes = async () => {
+  //       try {
+  //         setIsLoading(true);
+  //         const { data } = await api.get("/notifications");
+  //         console.log(data);
+  //         setAdminNotes(data.data);
+  //       } catch (error) {
+  //         console.log(error);
+  //       } finally {
+  //         setIsLoading(false);
+  //       }
+  //     };
+  //     fetchAdminNotes();
+  //   }, []);
   return (
     <div className="w-full bg-slate-50  fixed z-10 top-0 end-0 flex justify-center items-center py-5 px-5 md:px-10 lg:px-15">
       <div className="flex items-center justify-between gap-5 w-full ">

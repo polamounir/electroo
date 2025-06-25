@@ -87,13 +87,13 @@ export default function Login() {
                 <h2 className="text-3xl font-bold">تسجيل دخول مستخدم</h2>
                 <p className="text-md text-gray-700">مرحب برجوعك لينا 👋</p>
                 <div className="-mt-2">
-                  <Link
+                  {/* <Link
                     to="/login-supplier"
                     className="text-sm text-teal-600 hover:text-teal-500 hover:underline italic "
                   >
                     {" "}
                     تسجيل دخول كتاجر من هنا
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
 

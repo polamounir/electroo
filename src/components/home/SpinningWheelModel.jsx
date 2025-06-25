@@ -27,9 +27,11 @@ const SpinningWheelModel = ({
   const [isWaitingForServer, setIsWaitingForServer] = useState(false);
   const [serverResult, setServerResult] = useState(null);
   const [animationId, setAnimationId] = useState(null);
-const { isSpinModelOpen} = useSelector ((state => state.chat))
+  const { isSpinModelOpen } = useSelector((state) => state.chat);
   const wheelRef = useRef(null);
   const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.auth.user);
 
   // Enhanced color palette with better contrast
   const colorPalette = useMemo(
@@ -52,8 +54,9 @@ const { isSpinModelOpen} = useSelector ((state => state.chat))
 
   // Fetch wheel options with better error handling
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ["wheel-options"],
+    queryKey: ["wheel-options-user"],
     queryFn: async () => {
+      if (user.role !== "User") return;
       try {
         const { data } = await api.get("/wheel/rewards");
         return data.data?.rewards || [];
@@ -62,14 +65,11 @@ const { isSpinModelOpen} = useSelector ((state => state.chat))
         throw error;
       }
     },
-    retry: 3,
-    retryDelay: 1000,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 
   const fetchedOptions = data || [];
 
-  // Memoized segments to prevent unnecessary re-renders
   const segments = useMemo(() => {
     if (fetchedOptions.length === 0) return [];
 
@@ -288,11 +288,11 @@ const { isSpinModelOpen} = useSelector ((state => state.chat))
       }
     };
 
-    if ( isSpinModelOpen) {
+    if (isSpinModelOpen) {
       document.addEventListener("keydown", handleKeyPress);
       return () => document.removeEventListener("keydown", handleKeyPress);
     }
-  }, [ isSpinModelOpen, spin, handleCloseModal]);
+  }, [isSpinModelOpen, spin, handleCloseModal]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -315,7 +315,7 @@ const { isSpinModelOpen} = useSelector ((state => state.chat))
     return (
       <div
         className={`h-screen ${
-           isSpinModelOpen ? "flex" : "hidden"
+          isSpinModelOpen ? "flex" : "hidden"
         } items-center justify-center fixed top-0 w-full z-[1000] bg-black/30`}
       >
         <div className="bg-white rounded-3xl p-8 shadow-2xl">
@@ -331,7 +331,7 @@ const { isSpinModelOpen} = useSelector ((state => state.chat))
     return (
       <div
         className={`h-screen ${
-           isSpinModelOpen ? "flex" : "hidden"
+          isSpinModelOpen ? "flex" : "hidden"
         } items-center justify-center fixed top-0 w-full z-[1000] bg-black/30`}
       >
         <div className="bg-white rounded-3xl p-8 shadow-2xl max-w-md">
@@ -361,7 +361,7 @@ const { isSpinModelOpen} = useSelector ((state => state.chat))
   return (
     <div
       className={`h-screen ${
-         isSpinModelOpen ? "flex" : "hidden"
+        isSpinModelOpen ? "flex" : "hidden"
       } flex-col items-center justify-center p-4 fixed top-0 w-full overflow-hidden z-[1000] bg-black/40 backdrop-blur-sm`}
       onMouseMove={handleMouseMove}
       role="dialog"
@@ -578,9 +578,9 @@ const { isSpinModelOpen} = useSelector ((state => state.chat))
                 {/* {serverResult?.success ? "🎉" : "😔"} */}
               </div>
 
-              <h2 className="text-3xl font-bold mb-6 text-gray-800">
+              {/* <h2 className="text-3xl font-bold mb-6 text-gray-800">
                 {serverResult?.success ? "مبروك!" : "للأسف"}
-              </h2>
+              </h2> */}
 
               <div
                 className={`px-6 py-4 rounded-xl text-lg font-bold mb-6 ${
