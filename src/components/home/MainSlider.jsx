@@ -74,7 +74,7 @@ export default function MainSlider() {
         ViewMode: "grid",
       })
     );
-    navigate(`/search?SearchQuery=${search}&Page=1&Limit=20`);
+    navigate(`/searching?SearchQuery=${search}`);
   };
 
   const handleSearchInput = (e) => {

@@ -4,6 +4,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import { loginUserWithGoogle } from "../app/slices/authSlice";
 import CartDropdownMenu from "../components/ui/CartDropdownMenu";
+import TestSearch from "../components/test/EnhancedFilterComponent";
 
 export default function Test() {
   // const dispatch = useDispatch();
@@ -17,16 +18,18 @@ export default function Test() {
   // };
 
   return (
-    <div className="min-h-[50svh] flex justify-center items-center">
+    <div className="min-h-[50svh] flex justify-center items-center w-full">
       {/* <GoogleLogin
         onSuccess={handleLogin}
         onError={handleLoginWithGoogleError}
       /> */}
 
-<div className="relative">
-
-      <CartDropdownMenu  />
-</div>
+      {/* <div className="relative">
+        <CartDropdownMenu />
+      </div> */}
+      <div className="w-full">
+        <TestSearch />
+      </div>
     </div>
   );
 }

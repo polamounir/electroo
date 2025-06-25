@@ -42,7 +42,7 @@ export default function DashboardHeader() {
           </div>
         </div>
         <div className="flex items-center gap-5">
-          <div className="relative group">
+          {/* <div className="relative group">
             <div>
               <button
                 className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -133,7 +133,7 @@ export default function DashboardHeader() {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
           <div>{user ? <h2>{user.fullName}</h2> : <h2>اسم المستخدم</h2>}</div>
         </div>
       </div>

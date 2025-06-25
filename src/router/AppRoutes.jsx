@@ -106,6 +106,7 @@ import WishlistPage from "../pages/WishlistPage";
 import SupplierProducts from "../pages/SupplierProducts";
 import SpinWheelLayout from "../components/adminDashboard/spinWheel/SpinWheelLayout";
 import SpinWheel from "../components/adminDashboard/spinWheel/SpinWheel";
+import SearchPage from "../pages/SearchPage";
 // Lazy-loaded
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
@@ -190,6 +191,7 @@ const AppRoutes = () => {
 
             {/* TEsting */}
             <Route path="/test" element={<Test />} />
+            <Route path="/searching" element={<SearchPage />} />
             {/* <Route path="/upload" element={<Upload />} /> */}
             <Route path="/spinning-wheel" element={<SpinningWheel />} />
 

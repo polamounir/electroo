@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import {HiInformationCircle, HiMail} from 'react-icons/hi';
 
 import { api } from "../../api/axiosInstance";
+import { Link } from "react-router-dom";
 export default function DashboardHeader() {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -70,51 +71,81 @@ export default function DashboardHeader() {
                   adminNotes.map((note, index) => {
                     const { notificationType, payload, date } = note;
 
-                    // Choose icon and background color based on type
-                    const isOrder = notificationType === "Order";
-                    const icon = isOrder ? (
-                      <HiInformationCircle className="h-5 w-5 text-amber-600" />
-                    ) : (
-                      <HiMail className="h-5 w-5 text-blue-600" />
-                    );
-                    const iconBg = isOrder ? "bg-amber-100" : "bg-blue-100";
+                    // Set icon, background color, and link based on notification type
+                    let icon, iconBg, link, title, description;
+
+                    switch (notificationType) {
+                      case "Order":
+                        icon = (
+                          <HiInformationCircle className="h-5 w-5 text-amber-600" />
+                        );
+                        iconBg = "bg-amber-100";
+                        link = "/supplier/orders";
+                        title = `طلب جديد من ${payload.buyerName}`;
+                        description = `عدد المنتجات المطلوبة: ${payload.itemsCount}`;
+                        break;
+
+                      case "Message":
+                        icon = <HiMail className="h-5 w-5 text-teal-600" />;
+                        iconBg = "bg-blue-100";
+                        link = "/messages";
+                        title = "رسالة جديدة";
+                        description =
+                          payload.messagePreview || "لديك رسالة جديدة";
+                        break;
+
+                      case "Payment": 
+                        icon = (
+                          <HiCurrencyDollar className="h-5 w-5 text-green-600" />
+                        );
+                        iconBg = "bg-green-100";
+                        link = "/payments";
+                        title = "دفعة جديدة";
+                        description = `تم استلام دفعة بقيمة ${payload.amount}`;
+                        break;
+
+                      default:
+                        icon = <HiBell className="h-5 w-5 text-gray-600" />;
+                        iconBg = "bg-gray-100";
+                        link = "#";
+                        title = "إشعار جديد";
+                        description = "لديك إشعار جديد";
+                    }
 
                     return (
                       <li
                         key={index}
                         className="p-3 hover:bg-gray-50 transition-colors duration-150"
                       >
-                        <div className="flex items-start gap-2">
-                          <div className="flex-shrink-0 pt-0.5">
-                            <div
-                              className={`h-8 w-8 rounded-full ${iconBg} flex items-center justify-center`}
-                            >
-                              {icon}
+                        <Link to={link}>
+                          <div className="flex items-start gap-2">
+                            <div className="flex-shrink-0 pt-0.5">
+                              <div
+                                className={`h-8 w-8 rounded-full ${iconBg} flex items-center justify-center`}
+                              >
+                                {icon}
+                              </div>
                             </div>
-                          </div>
-                          <div className="ml-3 flex-1">
-                            <div className="flex items-center justify-between">
-                              <p className="text-sm font-medium text-gray-900">
-                                {isOrder
-                                  ? `طلب جديد من ${payload.buyerName}`
-                                  : "رسالة جديدة"}
+                            <div className="ml-3 flex-1">
+                              <div className="flex items-center justify-between">
+                                <p className="text-sm font-medium text-gray-900">
+                                  {title}
+                                </p>
+                                <span className="text-xs text-gray-400">
+                                  {new Date(date).toLocaleString("ar-EG", {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    day: "2-digit",
+                                    month: "short",
+                                  })}
+                                </span>
+                              </div>
+                              <p className="text-sm text-gray-500 mt-1">
+                                {description}
                               </p>
-                              <span className="text-xs text-gray-400">
-                                {new Date(date).toLocaleString("ar-EG", {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                  day: "2-digit",
-                                  month: "short",
-                                })}
-                              </span>
                             </div>
-                            <p className="text-sm text-gray-500 mt-1">
-                              {isOrder
-                                ? `عدد المنتجات المطلوبة: ${payload.itemsCount}`
-                                : "لديك رسالة جديدة"}
-                            </p>
                           </div>
-                        </div>
+                        </Link>
                       </li>
                     );
                   })
@@ -124,11 +155,11 @@ export default function DashboardHeader() {
                   </li>
                 )}
               </ul>
-              <div className="p-2 bg-gray-50 text-center">
+              {/* <div className="p-2 bg-gray-50 text-center">
                 <button className="text-sm text-teal-600 hover:text-teal-800">
                   عرض كل الاشعارات
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
           <div>{user ? <h2>{user.fullName}</h2> : <h2>اسم المستخدم</h2>}</div>

@@ -97,7 +97,7 @@ export default function CategorySlider() {
   };
   const handleCategoryClick = (id) => {
     // console.log(id);
-    navigate(`/search?CategoryId=${id}`);
+    navigate(`/searching?CategoryId=${id}`);
   };
 
   const demoCategories = [

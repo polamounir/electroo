@@ -11,6 +11,7 @@ export default function Footer() {
     path.pathname === "/pre-register" ||
     path.pathname === "/cart" ||
     path.pathname === "/checkout" ||
+    path.pathname === "/ser" ||
     path.pathname === "/search"
   ) {
     return null;
