@@ -75,7 +75,7 @@ export default function CategoryFilter() {
       </div>
 
       <div className="space-y-2">
-        <ul className="space-y-2 overflow-y-auto">
+        <ul className="space-y-2 max-h-[25svh] overflow-y-auto">
           <li>
             <button
               onClick={() => handleCategoryChange("")}

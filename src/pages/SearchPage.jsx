@@ -49,9 +49,11 @@ export default function SearchPage() {
   }, [dispatch, location.search]); // Re-run when URL changes
 
   return (
-    <div className="min-h-screen pt-30 px-4 pb-20">
+    <div className="min-h-screen pt-25 px-4">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">بحث المنتجات</h1>
+        <h1 className="text-3xl font-bold text-gray-900 pb-2 border-teal-400 border-b-4">
+          بحث المنتجات
+        </h1>
       </div>
       <div>
         <div>

@@ -141,7 +141,7 @@ export default function SearchedProducts() {
   if (loading && products.length === 0) {
     return (
       <div className="border border-gray-200 rounded-xl p-5 bg-white shadow-sm min-h-full">
-        <div className="flex justify-center flex-wrap gap-2 md:gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {[...Array(6)].map((_, index) => (
             <ProductCardSkeleton key={index} type="product-card" />
           ))}

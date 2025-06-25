@@ -38,6 +38,15 @@ export default function SearchFilters() {
     navigate(`/searching?${searchParams.toString()}`);
   };
 
+
+  const handleResetFilters = async () => {
+    await dispatch(clearFilters())
+    await dispatch(fetchSearchingProducts()).unwrap();
+
+    // Navigate to the search URL with all current filters
+    navigate(`/searching?${searchParams.toString()}`);
+  };
+
   return (
     <div className="border border-gray-200 rounded-xl p-5 bg-white shadow-sm">
       <div className="flex flex-col gap-5">
@@ -54,7 +63,7 @@ export default function SearchFilters() {
           </button>
           <button
             className="px-3 py-2 bg-gray-500 rounded-lg text-white"
-            onClick={() => dispatch(clearFilters())}
+            onClick={handleResetFilters}
           >
             الغاء
           </button>
