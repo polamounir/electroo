@@ -105,7 +105,7 @@ export default function ChatsMenu() {
             </span>
           </div>
         </div>
-        <div className="hidden overflow-auto overflow-y-auto scrolling lg:bg-red-500 md:h-[60svh] p-5 lg:flex flex-col gap-2">
+        <div className="hidden overflow-auto overflow-y-auto scrolling  md:h-[60svh] p-5 lg:flex flex-col gap-2">
           {[...Array(1)].map((_, i) => (
             <React.Fragment key={i}>
               {filterdChats?.map((chat) => (
@@ -139,7 +139,7 @@ export default function ChatsMenu() {
             </React.Fragment>
           ))}
         </div>
-        <div className="lg:hidden overflow-auto overflow-y-auto scrolling lg:bg-red-500 h-[20svh] p-5 flex flex-col gap-2 mb-5">
+        <div className="lg:hidden overflow-auto overflow-y-auto scrolling  h-[20svh] p-5 flex flex-col gap-2 mb-5">
           {[...Array(1)].map((_, i) => (
             <React.Fragment key={i}>
               {filterdChats?.map((chat) => (

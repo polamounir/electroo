@@ -158,9 +158,9 @@
 /* Chat Window */
 .chat-window {
   position: fixed;
-  bottom: 90px;
-  right: 20px;
-  width: 350px;
+  bottom: 30px;
+  right: 10px;
+  width: 300px;
   height: 500px;
   background-color: white;
   border-radius: 12px;
