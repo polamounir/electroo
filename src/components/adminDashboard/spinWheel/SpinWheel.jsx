@@ -40,7 +40,7 @@ export default function SpinWheel() {
       value: "",
       probability: 0.01,
       isExtraChance: false,
-      extraRetries: 1,
+      // extraRetries: 1,
     });
 
   const handleAddOption = () => {
@@ -91,7 +91,7 @@ export default function SpinWheel() {
       value: optionToEdit.value,
       probability: optionToEdit.probability,
       isExtraChance: optionToEdit.isExtraChance,
-      extraRetries: 1,
+      // extraRetries: 1,
     });
     setEditingIndex(index);
   };

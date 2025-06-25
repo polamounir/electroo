@@ -160,7 +160,7 @@ export default function MainSlider() {
                     </div>
                     <div className="flex gap-5 justify-center md:justify-start welcome-buttons-box">
                       <Link
-                        to=""
+                        to="/searching"
                         className="bg-black px-7 py-2 rounded-lg md:text-lg  text-white font-semibold"
                       >
                         ابدأ التسوق

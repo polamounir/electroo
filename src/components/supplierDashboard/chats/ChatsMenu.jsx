@@ -90,7 +90,7 @@ export default function ChatsMenu() {
   };
 
   return (
-    <div className="col-span-4 bg-white min-h-[55svh]">
+    <div className="col-span-4 bg-white lg:min-h-[55svh]">
       <div>
         <div className="p-5">
           <div className="rounded-full h-12 relative overflow-hidden">
@@ -105,7 +105,41 @@ export default function ChatsMenu() {
             </span>
           </div>
         </div>
-        <div className="overflow-auto overflow-y-auto scrolling h-[60svh] p-5 flex flex-col gap-2">
+        <div className="hidden overflow-auto overflow-y-auto scrolling lg:bg-red-500 md:h-[60svh] p-5 lg:flex flex-col gap-2">
+          {[...Array(1)].map((_, i) => (
+            <React.Fragment key={i}>
+              {filterdChats?.map((chat) => (
+                <div
+                  key={`${chat.id}-${i}`}
+                  className={` rounded-lg p-2 hover:bg-black/10 duration-300 ${
+                    conversationId === chat.id
+                      ? "bg-teal-100 shadow-lg"
+                      : "bg-gray-50"
+                  }`}
+                >
+                  <div
+                    className="w-full duration-200 cursor-pointer flex-col items-center"
+                    onClick={() => {
+                      console.log(chat.id);
+                      dispatch(setConversationId(chat.id));
+                    }}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="font-semibold text-lg">{chat.fullName}</p>
+                      <p className="text-sm text-gray-500">
+                        {formatDate(chat.lastMessageTime)}
+                      </p>
+                    </div>
+                    <p className="text-gray-600 truncate  text-start ">
+                      {chat.lastMessage || "''جديد''"}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </React.Fragment>
+          ))}
+        </div>
+        <div className="lg:hidden overflow-auto overflow-y-auto scrolling lg:bg-red-500 h-[20svh] p-5 flex flex-col gap-2 mb-5">
           {[...Array(1)].map((_, i) => (
             <React.Fragment key={i}>
               {filterdChats?.map((chat) => (

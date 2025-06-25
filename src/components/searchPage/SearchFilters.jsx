@@ -38,9 +38,8 @@ export default function SearchFilters() {
     navigate(`/searching?${searchParams.toString()}`);
   };
 
-
   const handleResetFilters = async () => {
-    await dispatch(clearFilters())
+    await dispatch(clearFilters());
     await dispatch(fetchSearchingProducts()).unwrap();
 
     // Navigate to the search URL with all current filters
@@ -54,7 +53,7 @@ export default function SearchFilters() {
         <CategoryFilter />
         <PriceFilter />
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-end gap-2">
           <button
             className="px-3 py-2 bg-teal-500 rounded-lg text-white"
             onClick={handleApplyFilters}
